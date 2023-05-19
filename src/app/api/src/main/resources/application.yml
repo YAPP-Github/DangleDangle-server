@@ -1,0 +1,13 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  profiles:
+    active: local
+  config:
+    import:
+      - application-client-${spring.profiles.active}.yml
+      - application-storage-${spring.profiles.active}.yml
+springdoc:
+  swagger-ui:
+    path: /swagger
