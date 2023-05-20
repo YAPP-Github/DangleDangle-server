@@ -1,0 +1,7 @@
+# pre-commit ktlintCheck Hook
+# 실패한다면, ktlintFormat을 실행해주세요
+
+#!/bin/bash
+echo "Pre-Commit Start!"
+GIT_DIR=$(git rev-parse --show-toplevel)
+$GIT_DIR/gradlew ktlintCheck

@@ -11,3 +11,4 @@ CREATE TABLE `account`
     `created_at`                  timestamp    not null,
     unique index UDX_USER_IDENTIFIER (`user_identifier`)
 );
+
