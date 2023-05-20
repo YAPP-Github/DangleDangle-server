@@ -5,12 +5,11 @@ pluginManagement {
     val jibVersion: String by settings
     val kotlinVersion: String by settings
 
-
     resolutionStrategy {
         eachPlugin {
             when (requested.id.id) {
                 "org.springframework.boot" -> useVersion(springBootVersion)
-                "io.spring.dependency-management"-> useVersion(springDependencyManagementVersion)
+                "io.spring.dependency-management" -> useVersion(springDependencyManagementVersion)
                 "org.jlleitschuh.gradle.ktlint" -> useVersion(ktlintVersion)
                 "org.jetbrains.kotlin.plugin.jpa" -> useVersion(kotlinVersion)
                 "com.google.cloud.tools.jib" -> useVersion(jibVersion)
@@ -24,18 +23,18 @@ pluginManagement {
 
 rootProject.name = "yapp22-be"
 
-//app
+// app
 includeProject(":api", "src/app/api")
 
-//domain
-includeProject(":volunteer","src/domain/volunteer")
-includeProject(":animal","src/domain/animal")
-includeProject(":auth","src/domain/auth")
+// domain
+includeProject(":volunteer", "src/domain/volunteer")
+includeProject(":animal", "src/domain/animal")
+includeProject(":auth", "src/domain/auth")
 
-//support
-includeProject(":logger","src/support/logger")
+// support
+includeProject(":logger", "src/support/logger")
 
-//infrastructure
+// infrastructure
 includeProject(":storage", "src/infrastructure/storage")
 includeProject(":client", "src/infrastructure/client")
 
