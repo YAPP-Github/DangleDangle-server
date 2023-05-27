@@ -1,5 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
-
+plugins {
+    kotlin("jvm")
+}
 dependencies {
     compileOnly(project(":auth"))
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
