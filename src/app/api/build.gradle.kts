@@ -3,6 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     kotlin("jvm")
     id("com.google.cloud.tools.jib")
+    jacoco
 }
 
 dependencies {
@@ -22,6 +23,27 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVersion")
 }
 
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    finalizedBy(tasks.jacocoTestCoverageVerification)
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = BigDecimal(0.20)
+            }
+        }
+    }
+}
 tasks.named<BootJar>("bootJar") {
     archiveFileName.set("api.jar")
 }
