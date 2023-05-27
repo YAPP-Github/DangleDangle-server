@@ -14,7 +14,6 @@ dependencies {
     compileOnly("org.springframework:spring-tx")
 
     implementation(project(":auth"))
-    implementation(project(":animal"))
     implementation(project(":volunteer"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
