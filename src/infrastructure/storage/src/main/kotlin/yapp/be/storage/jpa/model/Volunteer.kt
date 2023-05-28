@@ -1,19 +1,29 @@
 package yapp.be.storage.jpa.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
+import yapp.be.storage.jpa.common.BaseTimeEntity
 
 @Entity
-@Table
-class Volunteer(
+@Table(name = "volunteer")
+class Volunteer(): BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
-
+    val id: Long = 0
     @Column
-    val name: String
-)
+    val identifier: String? = null
+    @Column
+    val email: String? = null
+    @Column
+    val nickname: String? = null
+    @Column
+    val phone: String? = null
+    @Column
+    @Enumerated(EnumType.STRING)
+    val oAuthType: OAuthType? = null
+    @Column
+    val isDeleted: Boolean = false
+}
+
+enum class OAuthType {
+    GOOGLE, KAKAO
+}
