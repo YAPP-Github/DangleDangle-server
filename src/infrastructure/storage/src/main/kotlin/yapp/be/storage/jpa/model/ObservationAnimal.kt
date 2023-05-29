@@ -9,8 +9,6 @@ class ObservationAnimal (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     @Column
-    val identifier: String,
-    @Column
     val name: String,
     @Column
     val image: String,

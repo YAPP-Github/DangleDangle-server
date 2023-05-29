@@ -10,11 +10,9 @@ class VolunteerEvent(): BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
-    @Column
-    val identifier: String? = null
     // 작성자
     @Column
-    val volunteerIdentifier: String? = null
+    val userIdentifier: String? = null
     @Column
     val shelterIdentifier: String? = null
     @Column
