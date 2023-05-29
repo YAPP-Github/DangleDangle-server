@@ -6,6 +6,7 @@ spring:
     active: local
   config:
     import:
+      - application-actuator.yml
       - application-client-${spring.profiles.active}.yml
       - application-storage-${spring.profiles.active}.yml
 springdoc:
