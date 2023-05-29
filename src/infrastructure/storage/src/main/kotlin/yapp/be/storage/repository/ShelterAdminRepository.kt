@@ -1,12 +1,12 @@
-package yapp.be.storage
+package yapp.be.storage.repository
 
 import org.springframework.stereotype.Component
 import yapp.be.domain.port.outbound.VolunteerQueryHandler
-import yapp.be.storage.jpa.VolunteerJoinQueueJpaRepository
+import yapp.be.storage.jpa.repository.ShelterAdminJpaRepository
 
 @Component
-class VolunteerJoinQueueRepository(
-    private val jpaRepository: VolunteerJoinQueueJpaRepository
+class ShelterAdminRepository(
+    private val jpaRepository: ShelterAdminJpaRepository
 ) : VolunteerQueryHandler {
     override fun countAll(): Int {
         return jpaRepository.count().toInt()

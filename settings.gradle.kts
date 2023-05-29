@@ -29,6 +29,9 @@ includeProject(":api", "src/app/api")
 // domain
 includeProject(":volunteer", "src/domain/volunteer")
 includeProject(":auth", "src/domain/auth")
+includeProject(":shelter", "src/domain/shelter")
+includeProject(":volunteerEvent", "src/domain/volunteerEvent")
+includeProject(":observationAnimal", "src/domain/observationAnimal")
 
 // support
 includeProject(":logger", "src/support/logger")
