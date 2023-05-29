@@ -1,12 +1,12 @@
-package yapp.be.storage
+package yapp.be.storage.repository
 
 import org.springframework.stereotype.Component
 import yapp.be.domain.port.outbound.VolunteerQueryHandler
-import yapp.be.storage.jpa.ObservationAnimalTagMappingJpaRepository
+import yapp.be.storage.jpa.repository.VolunteerActivityTypeJpaRepository
 
 @Component
-class ObservationAnimalTagMappingRepository(
-    private val jpaRepository: ObservationAnimalTagMappingJpaRepository
+class VolunteerActivityTypeRepository(
+    private val jpaRepository: VolunteerActivityTypeJpaRepository
 ) : VolunteerQueryHandler {
     override fun countAll(): Int {
         return jpaRepository.count().toInt()
