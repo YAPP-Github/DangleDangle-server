@@ -7,6 +7,10 @@ plugins {
 dependencies {
     compileOnly(project(":auth"))
     compileOnly(project(":volunteer"))
+    compileOnly(project(":shelter"))
+    compileOnly(project(":volunteerEvent"))
+    compileOnly(project(":observationAnimal"))
+
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
