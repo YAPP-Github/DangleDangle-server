@@ -1,5 +1,5 @@
 package yapp.be.domain.port.outbound
 
-interface VolunteerQueryHandler {
+interface ObservationAnimalTagMappingQueryHandler {
     fun countAll(): Int
 }
