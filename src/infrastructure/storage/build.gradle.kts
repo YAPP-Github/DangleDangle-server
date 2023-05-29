@@ -6,7 +6,8 @@ plugins {
 
 dependencies {
     compileOnly(project(":auth"))
-    compileOnly(project(":volunteer"))
+    compileOnly(project(":user"))
+    compileOnly(project(":common"))
     compileOnly(project(":shelter"))
     compileOnly(project(":volunteerEvent"))
     compileOnly(project(":observationAnimal"))

@@ -3,8 +3,8 @@ package yapp.be.storage.jpa.model
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "volunteer_join_queue")
-class VolunteerJoinQueue (
+@Table(name = "volunteer_waiting_queue")
+class VolunteerEventWaitingQueue (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
