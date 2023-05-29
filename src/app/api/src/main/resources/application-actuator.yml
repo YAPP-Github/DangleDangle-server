@@ -1,0 +1,16 @@
+server:
+    tomcat:
+      mbeanregistry:
+          enabled: true
+management:
+  endpoints:
+      web:
+          base-path: /monitoring
+          exposure:
+              include:
+                  - health
+                  - metrics
+
+
+
+
