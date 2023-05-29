@@ -14,5 +14,7 @@ data class Address(
     private val roadName: String,
     private val mainBuildingNumber: Int,
     private val subBuildingNumber: Int,
-    private val buildingName: String
+    private val buildingName: String,
+    private val lat: Double,
+    private val lng: Double,
 )
