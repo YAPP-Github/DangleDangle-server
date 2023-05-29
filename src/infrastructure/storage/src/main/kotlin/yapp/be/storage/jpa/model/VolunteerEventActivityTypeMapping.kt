@@ -9,7 +9,7 @@ class VolunteerEventActivityTypeMapping (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     @Column
-    val volunteerActivityTypeIdentifier: String,
+    val volunteerEventActivityTypeIdentifier: String,
     @Column
     val volunteerEventIdentifier: String,
 )

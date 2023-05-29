@@ -14,7 +14,7 @@ dependencies {
     compileOnly("org.springframework:spring-tx")
 
     implementation(project(":auth"))
-    implementation(project(":volunteer"))
+    implementation(project(":user"))
     implementation(project(":volunteerEvent"))
     implementation(project(":shelter"))
     implementation(project(":observationAnimal"))

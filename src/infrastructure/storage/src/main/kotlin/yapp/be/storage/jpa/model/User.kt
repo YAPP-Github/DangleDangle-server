@@ -16,7 +16,7 @@ class User(): BaseTimeEntity() {
     @Column
     val phone: String? = null
     @Column
-    val role: ROLE = ROLE.VOLUNTEER
+    val role: Role = Role.VOLUNTEER
     @Column
     @Enumerated(EnumType.STRING)
     val oAuthType: OAuthType? = null
@@ -31,6 +31,6 @@ class User(): BaseTimeEntity() {
 enum class OAuthType {
     GOOGLE, KAKAO
 }
-enum class ROLE {
+enum class Role {
     VOLUNTEER, SHELTER_ADMIN
 }
