@@ -1,6 +1,7 @@
 package yapp.be.storage.jpa.model
 
 import jakarta.persistence.*
+import yapp.be.enum.OutlinkType
 
 @Entity
 @Table(name = "shelter_outlink")
@@ -11,11 +12,7 @@ class ShelterOutlink (
     @Column
     val url: String,
     @Column
-    val type: Type,
+    val outlinkType: OutlinkType,
     @Column
-    val shelterIdentifier: String,
+    val shelterId: String,
 )
-
-enum class Type {
-    ACCOUNT, INSTAGRAM
-}

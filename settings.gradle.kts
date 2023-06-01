@@ -36,6 +36,7 @@ includeProject(":observationAnimal", "src/domain/observationAnimal")
 
 // support
 includeProject(":logger", "src/support/logger")
+includeProject(":common", "src/support/common")
 
 // infrastructure
 includeProject(":storage", "src/infrastructure/storage")

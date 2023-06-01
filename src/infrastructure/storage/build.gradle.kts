@@ -10,13 +10,9 @@ dependencies {
     compileOnly(project(":common"))
     compileOnly(project(":shelter"))
     compileOnly(project(":volunteerEvent"))
-    compileOnly(project(":observationAnimal"))
 
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
 }
 
 allOpen { // 추가적으로 열어줄 allOpen

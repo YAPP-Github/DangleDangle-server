@@ -1,42 +1,36 @@
 package yapp.be.storage.jpa.model
 
 import jakarta.persistence.*
+import yapp.be.enum.AgeLimit
+import yapp.be.enum.VolunteerEventStatus
 import yapp.be.storage.jpa.common.BaseTimeEntity
 import java.time.LocalDate
 
 @Entity
 @Table(name = "volunteer_event")
-class VolunteerEvent(): BaseTimeEntity() {
+class VolunteerEvent(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0
+    val id: Long = 0,
     // 작성자
     @Column
-    val userIdentifier: String? = null
+    val userId: String,
     @Column
-    val shelterIdentifier: String? = null
+    val shelterId: String,
     @Column
-    val title: String? = null
+    val title: String,
     @Column
-    val recruitNum: Int? = null
+    val recruitNum: Int,
     @Column
-    val material: String? = null
+    val material: String,
     @Column
-    val ageLimit: AgeLimit? = null
+    val ageLimit: AgeLimit,
     @Column
-    val date: LocalDate? = null
+    val date: LocalDate,
     @Column
-    val viewCnt: Int? = null
+    val viewCnt: Int,
     @Column
-    val status: Status? = null
+    val status: VolunteerEventStatus,
     @Column
-    val participantNum: Int? = null
-}
-
-enum class AgeLimit {
-    NONE, ELEMENTARY, MIDDLE, HIGH, ADULT
-}
-
-enum class Status {
-    IN_PROGRESS, DONE, CANCELED
-}
+    val participantNum: Int,
+): BaseTimeEntity()

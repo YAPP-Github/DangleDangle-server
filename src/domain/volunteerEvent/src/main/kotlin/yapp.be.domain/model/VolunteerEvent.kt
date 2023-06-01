@@ -1,16 +1,19 @@
 package yapp.be.domain.model
 
+import yapp.be.enum.AgeLimit
+import yapp.be.enum.VolunteerEventStatus
 import java.time.LocalDate
 
 data class VolunteerEvent (
+    val id: Long,
     val title: String,
     val recruitNum: Int,
     val material: String,
     val ageLimit: AgeLimit,
     val date: LocalDate,
     val viewCnt: Int,
-    val status: Status,
+    val volunteerEventStatus: VolunteerEventStatus,
     val participantNum: Int,
-    val userIdentifier: Identifier,
-    val shelterIdentifier: Identifier,
+    val userId: Long,
+    val shelterId: Long,
 )
