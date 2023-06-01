@@ -11,7 +11,7 @@ class ObservationAnimal (
     @Column
     val name: String,
     @Column
-    val image: String,
+    val imageUrl: String,
     @Column
     val specialNote: String,
 )

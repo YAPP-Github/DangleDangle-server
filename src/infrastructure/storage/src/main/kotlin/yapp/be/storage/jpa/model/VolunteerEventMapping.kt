@@ -11,5 +11,5 @@ class VolunteerEventMapping (
     @Column
     val userIdentifier: String,
     @Column
-    val volunteerEventIdentifier: String,
+    val volunteerEventId: String,
 )
