@@ -11,6 +11,7 @@ dependencies {
 
     runtimeOnly(project(":client"))
     runtimeOnly(project(":storage"))
+    runtimeOnly(project(":common"))
 
     compileOnly("org.springframework:spring-tx")
 
