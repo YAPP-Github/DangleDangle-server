@@ -3,8 +3,8 @@ package yapp.be.storage.jpa.model
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "shelter")
-class Shelter(
+@Table(name = "shelter_entity")
+class ShelterEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

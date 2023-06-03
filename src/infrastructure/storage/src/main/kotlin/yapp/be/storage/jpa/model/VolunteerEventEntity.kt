@@ -7,8 +7,8 @@ import yapp.be.storage.jpa.common.BaseTimeEntity
 import java.time.LocalDate
 
 @Entity
-@Table(name = "volunteer_event")
-class VolunteerEvent(
+@Table(name = "volunteer_event_entity")
+class VolunteerEventEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

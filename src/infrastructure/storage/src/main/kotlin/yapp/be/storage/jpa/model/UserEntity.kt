@@ -6,8 +6,8 @@ import yapp.be.enum.Role
 import yapp.be.storage.jpa.common.BaseTimeEntity
 
 @Entity
-@Table(name = "user")
-class User(
+@Table(name = "user_entity")
+class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

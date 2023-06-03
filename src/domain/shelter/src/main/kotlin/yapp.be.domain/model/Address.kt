@@ -4,6 +4,6 @@ data class Address (
     val address: String,
     val addressDetail: String,
     val postalCode: String,
-    val lat: Double,
-    val lng: Double,
+    val latitude: Double,
+    val longitude: Double,
 )
