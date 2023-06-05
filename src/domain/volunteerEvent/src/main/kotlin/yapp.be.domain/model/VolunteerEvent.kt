@@ -4,7 +4,7 @@ import yapp.be.enum.AgeLimit
 import yapp.be.enum.VolunteerEventStatus
 import java.time.LocalDate
 
-data class VolunteerEvent (
+data class VolunteerEvent(
     val id: Long,
     val title: String,
     val recruitNum: Int,

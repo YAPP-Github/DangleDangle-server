@@ -1,7 +1,6 @@
 package yapp.be.domain.model
 
-
-data class ObservationAnimalTagMapping (
+data class ObservationAnimalTagMapping(
     val id: Long,
     val observationAnimalId: Long,
     val observationAnimalTagId: Long,
