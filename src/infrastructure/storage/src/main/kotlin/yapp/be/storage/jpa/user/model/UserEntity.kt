@@ -3,7 +3,7 @@ package yapp.be.storage.jpa.user.model
 import jakarta.persistence.*
 import yapp.be.enum.OAuthType
 import yapp.be.enum.Role
-import yapp.be.storage.jpa.common.BaseTimeEntity
+import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity
 @Table(name = "user_entity")

@@ -1,7 +1,7 @@
 package yapp.be.storage.jpa.shelter.model
 
 import jakarta.persistence.*
-import yapp.be.storage.jpa.common.Address
+import yapp.be.storage.jpa.common.model.Address
 
 @Entity
 @Table(name = "shelter_entity")

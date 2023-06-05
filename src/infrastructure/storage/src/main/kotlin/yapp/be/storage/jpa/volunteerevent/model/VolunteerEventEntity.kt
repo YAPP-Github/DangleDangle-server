@@ -3,7 +3,7 @@ package yapp.be.storage.jpa.volunteerevent.model
 import jakarta.persistence.*
 import yapp.be.enum.AgeLimit
 import yapp.be.enum.VolunteerEventStatus
-import yapp.be.storage.jpa.common.BaseTimeEntity
+import yapp.be.storage.jpa.common.model.BaseTimeEntity
 import java.time.LocalDate
 
 @Entity

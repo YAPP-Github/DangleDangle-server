@@ -1,4 +1,4 @@
-package yapp.be.storage.jpa.common
+package yapp.be.storage.jpa.common.model
 
 import jakarta.persistence.Embeddable
 
