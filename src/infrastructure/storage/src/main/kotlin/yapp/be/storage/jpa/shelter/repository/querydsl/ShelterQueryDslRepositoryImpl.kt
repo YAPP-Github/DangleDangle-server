@@ -2,7 +2,7 @@ package yapp.be.storage.jpa.shelter.repository.querydsl
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
-import yapp.be.storage.jpa.model.QShelterEntity
+import yapp.be.storage.jpa.shelter.model.QShelterEntity
 import yapp.be.storage.jpa.shelter.model.ShelterEntity
 
 @Repository
