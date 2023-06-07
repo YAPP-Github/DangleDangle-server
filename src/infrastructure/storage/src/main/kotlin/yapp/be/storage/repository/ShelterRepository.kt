@@ -2,8 +2,8 @@ package yapp.be.storage.repository
 
 import org.springframework.stereotype.Component
 import yapp.be.domain.port.outbound.ShelterQueryHandler
-import yapp.be.storage.jpa.repository.ShelterJpaRepository
-import yapp.be.storage.jpa.repository.ShelterOutlinkJpaRepository
+import yapp.be.storage.jpa.shelter.repository.ShelterJpaRepository
+import yapp.be.storage.jpa.shelter.repository.ShelterOutlinkJpaRepository
 
 @Component
 class ShelterRepository(

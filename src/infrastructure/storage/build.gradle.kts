@@ -5,14 +5,20 @@ plugins {
 }
 
 dependencies {
+    val queryDslVersion: String by project
+
     compileOnly(project(":auth"))
     compileOnly(project(":user"))
     compileOnly(project(":common"))
     compileOnly(project(":shelter"))
     compileOnly(project(":volunteerEvent"))
 
+    kapt("com.querydsl:querydsl-apt:$queryDslVersion")
+
     runtimeOnly("com.mysql:mysql-connector-j")
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
 }
 
 allOpen { // 추가적으로 열어줄 allOpen

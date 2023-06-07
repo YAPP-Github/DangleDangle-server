@@ -1,6 +1,6 @@
 package yapp.be.domain.model
 
-data class Address (
+data class Address(
     val address: String,
     val addressDetail: String,
     val postalCode: String,

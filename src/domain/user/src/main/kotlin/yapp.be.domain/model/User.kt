@@ -3,7 +3,7 @@ package yapp.be.domain.model
 import yapp.be.enum.OAuthType
 import yapp.be.enum.Role
 
-data class User (
+data class User(
     val id: Long,
     val email: String,
     val nickname: String,

@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-
 }
 
 tasks.named<BootJar>("bootJar") {
