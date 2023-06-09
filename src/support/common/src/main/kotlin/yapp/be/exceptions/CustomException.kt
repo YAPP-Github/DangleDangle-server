@@ -1,3 +1,3 @@
 package yapp.be.exceptions
 
-class CustomException(type: CustomExceptionType, message: String) : RuntimeException(message)
+class CustomException(val type: CustomExceptionType, override val message: String) : RuntimeException(message)
