@@ -3,13 +3,13 @@ spring:
         database: mysql
         show-sql: true
         hibernate:
-            ddl-auto: none
+            ddl-auto: validate
         properties:
-            dialect: org.hibernate.dialect.MySQL8Dialect
             hibernate:
                 format_sql: true
+                dialect: org.hibernate.dialect.MySQLDialect
         open-in-view: false
     datasource:
-        url: ${DATASOURCE_URL:jdbc:mysql://localhost:33060/template?createDatabaseIfNotExist=true}
+        url: ${DATASOURCE_URL:jdbc:mysql://localhost:33060/yapp22?createDatabaseIfNotExist=true}
         password: ${DATASOURCE_PASSWORD:1q2w3e4r}
         username: ${DATASOURCE_USERNAME:root}

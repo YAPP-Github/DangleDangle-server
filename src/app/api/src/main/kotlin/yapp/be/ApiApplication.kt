@@ -1,4 +1,4 @@
-package yapp.be.apiapplication
+package yapp.be
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
