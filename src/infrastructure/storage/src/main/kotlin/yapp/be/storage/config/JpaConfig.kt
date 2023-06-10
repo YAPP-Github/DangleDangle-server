@@ -1,4 +1,4 @@
-package yapp.be.storage.jpa.common.config
+package yapp.be.storage.config
 
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Configuration

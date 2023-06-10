@@ -1,4 +1,4 @@
-package yapp.be.storage.jpa.common.config
+package yapp.be.storage.config
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager

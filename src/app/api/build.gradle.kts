@@ -11,10 +11,10 @@ dependencies {
 
     runtimeOnly(project(":client"))
     runtimeOnly(project(":storage"))
-    runtimeOnly(project(":common"))
 
     compileOnly("org.springframework:spring-tx")
 
+    implementation(project(":common"))
     implementation(project(":auth"))
     implementation(project(":user"))
     implementation(project(":volunteerEvent"))
