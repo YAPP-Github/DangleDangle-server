@@ -2,6 +2,7 @@ HELP.md
 .gradle
 data/
 build/
+**/src/test/**/resources/sql/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
