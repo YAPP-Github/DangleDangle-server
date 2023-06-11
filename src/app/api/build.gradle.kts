@@ -11,6 +11,7 @@ dependencies {
 
     runtimeOnly(project(":client"))
     runtimeOnly(project(":storage"))
+    runtimeOnly("com.h2database:h2")
 
     compileOnly("org.springframework:spring-tx")
 
