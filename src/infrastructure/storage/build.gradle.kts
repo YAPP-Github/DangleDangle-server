@@ -7,7 +7,6 @@ plugins {
 dependencies {
     val queryDslVersion: String by project
 
-    compileOnly(project(":auth"))
     compileOnly(project(":user"))
     compileOnly(project(":common"))
     compileOnly(project(":shelter"))
@@ -17,6 +16,8 @@ dependencies {
 
     runtimeOnly("com.mysql:mysql-connector-j")
 
+    implementation("org.springframework.security:spring-security-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
 }
