@@ -1,6 +1,7 @@
 package yapp.be.apiapplication.system.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,6 +22,17 @@ import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
 import yapp.be.enum.Role
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.oauth2.client.registration.ClientRegistration
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
+import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
+import yapp.be.apiapplication.system.handler.AuthenticationSuccessHandler
+import yapp.be.enum.CustomOAuth2Provider
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -63,6 +75,14 @@ class SecurityConfig(
         }
 
         http
+            .oauth2Login { it ->
+                it.successHandler(AuthenticationSuccessHandler())
+                it.userInfoEndpoint {
+                    it.userService(customOAuth2UserService)
+                }
+            }
+
+        http
             .exceptionHandling {
                 it.accessDeniedHandler(customAccessDeniedHandler)
                 it.authenticationEntryPoint(customAuthenticationEntryPoint)
@@ -91,15 +111,15 @@ class SecurityConfig(
         }
     }
 
-    @Bean
     fun clientRegistrationRepository(
-        properties: OAuthConfigProperties
+        @Value("\${spring.security.oauth2.client.registration.kakao.client-id}") kakaoClientId: String,
+        @Value("\${spring.security.oauth2.client.registration.kakao.client-secret}") kakaoClientSecret: String
     ): ClientRegistrationRepository {
         val registrations: MutableList<ClientRegistration> = mutableListOf()
         registrations.add(
             CustomOAuth2Provider.KAKAO.getBuilder("kakao")
-                .clientId(properties.kakaoClientId)
-                .clientSecret(properties.kakaoClientSecret)
+                .clientId(kakaoClientId)
+                .clientSecret(kakaoClientSecret)
                 .jwkSetUri("temp")
                 .build()
         )
