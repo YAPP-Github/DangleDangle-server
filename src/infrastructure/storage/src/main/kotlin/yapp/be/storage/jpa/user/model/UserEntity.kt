@@ -23,6 +23,8 @@ class UserEntity(
     val oAuthType: OAuthType,
     @Column(name = "o_auth_access_token")
     val oAuthAccessToken: String,
+    @Column(name = "o_auth_refresh_token")
+    val oAuthRefreshToken: String,
     @Column(name = "is_deleted")
-    val deleted: Boolean = false,
+    var deleted: Boolean = false,
 ) : BaseTimeEntity()

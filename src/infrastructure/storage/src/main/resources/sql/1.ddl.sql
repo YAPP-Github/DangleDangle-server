@@ -5,14 +5,16 @@ CREATE TABLE `user`
     `id`                                  bigint       not null primary key auto_increment,
     `o_auth_type`                         varchar(20)  not null,
     `o_auth_access_token`                 varchar(100) not null,
+    `o_auth_refresh_token`                 varchar(100) not null,
     `is_deleted`                          boolean      not null,
     `status`                              varchar(20)  not null,
     `nickname`                            varchar(20)  not null,
     `email`                               varchar(100) not null,
     `user_role`                           varchar(20)  not null,
     `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp    not null,
-    unique index UDX_EMAIL (`email`)
+    `modified_at`                         timestamp,
+    unique index UDX_EMAIL (`email`),
+    unique index UDX_NICKNAME('nickname')
 );
 
 CREATE TABLE `shelter_user`
@@ -22,7 +24,7 @@ CREATE TABLE `shelter_user`
     `password`                            varchar(255) not null,
     `shelter_id`                          bigint       not null,
     `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp    not null,
+    `modified_at`                         timestamp,
     unique index UDX_EMAIL (`email`)
 );
 
@@ -40,11 +42,11 @@ CREATE TABLE `shelter`
     `profile_image_url`                   varchar(100) not null,
     `address`                             varchar(100) not null,
     `address_detail`                      varchar(50),
-    `postal_code`                         varchar(5)      not null,
+    `postal_code`                         varchar(5)   not null,
     `latitude`                            double       not null,
     `longitude`                           double       not null,
     `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp    not null,
+    `modified_at`                         timestamp,
     unique index UDX_NAME (`name`)
 );
 
@@ -63,7 +65,7 @@ CREATE TABLE `observation_animal`
     `id`                                  bigint          not null primary key auto_increment,
     `name`                                varchar(20)     not null,
     `profile_image_url`                   varchar(100)    not null,
-    `special_note`                        varchar(255),
+    `special_note`                        varchar(255)    not null,
     `shelter_id`                          bigint          not null,
     `created_at`                          timestamp       not null,
     `modified_at`                         timestamp,
@@ -97,7 +99,7 @@ CREATE TABLE `volunteer_event`
     `shelter_id`                          bigint           not null,
     `event_at`                            timestamp        not null,
     `created_at`                          timestamp        not null,
-    `modified_at`                         timestamp        not null,
+    `modified_at`                         timestamp,
     index IDX_SHELTER_ID (`shelter_id`)
 );
 

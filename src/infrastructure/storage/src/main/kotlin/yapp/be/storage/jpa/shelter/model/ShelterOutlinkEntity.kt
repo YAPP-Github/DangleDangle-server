@@ -4,7 +4,12 @@ import jakarta.persistence.*
 import yapp.be.enum.OutlinkType
 
 @Entity
-@Table(name = "shelter_out_link")
+@Table(
+    name = "shelter_out_link",
+    indexes = [
+        Index(name = "IDX_SHELTER_ID", columnList = "shelter_id")
+    ]
+)
 class ShelterOutlinkEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

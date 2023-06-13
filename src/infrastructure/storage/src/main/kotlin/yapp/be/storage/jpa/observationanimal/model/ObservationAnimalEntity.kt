@@ -4,7 +4,12 @@ import jakarta.persistence.*
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity
-@Table(name = "observation_animal")
+@Table(
+    name = "observation_animal",
+    indexes = [
+        Index(name = "IDX_SHELTER_ID", columnList = "shelter_id")
+    ]
+)
 class ObservationAnimalEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
