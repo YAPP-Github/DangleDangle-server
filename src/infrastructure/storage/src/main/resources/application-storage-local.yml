@@ -10,6 +10,6 @@ spring:
                 format_sql: true
         open-in-view: false
     datasource:
-        url: ${DATASOURCE_URL:jdbc:mysql://localhost:3307/template?createDatabaseIfNotExist=true}
-        password: ${DATASOURCE_PASSWORD:P@ssw0rd}
+        url: ${DATASOURCE_URL:jdbc:mysql://localhost:33060/template?createDatabaseIfNotExist=true}
+        password: ${DATASOURCE_PASSWORD:1q2w3e4r}
         username: ${DATASOURCE_USERNAME:root}
