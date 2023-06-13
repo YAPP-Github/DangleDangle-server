@@ -28,8 +28,8 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .cors {}
-            .csrf {it.disable()}
-            .sessionManagement{it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)}
+            .csrf { it.disable() }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { request ->
                 request
                     .requestMatchers("/**")
