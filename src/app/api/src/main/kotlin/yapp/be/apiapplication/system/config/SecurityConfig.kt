@@ -14,13 +14,15 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
+import yapp.be.apiapplication.auth.service.JwtTokenProvider
 import yapp.be.apiapplication.system.handler.AuthenticationSuccessHandler
 import yapp.be.enum.CustomOAuth2Provider
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val customOAuth2UserService: CustomOAuth2UserService
+    private val customOAuth2UserService: CustomOAuth2UserService,
+    private val JwtTokenProvider: JwtTokenProvider
 ) {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -34,7 +36,7 @@ class SecurityConfig(
                     .hasRole("USER")
             }
             .oauth2Login { it ->
-                it.successHandler(AuthenticationSuccessHandler())
+                it.successHandler(AuthenticationSuccessHandler(JwtTokenProvider))
                 it.userInfoEndpoint {
                     it.userService(customOAuth2UserService)
                 }
