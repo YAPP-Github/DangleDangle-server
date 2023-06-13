@@ -96,8 +96,10 @@ class JwtTokenProvider(
     }
 
     fun getAuthentication(accessToken: String?): Authentication {
-        val claims = parseClaims(accessToken!!, "ACCESS")
-        val principal = CustomUserDetails(null, claims.subject, null, null)
-        return UsernamePasswordAuthenticationToken(principal, "", null)
+        val claims = parseClaims(accessToken!!)
+        val authorities: Collection<GrantedAuthority?> = Arrays.stream(claims!![AUTHORITIES_KEY].toString().split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+            .map { role: String? -> SimpleGrantedAuthority(role) }.collect(Collectors.toList())
+        val principal = CustomUserDetails(null, claims.subject, authorities, null)
+        return UsernamePasswordAuthenticationToken(principal, "", authorities)
     }
 }
