@@ -14,7 +14,7 @@ CREATE TABLE `user`
     `created_at`                          timestamp    not null,
     `modified_at`                         timestamp,
     unique index UDX_EMAIL (`email`),
-    unique index UDX_NICKNAME('nickname')
+    unique index UDX_NICKNAME(`nickname`)
 );
 
 CREATE TABLE `shelter_user`
