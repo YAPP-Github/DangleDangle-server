@@ -1,6 +1,7 @@
 package yapp.be.storage.repository
 
 import org.springframework.stereotype.Component
+import yapp.be.domain.port.outbound.ShelterCommandHandler
 import yapp.be.domain.port.outbound.ShelterQueryHandler
 import yapp.be.storage.jpa.shelter.repository.ShelterJpaRepository
 import yapp.be.storage.jpa.shelter.repository.ShelterOutLinkJpaRepository
@@ -9,7 +10,7 @@ import yapp.be.storage.jpa.shelter.repository.ShelterOutLinkJpaRepository
 class ShelterRepository(
     private val shelterJpaRepository: ShelterJpaRepository,
     private val shelterOutLinkJpaRepository: ShelterOutLinkJpaRepository,
-) : ShelterQueryHandler {
+) : ShelterQueryHandler, ShelterCommandHandler {
     override fun countAll(): Int {
         return shelterJpaRepository.count().toInt()
     }
