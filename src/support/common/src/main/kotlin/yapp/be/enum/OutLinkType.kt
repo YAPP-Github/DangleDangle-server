@@ -1,5 +1,5 @@
 package yapp.be.enum
 
-enum class OutlinkType {
+enum class OutLinkType {
     KAKAOPAY, INSTAGRAM
 }

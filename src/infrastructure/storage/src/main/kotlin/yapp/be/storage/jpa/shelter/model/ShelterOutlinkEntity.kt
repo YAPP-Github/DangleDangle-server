@@ -1,7 +1,7 @@
 package yapp.be.storage.jpa.shelter.model
 
 import jakarta.persistence.*
-import yapp.be.enum.OutlinkType
+import yapp.be.enum.OutLinkType
 
 @Entity
 @Table(
@@ -18,7 +18,7 @@ class ShelterOutlinkEntity(
     val url: String,
     @Enumerated(EnumType.STRING)
     @Column(name = "out_link_type")
-    val outLinkType: OutlinkType,
+    val outLinkType: OutLinkType,
     @Column(name = "shelter_id")
     val shelterId: Long,
 )
