@@ -23,11 +23,16 @@ class ShelterSignUpApplicationService(
             description = reqDto.description,
             phoneNumber = reqDto.phoneNumber,
         )
-        shelterUserSignUpUseCase.signUpWithEssentialInfo(
+        val shelterUser = shelterUserSignUpUseCase.signUpWithEssentialInfo(
             shelterId = shelter.id,
             email = reqDto.email,
             password = reqDto.password,
             phoneNumber = reqDto.phoneNumber
+        )
+
+        return SignUpWithEssentialInfoResponseDto(
+            shelterId = shelter.id,
+            shelterUserId = shelterUser.id
         )
     }
 

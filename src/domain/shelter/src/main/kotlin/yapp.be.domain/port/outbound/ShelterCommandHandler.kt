@@ -1,3 +1,7 @@
 package yapp.be.domain.port.outbound
 
-interface ShelterCommandHandler
+import yapp.be.domain.model.Shelter
+
+interface ShelterCommandHandler {
+    fun create(shelter: Shelter): Shelter
+}

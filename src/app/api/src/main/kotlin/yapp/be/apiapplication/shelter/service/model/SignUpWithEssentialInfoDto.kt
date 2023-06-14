@@ -9,7 +9,7 @@ class SignUpWithEssentialInfoRequestDto(
     val password: String,
     val name: String,
     val phoneNumber: String,
-    val description: String?,
+    val description: String,
     addressInfo: ShelterSignUpAddressInfo
 ) {
 
@@ -22,4 +22,7 @@ class SignUpWithEssentialInfoRequestDto(
         longitude = addressInfo.longitude
     )
 }
-class SignUpWithEssentialInfoResponseDto()
+class SignUpWithEssentialInfoResponseDto(
+    val shelterId: Long,
+    val shelterUserId: Long
+)
