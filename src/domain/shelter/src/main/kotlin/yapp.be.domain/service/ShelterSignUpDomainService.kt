@@ -3,12 +3,12 @@ package yapp.be.domain.service
 import org.springframework.stereotype.Service
 import yapp.be.domain.model.ShelterUser
 import yapp.be.domain.port.inbound.ShelterUserSignUpUseCase
-import yapp.be.domain.port.outbound.ShelterCommandHandler
+import yapp.be.domain.port.outbound.ShelterUserCommandHandler
 import yapp.be.model.Email
 
 @Service
 class ShelterSignUpDomainService(
-    private val shelterCommandHandler: ShelterCommandHandler
+    private val shelterUserCommandHandler: ShelterUserCommandHandler
 ) : ShelterUserSignUpUseCase {
     override fun signUpWithEssentialInfo(
         shelterId: Long,
@@ -19,10 +19,10 @@ class ShelterSignUpDomainService(
         val shelterUser = ShelterUser(
             email = email,
             password = password,
-            phoneNumber = phoneNumber,
+            shelterId = shelterId
         )
 
-        return shelterCommandHandler.save(shelterUser)
+        return shelterUserCommandHandler.save(shelterUser)
     }
 
     override fun signUpWithAdditionalInfo(): ShelterUser {

@@ -9,5 +9,4 @@ data class Shelter(
     val profileImageUrl: String?,
     val address: Address,
     val parkingInfo: ParkingNotification,
-    val outLinks: List<ShelterOutLink>,
 )
