@@ -22,4 +22,14 @@ class CustomExceptionHandler {
             timeStamp = LocalDateTime.now()
         )
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RuntimeException::class)
+    fun handleApiException(e: RuntimeException): ErrorResponse {
+        return ErrorResponse(
+            code = ApiExceptionType.RUNTIME_EXCEPTION.code,
+            message = e.message ?: "",
+            timeStamp = LocalDateTime.now()
+        )
+    }
 }
