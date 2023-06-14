@@ -1,4 +1,4 @@
-package yapp.be.storage.jpa.user.model
+package yapp.be.storage.jpa.shelter.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
