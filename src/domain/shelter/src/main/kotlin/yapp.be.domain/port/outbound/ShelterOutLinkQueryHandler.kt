@@ -1,5 +1,5 @@
 package yapp.be.domain.port.outbound
 
-interface ShelterOutlinkQueryHandler {
+interface ShelterOutLinkQueryHandler {
     fun countAll(): Int
 }
