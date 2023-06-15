@@ -1,6 +1,8 @@
 package yapp.be.apiapplication.shelter.controller.model
 
 import yapp.be.apiapplication.shelter.service.model.SignUpWithEssentialInfoRequestDto
+import yapp.be.domain.model.Address
+import yapp.be.model.Email
 
 data class SignUpWithEssentialInfoRequest(
     val email: String,
@@ -12,12 +14,18 @@ data class SignUpWithEssentialInfoRequest(
 ) {
     fun toDto(): SignUpWithEssentialInfoRequestDto {
         return SignUpWithEssentialInfoRequestDto(
-            email = email,
+            email = Email(email),
             password = password,
             name = name,
             phoneNumber = phoneNumber,
             description = description,
-            addressInfo = address
+            address = Address(
+                address = this.address.address,
+                addressDetail = this.address.addressDetail,
+                postalCode = this.address.postalCode,
+                latitude = this.address.latitude,
+                longitude = this.address.longitude
+            )
         )
     }
 }

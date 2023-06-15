@@ -7,6 +7,7 @@ data class Shelter(
     val phoneNumber: String,
     val notice: String? = null,
     val profileImageUrl: String? = null,
+    val bankAccount: BankAccount? = null,
     val address: Address,
-    val parkingInfo: ParkingNotification? = null,
+    val parkingInfo: ShelterParkingInfo? = null,
 )

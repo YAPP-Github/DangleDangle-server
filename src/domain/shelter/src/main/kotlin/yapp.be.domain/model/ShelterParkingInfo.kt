@@ -1,6 +1,6 @@
 package yapp.be.domain.model
 
-data class ParkingNotification(
+data class ShelterParkingInfo(
     val parkingEnabled: Boolean,
-    val notification: String?
+    val notice: String?
 )
