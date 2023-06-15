@@ -11,6 +11,8 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger
+server:
+    port: 9090
 jwt:
     access:
         expire: ${ACCESS_TOKEN_EXPIRE:86400000} # 1 day
