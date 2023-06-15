@@ -6,7 +6,7 @@ import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.ShelterParkingInfo
 import yapp.be.enum.OutLinkType
 
-data class SignUpWithAdditionalInfoRequest(
+data class ShelterEditAdditionalInfoRequest(
     val shelterId: Long,
     val shelterUserId: Long,
     val outLinks: List<ShelterSignUpOutLinkInfo>,
