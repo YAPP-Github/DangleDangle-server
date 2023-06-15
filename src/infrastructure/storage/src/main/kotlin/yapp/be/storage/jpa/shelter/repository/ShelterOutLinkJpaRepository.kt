@@ -5,4 +5,4 @@ import org.springframework.stereotype.Repository
 import yapp.be.storage.jpa.shelter.model.ShelterOutlinkEntity
 
 @Repository
-interface ShelterOutlinkJpaRepository : JpaRepository<ShelterOutlinkEntity, Long>
+interface ShelterOutLinkJpaRepository : JpaRepository<ShelterOutlinkEntity, Long>

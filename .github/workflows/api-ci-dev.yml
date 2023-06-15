@@ -39,9 +39,12 @@ jobs:
             - name: Lint-Check
               id: lintCheck
               run: ./gradlew :api:ktlintCheck
-            - name: Test
-              id: test
+            - name: API Test
+              id: apiTest
               run: ./gradlew :api:test
+            - name: Storage Test
+              id: storageTest
+              run: ./gradlew :storage:test
 
             - name: Comment when Lint was Failed
               uses: peter-evans/create-or-update-comment@v2
@@ -52,7 +55,7 @@ jobs:
                       :x: Lint 실패
             - name: Comment When UnitTest Was Failed
               uses: peter-evans/create-or-update-comment@v2
-              if: failure() && steps.test.outcome == 'failure'
+              if: failure() && (steps.apiTest.outcome == 'failure' || steps.storageTest.outcome == 'failure')
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   body: |

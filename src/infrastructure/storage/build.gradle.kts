@@ -6,19 +6,23 @@ plugins {
 
 dependencies {
     val queryDslVersion: String by project
-
-    compileOnly(project(":auth"))
-    compileOnly(project(":user"))
-    compileOnly(project(":common"))
-    compileOnly(project(":shelter"))
-    compileOnly(project(":volunteerEvent"))
+    val testContainerVersion: String by project
 
     kapt("com.querydsl:querydsl-apt:$queryDslVersion")
-
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    implementation(project(":auth"))
+    implementation(project(":user"))
+    implementation(project(":common"))
+    implementation(project(":shelter"))
+    implementation(project(":volunteerEvent"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
+
+    testImplementation("org.testcontainers:testcontainers:$testContainerVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
+    testImplementation("org.testcontainers:mysql:$testContainerVersion")
 }
 
 allOpen { // 추가적으로 열어줄 allOpen
@@ -27,10 +31,22 @@ allOpen { // 추가적으로 열어줄 allOpen
     annotation("javax.persistence.Embeddable")
 }
 
-tasks.named<BootJar>("bootJar") {
-    enabled = false
-}
+tasks {
+    val copySql by registering(Copy::class) {
+        from("src/main/resources/sql/1.ddl.sql")
+        into("src/test/resources/sql")
+        includeEmptyDirs = false
+    }
 
-tasks.named<Jar>("jar") {
-    enabled = true
+    named<Test>("test") {
+        dependsOn(copySql)
+    }
+
+    named<BootJar>("bootJar") {
+        enabled = false
+    }
+
+    named<Jar>("jar") {
+        enabled = true
+    }
 }

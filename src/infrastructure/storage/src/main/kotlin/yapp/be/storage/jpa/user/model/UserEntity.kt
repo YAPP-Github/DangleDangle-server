@@ -6,26 +6,25 @@ import yapp.be.enum.Role
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity
-@Table(name = "user_entity")
+@Table(name = "user")
 class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    @Column
+    @Column(name = "email", unique = true)
     val email: String,
-    @Column
+    @Column(name = "nickname", unique = true)
     val nickname: String,
-    @Column
-    val phone: String,
-    @Column
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
     val role: Role = Role.VOLUNTEER,
-    @Column
+    @Column(name = "o_auth_type")
     @Enumerated(EnumType.STRING)
     val oAuthType: OAuthType,
-    @Column
+    @Column(name = "o_auth_access_token")
     val oAuthAccessToken: String,
-    @Column
-    val isDeleted: Boolean = false,
-    @Column
-    val shelterId: String,
+    @Column(name = "o_auth_refresh_token")
+    val oAuthRefreshToken: String,
+    @Column(name = "is_deleted")
+    var deleted: Boolean = false,
 ) : BaseTimeEntity()
