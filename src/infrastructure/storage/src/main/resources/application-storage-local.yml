@@ -13,3 +13,6 @@ spring:
         url: ${DATASOURCE_URL:jdbc:mysql://localhost:33060/yapp22?createDatabaseIfNotExist=true}
         password: ${DATASOURCE_PASSWORD:1q2w3e4r}
         username: ${DATASOURCE_USERNAME:root}
+
+
+

@@ -1,3 +1,7 @@
 package yapp.be.domain.port.outbound
 
-interface ShelterOutLinkCommandHandler
+import yapp.be.domain.model.ShelterOutLink
+
+interface ShelterOutLinkCommandHandler {
+    fun upsertAll(outLinks: List<ShelterOutLink>): List<ShelterOutLink>
+}

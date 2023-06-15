@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import yapp.be.storage.jpa.shelter.model.ShelterOutlinkEntity
 
 @Repository
-interface ShelterOutLinkJpaRepository : JpaRepository<ShelterOutlinkEntity, Long>
+interface ShelterOutLinkJpaRepository : JpaRepository<ShelterOutlinkEntity, Long> {
+    fun findAllByShelterId(shelterId: Long): List<ShelterOutlinkEntity>
+}

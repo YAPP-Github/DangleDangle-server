@@ -37,8 +37,8 @@ fun ShelterEntity.toDomainModel(): Shelter {
         notice = this.notice,
         profileImageUrl = this.profileImageUrl,
         bankAccount = run {
-            if (this.bankName == null || this.bankAccountNum == null) null
-            else BankAccount(name = this.bankName, accountNumber = this.bankAccountNum)
+            if (this.bankName != null && this.bankAccountNum != null) BankAccount(name = this.bankName!!, accountNumber = this.bankAccountNum!!)
+            else null
         },
         address = yapp.be.domain.model.Address(
             address = this.address.address,
@@ -48,8 +48,8 @@ fun ShelterEntity.toDomainModel(): Shelter {
             latitude = this.address.latitude
         ),
         parkingInfo = run {
-            if (this.parkingEnabled == null || this.parkingNotice == null) null
-            else ShelterParkingInfo(parkingEnabled = this.parkingEnabled, notice = this.parkingNotice)
+            if (this.parkingEnabled != null && this.parkingNotice != null) ShelterParkingInfo(parkingEnabled = this.parkingEnabled!!, notice = this.parkingNotice!!)
+            else null
         }
     )
 }
