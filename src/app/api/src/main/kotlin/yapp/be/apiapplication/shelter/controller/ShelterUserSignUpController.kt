@@ -1,8 +1,8 @@
 package yapp.be.apiapplication.shelter.controller
 
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -20,7 +20,10 @@ class ShelterUserSignUpController(
 ) {
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/sign-up")
+    @PostMapping("/sign-up/essential-info")
+    @Operation(
+        summary = "보호소 사용자 회원가입 (필수정보)",
+    )
     fun signUpWithEssentialInfo(
         req: SignUpWithEssentialInfoRequest
     ): ResponseEntity<SignUpWithEssentialInfoResponseDto> {
@@ -31,14 +34,15 @@ class ShelterUserSignUpController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/{userId}/additional-info")
+    @PostMapping("/sign-up/additional-info")
+    @Operation(
+        summary = "보호소 사용자 회원가입 (추가정보)",
+    )
     fun signUpWithAdditionalInfo(
-        @PathVariable userId: Long,
         req: SignUpWithAdditionalInfoRequest
     ): ResponseEntity<SignUpWithAdditionalInfoResponseDto> {
         val reqDto = req.toDto()
         val resDto = shelterSignUpApplicationService.signUpWithAdditionalInfo(
-            userId = userId,
             reqDto = reqDto
         )
 

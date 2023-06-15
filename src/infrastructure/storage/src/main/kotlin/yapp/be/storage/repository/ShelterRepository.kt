@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component
 import yapp.be.domain.model.Shelter
 import yapp.be.domain.port.outbound.ShelterCommandHandler
 import yapp.be.domain.port.outbound.ShelterQueryHandler
+import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
+import yapp.be.storage.jpa.shelter.model.mappers.toEntityModel
 import yapp.be.storage.jpa.shelter.repository.ShelterJpaRepository
 import yapp.be.storage.jpa.shelter.repository.ShelterOutLinkJpaRepository
 
@@ -17,5 +19,10 @@ class ShelterRepository(
     }
 
     override fun create(shelter: Shelter): Shelter {
+        val shelterEntity = shelterJpaRepository.save(
+            shelter.toEntityModel()
+        )
+
+        return shelterEntity.toDomainModel()
     }
 }

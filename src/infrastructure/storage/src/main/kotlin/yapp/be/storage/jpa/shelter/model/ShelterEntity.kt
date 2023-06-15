@@ -16,16 +16,12 @@ class ShelterEntity(
     @Column
     @Embedded
     val address: Address,
-
     @Column(name = "phone_num")
     val phoneNum: String,
-
     @Column(name = "bank_name")
     val bankName: String?,
-
     @Column(name = "bank_account_num")
     val bankAccountNum: String?,
-
     @Column(name = "notice")
     val notice: String?,
     @Column(name = "is_parking_enabled")
