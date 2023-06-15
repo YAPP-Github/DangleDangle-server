@@ -14,7 +14,7 @@ import yapp.be.exceptions.CustomException
 class CustomExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(RuntimeException::class)
+    @ExceptionHandler(CustomException::class)
     fun handleApiException(e: CustomException): ErrorResponse {
         return ErrorResponse(
             code = e.type.code,
