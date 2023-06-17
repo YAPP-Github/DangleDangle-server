@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.system.exception.ErrorResponse
 import yapp.be.domain.port.inbound.CheckUserUseCase
-import yapp.be.domain.port.inbound.model.CreateUserCommand
 
 @RestController
 @RequestMapping("/v1/user")
 @Tag(name = "User")
-class UserController (
+class UserController(
     private val checkUserUseCase: CheckUserUseCase
 ) {
     @GetMapping("/nickname")

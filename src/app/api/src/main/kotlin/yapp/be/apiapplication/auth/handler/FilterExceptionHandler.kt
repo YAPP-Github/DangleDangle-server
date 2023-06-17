@@ -2,7 +2,6 @@ package yapp.be.apiapplication.auth.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import yapp.be.apiapplication.system.exception.ErrorResponse
