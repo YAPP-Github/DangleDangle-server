@@ -42,9 +42,8 @@ class AuthenticationSuccessHandler(
                     .encode(StandardCharsets.UTF_8)
                     .toUriString()
             )
-        }catch(e: CustomException) {
+        } catch (e: CustomException) {
             filterExceptionHandler.sendErrorMessage(response, e.type.code, "존재하지 않는 유저입니다.")
         }
     }
 }
-
