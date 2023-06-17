@@ -15,3 +15,7 @@ data class SignUpWithEssentialInfoResponseDto(
     val shelterId: Long,
     val shelterUserId: Long
 )
+
+data class CheckShelterUserEmailExistResponseDto(
+    val isExist: Boolean
+)
