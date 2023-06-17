@@ -68,25 +68,12 @@ CREATE TABLE `observation_animal`
     `name`                                varchar(20)     not null,
     `profile_image_url`                   varchar(100)    not null,
     `special_note`                        varchar(255)    not null,
+    `age`                                 int             not null,
+    `gender`                              varchar(20)     not null,
     `shelter_id`                          bigint          not null,
     `created_at`                          timestamp       not null,
     `modified_at`                         timestamp,
     index IDX_SHELTER_ID (`shelter_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `observation_animal_tag`
-(
-    `id`                                  bigint          not null primary key auto_increment,
-    `name`                                varchar(20)     not null,
-    unique index UDX_NAME (`name`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `observation_animal_tag_mapping`
-(
-    `id`                                  bigint          not null primary key auto_increment,
-    `observation_animal_id`               bigint          not null,
-    `observation_animal_tag_id`           bigint          not null,
-    index IDX_OBSERVATION_ANIMAL (`observation_animal_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `volunteer_event`
