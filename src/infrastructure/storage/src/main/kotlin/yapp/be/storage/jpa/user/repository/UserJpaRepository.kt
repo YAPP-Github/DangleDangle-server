@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import yapp.be.storage.jpa.user.model.UserEntity
 
 @Repository
-interface UserJpaRepository : JpaRepository<UserEntity, Long>
+interface UserJpaRepository : JpaRepository<UserEntity, Long> {
+    fun findByEmail(email: String): UserEntity?
+}

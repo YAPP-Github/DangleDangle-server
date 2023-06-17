@@ -9,7 +9,7 @@ import java.util.*
 class CustomUserDetails(
     var id: Long?,
     private var email: String,
-    private var authorities: Collection<GrantedAuthority?>,
+    private var authorities: Collection<GrantedAuthority?>?,
     private var attributes: Map<String, Any>?
 ) : UserDetails, OAuth2User {
     private fun create(user: UserEntity): CustomUserDetails {
@@ -29,7 +29,7 @@ class CustomUserDetails(
     }
 
     // UserDetail Override
-    override fun getAuthorities(): Collection<GrantedAuthority?> {
+    override fun getAuthorities(): Collection<GrantedAuthority?>? {
         return authorities
     }
 

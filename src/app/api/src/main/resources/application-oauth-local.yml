@@ -18,14 +18,3 @@ spring:
                         token-uri: https://kauth.kakao.com/oauth/token
                         user-info-uri: https://kapi.kakao.com/v2/user/me
                         user-name-attribute: id
-# jwt secret key 설정
-jwt.secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
-
-# 토큰 관련 secret Key 및 RedirectUri 설정
-app:
-    auth:
-        tokenExpiry: 1800000
-        refreshTokenExpiry: 604800000
-    oauth2:
-        authorizedRedirectUris:
-            - http://localhost:3000/oauth/redirect
