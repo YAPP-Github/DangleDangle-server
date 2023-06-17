@@ -4,6 +4,4 @@ data class SignUpRequest(
     val nickname: String,
     val email: String,
     val phone: String,
-    val oAuthAccessToken: String,
-    val oAuthRefreshToken: String,
 )
