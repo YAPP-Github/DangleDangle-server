@@ -1,3 +1,10 @@
 package yapp.be.domain.port.outbound
 
-interface ShelterUserQueryHandler
+import yapp.be.domain.model.ShelterUser
+import yapp.be.model.Email
+
+interface ShelterUserQueryHandler {
+
+    fun findById(shelterUserId: Long): ShelterUser
+    fun existByEmail(email: Email): Boolean
+}
