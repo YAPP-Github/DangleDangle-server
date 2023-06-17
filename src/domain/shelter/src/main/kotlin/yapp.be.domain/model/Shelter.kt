@@ -10,7 +10,4 @@ data class Shelter(
     val bankAccount: BankAccount? = null,
     val address: Address,
     val parkingInfo: ShelterParkingInfo? = null,
-) {
-    fun update() {
-    }
-}
+)

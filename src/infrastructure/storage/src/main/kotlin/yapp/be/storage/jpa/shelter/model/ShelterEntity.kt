@@ -33,7 +33,6 @@ class ShelterEntity(
     @Column(name = "profile_image_url")
     var profileImageUrl: String?,
 ) : BaseTimeEntity() {
-
     fun update(shelter: Shelter) {
         this.name = shelter.name
         this.description = shelter.description
