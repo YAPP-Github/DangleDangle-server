@@ -32,7 +32,7 @@ class SecurityConfig(
             .authorizeHttpRequests { request ->
                 request
                     .requestMatchers("/**")
-                    .hasRole("USER")
+                    .permitAll()
             }
             .oauth2Login { it ->
                 it.successHandler(authenticationSuccessHandler)
