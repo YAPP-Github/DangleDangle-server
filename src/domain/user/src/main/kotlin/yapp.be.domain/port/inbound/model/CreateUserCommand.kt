@@ -4,5 +4,4 @@ data class CreateUserCommand(
     val nickname: String,
     val email: String,
     val phone: String,
-    val oAuthAccessToken: String,
 )

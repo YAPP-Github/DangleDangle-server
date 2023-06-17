@@ -15,7 +15,6 @@ class CreateUserService(
             nickname = command.nickname,
             email = command.email,
             phone = command.phone,
-            oAuthAccessToken = command.oAuthAccessToken,
         )
         val user = userQueryHandler.save(request)
         return user != null

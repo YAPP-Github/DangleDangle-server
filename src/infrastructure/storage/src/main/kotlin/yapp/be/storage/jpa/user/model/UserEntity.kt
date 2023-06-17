@@ -18,13 +18,15 @@ class UserEntity(
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     val role: Role = Role.VOLUNTEER,
+    @Column
+    val phone: String,
     @Column(name = "o_auth_type")
     @Enumerated(EnumType.STRING)
-    val oAuthType: OAuthType,
+    val oAuthType: OAuthType = OAuthType.KAKAO,
     @Column(name = "o_auth_access_token")
-    val oAuthAccessToken: String,
+    val oAuthAccessToken: String? = null,
     @Column(name = "o_auth_refresh_token")
-    val oAuthRefreshToken: String,
+    val oAuthRefreshToken: String? = null,
     @Column(name = "is_deleted")
     var deleted: Boolean = false,
 ) : BaseTimeEntity()

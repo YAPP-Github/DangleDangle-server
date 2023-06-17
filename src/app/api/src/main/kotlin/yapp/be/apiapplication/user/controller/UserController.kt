@@ -1,32 +1,31 @@
-package yapp.be.apiapplication.auth.controller
+package yapp.be.apiapplication.user.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import yapp.be.apiapplication.auth.controller.model.SignUpRequest
 import yapp.be.apiapplication.system.exception.ErrorResponse
-import yapp.be.domain.port.inbound.CreateUserUseCase
+import yapp.be.domain.port.inbound.CheckUserUseCase
 import yapp.be.domain.port.inbound.model.CreateUserCommand
 
 @RestController
-@RequestMapping("/v1/auth")
-@Tag(name = "Auth")
-class AuthController(
-    private val createUserUseCase: CreateUserUseCase,
+@RequestMapping("/v1/user")
+@Tag(name = "User")
+class UserController (
+    private val checkUserUseCase: CheckUserUseCase
 ) {
-    @PostMapping("/register")
+    @GetMapping("/nickname")
     @Operation(
-        summary = "회원가입",
+        summary = "닉네임 중복 체크",
         responses = [
             ApiResponse(
                 responseCode = "200",
-                description = "회원가입 성공"
+                description = "닉네임 중복 체크 성공"
             ),
             ApiResponse(
                 responseCode = "500",
@@ -35,15 +34,9 @@ class AuthController(
             )
         ]
     )
-    fun register(
-        @RequestBody req: SignUpRequest,
+    fun checkNickname(
+        @RequestParam nickname: String,
     ): Boolean {
-        return createUserUseCase.create(
-            CreateUserCommand(
-                nickname = req.nickname,
-                email = req.email,
-                phone = req.phone,
-            )
-        )
+        return checkUserUseCase.isExistByNickname(nickname)
     }
 }

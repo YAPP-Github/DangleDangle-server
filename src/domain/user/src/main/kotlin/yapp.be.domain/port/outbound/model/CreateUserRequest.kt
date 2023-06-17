@@ -4,5 +4,4 @@ data class CreateUserRequest(
     val nickname: String,
     val email: String,
     val phone: String,
-    val oAuthAccessToken: String,
 )

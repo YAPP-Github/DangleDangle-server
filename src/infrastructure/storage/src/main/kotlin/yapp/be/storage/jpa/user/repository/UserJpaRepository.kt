@@ -7,4 +7,5 @@ import yapp.be.storage.jpa.user.model.UserEntity
 @Repository
 interface UserJpaRepository : JpaRepository<UserEntity, Long> {
     fun findByEmail(email: String): UserEntity?
+    fun findByNickname(nickname: String): UserEntity?
 }
