@@ -26,6 +26,7 @@ class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException::class)
     fun handleApiException(e: RuntimeException): ErrorResponse {
+        e.printStackTrace()
         return ErrorResponse(
             code = ApiExceptionType.RUNTIME_EXCEPTION.code,
             message = e.message ?: "",
