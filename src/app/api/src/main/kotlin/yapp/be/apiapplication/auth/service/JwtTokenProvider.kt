@@ -8,7 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import yapp.be.apiapplication.system.properties.JwtConfigProperties
-import yapp.be.storage.jpa.user.model.CustomOAuth2User
+import yapp.be.domain.model.SecurityToken
+import yapp.be.domain.model.SecurityTokenType
 import yapp.be.storage.jpa.user.model.CustomUserDetails
 import java.util.*
 import javax.crypto.SecretKey
@@ -19,55 +20,60 @@ import kotlin.String
 
 @Component
 class JwtTokenProvider(
-    val jwtTokenProperties: JwtConfigProperties,
+    val jwtConfigProperties: JwtConfigProperties,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    private fun generateToken(email: String, date: Date, key: SecretKey): String {
+    private fun generateToken(id: Long, securityTokenType: SecurityTokenType): String {
+        val properties = when (securityTokenType) {
+            SecurityTokenType.ACCESS -> {
+                jwtConfigProperties.access
+            }
+
+            SecurityTokenType.REFRESH -> {
+                jwtConfigProperties.refresh
+            }
+        }
+        val key: SecretKey = Keys.hmacShaKeyFor(properties.secret.toByteArray())
+        val now = Date().time
+        val expiredAt = now + properties.expire
+
         return Jwts.builder()
-            .claim("email", email)
-            .setIssuedAt(Date())
-            .setExpiration(date)
+            .claim("id", id)
+            .setIssuedAt(Date(now))
+            .setExpiration(Date(expiredAt))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
 
-    fun createAccessToken(authentication: Authentication): String {
-        val now = Date()
-        val validity = Date(now.time + jwtTokenProperties.access.expire)
-        val user = authentication.principal as CustomOAuth2User
-        val userEmail = user.oAuthAttributes.email
-        val key : SecretKey = Keys.hmacShaKeyFor(jwtTokenProperties.access.secret.toByteArray())
-        return generateToken(userEmail, validity, key)
-    }
-
-    fun createRefreshToken(authentication: Authentication): String {
-        val now = Date()
-        val validity = Date(now.time + jwtTokenProperties.refresh.expire)
-        val user = authentication.principal as CustomOAuth2User
-        val userEmail = user.oAuthAttributes.email
-        val key : SecretKey = Keys.hmacShaKeyFor(jwtTokenProperties.refresh.secret.toByteArray())
-        return generateToken(userEmail, validity, key)
+    fun generate(id: Long): SecurityToken {
+        val accessToken = generateToken(id, SecurityTokenType.ACCESS)
+        val refreshToken = generateToken(id, SecurityTokenType.REFRESH)
+        return SecurityToken(
+            userId = id,
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
     }
 
     private fun parseClaims(token: String, tokenType: String): Claims {
         try {
-            val key: SecretKey = when(tokenType) {
+            val key: SecretKey = when (tokenType) {
                 "ACCESS" -> {
-                    Keys.hmacShaKeyFor(jwtTokenProperties.access.secret.toByteArray())
+                    Keys.hmacShaKeyFor(jwtConfigProperties.access.secret.toByteArray())
                 }
-                "REFRESH" ->{
-                    Keys.hmacShaKeyFor(jwtTokenProperties.refresh.secret.toByteArray())
+                "REFRESH" -> {
+                    Keys.hmacShaKeyFor(jwtConfigProperties.refresh.secret.toByteArray())
                 }
                 else -> {
                     throw Exception("Invalid token type")
                 }
             }
             return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .body
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .body
         } catch (e: SecurityException) {
             throw SecurityException("Invalid JWT signature")
         } catch (e: Exception) {

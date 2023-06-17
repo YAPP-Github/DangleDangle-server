@@ -20,7 +20,7 @@ class UnKnownExceptionHandler {
     fun handleApiException(ex: Throwable): ErrorResponse {
         logger.error(ex.message)
         return ErrorResponse(
-            code = ApiExceptionType.INTERNAL_SERVER_ERROR.code,
+            exceptionCode = ApiExceptionType.INTERNAL_SERVER_ERROR.code,
             message = "Internal Server Error",
             timeStamp = LocalDateTime.now()
         )

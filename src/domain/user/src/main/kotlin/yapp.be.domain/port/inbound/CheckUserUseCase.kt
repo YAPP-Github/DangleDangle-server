@@ -1,5 +1,6 @@
 package yapp.be.domain.port.inbound
 
 interface CheckUserUseCase {
-    fun isExist(email: String): Boolean
+    fun isExistByEmail(email: String): Boolean
+    fun isExistByNickname(nickname: String): Boolean
 }

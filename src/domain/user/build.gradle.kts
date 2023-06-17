@@ -6,7 +6,7 @@ dependencies {
     compileOnly("org.springframework:spring-tx")
     compileOnly("org.springframework:spring-context")
     compileOnly(project(":common"))
-    compileOnly(project(":storage"))
+    compileOnly(project(":auth"))
 }
 
 tasks.named<BootJar>("bootJar") {
