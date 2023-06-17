@@ -9,8 +9,8 @@ data class User(
     val nickname: String,
     val phone: String,
     val role: Role = Role.VOLUNTEER,
-    val oAuthType: OAuthType,
+    val oAuthType: OAuthType = OAuthType.KAKAO,
     val oAuthAccessToken: String,
     val isDeleted: Boolean = false,
-    val shelterId: Long
+    val shelterId: Long?
 )
