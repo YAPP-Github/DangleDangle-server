@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.controller
+package yapp.be.apiapplication.auth.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -11,18 +11,35 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import yapp.be.apiapplication.shelter.controller.model.SignUpWithEssentialInfoRequest
-import yapp.be.apiapplication.shelter.service.shelter.ShelterSignUpApplicationService
-import yapp.be.apiapplication.shelter.service.shelter.model.CheckShelterUserEmailExistResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.SignUpShelterWithEssentialInfoResponseDto
+import yapp.be.apiapplication.auth.controller.model.LoginShelterUserRequest
+import yapp.be.apiapplication.auth.controller.model.SignUpWithEssentialInfoRequest
+import yapp.be.apiapplication.auth.service.ShelterAuthApplicationService
+import yapp.be.apiapplication.auth.service.model.CheckShelterUserEmailExistResponseDto
+import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
+import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoResponseDto
 import yapp.be.model.Email
 
 @RestController
-@Tag(name = "보호소 회원가입 api")
+@Tag(name = "보호소 회원가입/로그인 api")
 @RequestMapping("/v1/shelter")
-class ShelterSignUpController(
-    val shelterSignUpApplicationService: ShelterSignUpApplicationService
+class ShelterAuthController(
+    val shelterAuthApplicationService: ShelterAuthApplicationService
 ) {
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    @Operation(
+        summary = "보호소 사용자 로그인",
+    )
+    fun loginShelterUser(
+        @RequestBody
+        req: LoginShelterUserRequest
+    ): ResponseEntity<LoginShelterUserResponseDto> {
+        val reqDto = req.toDto()
+        val resDto = shelterAuthApplicationService.login(reqDto)
+
+        return ResponseEntity.ok(resDto)
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/email/exist")
@@ -33,7 +50,7 @@ class ShelterSignUpController(
     fun checkShelterUserEmailDuplicate(
         @RequestParam email: String
     ): ResponseEntity<CheckShelterUserEmailExistResponseDto> {
-        val resDto = shelterSignUpApplicationService.checkIsShelterUserEmailExist(
+        val resDto = shelterAuthApplicationService.checkIsShelterUserEmailExist(
             email = Email(email)
         )
         return ResponseEntity.ok(resDto)
@@ -49,7 +66,7 @@ class ShelterSignUpController(
         req: SignUpWithEssentialInfoRequest
     ): ResponseEntity<SignUpShelterWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
-        val resDto = shelterSignUpApplicationService.signUpWithEssentialInfo(reqDto)
+        val resDto = shelterAuthApplicationService.signUpWithEssentialInfo(reqDto)
 
         return ResponseEntity.ok(resDto)
     }

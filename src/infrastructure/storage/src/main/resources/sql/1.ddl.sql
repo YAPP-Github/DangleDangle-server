@@ -11,8 +11,8 @@ CREATE TABLE `user`
     `phone`                           varchar(13)  not null,
     `email`                               varchar(100) not null,
     `user_role`                           varchar(20)  not null,
-    `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp,
+    `created_at`                          datetime    not null,
+    `modified_at`                         datetime,
     unique index UDX_EMAIL (`email`),
     unique index UDX_NICKNAME(`nickname`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -23,8 +23,8 @@ CREATE TABLE `shelter_user`
     `email`                               varchar(100) not null,
     `password`                            varchar(255) not null,
     `shelter_id`                          bigint       not null,
-    `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp,
+    `created_at`                          datetime    not null,
+    `modified_at`                         datetime,
     unique index UDX_EMAIL (`email`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -47,9 +47,9 @@ CREATE TABLE `shelter`
     `postal_code`                         varchar(5)   not null,
     `latitude`                            double       not null,
     `longitude`                           double       not null,
-    `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp,
-    unique index UDX_NAME (`name`)
+    `created_at`                          datetime    not null,
+    `modified_at`                         datetime,
+    index IDX_NAME (`name`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `shelter_out_link`
@@ -72,8 +72,8 @@ CREATE TABLE `observation_animal`
     `gender`                              varchar(20)     not null,
     `breed`                               varchar(30)     not null,
     `shelter_id`                          bigint          not null,
-    `created_at`                          timestamp       not null,
-    `modified_at`                         timestamp,
+    `created_at`                          datetime       not null,
+    `modified_at`                         datetime,
     index IDX_SHELTER_ID (`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -87,9 +87,9 @@ CREATE TABLE `volunteer_event`
     `age_limit`                           varchar(20)      not null,
     `status`                              varchar(20)      not null,
     `shelter_id`                          bigint           not null,
-    `event_at`                            timestamp        not null,
-    `created_at`                          timestamp        not null,
-    `modified_at`                         timestamp,
+    `event_at`                            datetime        not null,
+    `created_at`                          datetime        not null,
+    `modified_at`                         datetime,
     index IDX_SHELTER_ID (`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

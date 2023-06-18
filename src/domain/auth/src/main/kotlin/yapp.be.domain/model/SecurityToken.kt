@@ -1,7 +1,6 @@
 package yapp.be.domain.model
 
-class SecurityToken(
-    val userId: Long,
+data class SecurityToken(
     val accessToken: String,
     val refreshToken: String,
 )

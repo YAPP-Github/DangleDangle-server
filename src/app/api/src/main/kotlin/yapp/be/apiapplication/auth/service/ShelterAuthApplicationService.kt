@@ -1,23 +1,49 @@
-package yapp.be.apiapplication.shelter.service.shelter
+package yapp.be.apiapplication.auth.service
 
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.shelter.model.CheckShelterUserEmailExistResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.SignUpShelterWithEssentialInfoRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.SignUpShelterWithEssentialInfoResponseDto
+import yapp.be.apiapplication.auth.service.model.CheckShelterUserEmailExistResponseDto
+import yapp.be.apiapplication.auth.service.model.LoginShelterUserRequestDto
+import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
+import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoRequestDto
+import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoResponseDto
+import yapp.be.apiapplication.system.exception.ApiExceptionType
+import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.domain.port.inbound.CreateShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.SignUpShelterUseCase
+import yapp.be.enum.Role
+import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
 
 @Service
-class ShelterSignUpApplicationService(
+class ShelterAuthApplicationService(
     private val encoder: PasswordEncoder,
+    private val jwtTokenProvider: JwtTokenProvider,
     private val getShelterUserUseCase: GetShelterUserUseCase,
     private val createShelterUseCase: CreateShelterUseCase,
     private val signUpShelterUseCase: SignUpShelterUseCase
 ) {
+
+    @Transactional(readOnly = true)
+    fun login(reqDto: LoginShelterUserRequestDto): LoginShelterUserResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserByEmail(reqDto.email)
+
+        if (shelterUser == null || !encoder.matches(reqDto.password, shelterUser.password)) {
+            throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "Login Fail")
+        }
+
+        val tokens = jwtTokenProvider.generate(
+            id = shelterUser.id,
+            role = Role.SHELTER
+        )
+
+        return LoginShelterUserResponseDto(
+            accessToken = tokens.accessToken,
+            refreshToken = tokens.refreshToken
+        )
+    }
 
     @Transactional
     fun signUpWithEssentialInfo(reqDto: SignUpShelterWithEssentialInfoRequestDto): SignUpShelterWithEssentialInfoResponseDto {
