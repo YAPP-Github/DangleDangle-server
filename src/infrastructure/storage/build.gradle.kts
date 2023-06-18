@@ -25,6 +25,11 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$testContainerVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
     testImplementation("org.testcontainers:mysql:$testContainerVersion")
+
+    testImplementation(testFixtures(project(":shelter")))
+    testImplementation(testFixtures(project(":auth")))
+    testImplementation(testFixtures(project(":user")))
+    testImplementation(testFixtures(project(":volunteerEvent")))
 }
 
 allOpen { // 추가적으로 열어줄 allOpen

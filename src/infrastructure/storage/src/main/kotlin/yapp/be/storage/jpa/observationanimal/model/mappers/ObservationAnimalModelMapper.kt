@@ -11,7 +11,8 @@ fun ObservationAnimal.toEntityModel(): ObservationAnimalEntity {
         specialNote = this.specialNote,
         shelterId = this.shelterId,
         age = this.age,
-        gender = this.gender
+        gender = this.gender,
+        breed = this.breed
     )
 }
 
@@ -23,6 +24,7 @@ fun ObservationAnimalEntity.toDomainModel(): ObservationAnimal {
         specialNote = this.specialNote,
         age = this.age,
         gender = this.gender,
-        shelterId = this.shelterId
+        shelterId = this.shelterId,
+        breed = this.breed
     )
 }

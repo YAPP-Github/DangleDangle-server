@@ -1,32 +1,32 @@
-package yapp.be.apiapplication.shelter.service
+package yapp.be.apiapplication.shelter.service.shelter
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.model.EditProfileImageRequestDto
-import yapp.be.apiapplication.shelter.service.model.EditProfileImageResponseDto
-import yapp.be.apiapplication.shelter.service.model.EditWithAdditionalInfoRequestDto
-import yapp.be.apiapplication.shelter.service.model.EditWithAdditionalInfoResponseDto
-import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoRequestDto
-import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoResponseDto
 import yapp.be.domain.port.inbound.GetShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
-import yapp.be.domain.port.inbound.ShelterEditUseCase
+import yapp.be.domain.port.inbound.EditShelterUseCase
 
 @Service
 class ShelterEditApplicationService(
     private val getShelterUseCase: GetShelterUseCase,
     private val getShelterUserUseCase: GetShelterUserUseCase,
-    private val shelterEditUseCase: ShelterEditUseCase
+    private val editShelterUseCase: EditShelterUseCase
 ) {
 
     @Transactional
-    fun editProfileImage(reqDto: EditProfileImageRequestDto): EditProfileImageResponseDto {
-        val shelter = shelterEditUseCase.editProfileImage(
+    fun editProfileImage(reqDto: EditShelterProfileImageRequestDto): EditShelterProfileImageResponseDto {
+        val shelter = editShelterUseCase.editProfileImage(
             shelterId = reqDto.shelterId,
             profileImageUrl = reqDto.profileImageUrl
         )
 
-        return EditProfileImageResponseDto(
+        return EditShelterProfileImageResponseDto(
             shelterId = shelter.id
         )
     }
@@ -43,7 +43,7 @@ class ShelterEditApplicationService(
         //  throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
         // }
 
-        shelterEditUseCase.editWithEssentialInfo(
+        editShelterUseCase.editWithEssentialInfo(
             shelterId = shelterId,
             name = reqDto.name,
             phoneNumber = reqDto.phoneNumber,
@@ -60,8 +60,8 @@ class ShelterEditApplicationService(
     @Transactional
     fun editAdditionalInfo(
         shelterId: Long,
-        reqDto: EditWithAdditionalInfoRequestDto
-    ): EditWithAdditionalInfoResponseDto {
+        reqDto: EditShelterWithAdditionalInfoRequestDto
+    ): EditShelterWithAdditionalInfoResponseDto {
         val shelter = getShelterUseCase.getShelterById(shelterId)
         // val shelterUser = getShelterUserUseCase.getShelterUserById(reqDto.shelterUserId)
 
@@ -69,19 +69,19 @@ class ShelterEditApplicationService(
         //   throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
         // }
 
-        shelterEditUseCase.editWithAdditionalInfo(
+        editShelterUseCase.editWithAdditionalInfo(
             shelterId = shelterId,
             parkingInfo = reqDto.parkingInfo,
             bankAccount = reqDto.donation,
             notice = reqDto.notice
         )
 
-        shelterEditUseCase.editShelterOutLink(
+        editShelterUseCase.editShelterOutLink(
             shelterId = shelterId,
             outLinks = reqDto.outLinks
         )
 
-        return EditWithAdditionalInfoResponseDto(
+        return EditShelterWithAdditionalInfoResponseDto(
             shelterId = shelter.id,
             shelterUserId = 0
         )

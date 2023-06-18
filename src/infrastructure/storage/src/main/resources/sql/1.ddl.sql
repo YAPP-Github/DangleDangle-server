@@ -70,6 +70,7 @@ CREATE TABLE `observation_animal`
     `special_note`                        varchar(255)    not null,
     `age`                                 int             not null,
     `gender`                              varchar(20)     not null,
+    `breed`                               varchar(30)     not null,
     `shelter_id`                          bigint          not null,
     `created_at`                          timestamp       not null,
     `modified_at`                         timestamp,

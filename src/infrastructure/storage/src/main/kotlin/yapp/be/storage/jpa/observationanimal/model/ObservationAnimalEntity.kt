@@ -31,6 +31,9 @@ class ObservationAnimalEntity(
     @Column(name = "special_note")
     val specialNote: String,
 
+    @Column(name = "breed")
+    val breed: String,
+
     @Column(name = "shelter_id")
     val shelterId: Long
 ) : BaseTimeEntity()

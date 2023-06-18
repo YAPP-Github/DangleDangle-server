@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.service.model
+package yapp.be.apiapplication.shelter.service.shelter.model
 
 import yapp.be.domain.model.Address
 
