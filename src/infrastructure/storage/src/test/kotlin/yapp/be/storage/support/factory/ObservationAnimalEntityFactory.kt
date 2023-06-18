@@ -14,7 +14,8 @@ object ObservationAnimalEntityFactory {
             age = 3,
             gender = Gender.MALE,
             specialNote = "보호동물 특이사항",
-            shelterId = shelterId
+            shelterId = shelterId,
+            breed = "보호동물 종"
         )
     }
 }
