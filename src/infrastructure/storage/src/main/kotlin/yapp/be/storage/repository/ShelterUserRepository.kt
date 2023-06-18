@@ -31,6 +31,11 @@ class ShelterUserRepository(
         return shelterUserEntity.toDomainModel()
     }
 
+    override fun findByEmail(email: Email): ShelterUser? {
+        val shelterUserEntity = shelterUserJpaRepository.findByEmail(email.value)
+        return shelterUserEntity?.toDomainModel()
+    }
+
     @Transactional(readOnly = true)
     override fun existByEmail(email: Email): Boolean {
         return shelterUserJpaRepository.existsByEmail(email.value)

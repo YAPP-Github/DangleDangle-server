@@ -1,5 +1,6 @@
 package yapp.be.apiapplication.shelter.controller.model
 
+import yapp.be.apiapplication.auth.controller.model.ShelterSignUpAddressInfo
 import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageRequestDto
 import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoRequestDto
 import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoRequestDto
