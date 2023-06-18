@@ -41,9 +41,10 @@ class ObservationAnimalManageApplicationService(
     }
 
     @Transactional
-    fun addObservationAnimal(shelterId: Long, reqDto: AddObservationAnimalRequestDto): AddObservationAnimalResponseDto {
+    fun addObservationAnimal(shelterUserId: Long, reqDto: AddObservationAnimalRequestDto): AddObservationAnimalResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
         val observationAnimal = createObservationAnimalUseCase.addObservationAnimal(
-            shelterId = shelterId,
+            shelterId = shelterUser.id,
             name = reqDto.name,
             age = reqDto.age,
             specialNote = reqDto.specialNote,

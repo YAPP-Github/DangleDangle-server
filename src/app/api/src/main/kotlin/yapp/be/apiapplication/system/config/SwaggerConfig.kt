@@ -8,8 +8,10 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.servers.Server
+import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
 
 @Configuration
 @SecurityScheme(
@@ -21,6 +23,11 @@ import org.springframework.context.annotation.Configuration
     paramName = "Authorization"
 )
 class SwaggerConfig {
+
+    init {
+        val ignoreTypes = setOf<Class<*>>(ShelterUserAuthenticationInfo::class.java).toTypedArray()
+        SpringDocUtils.getConfig().addRequestWrapperToIgnore(*ignoreTypes)
+    }
     @Bean
     fun customOpenAPI(): OpenAPI {
         val securityRequirement = SecurityRequirement().addList("BearerAuth")

@@ -6,16 +6,14 @@ import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAddit
 import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoRequestDto
 import yapp.be.domain.model.Address
 import yapp.be.domain.model.BankAccount
-import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.ShelterParkingInfo
 import yapp.be.enum.OutLinkType
 
 data class EditShelterProfileImageRequest(
     val url: String
 ) {
-    fun toDto(shelterId: Long): EditShelterProfileImageRequestDto {
+    fun toDto(): EditShelterProfileImageRequestDto {
         return EditShelterProfileImageRequestDto(
-            shelterId = shelterId,
             profileImageUrl = url
         )
     }
@@ -50,14 +48,10 @@ data class EditShelterAdditionalInfoRequest(
     val donation: EditShelterDonationInfo,
     val notice: String?,
 ) {
-    fun toDto(shelterId: Long): EditShelterWithAdditionalInfoRequestDto {
+    fun toDto(): EditShelterWithAdditionalInfoRequestDto {
         return EditShelterWithAdditionalInfoRequestDto(
             outLinks = this.outLinks.map {
-                ShelterOutLink(
-                    url = it.url,
-                    shelterId = shelterId,
-                    type = it.outLinkType
-                )
+                Pair(it.outLinkType, it.url)
             },
             donation = BankAccount(
                 name = this.donation.bankName,
