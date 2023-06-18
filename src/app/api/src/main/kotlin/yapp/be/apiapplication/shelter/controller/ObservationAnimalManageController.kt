@@ -19,6 +19,8 @@ import yapp.be.apiapplication.shelter.service.observationanimal.ObservationAnima
 import yapp.be.apiapplication.shelter.service.observationanimal.model.AddObservationAnimalResponseDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.DeleteObservationAnimalResponseDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalResponseDto
+import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthentication
+import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
 
 @Tag(name = "특별 케어 동물 관리 api")
 @RequestMapping("/v1/shelter/{shelterId}/observation-animal")
@@ -32,7 +34,10 @@ class ObservationAnimalManageController(
     @Operation(
         summary = "특별 케어 동물 가져오기"
     )
-    fun getObservationAnimal(@PathVariable observationAnimalId: Long) {
+    fun getObservationAnimal(
+        @PathVariable observationAnimalId: Long,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
+    ) {
         observationAnimalManageApplicationService.getObservationAnimal(observationAnimalId)
     }
 
@@ -43,7 +48,8 @@ class ObservationAnimalManageController(
     )
     fun addObservationAnimal(
         @PathVariable shelterId: Long,
-        @RequestBody req: AddObservationAnimalRequest
+        @RequestBody req: AddObservationAnimalRequest,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<AddObservationAnimalResponseDto> {
         val reqDto = req.toDto()
         val resDto = observationAnimalManageApplicationService.addObservationAnimal(
@@ -62,12 +68,14 @@ class ObservationAnimalManageController(
     fun editObservationAnimal(
         @PathVariable shelterId: Long,
         @PathVariable observationAnimalId: Long,
-        @RequestBody req: EditObservationAnimalRequest
+        @RequestBody req: EditObservationAnimalRequest,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
 
     ): ResponseEntity<EditObservationAnimalResponseDto> {
         val reqDto = req.toDto()
         val resDto = observationAnimalManageApplicationService.editObservationAnimal(
             shelterId = shelterId,
+            shelterUserId = shelterUserInfo.shelterUserId,
             observationAnimalId = observationAnimalId,
             reqDto = reqDto
         )
@@ -80,8 +88,14 @@ class ObservationAnimalManageController(
     @Operation(
         summary = "특별 케어 동물 삭제"
     )
-    fun deleteObservationAnimal(@PathVariable observationAnimalId: Long): ResponseEntity<DeleteObservationAnimalResponseDto> {
-        val resDto = observationAnimalManageApplicationService.deleteObservationAnimal(observationAnimalId)
+    fun deleteObservationAnimal(
+        @PathVariable observationAnimalId: Long,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
+    ): ResponseEntity<DeleteObservationAnimalResponseDto> {
+        val resDto = observationAnimalManageApplicationService.deleteObservationAnimal(
+            shelterUserId = shelterUserInfo.shelterUserId,
+            observationAnimalId = observationAnimalId
+        )
         return ResponseEntity.ok(resDto)
     }
 }

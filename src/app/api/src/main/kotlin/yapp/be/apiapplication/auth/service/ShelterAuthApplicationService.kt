@@ -36,6 +36,7 @@ class ShelterAuthApplicationService(
 
         val tokens = jwtTokenProvider.generate(
             id = shelterUser.id,
+            email = shelterUser.email,
             role = Role.SHELTER
         )
 
