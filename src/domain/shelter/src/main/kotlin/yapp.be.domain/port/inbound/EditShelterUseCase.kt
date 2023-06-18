@@ -6,7 +6,7 @@ import yapp.be.domain.model.Shelter
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.ShelterParkingInfo
 
-interface ShelterEditUseCase {
+interface EditShelterUseCase {
     fun editProfileImage(
         shelterId: Long,
         profileImageUrl: String

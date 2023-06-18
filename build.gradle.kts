@@ -7,7 +7,6 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
     kotlin("plugin.spring")
-    `java-test-fixtures`
 }
 
 allprojects {

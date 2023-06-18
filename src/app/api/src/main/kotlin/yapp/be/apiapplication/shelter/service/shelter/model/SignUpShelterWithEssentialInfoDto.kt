@@ -1,9 +1,9 @@
-package yapp.be.apiapplication.shelter.service.model
+package yapp.be.apiapplication.shelter.service.shelter.model
 
 import yapp.be.domain.model.Address
 import yapp.be.model.Email
 
-class SignUpWithEssentialInfoRequestDto(
+class SignUpShelterWithEssentialInfoRequestDto(
     val email: Email,
     val password: String,
     val name: String,
@@ -11,7 +11,7 @@ class SignUpWithEssentialInfoRequestDto(
     val description: String,
     val address: Address
 )
-data class SignUpWithEssentialInfoResponseDto(
+data class SignUpShelterWithEssentialInfoResponseDto(
     val shelterId: Long,
     val shelterUserId: Long
 )

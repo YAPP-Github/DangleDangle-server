@@ -7,19 +7,19 @@ import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.Shelter
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.ShelterParkingInfo
-import yapp.be.domain.port.inbound.ShelterEditUseCase
+import yapp.be.domain.port.inbound.EditShelterUseCase
 import yapp.be.domain.port.outbound.ShelterCommandHandler
 import yapp.be.domain.port.outbound.ShelterOutLinkCommandHandler
 import yapp.be.domain.port.outbound.ShelterOutLinkQueryHandler
 import yapp.be.domain.port.outbound.ShelterQueryHandler
 
 @Service
-class ShelterEditDomainService(
+class EditShelterDomainService(
     private val shelterQueryHandler: ShelterQueryHandler,
     private val shelterCommandHandler: ShelterCommandHandler,
     private val shelterOutLinkQueryHandler: ShelterOutLinkQueryHandler,
     private val shelterOutLinkCommandHandler: ShelterOutLinkCommandHandler
-) : ShelterEditUseCase {
+) : EditShelterUseCase {
 
     @Transactional
     override fun editProfileImage(shelterId: Long, profileImageUrl: String): Shelter {

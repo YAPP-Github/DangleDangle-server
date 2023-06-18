@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import yapp.be.apiapplication.shelter.controller.model.ShelterEditAdditionalInfoRequest
-import yapp.be.apiapplication.shelter.controller.model.ShelterEditEssentialInfoRequest
-import yapp.be.apiapplication.shelter.controller.model.ShelterEditProfileImageRequest
-import yapp.be.apiapplication.shelter.service.ShelterEditApplicationService
-import yapp.be.apiapplication.shelter.service.model.EditProfileImageResponseDto
-import yapp.be.apiapplication.shelter.service.model.EditWithAdditionalInfoResponseDto
-import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoResponseDto
+import yapp.be.apiapplication.shelter.controller.model.EditShelterAdditionalInfoRequest
+import yapp.be.apiapplication.shelter.controller.model.EditShelterEssentialInfoRequest
+import yapp.be.apiapplication.shelter.controller.model.EditShelterProfileImageRequest
+import yapp.be.apiapplication.shelter.service.shelter.ShelterEditApplicationService
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoResponseDto
 
 @Tag(name = "보호소 정보 관리 api")
 @RequestMapping("/v1/shelter")
@@ -31,8 +31,8 @@ class ShelterEditController(
     )
     fun editShelterProfileImage(
         @PathVariable shelterId: Long,
-        @RequestBody req: ShelterEditProfileImageRequest
-    ): ResponseEntity<EditProfileImageResponseDto> {
+        @RequestBody req: EditShelterProfileImageRequest
+    ): ResponseEntity<EditShelterProfileImageResponseDto> {
         val reqDto = req.toDto(shelterId)
         val resDto = shelterEditApplicationService.editProfileImage(reqDto)
 
@@ -46,7 +46,7 @@ class ShelterEditController(
     )
     fun editEssentialShelterInfo(
         @PathVariable shelterId: Long,
-        @RequestBody req: ShelterEditEssentialInfoRequest
+        @RequestBody req: EditShelterEssentialInfoRequest
     ): ResponseEntity<EditWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
         val resDto = shelterEditApplicationService.editEssentialInfo(
@@ -64,8 +64,8 @@ class ShelterEditController(
     )
     fun editAdditionalShelterInfo(
         @PathVariable shelterId: Long,
-        @RequestBody req: ShelterEditAdditionalInfoRequest
-    ): ResponseEntity<EditWithAdditionalInfoResponseDto> {
+        @RequestBody req: EditShelterAdditionalInfoRequest
+    ): ResponseEntity<EditShelterWithAdditionalInfoResponseDto> {
         val reqDto = req.toDto(shelterId)
         val resDto = shelterEditApplicationService.editAdditionalInfo(
             shelterId = shelterId,
