@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,33 +22,31 @@ import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticat
 import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
 
 @Tag(name = "보호소 정보 관리 api")
-@RequestMapping("/v1/shelter")
+@RequestMapping("/v1/shelter/admin")
 @RestController
 class ShelterManageController(
     private val shelterManageApplicationService: ShelterManageApplicationService
 ) {
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{shelterId}")
     @Operation(
         summary = "보호소 정보 가져오기"
     )
-    fun getShelter(@PathVariable shelterId: Long): ResponseEntity<GetShelterResponseDto> {
-
-        val resDto = shelterManageApplicationService.getShelter(shelterId)
+    @GetMapping
+    fun getShelter(@ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo): ResponseEntity<GetShelterResponseDto> {
+        val resDto = shelterManageApplicationService.getShelter(shelterUserInfo.shelterUserId)
         return ResponseEntity.ok(resDto)
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{shelterId}/image")
+    @PutMapping("/image")
     @Operation(
         summary = "보호소 대표 이미지 변경"
     )
     fun editShelterProfileImage(
-        @PathVariable shelterId: Long,
         @RequestBody req: EditShelterProfileImageRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditShelterProfileImageResponseDto> {
-        val reqDto = req.toDto(shelterId)
+        val reqDto = req.toDto()
         val resDto = shelterManageApplicationService.editShelterProfileImage(
             shelterUserId = shelterUserInfo.shelterUserId,
             reqDto = reqDto
@@ -59,18 +56,16 @@ class ShelterManageController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{shelterId}/essential-info")
+    @PutMapping("/essential-info")
     @Operation(
         summary = "보호소 필수정보 Edit",
     )
     fun editEssentialShelterInfo(
-        @PathVariable shelterId: Long,
         @RequestBody req: EditShelterEssentialInfoRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
         val resDto = shelterManageApplicationService.editShelterEssentialInfo(
-            shelterId = shelterId,
             shelterUserId = shelterUserInfo.shelterUserId,
             reqDto = reqDto
         )
@@ -79,19 +74,17 @@ class ShelterManageController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{shelterId}/additional-info")
+    @PutMapping("/additional-info")
     @Operation(
         summary = "보호소 추가정보 Edit",
     )
     fun editAdditionalShelterInfo(
-        @PathVariable shelterId: Long,
         @RequestBody req: EditShelterAdditionalInfoRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditShelterWithAdditionalInfoResponseDto> {
-        val reqDto = req.toDto(shelterId = shelterId)
+        val reqDto = req.toDto()
 
         val resDto = shelterManageApplicationService.editShelterAdditionalInfo(
-            shelterId = shelterId,
             shelterUserId = shelterUserInfo.shelterUserId,
             reqDto = reqDto
         )

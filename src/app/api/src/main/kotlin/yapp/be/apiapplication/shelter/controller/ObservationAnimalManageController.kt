@@ -23,7 +23,7 @@ import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticat
 import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
 
 @Tag(name = "특별 케어 동물 관리 api")
-@RequestMapping("/v1/shelter/{shelterId}/observation-animal")
+@RequestMapping("/v1/shelter/admin/observation-animal")
 @RestController
 class ObservationAnimalManageController(
     private val observationAnimalManageApplicationService: ObservationAnimalManageApplicationService
@@ -47,13 +47,12 @@ class ObservationAnimalManageController(
         summary = "특별 케어 동물 추가"
     )
     fun addObservationAnimal(
-        @PathVariable shelterId: Long,
         @RequestBody req: AddObservationAnimalRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<AddObservationAnimalResponseDto> {
         val reqDto = req.toDto()
         val resDto = observationAnimalManageApplicationService.addObservationAnimal(
-            shelterId = shelterId,
+            shelterUserId = shelterUserInfo.shelterUserId,
             reqDto = reqDto
         )
 
