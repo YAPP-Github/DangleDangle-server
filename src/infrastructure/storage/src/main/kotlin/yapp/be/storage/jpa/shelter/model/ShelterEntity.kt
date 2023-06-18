@@ -11,7 +11,7 @@ class ShelterEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     var name: String,
     @Column(name = "description", columnDefinition = "TEXT")
     var description: String,
