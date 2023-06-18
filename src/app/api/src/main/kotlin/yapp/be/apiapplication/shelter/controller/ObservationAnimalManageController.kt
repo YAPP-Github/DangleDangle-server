@@ -65,7 +65,6 @@ class ObservationAnimalManageController(
         summary = "특별 케어 동물 수정"
     )
     fun editObservationAnimal(
-        @PathVariable shelterId: Long,
         @PathVariable observationAnimalId: Long,
         @RequestBody req: EditObservationAnimalRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
@@ -73,7 +72,6 @@ class ObservationAnimalManageController(
     ): ResponseEntity<EditObservationAnimalResponseDto> {
         val reqDto = req.toDto()
         val resDto = observationAnimalManageApplicationService.editObservationAnimal(
-            shelterId = shelterId,
             shelterUserId = shelterUserInfo.shelterUserId,
             observationAnimalId = observationAnimalId,
             reqDto = reqDto

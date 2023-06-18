@@ -58,11 +58,11 @@ class ObservationAnimalManageApplicationService(
     }
 
     @Transactional
-    fun editObservationAnimal(shelterId: Long, shelterUserId: Long, observationAnimalId: Long, reqDto: EditObservationAnimalRequestDto): EditObservationAnimalResponseDto {
+    fun editObservationAnimal(shelterUserId: Long, observationAnimalId: Long, reqDto: EditObservationAnimalRequestDto): EditObservationAnimalResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
         val observationAnimal = editObservationAnimalUseCase.editObservationAnimal(
             observationAnimalId = observationAnimalId,
-            shelterId = shelterId,
+            shelterId = shelterUser.shelterId,
             name = reqDto.name,
             age = reqDto.age,
             specialNote = reqDto.specialNote,
