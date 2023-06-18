@@ -19,6 +19,7 @@ import yapp.be.apiapplication.shelter.service.observationanimal.ObservationAnima
 import yapp.be.apiapplication.shelter.service.observationanimal.model.AddObservationAnimalResponseDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.DeleteObservationAnimalResponseDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.observationanimal.model.GetObservationAnimalResponseDto
 import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
 
@@ -37,8 +38,9 @@ class ObservationAnimalManageController(
     fun getObservationAnimal(
         @PathVariable observationAnimalId: Long,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
-    ) {
-        observationAnimalManageApplicationService.getObservationAnimal(observationAnimalId)
+    ): ResponseEntity<GetObservationAnimalResponseDto> {
+        val resDto = observationAnimalManageApplicationService.getObservationAnimal(observationAnimalId)
+        return ResponseEntity.ok(resDto)
     }
 
     @ResponseStatus(HttpStatus.OK)
