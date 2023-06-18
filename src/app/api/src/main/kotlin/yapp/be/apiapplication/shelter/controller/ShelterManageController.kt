@@ -19,6 +19,8 @@ import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileIm
 import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoResponseDto
 import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoResponseDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
+import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthentication
+import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
 
 @Tag(name = "보호소 정보 관리 api")
 @RequestMapping("/v1/shelter")
@@ -44,10 +46,14 @@ class ShelterManageController(
     )
     fun editShelterProfileImage(
         @PathVariable shelterId: Long,
-        @RequestBody req: EditShelterProfileImageRequest
+        @RequestBody req: EditShelterProfileImageRequest,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditShelterProfileImageResponseDto> {
         val reqDto = req.toDto(shelterId)
-        val resDto = shelterManageApplicationService.editShelterProfileImage(reqDto)
+        val resDto = shelterManageApplicationService.editShelterProfileImage(
+            shelterUserId = shelterUserInfo.shelterUserId,
+            reqDto = reqDto
+        )
 
         return ResponseEntity.ok(resDto)
     }
@@ -59,11 +65,13 @@ class ShelterManageController(
     )
     fun editEssentialShelterInfo(
         @PathVariable shelterId: Long,
-        @RequestBody req: EditShelterEssentialInfoRequest
+        @RequestBody req: EditShelterEssentialInfoRequest,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
         val resDto = shelterManageApplicationService.editShelterEssentialInfo(
             shelterId = shelterId,
+            shelterUserId = shelterUserInfo.shelterUserId,
             reqDto = reqDto
         )
 
@@ -77,11 +85,14 @@ class ShelterManageController(
     )
     fun editAdditionalShelterInfo(
         @PathVariable shelterId: Long,
-        @RequestBody req: EditShelterAdditionalInfoRequest
+        @RequestBody req: EditShelterAdditionalInfoRequest,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditShelterWithAdditionalInfoResponseDto> {
-        val reqDto = req.toDto(shelterId)
+        val reqDto = req.toDto(shelterId = shelterId)
+
         val resDto = shelterManageApplicationService.editShelterAdditionalInfo(
             shelterId = shelterId,
+            shelterUserId = shelterUserInfo.shelterUserId,
             reqDto = reqDto
         )
 

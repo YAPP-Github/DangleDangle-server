@@ -1,10 +1,8 @@
 package yapp.be.apiapplication.system.security
 
 import io.jsonwebtoken.Claims
-import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.Keys
 import java.util.Collections
 import java.util.Date
@@ -18,6 +16,7 @@ import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.domain.model.SecurityToken
 import yapp.be.enum.Role
 import yapp.be.exceptions.CustomException
+import yapp.be.model.Email
 
 @Component
 class JwtTokenProvider(
@@ -25,7 +24,7 @@ class JwtTokenProvider(
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    private fun generateToken(id: Long, role: Role, securityTokenType: SecurityTokenType): String {
+    private fun generateToken(id: Long, email: Email, role: Role, securityTokenType: SecurityTokenType): String {
         val properties = when (securityTokenType) {
             SecurityTokenType.ACCESS -> {
                 jwtConfigProperties.access
@@ -40,24 +39,25 @@ class JwtTokenProvider(
         val expiredAt = now + properties.expire
 
         return Jwts.builder()
-            .setId(id.toString())
+            .claim("id", id)
             .claim("role", role.name)
+            .claim("email", email.value)
             .setIssuedAt(Date(now))
             .setExpiration(Date(expiredAt))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
 
-    fun generate(id: Long, role: Role): SecurityToken {
-        val accessToken = generateToken(id, role, SecurityTokenType.ACCESS)
-        val refreshToken = generateToken(id, role, SecurityTokenType.REFRESH)
+    fun generate(id: Long, email: Email, role: Role): SecurityToken {
+        val accessToken = generateToken(id, email, role, SecurityTokenType.ACCESS)
+        val refreshToken = generateToken(id, email, role, SecurityTokenType.REFRESH)
         return SecurityToken(
             accessToken = accessToken,
             refreshToken = refreshToken
         )
     }
 
-    private fun parseClaims(token: String, tokenType: SecurityTokenType): Claims {
+    fun parseClaims(token: String, tokenType: SecurityTokenType): Claims? {
         try {
             val key: SecretKey = when (tokenType) {
                 SecurityTokenType.ACCESS -> {
@@ -73,35 +73,20 @@ class JwtTokenProvider(
                 .body
         } catch (e: SecurityException) {
             throw SecurityException("Invalid JWT signature")
-        } catch (e: Exception) {
-            throw Exception("Invalid JWT token")
         }
     }
 
-    fun validate(token: String, tokenType: SecurityTokenType): Boolean {
-        try {
-            parseClaims(token, tokenType)
-            return true
-        } catch (e: ExpiredJwtException) {
-            log.info("만료된 JWT 토큰입니다.")
-        } catch (e: UnsupportedJwtException) {
-            log.info("지원되지 않는 JWT 토큰입니다.")
-        } catch (e: IllegalStateException) {
-            log.info("JWT 토큰이 잘못되었습니다")
-        }
-        return false
-    }
-
-    fun getAuthentication(accessToken: String): Authentication {
-        val claims = parseClaims(accessToken, SecurityTokenType.ACCESS)
-        val id = claims.id.toLong()
+    fun getAuthentication(claims: Claims): Authentication {
+        val id = claims["id"].toString().toLong()
+        val email = claims["email"].toString()
         val role = claims["role"] as? String ?: throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "Cannot Find Role")
+        val authorities = Collections.singletonList(SimpleGrantedAuthority("ROLE_$role"))
         val principal = CustomUserDetails(
             id = id,
-            email = claims.subject,
-            authorities = Collections.singletonList(SimpleGrantedAuthority("ROLE_$role")),
+            email = email,
+            authorities = authorities,
             attributes = null
         )
-        return UsernamePasswordAuthenticationToken(principal, "", null)
+        return UsernamePasswordAuthenticationToken(principal, "", authorities)
     }
 }
