@@ -1,6 +1,6 @@
 package yapp.be.apiapplication.shelter.controller.model
 
-import yapp.be.apiapplication.shelter.service.model.SignUpWithEssentialInfoRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.SignUpShelterWithEssentialInfoRequestDto
 import yapp.be.domain.model.Address
 import yapp.be.model.Email
 
@@ -12,8 +12,8 @@ data class SignUpWithEssentialInfoRequest(
     val description: String,
     val address: ShelterSignUpAddressInfo,
 ) {
-    fun toDto(): SignUpWithEssentialInfoRequestDto {
-        return SignUpWithEssentialInfoRequestDto(
+    fun toDto(): SignUpShelterWithEssentialInfoRequestDto {
+        return SignUpShelterWithEssentialInfoRequestDto(
             email = Email(email),
             password = password,
             name = name,

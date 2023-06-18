@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.controller.model.SignUpWithEssentialInfoRequest
-import yapp.be.apiapplication.shelter.service.ShelterSignUpApplicationService
-import yapp.be.apiapplication.shelter.service.model.CheckShelterUserEmailExistResponseDto
-import yapp.be.apiapplication.shelter.service.model.SignUpWithEssentialInfoResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.ShelterSignUpApplicationService
+import yapp.be.apiapplication.shelter.service.shelter.model.CheckShelterUserEmailExistResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.SignUpShelterWithEssentialInfoResponseDto
 import yapp.be.model.Email
 
 @RestController
@@ -47,7 +47,7 @@ class ShelterSignUpController(
     fun signUpWithEssentialInfo(
         @RequestBody
         req: SignUpWithEssentialInfoRequest
-    ): ResponseEntity<SignUpWithEssentialInfoResponseDto> {
+    ): ResponseEntity<SignUpShelterWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
         val resDto = shelterSignUpApplicationService.signUpWithEssentialInfo(reqDto)
 

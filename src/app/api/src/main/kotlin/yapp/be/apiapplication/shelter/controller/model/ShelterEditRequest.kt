@@ -1,26 +1,26 @@
 package yapp.be.apiapplication.shelter.controller.model
 
-import yapp.be.apiapplication.shelter.service.model.EditProfileImageRequestDto
-import yapp.be.apiapplication.shelter.service.model.EditWithAdditionalInfoRequestDto
-import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoRequestDto
 import yapp.be.domain.model.Address
 import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.ShelterParkingInfo
 import yapp.be.enum.OutLinkType
 
-data class ShelterEditProfileImageRequest(
+data class EditShelterProfileImageRequest(
     val url: String
 ) {
-    fun toDto(shelterId: Long): EditProfileImageRequestDto {
-        return EditProfileImageRequestDto(
+    fun toDto(shelterId: Long): EditShelterProfileImageRequestDto {
+        return EditShelterProfileImageRequestDto(
             shelterId = shelterId,
             profileImageUrl = url
         )
     }
 }
 
-data class ShelterEditEssentialInfoRequest(
+data class EditShelterEssentialInfoRequest(
     val name: String,
     val phoneNumber: String,
     val description: String,
@@ -43,14 +43,14 @@ data class ShelterEditEssentialInfoRequest(
     }
 }
 
-data class ShelterEditAdditionalInfoRequest(
-    val outLinks: List<ShelterEditOutLinkInfo>,
-    val parkingInfo: ShelterEditParkingInfo,
-    val donation: ShelterEditDonationInfo,
+data class EditShelterAdditionalInfoRequest(
+    val outLinks: List<EditShelterOutLinkInfo>,
+    val parkingInfo: EditShelterParkingInfo,
+    val donation: EditShelterDonationInfo,
     val notice: String?,
 ) {
-    fun toDto(shelterId: Long): EditWithAdditionalInfoRequestDto {
-        return EditWithAdditionalInfoRequestDto(
+    fun toDto(shelterId: Long): EditShelterWithAdditionalInfoRequestDto {
+        return EditShelterWithAdditionalInfoRequestDto(
             outLinks = this.outLinks.map {
                 ShelterOutLink(
                     url = it.url,
@@ -70,15 +70,15 @@ data class ShelterEditAdditionalInfoRequest(
             notice = this.notice
         )
     }
-    data class ShelterEditParkingInfo(
+    data class EditShelterParkingInfo(
         val isParkingEnabled: Boolean,
         val parkingNotice: String?,
     )
-    data class ShelterEditDonationInfo(
+    data class EditShelterDonationInfo(
         val accountNumber: String,
         val bankName: String
     )
-    data class ShelterEditOutLinkInfo(
+    data class EditShelterOutLinkInfo(
         val outLinkType: OutLinkType,
         val url: String
     )

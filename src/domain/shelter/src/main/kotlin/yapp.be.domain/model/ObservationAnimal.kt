@@ -8,6 +8,7 @@ data class ObservationAnimal(
     val age: Int,
     val shelterId: Long,
     val gender: Gender,
+    val breed: String,
     val profileImageUrl: String,
     val specialNote: String,
 )
