@@ -8,19 +8,65 @@ import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAddit
 import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoResponseDto
 import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoRequestDto
 import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetBankAccountInfoDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetOutLinkInfoDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAddressInfoDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterParkingInfoDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
 import yapp.be.domain.port.inbound.GetShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.EditShelterUseCase
 
 @Service
-class ShelterEditApplicationService(
+class ShelterManageApplicationService(
     private val getShelterUseCase: GetShelterUseCase,
     private val getShelterUserUseCase: GetShelterUserUseCase,
     private val editShelterUseCase: EditShelterUseCase
 ) {
 
+    @Transactional(readOnly = true)
+    fun getShelter(shelterId: Long): GetShelterResponseDto {
+        val shelter = getShelterUseCase.getShelterById(shelterId)
+        val shelterOutLink = getShelterUseCase.getShelterOutLinkByShelterId(shelterId)
+
+        return GetShelterResponseDto(
+            id = shelter.id,
+            name = shelter.name,
+            phoneNumber = shelter.phoneNumber,
+            description = shelter.description,
+            address = GetShelterAddressInfoDto(
+                address = shelter.address.address,
+                addressDetail = shelter.address.addressDetail,
+                postalCode = shelter.address.postalCode,
+                longitude = shelter.address.longitude,
+                latitude = shelter.address.latitude
+            ),
+            profileImageUrl = shelter.profileImageUrl,
+            outLinks = shelterOutLink.map {
+                GetOutLinkInfoDto(
+                    type = it.type,
+                    url = it.url
+                )
+            },
+            parkingInfo = shelter.parkingInfo?.let {
+                GetShelterParkingInfoDto(
+                    parkingEnabled = it.parkingEnabled,
+                    notice = it.notice
+                )
+            },
+            bankAccount = shelter.bankAccount?.let {
+                GetBankAccountInfoDto(
+                    name = it.name,
+                    accountNumber = it.accountNumber
+                )
+            },
+            notice = shelter.notice
+
+        )
+    }
+
     @Transactional
-    fun editProfileImage(reqDto: EditShelterProfileImageRequestDto): EditShelterProfileImageResponseDto {
+    fun editShelterProfileImage(reqDto: EditShelterProfileImageRequestDto): EditShelterProfileImageResponseDto {
         val shelter = editShelterUseCase.editProfileImage(
             shelterId = reqDto.shelterId,
             profileImageUrl = reqDto.profileImageUrl
@@ -32,7 +78,7 @@ class ShelterEditApplicationService(
     }
 
     @Transactional
-    fun editEssentialInfo(
+    fun editShelterEssentialInfo(
         shelterId: Long,
         reqDto: EditWithEssentialInfoRequestDto
     ): EditWithEssentialInfoResponseDto {
@@ -58,7 +104,7 @@ class ShelterEditApplicationService(
     }
 
     @Transactional
-    fun editAdditionalInfo(
+    fun editShelterAdditionalInfo(
         shelterId: Long,
         reqDto: EditShelterWithAdditionalInfoRequestDto
     ): EditShelterWithAdditionalInfoResponseDto {
