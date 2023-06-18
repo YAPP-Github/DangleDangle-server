@@ -8,13 +8,17 @@ import yapp.be.apiapplication.shelter.service.observationanimal.model.DeleteObse
 import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalRequestDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalResponseDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.GetObservationAnimalResponseDto
+import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.domain.port.inbound.CreateObservationAnimalUseCase
 import yapp.be.domain.port.inbound.DeleteObservationAnimalUseCase
 import yapp.be.domain.port.inbound.EditObservationAnimalUseCase
 import yapp.be.domain.port.inbound.GetObservationAnimalUseCase
+import yapp.be.domain.port.inbound.GetShelterUserUseCase
+import yapp.be.exceptions.CustomException
 
 @Service
 class ObservationAnimalManageApplicationService(
+    private val getShelterUserUseCase: GetShelterUserUseCase,
     private val getObservationAnimalUseCase: GetObservationAnimalUseCase,
     private val createObservationAnimalUseCase: CreateObservationAnimalUseCase,
     private val editObservationAnimalUseCase: EditObservationAnimalUseCase,
@@ -38,7 +42,6 @@ class ObservationAnimalManageApplicationService(
 
     @Transactional
     fun addObservationAnimal(shelterId: Long, reqDto: AddObservationAnimalRequestDto): AddObservationAnimalResponseDto {
-
         val observationAnimal = createObservationAnimalUseCase.addObservationAnimal(
             shelterId = shelterId,
             name = reqDto.name,
@@ -54,7 +57,8 @@ class ObservationAnimalManageApplicationService(
     }
 
     @Transactional
-    fun editObservationAnimal(shelterId: Long, observationAnimalId: Long, reqDto: EditObservationAnimalRequestDto): EditObservationAnimalResponseDto {
+    fun editObservationAnimal(shelterId: Long, shelterUserId: Long, observationAnimalId: Long, reqDto: EditObservationAnimalRequestDto): EditObservationAnimalResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
         val observationAnimal = editObservationAnimalUseCase.editObservationAnimal(
             observationAnimalId = observationAnimalId,
             shelterId = shelterId,
@@ -66,14 +70,27 @@ class ObservationAnimalManageApplicationService(
             images = reqDto.images
         )
 
+        if (shelterUser.shelterId != observationAnimal.shelterId) {
+            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
+        }
+
         return EditObservationAnimalResponseDto(
             observationAnimalId = observationAnimal.id
         )
     }
 
     @Transactional
-    fun deleteObservationAnimal(observationAnimalId: Long): DeleteObservationAnimalResponseDto {
+    fun deleteObservationAnimal(
+        observationAnimalId: Long,
+        shelterUserId: Long
+    ): DeleteObservationAnimalResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
         val observationAnimal = deleteObservationAnimalUseCase.deleteObservationAnimal(observationAnimalId = observationAnimalId)
+
+        if (shelterUser.shelterId != observationAnimal.shelterId) {
+            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
+        }
+
         return DeleteObservationAnimalResponseDto(observationAnimal.id)
     }
 }

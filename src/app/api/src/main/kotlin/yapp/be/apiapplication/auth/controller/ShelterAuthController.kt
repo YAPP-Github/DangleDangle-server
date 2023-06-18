@@ -21,7 +21,7 @@ import yapp.be.model.Email
 
 @RestController
 @Tag(name = "보호소 회원가입/로그인 api")
-@RequestMapping("/v1/shelter")
+@RequestMapping("/v1/auth/shelter")
 class ShelterAuthController(
     val shelterAuthApplicationService: ShelterAuthApplicationService
 ) {
