@@ -13,11 +13,10 @@ import yapp.be.apiapplication.shelter.service.shelter.model.GetOutLinkInfoDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAddressInfoDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterParkingInfoDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
-import yapp.be.apiapplication.system.exception.ApiExceptionType
+import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.port.inbound.GetShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.EditShelterUseCase
-import yapp.be.exceptions.CustomException
 
 @Service
 class ShelterManageApplicationService(
@@ -27,9 +26,10 @@ class ShelterManageApplicationService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getShelter(shelterId: Long): GetShelterResponseDto {
-        val shelter = getShelterUseCase.getShelterById(shelterId)
-        val shelterOutLink = getShelterUseCase.getShelterOutLinkByShelterId(shelterId)
+    fun getShelter(shelterUserId: Long): GetShelterResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
+        val shelter = getShelterUseCase.getShelterById(shelterUser.shelterId)
+        val shelterOutLink = getShelterUseCase.getShelterOutLinkByShelterId(shelterUser.shelterId)
 
         return GetShelterResponseDto(
             id = shelter.id,
@@ -73,13 +73,8 @@ class ShelterManageApplicationService(
         reqDto: EditShelterProfileImageRequestDto
     ): EditShelterProfileImageResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
-
-        if (shelterUser.shelterId != reqDto.shelterId) {
-            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
-        }
-
         val shelter = editShelterUseCase.editProfileImage(
-            shelterId = reqDto.shelterId,
+            shelterId = shelterUser.shelterId,
             profileImageUrl = reqDto.profileImageUrl
         )
 
@@ -90,19 +85,13 @@ class ShelterManageApplicationService(
 
     @Transactional
     fun editShelterEssentialInfo(
-        shelterId: Long,
         shelterUserId: Long,
         reqDto: EditWithEssentialInfoRequestDto
     ): EditWithEssentialInfoResponseDto {
-        val shelter = getShelterUseCase.getShelterById(shelterId)
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
 
-        if (shelterUser.shelterId != shelter.id) {
-            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
-        }
-
         editShelterUseCase.editWithEssentialInfo(
-            shelterId = shelterId,
+            shelterId = shelterUser.shelterId,
             name = reqDto.name,
             phoneNumber = reqDto.phoneNumber,
             description = reqDto.description,
@@ -110,39 +99,39 @@ class ShelterManageApplicationService(
         )
 
         return EditWithEssentialInfoResponseDto(
-            shelterId = shelter.id,
-            shelterUserId = 0
+            shelterId = shelterUser.shelterId,
+            shelterUserId = shelterUser.id
         )
     }
 
     @Transactional
     fun editShelterAdditionalInfo(
-        shelterId: Long,
         shelterUserId: Long,
         reqDto: EditShelterWithAdditionalInfoRequestDto
     ): EditShelterWithAdditionalInfoResponseDto {
-        val shelter = getShelterUseCase.getShelterById(shelterId)
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
 
-        if (shelterUser.shelterId != shelter.id) {
-            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
-        }
-
         editShelterUseCase.editWithAdditionalInfo(
-            shelterId = shelterId,
+            shelterId = shelterUser.shelterId,
             parkingInfo = reqDto.parkingInfo,
             bankAccount = reqDto.donation,
             notice = reqDto.notice
         )
 
         editShelterUseCase.editShelterOutLink(
-            shelterId = shelterId,
-            outLinks = reqDto.outLinks
+            shelterId = shelterUser.shelterId,
+            outLinks = reqDto.outLinks.map {
+                ShelterOutLink(
+                    type = it.first,
+                    url = it.second,
+                    shelterId = shelterUser.shelterId
+                )
+            }
         )
 
         return EditShelterWithAdditionalInfoResponseDto(
-            shelterId = shelter.id,
-            shelterUserId = 0
+            shelterId = shelterUser.shelterId,
+            shelterUserId = shelterUser.id
         )
     }
 }

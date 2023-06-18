@@ -3,7 +3,6 @@ package yapp.be.apiapplication.system.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
@@ -59,9 +58,7 @@ class SecurityConfig(
                 AntPathRequestMatcher("/v1/auth/shelter/**")
             ).permitAll()
             it.requestMatchers(
-                AntPathRequestMatcher("/v1/shelter/**", HttpMethod.POST.name()),
-                AntPathRequestMatcher("/v1/shelter/**", HttpMethod.PUT.name()),
-                AntPathRequestMatcher("/v1/shelter/**", HttpMethod.DELETE.name())
+                AntPathRequestMatcher("/v1/shelter/admin/**")
             ).hasRole(Role.SHELTER.name)
         }
 
