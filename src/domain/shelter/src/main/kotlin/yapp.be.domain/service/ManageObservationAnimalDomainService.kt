@@ -20,6 +20,11 @@ class ManageObservationAnimalDomainService(
 ) : CreateObservationAnimalUseCase, GetObservationAnimalUseCase, EditObservationAnimalUseCase, DeleteObservationAnimalUseCase {
 
     @Transactional(readOnly = true)
+    override fun getAllObservationAnimalsByShelterId(shelterId: Long): List<ObservationAnimal> {
+        return observationAnimalQueryHandler.findAllByShelterId(shelterId)
+    }
+
+    @Transactional(readOnly = true)
     override fun getObservationAnimalById(observationAnimalId: Long): ObservationAnimal {
         return observationAnimalQueryHandler.findById(observationAnimalId)
     }
