@@ -1,4 +1,4 @@
-package yapp.be.storage.jpa.user.model
+package yapp.be.apiapplication.system.security
 
 class OAuthAttributes(val attributes: Map<String, Any>, val nameAttributeKey: String, val email: String) {
     companion object {

@@ -1,4 +1,4 @@
-package yapp.be.storage.jpa.user.model
+package yapp.be.apiapplication.system.security
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User
