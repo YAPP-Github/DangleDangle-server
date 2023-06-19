@@ -7,7 +7,6 @@ CREATE TABLE `user`
     `o_auth_access_token`                 varchar(100) null,
     `o_auth_refresh_token`                 varchar(100) null,
     `is_deleted`                          boolean      not null,
-    `status`                              varchar(20)  not null,
     `nickname`                            varchar(20)  not null,
     `phone`                           varchar(13)  not null,
     `email`                               varchar(100) not null,
