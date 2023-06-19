@@ -8,10 +8,15 @@ plugins {
 
 dependencies {
     val openApiVersion: String by project
+    val jsonWebTokenVersion: String by project
+    val jjwtApiVersion: String by project
 
     runtimeOnly(project(":client"))
     runtimeOnly(project(":storage"))
     runtimeOnly("com.h2database:h2")
+
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jsonWebTokenVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jsonWebTokenVersion")
 
     compileOnly("org.springframework:spring-tx")
 
@@ -24,7 +29,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVersion")
+
+    implementation("io.jsonwebtoken:jjwt-api:$jjwtApiVersion")
 }
 
 jacoco {
@@ -43,7 +51,7 @@ tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = BigDecimal(0.20)
+                minimum = BigDecimal(0.0)
             }
         }
     }

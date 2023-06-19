@@ -11,11 +11,11 @@ CREATE TABLE `user`
     `nickname`                            varchar(20)  not null,
     `email`                               varchar(100) not null,
     `user_role`                           varchar(20)  not null,
-    `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp,
+    `created_at`                          datetime    not null,
+    `modified_at`                         datetime,
     unique index UDX_EMAIL (`email`),
     unique index UDX_NICKNAME(`nickname`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `shelter_user`
 (
@@ -23,10 +23,10 @@ CREATE TABLE `shelter_user`
     `email`                               varchar(100) not null,
     `password`                            varchar(255) not null,
     `shelter_id`                          bigint       not null,
-    `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp,
+    `created_at`                          datetime    not null,
+    `modified_at`                         datetime,
     unique index UDX_EMAIL (`email`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 # shelter의 경우, image가 여러개로 늘어날 수 있다. (이 때 별도의 테이블을 파야 할 듯)
@@ -47,10 +47,10 @@ CREATE TABLE `shelter`
     `postal_code`                         varchar(5)   not null,
     `latitude`                            double       not null,
     `longitude`                           double       not null,
-    `created_at`                          timestamp    not null,
-    `modified_at`                         timestamp,
-    unique index UDX_NAME (`name`)
-);
+    `created_at`                          datetime    not null,
+    `modified_at`                         datetime,
+    index IDX_NAME (`name`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `shelter_out_link`
 (
@@ -59,7 +59,7 @@ CREATE TABLE `shelter_out_link`
     `url`                                 varchar(200)    not null,
     `shelter_id`                          bigint          not null,
     index IDX_SHELTER_ID (`shelter_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 # 관찰동물의 경우 사진은 무조건 1장
 CREATE TABLE `observation_animal`
@@ -68,26 +68,14 @@ CREATE TABLE `observation_animal`
     `name`                                varchar(20)     not null,
     `profile_image_url`                   varchar(100)    not null,
     `special_note`                        varchar(255)    not null,
+    `age`                                 int             not null,
+    `gender`                              varchar(20)     not null,
+    `breed`                               varchar(30)     not null,
     `shelter_id`                          bigint          not null,
-    `created_at`                          timestamp       not null,
-    `modified_at`                         timestamp,
+    `created_at`                          datetime       not null,
+    `modified_at`                         datetime,
     index IDX_SHELTER_ID (`shelter_id`)
-);
-
-CREATE TABLE `observation_animal_tag`
-(
-    `id`                                  bigint          not null primary key auto_increment,
-    `name`                                varchar(20)     not null,
-    unique index UDX_NAME (`name`)
-);
-
-CREATE TABLE `observation_animal_tag_mapping`
-(
-    `id`                                  bigint          not null primary key auto_increment,
-    `observation_animal_id`               bigint          not null,
-    `observation_animal_tag_id`           bigint          not null,
-    index IDX_OBSERVATION_ANIMAL (`observation_animal_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `volunteer_event`
 (
@@ -99,11 +87,11 @@ CREATE TABLE `volunteer_event`
     `age_limit`                           varchar(20)      not null,
     `status`                              varchar(20)      not null,
     `shelter_id`                          bigint           not null,
-    `event_at`                            timestamp        not null,
-    `created_at`                          timestamp        not null,
-    `modified_at`                         timestamp,
+    `event_at`                            datetime        not null,
+    `created_at`                          datetime        not null,
+    `modified_at`                         datetime,
     index IDX_SHELTER_ID (`shelter_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `volunteer_event_user_mapping`
 (
@@ -112,7 +100,7 @@ CREATE TABLE `volunteer_event_user_mapping`
     `user_id`                             bigint           not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`),
     index IDX_USER_ID(`user_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE `volunteer_event_activity_type`
@@ -120,7 +108,7 @@ CREATE TABLE `volunteer_event_activity_type`
     `id`                                  bigint            not null primary key auto_increment,
     `name`                                varchar(20)       not null,
     unique index UDX_NAME (`name`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `volunteer_event_activity_type_mapping`
 (
@@ -128,7 +116,7 @@ CREATE TABLE `volunteer_event_activity_type_mapping`
     `volunteer_event_id`                  bigint            not null,
     `volunteer_event_activity_type_id`    bigint            not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `volunteer_event_waiting_queue`
 (
@@ -136,7 +124,7 @@ CREATE TABLE `volunteer_event_waiting_queue`
     `volunteer_event_id`                  bigint            not null,
     `user_id`                             bigint            not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE `volunteer_event_join_queue`
@@ -145,6 +133,6 @@ CREATE TABLE `volunteer_event_join_queue`
     `volunteer_event_id`                  bigint            not null,
     `user_id`                             bigint            not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 

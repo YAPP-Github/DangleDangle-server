@@ -1,6 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     kotlin("jvm")
+    `java-test-fixtures`
 }
 dependencies {
     compileOnly("org.springframework:spring-tx")
