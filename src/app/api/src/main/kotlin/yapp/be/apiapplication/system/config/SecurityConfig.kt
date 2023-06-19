@@ -1,6 +1,5 @@
 package yapp.be.apiapplication.system.config
 
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -15,6 +14,7 @@ import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
 import yapp.be.apiapplication.auth.handler.AuthenticationSuccessHandler
+import yapp.be.apiapplication.system.properties.OAuthConfigProperties
 import yapp.be.enum.CustomOAuth2Provider
 
 @Configuration
@@ -46,14 +46,13 @@ class SecurityConfig(
 
     @Bean
     fun clientRegistrationRepository(
-        @Value("\${spring.security.oauth2.client.registration.kakao.client-id}") kakaoClientId: String,
-        @Value("\${spring.security.oauth2.client.registration.kakao.client-secret}") kakaoClientSecret: String
+        properties: OAuthConfigProperties
     ): ClientRegistrationRepository {
         val registrations: MutableList<ClientRegistration> = mutableListOf()
         registrations.add(
             CustomOAuth2Provider.KAKAO.getBuilder("kakao")
-                .clientId(kakaoClientId)
-                .clientSecret(kakaoClientSecret)
+                .clientId(properties.kakaoClientId)
+                .clientSecret(properties.kakaoClientSecret)
                 .jwkSetUri("temp")
                 .build()
         )
