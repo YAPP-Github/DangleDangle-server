@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import yapp.be.storage.jpa.observationanimal.model.ObservationAnimalEntity
 
 @Repository
-interface ObservationAnimalJpaRepository : JpaRepository<ObservationAnimalEntity, Long>
+interface ObservationAnimalJpaRepository : JpaRepository<ObservationAnimalEntity, Long> {
+    fun findAllByShelterId(shelterId: Long): List<ObservationAnimalEntity>
+}

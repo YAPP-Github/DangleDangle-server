@@ -18,6 +18,12 @@ class ObservationAnimalRepository(
 ) : ObservationAnimalQueryHandler, ObservationAnimalCommandHandler {
 
     @Transactional(readOnly = true)
+    override fun findAllByShelterId(shelterId: Long): List<ObservationAnimal> {
+        val observationAnimalEntities = observationAnimalJpaRepository.findAllByShelterId(shelterId)
+        return observationAnimalEntities.map { it.toDomainModel() }
+    }
+
+    @Transactional(readOnly = true)
     override fun findById(observationAnimalId: Long): ObservationAnimal {
         val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found")
         return observationAnimalEntity.toDomainModel()
