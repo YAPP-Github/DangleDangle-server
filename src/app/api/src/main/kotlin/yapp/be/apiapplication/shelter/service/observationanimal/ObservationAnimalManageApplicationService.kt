@@ -26,6 +26,25 @@ class ObservationAnimalManageApplicationService(
 ) {
 
     @Transactional(readOnly = true)
+    fun getShelterObservationAnimals(shelterUserId: Long): List<GetObservationAnimalResponseDto> {
+        val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
+
+        return getObservationAnimalUseCase.getAllObservationAnimalsByShelterId(shelterUser.shelterId)
+            .map { observationAnimal ->
+                GetObservationAnimalResponseDto(
+                    id = observationAnimal.id,
+                    shelterId = observationAnimal.shelterId,
+                    name = observationAnimal.name,
+                    age = observationAnimal.age,
+                    gender = observationAnimal.gender,
+                    profileImageUrl = observationAnimal.profileImageUrl,
+                    specialNote = observationAnimal.specialNote,
+                    breed = observationAnimal.breed
+                )
+            }.toList()
+    }
+
+    @Transactional(readOnly = true)
     fun getObservationAnimal(observationAnimalId: Long): GetObservationAnimalResponseDto {
         val observationAnimal = getObservationAnimalUseCase.getObservationAnimalById(observationAnimalId)
 
@@ -36,7 +55,9 @@ class ObservationAnimalManageApplicationService(
             age = observationAnimal.age,
             gender = observationAnimal.gender,
             profileImageUrl = observationAnimal.profileImageUrl,
-            specialNote = observationAnimal.specialNote
+            specialNote = observationAnimal.specialNote,
+            breed = observationAnimal.breed
+
         )
     }
 

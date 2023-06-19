@@ -31,6 +31,18 @@ class ObservationAnimalManageController(
 ) {
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    @Operation(
+        summary = "특별 케어 동물 리스트가져오기"
+    )
+    fun getObservationAnimals(
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
+    ): ResponseEntity<List<GetObservationAnimalResponseDto>> {
+        val resDto = observationAnimalManageApplicationService.getShelterObservationAnimals(shelterUserInfo.shelterUserId)
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{observationAnimalId}")
     @Operation(
         summary = "특별 케어 동물 가져오기"
