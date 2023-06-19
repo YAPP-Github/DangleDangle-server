@@ -10,6 +10,6 @@ spring:
                 dialect: org.hibernate.dialect.MySQLDialect
         open-in-view: false
     datasource:
-        url: ${DATASOURCE_URL:jdbc:mysql://43.201.236.60:3306/yapp22?createDatabaseIfNotExist=true}
+        url: ${DATASOURCE_URL:jdbc:mysql://15.164.119.2:3306/yapp22?createDatabaseIfNotExist=true}
         password: ${DATASOURCE_PASSWORD:P@ssw0rd}
         username: ${DATASOURCE_USERNAME:root}
