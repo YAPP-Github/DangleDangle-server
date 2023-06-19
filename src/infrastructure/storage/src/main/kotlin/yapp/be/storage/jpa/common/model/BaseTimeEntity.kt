@@ -12,8 +12,8 @@ import java.time.LocalDateTime
 open class BaseTimeEntity {
     @CreatedDate
     var createdAt: LocalDateTime? = LocalDateTime.MIN
-    private set
+        private set
     @LastModifiedDate
     var modifiedAt: LocalDateTime? = LocalDateTime.MIN
-    private set
+        private set
 }

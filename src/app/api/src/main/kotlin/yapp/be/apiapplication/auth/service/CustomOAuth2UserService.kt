@@ -7,9 +7,9 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
+import yapp.be.apiapplication.system.security.CustomOAuth2User
+import yapp.be.apiapplication.system.security.OAuthAttributes
 import yapp.be.enum.Role
-import yapp.be.storage.jpa.user.model.CustomOAuth2User
-import yapp.be.storage.jpa.user.model.OAuthAttributes
 
 @Service
 class CustomOAuth2UserService : OAuth2UserService<OAuth2UserRequest, OAuth2User> {

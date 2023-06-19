@@ -6,10 +6,11 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
-import yapp.be.apiapplication.auth.service.JwtTokenProvider
+import yapp.be.apiapplication.system.security.CustomOAuth2User
+import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.domain.service.GetUserService
 import yapp.be.exceptions.CustomException
-import yapp.be.storage.jpa.user.model.CustomOAuth2User
+import yapp.be.model.Email
 import java.nio.charset.StandardCharsets
 
 @Component
@@ -32,7 +33,7 @@ class AuthenticationSuccessHandler(
 
         try {
             val user = getUserService.getByEmail(userEmail)
-            val token = jwtTokenProvider.generate(user.id)
+            val token = jwtTokenProvider.generate(user.id, Email(user.email), user.role)
 
             response.sendRedirect(
                 UriComponentsBuilder.fromUriString(REDIRECT_URI)
