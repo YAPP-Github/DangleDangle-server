@@ -3,7 +3,7 @@ package yapp.be.apiapplication.auth.service
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.auth.service.model.CheckShelterUserEmailExistResponseDto
+import yapp.be.apiapplication.auth.service.model.CheckShelterUserSignUpDuplicationResponseDto
 import yapp.be.apiapplication.auth.service.model.LoginShelterUserRequestDto
 import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoRequestDto
@@ -68,8 +68,14 @@ class ShelterAuthApplicationService(
     }
 
     @Transactional(readOnly = true)
-    fun checkIsShelterUserEmailExist(email: Email): CheckShelterUserEmailExistResponseDto {
+    fun checkIsShelterUserNameExist(name: String): CheckShelterUserSignUpDuplicationResponseDto {
+        val isExist = getShelterUserUseCase.checkNameExist(name)
+        return CheckShelterUserSignUpDuplicationResponseDto(isExist)
+    }
+
+    @Transactional(readOnly = true)
+    fun checkIsShelterUserEmailExist(email: Email): CheckShelterUserSignUpDuplicationResponseDto {
         val isExist = getShelterUserUseCase.checkEmailExist(email)
-        return CheckShelterUserEmailExistResponseDto(isExist)
+        return CheckShelterUserSignUpDuplicationResponseDto(isExist)
     }
 }

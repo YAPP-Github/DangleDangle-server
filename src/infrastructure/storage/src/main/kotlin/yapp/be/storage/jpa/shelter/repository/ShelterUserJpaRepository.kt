@@ -6,6 +6,5 @@ import yapp.be.storage.jpa.shelter.model.ShelterUserEntity
 
 @Repository
 interface ShelterUserJpaRepository : JpaRepository<ShelterUserEntity, Long> {
-    fun existsByEmail(email: String): Boolean
     fun findByEmail(email: String): ShelterUserEntity?
 }

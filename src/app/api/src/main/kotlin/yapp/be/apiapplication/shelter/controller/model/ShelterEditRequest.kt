@@ -44,8 +44,8 @@ data class EditShelterEssentialInfoRequest(
 
 data class EditShelterAdditionalInfoRequest(
     val outLinks: List<EditShelterOutLinkInfo>,
-    val parkingInfo: EditShelterParkingInfo,
-    val donation: EditShelterDonationInfo,
+    val parkingInfo: EditShelterParkingInfo?,
+    val bankAccount: EditShelterDonationInfo?,
     val notice: String?,
 ) {
     fun toDto(): EditShelterWithAdditionalInfoRequestDto {
@@ -53,21 +53,24 @@ data class EditShelterAdditionalInfoRequest(
             outLinks = this.outLinks.map {
                 Pair(it.outLinkType, it.url)
             },
-            donation = BankAccount(
-                name = this.donation.bankName,
-                accountNumber = this.donation.accountNumber,
-            ),
-            parkingInfo = ShelterParkingInfo(
-                parkingEnabled = this.parkingInfo.isParkingEnabled,
-                notice = this.parkingInfo.parkingNotice
-
-            ),
+            bankAccount = bankAccount?.let {
+                BankAccount(
+                    name = this.bankAccount.bankName,
+                    accountNumber = this.bankAccount.accountNumber,
+                )
+            },
+            parkingInfo = parkingInfo?.let {
+                ShelterParkingInfo(
+                    parkingEnabled = this.parkingInfo.isParkingEnabled,
+                    notice = this.parkingInfo.parkingNotice
+                )
+            },
             notice = this.notice
         )
     }
     data class EditShelterParkingInfo(
         val isParkingEnabled: Boolean,
-        val parkingNotice: String?,
+        val parkingNotice: String,
     )
     data class EditShelterDonationInfo(
         val accountNumber: String,
