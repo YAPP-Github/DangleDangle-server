@@ -55,7 +55,10 @@ class SecurityConfig(
 
         http.authorizeHttpRequests {
             it.requestMatchers(
-                AntPathRequestMatcher("/v1/auth/shelter/**")
+                AntPathRequestMatcher("/v1/auth/shelter/**"),
+                AntPathRequestMatcher("/oauth/authorize/**"),
+                AntPathRequestMatcher("/v1/user/**"),
+                AntPathRequestMatcher("/v1/auth/**")
             ).permitAll()
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/admin/**")

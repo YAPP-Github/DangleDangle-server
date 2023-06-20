@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
 import yapp.be.apiapplication.system.security.CustomOAuth2User
 import yapp.be.apiapplication.system.security.JwtTokenProvider
-import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
 import yapp.be.domain.service.GetUserService
 import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
@@ -17,7 +16,6 @@ import java.nio.charset.StandardCharsets
 @Component
 class AuthenticationSuccessHandler(
     val jwtTokenProvider: JwtTokenProvider,
-    private val filterExceptionHandler: FilterExceptionHandler,
     private val getUserService: GetUserService,
 ) : AuthenticationSuccessHandler {
 
@@ -45,7 +43,13 @@ class AuthenticationSuccessHandler(
                     .toUriString()
             )
         } catch (e: CustomException) {
-            filterExceptionHandler.sendErrorMessage(response, e.type.code, "존재하지 않는 유저입니다.", 400)
+            response.sendRedirect(
+                UriComponentsBuilder.fromUriString(REDIRECT_URI)
+                    .queryParam("isMember", false)
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString()
+            )
         }
     }
 }
