@@ -21,24 +21,13 @@ import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
 import yapp.be.enum.Role
-import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.oauth2.client.registration.ClientRegistration
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
-import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
-import yapp.be.apiapplication.system.handler.AuthenticationSuccessHandler
 import yapp.be.enum.CustomOAuth2Provider
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
 import yapp.be.apiapplication.auth.handler.AuthenticationSuccessHandler
 import yapp.be.apiapplication.system.properties.OAuthConfigProperties
-import yapp.be.enum.CustomOAuth2Provider
 
 @Configuration
 @EnableWebSecurity
@@ -75,7 +64,7 @@ class SecurityConfig(
 
         http
             .oauth2Login { it ->
-                it.successHandler(AuthenticationSuccessHandler())
+                it.successHandler(authenticationSuccessHandler)
                 it.userInfoEndpoint {
                     it.userService(customOAuth2UserService)
                 }
