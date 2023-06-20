@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
 import yapp.be.apiapplication.system.security.CustomOAuth2User
 import yapp.be.apiapplication.system.security.JwtTokenProvider
+import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
 import yapp.be.domain.service.GetUserService
 import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
@@ -44,7 +45,7 @@ class AuthenticationSuccessHandler(
                     .toUriString()
             )
         } catch (e: CustomException) {
-            filterExceptionHandler.sendErrorMessage(response, e.type.code, "존재하지 않는 유저입니다.")
+            filterExceptionHandler.sendErrorMessage(response, e.type.code, "존재하지 않는 유저입니다.", 400)
         }
     }
 }
