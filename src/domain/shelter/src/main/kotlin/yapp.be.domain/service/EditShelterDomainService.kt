@@ -98,7 +98,9 @@ class EditShelterDomainService(
                 shelterId = it.shelterId
             )
         }
-
-        return shelterOutLinkCommandHandler.upsertAll(updatedOutLinks)
+        return shelterOutLinkCommandHandler.upsertAll(
+            shelterId = shelterId,
+            outLinks = updatedOutLinks
+        )
     }
 }

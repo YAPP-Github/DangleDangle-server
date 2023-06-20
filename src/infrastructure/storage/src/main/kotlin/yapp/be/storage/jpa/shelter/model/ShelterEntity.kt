@@ -44,17 +44,11 @@ class ShelterEntity(
             latitude = shelter.address.latitude,
             longitude = shelter.address.longitude
         )
-        shelter.bankAccount?.let {
-            this.bankName = it.name
-            this.bankAccountNum = it.accountNumber
-        }
-        shelter.profileImageUrl?.let {
-            this.profileImageUrl = it
-        }
-        shelter.parkingInfo?.let {
-            this.parkingEnabled = it.parkingEnabled
-            this.parkingNotice = it.notice
-        }
-        shelter.notice?.let { this.notice = it }
+        this.bankName = shelter.bankAccount?.name
+        this.bankAccountNum = shelter.bankAccount?.accountNumber
+        this.profileImageUrl = shelter.profileImageUrl
+        this.parkingEnabled = shelter.parkingInfo?.parkingEnabled
+        this.parkingNotice = shelter.parkingInfo?.notice
+        this.notice = shelter.notice
     }
 }
