@@ -20,7 +20,7 @@ class AuthenticationSuccessHandler(
 ) : AuthenticationSuccessHandler {
 
     companion object {
-        const val REDIRECT_URI = "http://localhost:3000/logincheck"
+        const val REDIRECT_URI = "http://localhost:3000/volunteer/redirect"
     }
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
