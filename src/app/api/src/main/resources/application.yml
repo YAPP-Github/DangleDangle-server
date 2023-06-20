@@ -13,7 +13,7 @@ springdoc:
   swagger-ui:
     path: /swagger
 server:
-    port: 9090
+    port: 8080
 
 jwt:
     access:
