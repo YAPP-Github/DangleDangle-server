@@ -20,8 +20,8 @@ interface EditShelterUseCase {
     ): Shelter
     fun editWithAdditionalInfo(
         shelterId: Long,
-        parkingInfo: ShelterParkingInfo,
-        bankAccount: BankAccount,
+        parkingInfo: ShelterParkingInfo?,
+        bankAccount: BankAccount?,
         notice: String?,
     ): Shelter
 

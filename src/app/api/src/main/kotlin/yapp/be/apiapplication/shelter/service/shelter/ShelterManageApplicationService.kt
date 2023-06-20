@@ -114,7 +114,7 @@ class ShelterManageApplicationService(
         editShelterUseCase.editWithAdditionalInfo(
             shelterId = shelterUser.shelterId,
             parkingInfo = reqDto.parkingInfo,
-            bankAccount = reqDto.donation,
+            bankAccount = reqDto.bankAccount,
             notice = reqDto.notice
         )
 

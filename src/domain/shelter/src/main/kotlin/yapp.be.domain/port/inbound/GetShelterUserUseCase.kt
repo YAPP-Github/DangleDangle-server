@@ -7,4 +7,5 @@ interface GetShelterUserUseCase {
     fun getShelterUserById(shelterUserId: Long): ShelterUser
     fun getShelterUserByEmail(email: Email): ShelterUser?
     fun checkEmailExist(email: Email): Boolean
+    fun checkNameExist(name: String): Boolean
 }

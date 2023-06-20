@@ -37,7 +37,9 @@ class ObservationAnimalRepository(
 
     @Transactional
     override fun update(observationAnimal: ObservationAnimal): ObservationAnimal {
-        val observationAnimalEntity = observationAnimal.toEntityModel()
+        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimal.id)
+            ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Shelter Not Found")
+        observationAnimalEntity.update(observationAnimal)
         return observationAnimalJpaRepository.save(observationAnimalEntity).toDomainModel()
     }
 

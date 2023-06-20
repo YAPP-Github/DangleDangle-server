@@ -11,18 +11,21 @@ import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
 import yapp.be.storage.jpa.shelter.model.mappers.toEntityModel
 import yapp.be.storage.jpa.shelter.repository.ShelterJpaRepository
-import yapp.be.storage.jpa.shelter.repository.ShelterOutLinkJpaRepository
 
 @Component
 class ShelterRepository(
-    private val shelterJpaRepository: ShelterJpaRepository,
-    private val shelterOutLinkJpaRepository: ShelterOutLinkJpaRepository,
+    private val shelterJpaRepository: ShelterJpaRepository
 ) : ShelterQueryHandler, ShelterCommandHandler {
 
     @Transactional(readOnly = true)
     override fun findById(id: Long): Shelter {
         val shelterEntity = shelterJpaRepository.findByIdOrNull(id) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Shelter Not Found")
         return shelterEntity.toDomainModel()
+    }
+
+    @Transactional(readOnly = true)
+    override fun existByName(name: String): Boolean {
+        return shelterJpaRepository.findByName(name) != null
     }
 
     override fun create(shelter: Shelter): Shelter {

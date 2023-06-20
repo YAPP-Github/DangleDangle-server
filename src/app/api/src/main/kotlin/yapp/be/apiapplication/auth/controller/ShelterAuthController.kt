@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.auth.controller.model.LoginShelterUserRequest
+import yapp.be.apiapplication.auth.controller.model.ShelterSignUpCheckDuplicationType
 import yapp.be.apiapplication.auth.controller.model.SignUpWithEssentialInfoRequest
 import yapp.be.apiapplication.auth.service.ShelterAuthApplicationService
-import yapp.be.apiapplication.auth.service.model.CheckShelterUserEmailExistResponseDto
+import yapp.be.apiapplication.auth.service.model.CheckShelterUserSignUpDuplicationResponseDto
 import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoResponseDto
+import yapp.be.apiapplication.system.exception.ApiExceptionType
+import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
 
 @RestController
@@ -42,17 +45,25 @@ class ShelterAuthController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/email/exist")
+    @GetMapping("/exist")
     @Operation(
-        summary = "보호소 사용자 이메일 중복여부 체크",
+        summary = "보호소 사용자 입력값 중복여부 체크",
     )
 
     fun checkShelterUserEmailDuplicate(
-        @RequestParam email: String
-    ): ResponseEntity<CheckShelterUserEmailExistResponseDto> {
-        val resDto = shelterAuthApplicationService.checkIsShelterUserEmailExist(
-            email = Email(email)
-        )
+        @RequestParam value: String,
+        @RequestParam type: ShelterSignUpCheckDuplicationType
+    ): ResponseEntity<CheckShelterUserSignUpDuplicationResponseDto> {
+
+        val resDto = when (type) {
+            ShelterSignUpCheckDuplicationType.EMAIL ->
+                shelterAuthApplicationService.checkIsShelterUserEmailExist(
+                    email = Email(value)
+                )
+            ShelterSignUpCheckDuplicationType.NAME ->
+                shelterAuthApplicationService.checkIsShelterUserNameExist(value)
+            else -> throw CustomException(ApiExceptionType.RUNTIME_EXCEPTION, "올바르지 않은 입력 입니다. type = $type")
+        }
         return ResponseEntity.ok(resDto)
     }
 

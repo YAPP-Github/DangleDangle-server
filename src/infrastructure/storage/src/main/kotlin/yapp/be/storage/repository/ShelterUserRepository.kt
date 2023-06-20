@@ -38,6 +38,6 @@ class ShelterUserRepository(
 
     @Transactional(readOnly = true)
     override fun existByEmail(email: Email): Boolean {
-        return shelterUserJpaRepository.existsByEmail(email.value)
+        return shelterUserJpaRepository.findByEmail(email.value) != null
     }
 }

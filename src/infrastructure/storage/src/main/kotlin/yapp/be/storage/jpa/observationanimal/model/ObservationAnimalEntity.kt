@@ -1,6 +1,7 @@
 package yapp.be.storage.jpa.observationanimal.model
 
 import jakarta.persistence.*
+import yapp.be.domain.model.ObservationAnimal
 import yapp.be.enum.Gender
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
@@ -16,24 +17,33 @@ class ObservationAnimalEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     @Column(name = "name")
-    val name: String,
+    var name: String,
 
     @Column(name = "profile_image_url")
-    val profileImageUrl: String,
+    var profileImageUrl: String,
 
     @Column(name = "age")
-    val age: Int,
+    var age: Int,
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    val gender: Gender,
+    var gender: Gender,
 
     @Column(name = "special_note")
-    val specialNote: String,
+    var specialNote: String,
 
     @Column(name = "breed")
-    val breed: String,
+    var breed: String,
 
     @Column(name = "shelter_id")
-    val shelterId: Long
-) : BaseTimeEntity()
+    var shelterId: Long
+) : BaseTimeEntity() {
+    fun update(observationAnimal: ObservationAnimal) {
+        this.name = observationAnimal.name
+        this.profileImageUrl = observationAnimal.profileImageUrl
+        this.age = observationAnimal.age
+        this.gender = observationAnimal.gender
+        this.specialNote = observationAnimal.specialNote
+        this.breed = observationAnimal.breed
+    }
+}

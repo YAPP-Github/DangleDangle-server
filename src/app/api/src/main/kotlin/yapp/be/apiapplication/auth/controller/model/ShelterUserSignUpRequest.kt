@@ -38,3 +38,7 @@ data class ShelterSignUpAddressInfo(
     val longitude: Double
 
 )
+
+enum class ShelterSignUpCheckDuplicationType {
+    EMAIL, NAME
+}
