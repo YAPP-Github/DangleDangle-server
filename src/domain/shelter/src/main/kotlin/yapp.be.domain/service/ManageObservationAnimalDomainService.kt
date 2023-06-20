@@ -29,6 +29,7 @@ class ManageObservationAnimalDomainService(
         return observationAnimalQueryHandler.findById(observationAnimalId)
     }
 
+    @Transactional
     override fun addObservationAnimal(
         shelterId: Long,
         images: List<String>,
