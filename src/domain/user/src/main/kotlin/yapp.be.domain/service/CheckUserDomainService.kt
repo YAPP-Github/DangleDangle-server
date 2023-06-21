@@ -5,7 +5,7 @@ import yapp.be.domain.port.inbound.CheckUserUseCase
 import yapp.be.domain.port.outbound.UserQueryHandler
 
 @Service
-class CheckUserService(
+class CheckUserDomainService(
     private val userQueryHandler: UserQueryHandler
 ) : CheckUserUseCase {
     override fun isExistByEmail(email: String): Boolean {

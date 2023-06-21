@@ -3,7 +3,6 @@ package yapp.be.apiapplication.system.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
@@ -24,10 +23,12 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
-import yapp.be.enum.CustomOAuth2Provider
+import yapp.be.apiapplication.system.security.CustomOAuth2Provider
 import yapp.be.apiapplication.auth.handler.AuthenticationSuccessHandler
 import yapp.be.apiapplication.system.properties.OAuthConfigProperties
+import yapp.be.apiapplication.system.properties.OAuthConfigPropertiesProvider
 import yapp.be.apiapplication.system.security.JwtAuthenticationFilter
+import yapp.be.enum.OAuthType
 import yapp.be.enum.Role
 
 @Configuration
@@ -47,8 +48,7 @@ class SecurityConfig(
     }
 
     @Bean
-    @Order(1)
-    fun oAuthFilterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .cors {}
             .csrf { it.disable() }
@@ -62,17 +62,6 @@ class SecurityConfig(
                     it.userService(customOAuth2UserService)
                 }
             }
-
-        return http.build()
-    }
-
-    @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http
-            .cors {}
-            .csrf { it.disable() }
-            .httpBasic { it.disable() }
-            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
 
         http.authorizeHttpRequests {
             it.requestMatchers(
@@ -116,13 +105,14 @@ class SecurityConfig(
     }
 
     fun clientRegistrationRepository(
-        properties: OAuthConfigProperties
+        oAuthConfigProperties: OAuthConfigProperties,
+        oAuthConfigPropertiesProvider: OAuthConfigPropertiesProvider
     ): ClientRegistrationRepository {
         val registrations: MutableList<ClientRegistration> = mutableListOf()
         registrations.add(
-            CustomOAuth2Provider.KAKAO.getBuilder("kakao")
-                .clientId(properties.clientId)
-                .clientSecret(properties.clientSecret)
+            CustomOAuth2Provider.KAKAO.getBuilder(OAuthType.KAKAO.oAuthType, oAuthConfigPropertiesProvider, oAuthConfigProperties)
+                .clientId(oAuthConfigPropertiesProvider.clientId)
+                .clientSecret(oAuthConfigPropertiesProvider.clientSecret)
                 .jwkSetUri("temp")
                 .build()
         )

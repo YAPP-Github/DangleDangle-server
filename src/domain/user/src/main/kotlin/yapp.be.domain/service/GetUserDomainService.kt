@@ -6,7 +6,7 @@ import yapp.be.domain.port.inbound.GetUserUseCase
 import yapp.be.domain.port.outbound.UserQueryHandler
 
 @Service
-class GetUserService(
+class GetUserDomainService(
     private val userQueryHandler: UserQueryHandler
 ) : GetUserUseCase {
     override fun getByEmail(email: String): User {
