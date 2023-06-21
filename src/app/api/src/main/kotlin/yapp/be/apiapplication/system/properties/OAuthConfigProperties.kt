@@ -1,12 +1,9 @@
 package yapp.be.apiapplication.system.properties
 
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
+import org.springframework.boot.context.properties.ConfigurationProperties
 
-@Component
+@ConfigurationProperties(value = "spring.security.oauth2.client.registration.kakao")
 data class OAuthConfigProperties(
-    @Value("\${spring.security.oauth2.client.registration.kakao.client-id}")
-    val kakaoClientId: String,
-    @Value("\${spring.security.oauth2.client.registration.kakao.client-secret}")
-    val kakaoClientSecret: String,
+    val clientId: String,
+    val clientSecret: String,
 )

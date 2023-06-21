@@ -121,8 +121,8 @@ class SecurityConfig(
         val registrations: MutableList<ClientRegistration> = mutableListOf()
         registrations.add(
             CustomOAuth2Provider.KAKAO.getBuilder("kakao")
-                .clientId(properties.kakaoClientId)
-                .clientSecret(properties.kakaoClientSecret)
+                .clientId(properties.clientId)
+                .clientSecret(properties.clientSecret)
                 .jwkSetUri("temp")
                 .build()
         )
