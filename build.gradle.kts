@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("org.jlleitschuh.gradle.ktlint")
@@ -61,4 +62,12 @@ allprojects {
 
         disabledRules.set(setOf("import-ordering", "no-wildcard-imports"))
     }
+}
+
+tasks.named<BootJar>("bootJar") {
+    enabled = false
+}
+
+tasks.named<Jar>("jar") {
+    enabled = true
 }

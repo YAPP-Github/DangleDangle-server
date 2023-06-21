@@ -58,7 +58,7 @@ class JwtAuthenticationFilter(
         res.writer.write(
             objectMapper.writeValueAsString(
                 ErrorResponse(
-                    code = ApiExceptionType.UNAUTHENTICATED_EXCEPTION.code,
+                    exceptionCode = ApiExceptionType.UNAUTHENTICATED_EXCEPTION.code,
                     message = message,
                     timeStamp = LocalDateTime.now()
                 )
