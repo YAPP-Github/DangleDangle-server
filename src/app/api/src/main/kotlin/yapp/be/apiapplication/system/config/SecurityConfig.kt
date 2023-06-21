@@ -19,9 +19,6 @@ import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
 import yapp.be.apiapplication.system.security.CustomOAuth2Provider
 import yapp.be.apiapplication.auth.handler.AuthenticationSuccessHandler
@@ -117,17 +114,5 @@ class SecurityConfig(
                 .build()
         )
         return InMemoryClientRegistrationRepository(registrations)
-    }
-
-    @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val configuration = CorsConfiguration()
-        configuration.addAllowedOrigin("http://localhost:3000")
-        configuration.addAllowedMethod("*")
-        configuration.addAllowedHeader("*")
-        configuration.allowCredentials = true
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", configuration)
-        return source
     }
 }

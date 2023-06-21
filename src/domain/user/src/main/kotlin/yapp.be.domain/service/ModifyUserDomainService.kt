@@ -19,8 +19,8 @@ class ModifyUserDomainService(
             email = userEntity.email,
             role = userEntity.role,
             oAuthType = userEntity.oAuthType,
-            oAuthAccessToken = command.oAuth2SecurityToken.oAuth2AccessToken,
-            oAuthRefreshToken = command.oAuth2SecurityToken.oAuth2RefreshToken,
+            oAuthAccessToken = command.oAuth2AccessToken,
+            oAuthRefreshToken = command.oAuth2RefreshToken,
             nickname = userEntity.nickname,
             phone = userEntity.phone,
         )

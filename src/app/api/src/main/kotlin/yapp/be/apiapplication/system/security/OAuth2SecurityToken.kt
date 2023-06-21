@@ -1,4 +1,4 @@
-package yapp.be.domain.model
+package yapp.be.apiapplication.system.security
 
 data class OAuth2SecurityToken(
     val userId: Long,
