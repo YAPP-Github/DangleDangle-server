@@ -4,13 +4,14 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import org.springframework.web.util.UriComponentsBuilder
+import yapp.be.apiapplication.system.properties.JwtConfigProperties
 import yapp.be.apiapplication.system.security.CustomOAuth2User
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.domain.port.inbound.GetUserUseCase
 import yapp.be.exceptions.CustomException
+import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Component
@@ -19,7 +20,8 @@ class AuthenticationSuccessHandler(
     private val REDIRECT_URI: String,
     private val jwtTokenProvider: JwtTokenProvider,
     private val getUserUseCase: GetUserUseCase,
-) : AuthenticationSuccessHandler {
+    private val jwtConfigProperties: JwtConfigProperties,
+) : SimpleUrlAuthenticationSuccessHandler() {
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -32,22 +34,16 @@ class AuthenticationSuccessHandler(
             val user = getUserUseCase.getByEmail(userEmail)
             val token = jwtTokenProvider.generate(user.id, user.email, user.role)
 
-            response.sendRedirect(
-                UriComponentsBuilder.fromUriString(REDIRECT_URI)
-                    .queryParam("accessToken", token.accessToken)
-                    .queryParam("refreshToken", token.refreshToken)
-                    .build()
-                    .encode(StandardCharsets.UTF_8)
-                    .toUriString()
-            )
+            val session = request.getSession(true)
+            session.setAttribute(jwtConfigProperties.authorization, token.accessToken)
+            session.setAttribute(jwtConfigProperties.refreshToken, token.refreshToken)
+            response.status = HttpServletResponse.SC_OK
+
+            val param = "email=" + URLEncoder.encode(userEmail, StandardCharsets.UTF_8)
+            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
         } catch (e: CustomException) {
-            response.sendRedirect(
-                UriComponentsBuilder.fromUriString(REDIRECT_URI)
-                    .queryParam("isMember", false)
-                    .build()
-                    .encode(StandardCharsets.UTF_8)
-                    .toUriString()
-            )
+            val param = "isMember=" + false
+            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
         }
     }
 }
