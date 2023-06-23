@@ -5,9 +5,11 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import yapp.be.apiapplication.auth.controller.model.LoginUserRequest
 import yapp.be.apiapplication.auth.controller.model.UserSignUpRequest
 import yapp.be.apiapplication.auth.service.UserAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.CheckUserNicknameExistResponseDto
+import yapp.be.apiapplication.auth.service.model.LoginUserResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpUserWithEssentialInfoResponseDto
 
 @RestController
@@ -34,11 +36,23 @@ class UserAuthController(
     @Operation(
         summary = "사용자 닉네임 중복여부 체크",
     )
-
     fun checkUserNicknameDuplicate(
         @RequestParam nickname: String
     ): ResponseEntity<CheckUserNicknameExistResponseDto> {
         val resDto = userAuthApplicationService.checkIsUserNicknameExist(nickname)
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/token")
+    @Operation(
+        summary = "사용자 토큰 발급",
+    )
+    fun issueUserToken(
+        @RequestBody req: LoginUserRequest,
+    ): ResponseEntity<LoginUserResponseDto> {
+        val reqDto = req.toDto()
+        val resDto = userAuthApplicationService.issueToken(reqDto)
         return ResponseEntity.ok(resDto)
     }
 }

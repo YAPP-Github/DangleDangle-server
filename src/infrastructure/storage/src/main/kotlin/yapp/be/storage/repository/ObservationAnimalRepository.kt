@@ -25,7 +25,9 @@ class ObservationAnimalRepository(
 
     @Transactional(readOnly = true)
     override fun findById(observationAnimalId: Long): ObservationAnimal {
-        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found")
+        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId) ?: throw CustomException(
+            StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found"
+        )
         return observationAnimalEntity.toDomainModel()
     }
 
@@ -43,7 +45,9 @@ class ObservationAnimalRepository(
 
     @Transactional
     override fun delete(observationAnimalId: Long): ObservationAnimal {
-        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found")
+        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId) ?: throw CustomException(
+            StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found"
+        )
         observationAnimalJpaRepository.delete(observationAnimalEntity)
 
         return observationAnimalEntity.toDomainModel()

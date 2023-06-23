@@ -46,7 +46,6 @@ class ShelterAuthController(
     @Operation(
         summary = "보호소 사용자 이메일 중복여부 체크",
     )
-
     fun checkShelterUserEmailDuplicate(
         @RequestParam email: String
     ): ResponseEntity<CheckShelterUserEmailExistResponseDto> {

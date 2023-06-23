@@ -9,6 +9,7 @@ spring:
       - application-oauth-${spring.profiles.active}.yml
       - application-client-${spring.profiles.active}.yml
       - application-storage-${spring.profiles.active}.yml
+      - application-redis-${spring.profiles.active}.yml
 springdoc:
   swagger-ui:
     path: /swagger
@@ -22,5 +23,3 @@ jwt:
     refresh:
         expire: ${REFRESH_TOKEN_EXPIRE:604800000} # 1 week
         secret: ${REFRESH_TOKEN_SECRET:5f95a5f5c5b5a5a5958f8f7f7e7e7d7d7c6b6a696867666564636261605f}
-    authorization: "Authorization"
-    refresh-token: "refresh_token"

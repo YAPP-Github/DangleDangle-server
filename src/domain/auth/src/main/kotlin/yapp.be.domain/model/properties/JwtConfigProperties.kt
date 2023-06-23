@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.system.properties
+package yapp.be.domain.model.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -6,8 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class JwtConfigProperties(
     val access: TokenProperties,
     val refresh: TokenProperties,
-    val authorization: String,
-    val refreshToken: String,
 ) {
     data class TokenProperties(
         val expire: Long,
