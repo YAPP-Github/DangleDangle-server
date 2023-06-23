@@ -36,7 +36,7 @@ class AuthenticationSuccessHandler(
 
             saveTokenUseCase.saveToken(token.accessToken, token.refreshToken, 60L)
 
-            val param = "authToken=" + URLEncoder.encode(token.accessToken, StandardCharsets.UTF_8)
+            val param = "authCode=" + URLEncoder.encode(token.accessToken, StandardCharsets.UTF_8)
             redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
         } catch (e: CustomException) {
             val param = "email=" + URLEncoder.encode(userEmail, StandardCharsets.UTF_8) +
