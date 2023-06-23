@@ -2,12 +2,12 @@ package yapp.be.apiapplication.auth.service.model
 
 import yapp.be.model.Email
 
-data class LoginUserRequestDto(
+data class LoginVolunteerRequestDto(
     val email: Email,
-    val accessToken: String
+    val authCode: String
 )
 
-class LoginUserResponseDto(
+class LoginVolunteerResponseDto(
     val accessToken: String,
     val refreshToken: String
 )

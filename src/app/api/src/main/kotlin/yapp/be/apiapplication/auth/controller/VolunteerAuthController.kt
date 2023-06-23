@@ -5,54 +5,54 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import yapp.be.apiapplication.auth.controller.model.LoginUserRequest
-import yapp.be.apiapplication.auth.controller.model.UserSignUpRequest
-import yapp.be.apiapplication.auth.service.UserAuthApplicationService
+import yapp.be.apiapplication.auth.controller.model.LoginVolunteerRequest
+import yapp.be.apiapplication.auth.controller.model.VolunteerSignUpRequest
+import yapp.be.apiapplication.auth.service.VolunteerAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.CheckUserNicknameExistResponseDto
-import yapp.be.apiapplication.auth.service.model.LoginUserResponseDto
+import yapp.be.apiapplication.auth.service.model.LoginVolunteerResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpUserWithEssentialInfoResponseDto
 
 @RestController
 @Tag(name = "개인 회원 회원가입 api")
-@RequestMapping("/v1/auth/user")
-class UserAuthController(
-    private val userAuthApplicationService: UserAuthApplicationService,
+@RequestMapping("/v1/auth/volunteer")
+class VolunteerAuthController(
+    private val volunteerAuthApplicationService: VolunteerAuthApplicationService,
 ) {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/register")
     @Operation(
-        summary = "회원가입",
+        summary = "봉사자 회원가입",
     )
     fun register(
-        @RequestBody req: UserSignUpRequest,
+        @RequestBody req: VolunteerSignUpRequest,
     ): ResponseEntity<SignUpUserWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
-        val resDto = userAuthApplicationService.register(reqDto)
+        val resDto = volunteerAuthApplicationService.register(reqDto)
         return ResponseEntity.ok(resDto)
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/nickname/exist")
     @Operation(
-        summary = "사용자 닉네임 중복여부 체크",
+        summary = "봉사자 닉네임 중복여부 체크",
     )
     fun checkUserNicknameDuplicate(
         @RequestParam nickname: String
     ): ResponseEntity<CheckUserNicknameExistResponseDto> {
-        val resDto = userAuthApplicationService.checkIsUserNicknameExist(nickname)
+        val resDto = volunteerAuthApplicationService.checkIsUserNicknameExist(nickname)
         return ResponseEntity.ok(resDto)
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/token")
     @Operation(
-        summary = "사용자 토큰 발급",
+        summary = "봉사자 토큰 발급",
     )
     fun issueUserToken(
-        @RequestBody req: LoginUserRequest,
-    ): ResponseEntity<LoginUserResponseDto> {
+        @RequestBody req: LoginVolunteerRequest,
+    ): ResponseEntity<LoginVolunteerResponseDto> {
         val reqDto = req.toDto()
-        val resDto = userAuthApplicationService.issueToken(reqDto)
+        val resDto = volunteerAuthApplicationService.issueToken(reqDto)
         return ResponseEntity.ok(resDto)
     }
 }

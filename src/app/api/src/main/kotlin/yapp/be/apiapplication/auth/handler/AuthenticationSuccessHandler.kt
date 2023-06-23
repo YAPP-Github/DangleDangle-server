@@ -8,7 +8,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component
 import yapp.be.apiapplication.system.security.CustomOAuth2User
 import yapp.be.apiapplication.system.security.JwtTokenProvider
-import yapp.be.domain.port.inbound.GetUserUseCase
+import yapp.be.domain.port.inbound.GetVolunteerUseCase
 import yapp.be.exceptions.CustomException
 import yapp.be.redis.service.RedisService
 import java.net.URLEncoder
@@ -19,7 +19,7 @@ class AuthenticationSuccessHandler(
     @Value("\${oauth.redirect-url}")
     private val REDIRECT_URI: String,
     private val jwtTokenProvider: JwtTokenProvider,
-    private val getUserUseCase: GetUserUseCase,
+    private val getVolunteerUseCase: GetVolunteerUseCase,
     private val redisService: RedisService
 ) : SimpleUrlAuthenticationSuccessHandler() {
     override fun onAuthenticationSuccess(
@@ -31,7 +31,7 @@ class AuthenticationSuccessHandler(
         val userEmail = customOAuth2User.oAuthAttributes.email
 
         try {
-            val user = getUserUseCase.getByEmail(userEmail)
+            val user = getVolunteerUseCase.getByEmail(userEmail)
             val token = jwtTokenProvider.generate(user.id, user.email, user.role)
 
             redisService.setDataExpire(token.accessToken, token.refreshToken, 60L)
