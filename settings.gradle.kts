@@ -27,7 +27,7 @@ rootProject.name = "yapp22-be"
 includeProject(":api", "src/app/api")
 
 // domain
-includeProject(":user", "src/domain/user")
+includeProject(":volunteer", "src/domain/volunteer")
 includeProject(":auth", "src/domain/auth")
 includeProject(":common", "src/domain/common")
 includeProject(":shelter", "src/domain/shelter")

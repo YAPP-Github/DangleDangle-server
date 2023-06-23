@@ -1,6 +1,6 @@
 # Table 생성용 DDL
 
-CREATE TABLE `user`
+CREATE TABLE `volunteer`
 (
     `id`                                  bigint       not null primary key auto_increment,
     `o_auth_type`                         varchar(20)  not null,
@@ -97,9 +97,9 @@ CREATE TABLE `volunteer_event_user_mapping`
 (
     `id`                                  bigint           not null primary key auto_increment,
     `volunteer_event_id`                  bigint           not null,
-    `user_id`                             bigint           not null,
+    `volunteer_id`                             bigint           not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`),
-    index IDX_USER_ID(`user_id`)
+    index IDX_VOLUNTEER_ID(`volunteer_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -122,7 +122,7 @@ CREATE TABLE `volunteer_event_waiting_queue`
 (
     `id`                                  bigint            not null primary key auto_increment,
     `volunteer_event_id`                  bigint            not null,
-    `user_id`                             bigint            not null,
+    `volunteer_id`                             bigint            not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -131,7 +131,7 @@ CREATE TABLE `volunteer_event_join_queue`
 (
     `id`                                  bigint            not null primary key auto_increment,
     `volunteer_event_id`                  bigint            not null,
-    `user_id`                             bigint            not null,
+    `volunteer_id`                             bigint            not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

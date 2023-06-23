@@ -22,7 +22,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":auth"))
-    implementation(project(":user"))
+    implementation(project(":volunteer"))
     implementation(project(":volunteerEvent"))
     implementation(project(":shelter"))
     implementation(project(":redis"))

@@ -12,7 +12,7 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
 
     implementation(project(":auth"))
-    implementation(project(":user"))
+    implementation(project(":volunteer"))
     implementation(project(":common"))
     implementation(project(":shelter"))
     implementation(project(":volunteerEvent"))
@@ -26,7 +26,7 @@ dependencies {
 
     testImplementation(testFixtures(project(":shelter")))
     testImplementation(testFixtures(project(":auth")))
-    testImplementation(testFixtures(project(":user")))
+    testImplementation(testFixtures(project(":volunteer")))
     testImplementation(testFixtures(project(":volunteerEvent")))
 }
 

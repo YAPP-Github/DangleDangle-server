@@ -14,6 +14,6 @@ data class VolunteerEvent(
     val viewCnt: Int,
     val volunteerEventStatus: VolunteerEventStatus,
     val participantNum: Int,
-    val userId: Long,
+    val volunteerId: Long,
     val shelterId: Long,
 )
