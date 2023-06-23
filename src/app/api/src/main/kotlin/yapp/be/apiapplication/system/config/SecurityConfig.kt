@@ -22,8 +22,8 @@ import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
 import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
 import yapp.be.apiapplication.system.security.CustomOAuth2Provider
 import yapp.be.apiapplication.auth.handler.AuthenticationSuccessHandler
-import yapp.be.apiapplication.system.properties.OAuthConfigProperties
-import yapp.be.apiapplication.system.properties.OAuthConfigPropertiesProvider
+import yapp.be.domain.model.properties.OAuthConfigProperties
+import yapp.be.domain.model.properties.OAuthConfigPropertiesProvider
 import yapp.be.apiapplication.system.security.JwtAuthenticationFilter
 import yapp.be.enum.OAuthType
 import yapp.be.enum.Role
@@ -64,7 +64,7 @@ class SecurityConfig(
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/auth/shelter/**"),
                 AntPathRequestMatcher("/oauth/authorize/**"),
-                AntPathRequestMatcher("/v1/user/**"),
+                AntPathRequestMatcher("/v1/auth/user/**"),
                 AntPathRequestMatcher("/v1/auth/**")
             ).permitAll()
             it.requestMatchers(

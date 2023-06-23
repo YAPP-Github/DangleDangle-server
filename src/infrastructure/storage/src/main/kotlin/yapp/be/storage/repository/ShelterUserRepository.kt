@@ -27,7 +27,9 @@ class ShelterUserRepository(
     }
 
     override fun findById(shelterUserId: Long): ShelterUser {
-        val shelterUserEntity = shelterUserJpaRepository.findByIdOrNull(shelterUserId) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Shelter User Not Found")
+        val shelterUserEntity = shelterUserJpaRepository.findByIdOrNull(shelterUserId) ?: throw CustomException(
+            StorageExceptionType.ENTITY_NOT_FOUND, "Shelter User Not Found"
+        )
         return shelterUserEntity.toDomainModel()
     }
 

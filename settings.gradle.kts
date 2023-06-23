@@ -40,6 +40,7 @@ includeProject(":common", "src/support/common")
 // infrastructure
 includeProject(":storage", "src/infrastructure/storage")
 includeProject(":client", "src/infrastructure/client")
+includeProject(":redis", "src/infrastructure/redis")
 
 fun includeProject(name: String, projectPath: String) {
     include(name)

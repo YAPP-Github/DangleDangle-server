@@ -3,8 +3,8 @@ package yapp.be.apiapplication.system.security
 import org.springframework.security.oauth2.client.registration.ClientRegistration
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod
-import yapp.be.apiapplication.system.properties.OAuthConfigProperties
-import yapp.be.apiapplication.system.properties.OAuthConfigPropertiesProvider
+import yapp.be.domain.model.properties.OAuthConfigProperties
+import yapp.be.domain.model.properties.OAuthConfigPropertiesProvider
 
 enum class CustomOAuth2Provider {
 

@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import yapp.be.apiapplication.system.properties.JwtConfigProperties
 import yapp.be.apiapplication.system.security.CustomOAuth2User
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.domain.port.inbound.GetUserUseCase
 import yapp.be.exceptions.CustomException
+import yapp.be.redis.service.RedisService
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -20,7 +20,7 @@ class AuthenticationSuccessHandler(
     private val REDIRECT_URI: String,
     private val jwtTokenProvider: JwtTokenProvider,
     private val getUserUseCase: GetUserUseCase,
-    private val jwtConfigProperties: JwtConfigProperties,
+    private val redisService: RedisService
 ) : SimpleUrlAuthenticationSuccessHandler() {
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
@@ -34,15 +34,13 @@ class AuthenticationSuccessHandler(
             val user = getUserUseCase.getByEmail(userEmail)
             val token = jwtTokenProvider.generate(user.id, user.email, user.role)
 
-            val session = request.getSession(true)
-            session.setAttribute(jwtConfigProperties.authorization, token.accessToken)
-            session.setAttribute(jwtConfigProperties.refreshToken, token.refreshToken)
-            response.status = HttpServletResponse.SC_OK
+            redisService.setDataExpire(token.accessToken, token.refreshToken, 60L)
 
-            val param = "email=" + URLEncoder.encode(userEmail, StandardCharsets.UTF_8)
+            val param = "accessToken=" + URLEncoder.encode(token.accessToken, StandardCharsets.UTF_8)
             redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
         } catch (e: CustomException) {
-            val param = "isMember=" + false
+            val param = "email=" + URLEncoder.encode(userEmail, StandardCharsets.UTF_8) +
+                "&isMember=" + false
             redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
         }
     }
