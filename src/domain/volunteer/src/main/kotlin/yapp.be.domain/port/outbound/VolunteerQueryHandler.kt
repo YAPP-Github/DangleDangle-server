@@ -8,6 +8,4 @@ interface VolunteerQueryHandler {
     fun findById(id: Long): Volunteer
     fun isExistByEmail(email: String): Boolean
     fun isExistByNickname(nickname: String): Boolean
-    fun save(volunteer: Volunteer): Volunteer
-    fun saveToken(volunteer: Volunteer): Volunteer
 }

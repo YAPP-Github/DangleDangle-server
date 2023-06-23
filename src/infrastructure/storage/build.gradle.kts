@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":shelter"))
     implementation(project(":volunteerEvent"))
+    implementation(project(":redis"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")

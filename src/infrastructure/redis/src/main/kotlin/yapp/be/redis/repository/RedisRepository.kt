@@ -1,10 +1,10 @@
-package yapp.be.redis.service
+package yapp.be.redis.repository
 
 import org.springframework.data.redis.core.StringRedisTemplate
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Repository
 import java.time.Duration
-@Service
-class RedisService(
+@Repository
+class RedisRepository(
     private val stringRedisTemplate: StringRedisTemplate
 ) {
     fun getData(key: String): String? {

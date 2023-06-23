@@ -4,5 +4,6 @@ interface SaveTokenUseCase {
     fun saveToken(
         accessToken: String,
         refreshToken: String,
+        expire: Long,
     )
 }
