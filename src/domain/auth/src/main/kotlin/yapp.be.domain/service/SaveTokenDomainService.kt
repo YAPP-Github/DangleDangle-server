@@ -1,19 +1,18 @@
 package yapp.be.domain.service
 
 import org.springframework.stereotype.Service
-import yapp.be.domain.model.properties.JwtConfigProperties
 import yapp.be.domain.port.inbound.SaveTokenUseCase
-import yapp.be.redis.service.RedisService
+import yapp.be.domain.port.outbound.TokenCommandHandler
 
 @Service
 class SaveTokenDomainService(
-    private val redisService: RedisService,
-    private val jwtProperties: JwtConfigProperties
+    private val tokenCommandHandler: TokenCommandHandler,
 ) : SaveTokenUseCase {
     override fun saveToken(
         accessToken: String,
         refreshToken: String,
+        expire: Long,
     ) {
-        redisService.setDataExpire(accessToken, refreshToken, jwtProperties.refresh.expire)
+        tokenCommandHandler.saveToken(accessToken, refreshToken, expire)
     }
 }

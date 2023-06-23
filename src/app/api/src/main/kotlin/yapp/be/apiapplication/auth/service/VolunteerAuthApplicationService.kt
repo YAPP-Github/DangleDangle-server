@@ -8,6 +8,7 @@ import yapp.be.apiapplication.auth.service.model.SignUpUserRequestDto
 import yapp.be.apiapplication.auth.service.model.SignUpUserWithEssentialInfoResponseDto
 import yapp.be.apiapplication.auth.service.model.LoginVolunteerResponseDto
 import yapp.be.apiapplication.system.exception.ApiExceptionType
+import yapp.be.apiapplication.system.security.JwtConfigProperties
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.domain.port.inbound.CheckVolunteerUseCase
@@ -24,6 +25,7 @@ class VolunteerAuthApplicationService(
     private val createVolunteerUseCase: CreateVolunteerUseCase,
     private val checkVolunteerUseCase: CheckVolunteerUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
+    private val jwtConfigProperties: JwtConfigProperties,
 ) {
     fun register(dto: SignUpUserRequestDto): SignUpUserWithEssentialInfoResponseDto {
         val user = createVolunteerUseCase.create(
@@ -60,7 +62,7 @@ class VolunteerAuthApplicationService(
             email = Email(email),
             role = Role.VOLUNTEER
         )
-        saveTokenUseCase.saveToken(tokens.accessToken, tokens.refreshToken)
+        saveTokenUseCase.saveToken(tokens.accessToken, tokens.refreshToken, jwtConfigProperties.refresh.expire)
 
         return LoginVolunteerResponseDto(
             accessToken = tokens.accessToken,

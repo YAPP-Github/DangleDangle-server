@@ -5,11 +5,11 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Volunteer
 import yapp.be.domain.port.inbound.CreateVolunteerUseCase
 import yapp.be.domain.port.inbound.model.CreateUserCommand
-import yapp.be.domain.port.outbound.VolunteerQueryHandler
+import yapp.be.domain.port.outbound.VolunteerCommandHandler
 
 @Service
 class CreateVolunteerDomainService(
-    private val volunteerQueryHandler: VolunteerQueryHandler
+    private val volunteerCommandHandler: VolunteerCommandHandler
 ) : CreateVolunteerUseCase {
     @Transactional
     override fun create(command: CreateUserCommand): Volunteer {
@@ -18,6 +18,6 @@ class CreateVolunteerDomainService(
             email = command.email,
             phone = command.phone,
         )
-        return volunteerQueryHandler.save(volunteer)
+        return volunteerCommandHandler.save(volunteer)
     }
 }

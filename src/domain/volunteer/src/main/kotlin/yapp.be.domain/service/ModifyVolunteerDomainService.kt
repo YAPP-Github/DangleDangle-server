@@ -5,11 +5,13 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Volunteer
 import yapp.be.domain.port.inbound.ModifyVolunteerUseCase
 import yapp.be.domain.port.inbound.model.ModifyUserTokenCommand
+import yapp.be.domain.port.outbound.VolunteerCommandHandler
 import yapp.be.domain.port.outbound.VolunteerQueryHandler
 
 @Service
 class ModifyVolunteerDomainService(
-    private val volunteerQueryHandler: VolunteerQueryHandler
+    private val volunteerCommandHandler: VolunteerCommandHandler,
+    private val volunteerQueryHandler: VolunteerQueryHandler,
 ) : ModifyVolunteerUseCase {
     @Transactional
     override fun updateUserToken(command: ModifyUserTokenCommand): Volunteer {
@@ -24,6 +26,6 @@ class ModifyVolunteerDomainService(
             nickname = userEntity.nickname,
             phone = userEntity.phone,
         )
-        return volunteerQueryHandler.saveToken(updatedVolunteer)
+        return volunteerCommandHandler.saveToken(updatedVolunteer)
     }
 }

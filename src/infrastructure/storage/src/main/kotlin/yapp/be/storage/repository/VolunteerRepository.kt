@@ -4,6 +4,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Volunteer
+import yapp.be.domain.port.outbound.VolunteerCommandHandler
 import yapp.be.domain.port.outbound.VolunteerQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.storage.config.exceptions.StorageExceptionType
@@ -14,7 +15,7 @@ import yapp.be.storage.jpa.volunteer.repository.VolunteerJpaRepository
 @Repository
 class VolunteerRepository(
     private val jpaRepository: VolunteerJpaRepository
-) : VolunteerQueryHandler {
+) : VolunteerQueryHandler, VolunteerCommandHandler {
     @Transactional(readOnly = true)
     override fun countAll(): Int {
         return jpaRepository.count().toInt()
