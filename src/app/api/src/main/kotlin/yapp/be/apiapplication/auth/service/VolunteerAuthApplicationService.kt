@@ -7,7 +7,6 @@ import yapp.be.apiapplication.auth.service.model.LoginVolunteerRequestDto
 import yapp.be.apiapplication.auth.service.model.SignUpUserRequestDto
 import yapp.be.apiapplication.auth.service.model.SignUpUserWithEssentialInfoResponseDto
 import yapp.be.apiapplication.auth.service.model.LoginVolunteerResponseDto
-import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.JwtConfigProperties
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
@@ -16,7 +15,6 @@ import yapp.be.domain.port.inbound.CreateVolunteerUseCase
 import yapp.be.domain.port.inbound.SaveTokenUseCase
 import yapp.be.domain.port.inbound.model.CreateUserCommand
 import yapp.be.enum.Role
-import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
 
 @Service
@@ -50,9 +48,6 @@ class VolunteerAuthApplicationService(
     @Transactional(readOnly = true)
     fun issueToken(reqDto: LoginVolunteerRequestDto): LoginVolunteerResponseDto {
         val claims = jwtTokenProvider.parseClaims(reqDto.authCode.replace("Bearer ", ""), SecurityTokenType.ACCESS)
-        if (claims?.get("email")?.toString()?.equals(reqDto.email.value) == false) {
-            throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "토큰의 이메일과 요청의 이메일이 일치하지 않습니다.")
-        }
 
         val email = claims!!["email"].toString()
         val userId = claims["id"].toString().toLong()
