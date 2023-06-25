@@ -11,9 +11,8 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 open class BaseTimeEntity {
     @CreatedDate
-    var createdAt: LocalDateTime? = LocalDateTime.MIN
-        private set
+    lateinit var createdAt: LocalDateTime
     @LastModifiedDate
-    var modifiedAt: LocalDateTime? = LocalDateTime.MIN
-        private set
+    lateinit var modifiedAt: LocalDateTime
+
 }
