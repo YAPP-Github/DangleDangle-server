@@ -16,3 +16,6 @@ data class VolunteerSignUpRequest(
         )
     }
 }
+enum class VolunteerSignUpCheckDuplicationType {
+    EMAIL
+}

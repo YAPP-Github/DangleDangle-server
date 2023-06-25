@@ -6,7 +6,7 @@ plugins {
     jacoco
 }
 
-apply( "jib.gradle")
+apply("jib.gradle")
 
 dependencies {
     val openApiVersion: String by project
