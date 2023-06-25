@@ -6,6 +6,8 @@ plugins {
     jacoco
 }
 
+apply( "jib.gradle")
+
 dependencies {
     val openApiVersion: String by project
     val jsonWebTokenVersion: String by project
