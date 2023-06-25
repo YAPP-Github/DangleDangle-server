@@ -17,7 +17,7 @@ class CustomExceptionHandler {
     @ExceptionHandler(CustomException::class)
     fun handleApiException(e: CustomException): ErrorResponse {
         return ErrorResponse(
-            code = e.type.code,
+            exceptionCode = e.type.code,
             message = e.message,
             timeStamp = LocalDateTime.now()
         )
@@ -28,7 +28,7 @@ class CustomExceptionHandler {
     fun handleApiException(e: RuntimeException): ErrorResponse {
         e.printStackTrace()
         return ErrorResponse(
-            code = ApiExceptionType.RUNTIME_EXCEPTION.code,
+            exceptionCode = ApiExceptionType.RUNTIME_EXCEPTION.code,
             message = e.message ?: "",
             timeStamp = LocalDateTime.now()
         )

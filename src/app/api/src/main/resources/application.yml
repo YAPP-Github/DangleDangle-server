@@ -8,11 +8,14 @@ spring:
   config:
     import:
       - application-actuator.yml
+      - application-oauth-${spring.profiles.active}.yml
       - application-client-${spring.profiles.active}.yml
       - application-storage-${spring.profiles.active}.yml
 springdoc:
   swagger-ui:
     path: /swagger
+server:
+    port: 8080
 
 jwt:
     access:
