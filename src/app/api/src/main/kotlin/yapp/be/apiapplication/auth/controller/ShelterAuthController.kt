@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.auth.controller.model.LoginShelterUserRequest
 import yapp.be.apiapplication.auth.controller.model.SignUpWithEssentialInfoRequest
+import yapp.be.apiapplication.auth.controller.model.VolunteerSignUpCheckDuplicationType
 import yapp.be.apiapplication.auth.service.ShelterAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.CheckShelterUserEmailExistResponseDto
 import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
@@ -42,16 +43,20 @@ class ShelterAuthController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/email/exist")
+    @GetMapping("/exist")
     @Operation(
-        summary = "보호소 사용자 이메일 중복여부 체크",
+        summary = "보호소 사용자 입력값 중복여부 체크",
     )
-    fun checkShelterUserEmailDuplicate(
-        @RequestParam email: String
+    fun checkShelterUserDuplicate(
+        @RequestParam value: String,
+        @RequestParam type: VolunteerSignUpCheckDuplicationType
     ): ResponseEntity<CheckShelterUserEmailExistResponseDto> {
-        val resDto = shelterAuthApplicationService.checkIsShelterUserEmailExist(
-            email = Email(email)
-        )
+        val resDto = when (type) {
+            VolunteerSignUpCheckDuplicationType.EMAIL ->
+                shelterAuthApplicationService.checkIsShelterUserEmailExist(
+                    email = Email(value)
+                )
+        }
         return ResponseEntity.ok(resDto)
     }
 

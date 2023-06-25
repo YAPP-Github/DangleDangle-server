@@ -5,11 +5,9 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import yapp.be.apiapplication.auth.controller.model.LoginVolunteerRequest
 import yapp.be.apiapplication.auth.controller.model.VolunteerSignUpRequest
 import yapp.be.apiapplication.auth.service.VolunteerAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.CheckUserNicknameExistResponseDto
-import yapp.be.apiapplication.auth.service.model.LoginVolunteerResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpUserWithEssentialInfoResponseDto
 
 @RestController
@@ -40,19 +38,6 @@ class VolunteerAuthController(
         @RequestParam nickname: String
     ): ResponseEntity<CheckUserNicknameExistResponseDto> {
         val resDto = volunteerAuthApplicationService.checkIsUserNicknameExist(nickname)
-        return ResponseEntity.ok(resDto)
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/token")
-    @Operation(
-        summary = "봉사자 토큰 발급",
-    )
-    fun issueUserToken(
-        @RequestBody req: LoginVolunteerRequest,
-    ): ResponseEntity<LoginVolunteerResponseDto> {
-        val reqDto = req.toDto()
-        val resDto = volunteerAuthApplicationService.issueToken(reqDto)
         return ResponseEntity.ok(resDto)
     }
 }
