@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
 import yapp.be.apiapplication.system.security.CustomOAuth2User
 import yapp.be.apiapplication.system.security.JwtTokenProvider
-import yapp.be.domain.port.inbound.GetUserUseCase
+import yapp.be.domain.port.inbound.GetVolunteerUseCase
 import yapp.be.exceptions.CustomException
 import java.nio.charset.StandardCharsets
 
@@ -18,7 +18,7 @@ class AuthenticationSuccessHandler(
     @Value("\${oauth.redirect-url}")
     private val REDIRECT_URI: String,
     private val jwtTokenProvider: JwtTokenProvider,
-    private val getUserUseCase: GetUserUseCase,
+    private val getVolunteerUseCase: GetVolunteerUseCase,
 ) : AuthenticationSuccessHandler {
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
@@ -29,7 +29,7 @@ class AuthenticationSuccessHandler(
         val userEmail = customOAuth2User.oAuthAttributes.email
 
         try {
-            val user = getUserUseCase.getByEmail(userEmail)
+            val user = getVolunteerUseCase.getByEmail(userEmail)
             val token = jwtTokenProvider.generate(user.id, user.email, user.role)
 
             response.sendRedirect(

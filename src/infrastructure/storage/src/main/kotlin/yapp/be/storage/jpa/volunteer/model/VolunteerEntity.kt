@@ -1,14 +1,14 @@
-package yapp.be.storage.jpa.user.model
+package yapp.be.storage.jpa.volunteer.model
 
 import jakarta.persistence.*
-import yapp.be.domain.model.User
+import yapp.be.domain.model.Volunteer
 import yapp.be.enum.OAuthType
 import yapp.be.enum.Role
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity
-@Table(name = "user")
-class UserEntity(
+@Table(name = "volunteer")
+class VolunteerEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -31,12 +31,12 @@ class UserEntity(
     @Column(name = "is_deleted")
     var deleted: Boolean = false,
 ) : BaseTimeEntity() {
-    fun update(user: User) {
-        this.nickname = user.nickname
-        this.phone = user.phone
-        this.oAuthType = user.oAuthType
-        this.oAuthAccessToken = user.oAuthAccessToken
-        this.oAuthRefreshToken = user.oAuthRefreshToken
-        this.deleted = user.isDeleted
+    fun update(volunteer: Volunteer) {
+        this.nickname = volunteer.nickname
+        this.phone = volunteer.phone
+        this.oAuthType = volunteer.oAuthType
+        this.oAuthAccessToken = volunteer.oAuthAccessToken
+        this.oAuthRefreshToken = volunteer.oAuthRefreshToken
+        this.deleted = volunteer.isDeleted
     }
 }
