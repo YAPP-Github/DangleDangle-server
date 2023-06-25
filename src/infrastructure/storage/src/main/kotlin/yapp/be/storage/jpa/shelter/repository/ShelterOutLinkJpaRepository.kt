@@ -7,4 +7,7 @@ import yapp.be.storage.jpa.shelter.model.ShelterOutlinkEntity
 @Repository
 interface ShelterOutLinkJpaRepository : JpaRepository<ShelterOutlinkEntity, Long> {
     fun findAllByShelterId(shelterId: Long): List<ShelterOutlinkEntity>
+    fun deleteAllByShelterId(shelterId: Long)
+
+    fun deleteByShelterId(shelterId: Long)
 }

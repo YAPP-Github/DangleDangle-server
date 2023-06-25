@@ -25,10 +25,19 @@ class ManageObservationAnimalDomainService(
     }
 
     @Transactional(readOnly = true)
+    override fun getObservationAnimalByIdAndShelterId(observationAnimalId: Long, shelterId: Long): ObservationAnimal {
+        return observationAnimalQueryHandler.findByIdAndShelterId(
+            observationAnimalId = observationAnimalId,
+            shelterId = shelterId
+        )
+    }
+
+    @Transactional(readOnly = true)
     override fun getObservationAnimalById(observationAnimalId: Long): ObservationAnimal {
         return observationAnimalQueryHandler.findById(observationAnimalId)
     }
 
+    @Transactional
     override fun addObservationAnimal(
         shelterId: Long,
         images: List<String>,

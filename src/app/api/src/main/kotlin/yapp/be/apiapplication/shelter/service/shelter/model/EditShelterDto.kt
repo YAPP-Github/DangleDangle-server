@@ -14,8 +14,8 @@ data class EditShelterProfileImageResponseDto(
 
 data class EditShelterWithAdditionalInfoRequestDto(
     val outLinks: List<Pair<OutLinkType, String>>,
-    val parkingInfo: ShelterParkingInfo,
-    val donation: BankAccount,
+    val parkingInfo: ShelterParkingInfo?,
+    val bankAccount: BankAccount?,
     val notice: String?,
 
 )

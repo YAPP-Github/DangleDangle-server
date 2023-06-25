@@ -66,8 +66,8 @@ class EditShelterDomainService(
     @Transactional
     override fun editWithAdditionalInfo(
         shelterId: Long,
-        parkingInfo: ShelterParkingInfo,
-        bankAccount: BankAccount,
+        parkingInfo: ShelterParkingInfo?,
+        bankAccount: BankAccount?,
         notice: String?
     ): Shelter {
         val shelter = shelterQueryHandler.findById(shelterId)
@@ -98,7 +98,9 @@ class EditShelterDomainService(
                 shelterId = it.shelterId
             )
         }
-
-        return shelterOutLinkCommandHandler.upsertAll(updatedOutLinks)
+        return shelterOutLinkCommandHandler.upsertAll(
+            shelterId = shelterId,
+            outLinks = updatedOutLinks
+        )
     }
 }
