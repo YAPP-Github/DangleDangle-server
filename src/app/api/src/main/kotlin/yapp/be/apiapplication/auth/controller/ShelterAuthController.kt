@@ -68,7 +68,7 @@ class ShelterAuthController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/sign-up")
+    @PostMapping("/register")
     @Operation(
         summary = "보호소 사용자 회원가입",
     )
