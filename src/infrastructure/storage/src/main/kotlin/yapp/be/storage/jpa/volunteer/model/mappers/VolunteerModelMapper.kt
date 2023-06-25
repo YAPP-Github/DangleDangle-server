@@ -1,11 +1,11 @@
-package yapp.be.storage.jpa.user.model.mappers
+package yapp.be.storage.jpa.volunteer.model.mappers
 
-import yapp.be.domain.model.User
+import yapp.be.domain.model.Volunteer
 import yapp.be.model.Email
-import yapp.be.storage.jpa.user.model.UserEntity
+import yapp.be.storage.jpa.volunteer.model.VolunteerEntity
 
-fun User.toEntityModel(): UserEntity {
-    return UserEntity(
+fun Volunteer.toEntityModel(): VolunteerEntity {
+    return VolunteerEntity(
         id = this.id,
         email = this.email.value,
         nickname = this.nickname,
@@ -18,8 +18,8 @@ fun User.toEntityModel(): UserEntity {
     )
 }
 
-fun UserEntity.toDomainModel(): User {
-    return User(
+fun VolunteerEntity.toDomainModel(): Volunteer {
+    return Volunteer(
         id = this.id,
         email = Email(this.email),
         nickname = this.nickname,

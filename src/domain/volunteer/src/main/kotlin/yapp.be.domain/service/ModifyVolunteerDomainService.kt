@@ -2,19 +2,19 @@ package yapp.be.domain.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.model.User
-import yapp.be.domain.port.inbound.ModifyUserUseCase
+import yapp.be.domain.model.Volunteer
+import yapp.be.domain.port.inbound.ModifyVolunteerUseCase
 import yapp.be.domain.port.inbound.model.ModifyUserTokenCommand
-import yapp.be.domain.port.outbound.UserQueryHandler
+import yapp.be.domain.port.outbound.VolunteerQueryHandler
 
 @Service
-class ModifyUserDomainService(
-    private val userQueryHandler: UserQueryHandler
-) : ModifyUserUseCase {
+class ModifyVolunteerDomainService(
+    private val volunteerQueryHandler: VolunteerQueryHandler
+) : ModifyVolunteerUseCase {
     @Transactional
-    override fun updateUserToken(command: ModifyUserTokenCommand): User {
-        val userEntity = userQueryHandler.findById(command.userId)
-        val updatedUser = User(
+    override fun updateUserToken(command: ModifyUserTokenCommand): Volunteer {
+        val userEntity = volunteerQueryHandler.findById(command.userId)
+        val updatedVolunteer = Volunteer(
             id = command.userId,
             email = userEntity.email,
             role = userEntity.role,
@@ -24,6 +24,6 @@ class ModifyUserDomainService(
             nickname = userEntity.nickname,
             phone = userEntity.phone,
         )
-        return userQueryHandler.saveToken(updatedUser)
+        return volunteerQueryHandler.saveToken(updatedVolunteer)
     }
 }

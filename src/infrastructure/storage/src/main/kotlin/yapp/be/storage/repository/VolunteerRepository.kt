@@ -3,38 +3,38 @@ package yapp.be.storage.repository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.model.User
-import yapp.be.domain.port.outbound.UserQueryHandler
+import yapp.be.domain.model.Volunteer
+import yapp.be.domain.port.outbound.VolunteerQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.storage.config.exceptions.StorageExceptionType
-import yapp.be.storage.jpa.user.model.mappers.toDomainModel
-import yapp.be.storage.jpa.user.model.mappers.toEntityModel
-import yapp.be.storage.jpa.user.repository.UserJpaRepository
+import yapp.be.storage.jpa.volunteer.model.mappers.toDomainModel
+import yapp.be.storage.jpa.volunteer.model.mappers.toEntityModel
+import yapp.be.storage.jpa.volunteer.repository.VolunteerJpaRepository
 
 @Repository
-class UserRepository(
-    private val jpaRepository: UserJpaRepository
-) : UserQueryHandler {
+class VolunteerRepository(
+    private val jpaRepository: VolunteerJpaRepository
+) : VolunteerQueryHandler {
     @Transactional(readOnly = true)
     override fun countAll(): Int {
         return jpaRepository.count().toInt()
     }
 
-    override fun save(user: User): User {
+    override fun save(volunteer: Volunteer): Volunteer {
         val userEntity = jpaRepository.save(
-            user.toEntityModel()
+            volunteer.toEntityModel()
         )
         return userEntity.toDomainModel()
     }
 
     @Transactional(readOnly = true)
-    override fun findByEmail(email: String): User {
+    override fun findByEmail(email: String): Volunteer {
         val userEntity = jpaRepository.findByEmail(email) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.")
         return userEntity.toDomainModel()
     }
 
     @Transactional(readOnly = true)
-    override fun findById(id: Long): User {
+    override fun findById(id: Long): Volunteer {
         val userEntity = jpaRepository.findById(id).orElseThrow { throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.") }
         return userEntity.toDomainModel()
     }
@@ -49,10 +49,10 @@ class UserRepository(
         return jpaRepository.findByNickname(nickname) != null
     }
 
-    override fun saveToken(user: User): User {
-        val userEntity = jpaRepository.findByIdOrNull(user.id)
+    override fun saveToken(volunteer: Volunteer): Volunteer {
+        val userEntity = jpaRepository.findByIdOrNull(volunteer.id)
             ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "User Not Found")
-        userEntity.update(user)
+        userEntity.update(volunteer)
         jpaRepository.save(userEntity)
 
         return userEntity.toDomainModel()
