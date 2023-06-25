@@ -14,5 +14,4 @@ open class BaseTimeEntity {
     lateinit var createdAt: LocalDateTime
     @LastModifiedDate
     lateinit var modifiedAt: LocalDateTime
-
 }

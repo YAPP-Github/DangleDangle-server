@@ -81,11 +81,10 @@ class ObservationAnimalManageApplicationService(
     @Transactional
     fun editObservationAnimal(shelterUserId: Long, observationAnimalId: Long, reqDto: EditObservationAnimalRequestDto): EditObservationAnimalResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
-        val observationAnimal = getObservationAnimalUseCase.getObservationAnimalById(observationAnimalId)
-
-        if (shelterUser.shelterId != observationAnimal.shelterId) {
-            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "접근 권한이 없습니다.")
-        }
+        val observationAnimal = getObservationAnimalUseCase.getObservationAnimalByIdAndShelterId(
+            observationAnimalId = observationAnimalId,
+            shelterId = shelterUser.shelterId
+        )
 
         val updatedObservationAnimal = editObservationAnimalUseCase.editObservationAnimal(
             observationAnimalId = observationAnimalId,

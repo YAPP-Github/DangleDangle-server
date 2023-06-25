@@ -22,6 +22,13 @@ class ObservationAnimalRepository(
         val observationAnimalEntities = observationAnimalJpaRepository.findAllByShelterId(shelterId)
         return observationAnimalEntities.map { it.toDomainModel() }
     }
+    @Transactional(readOnly = true)
+    override fun findByIdAndShelterId(observationAnimalId: Long, shelterId: Long): ObservationAnimal {
+        return observationAnimalJpaRepository.findByIdAndShelterId(
+            id = observationAnimalId,
+            shelterId = shelterId
+        ) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found")
+    }
 
     @Transactional(readOnly = true)
     override fun findById(observationAnimalId: Long): ObservationAnimal {
