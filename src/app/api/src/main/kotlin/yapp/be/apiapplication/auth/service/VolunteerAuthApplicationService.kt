@@ -10,10 +10,11 @@ import yapp.be.domain.port.inbound.CreateVolunteerUseCase
 import yapp.be.domain.port.inbound.model.CreateUserCommand
 
 @Service
-class UserAuthApplicationService(
+class VolunteerAuthApplicationService(
     private val createVolunteerUseCase: CreateVolunteerUseCase,
     private val checkVolunteerUseCase: CheckVolunteerUseCase,
 ) {
+    @Transactional
     fun register(dto: SignUpUserRequestDto): SignUpUserWithEssentialInfoResponseDto {
         val user = createVolunteerUseCase.create(
             CreateUserCommand(

@@ -4,13 +4,17 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import org.springframework.web.util.UriComponentsBuilder
 import yapp.be.apiapplication.system.security.CustomOAuth2User
+import yapp.be.apiapplication.system.security.JwtConfigProperties
 import yapp.be.apiapplication.system.security.JwtTokenProvider
+import yapp.be.apiapplication.system.security.SecurityTokenType
+import yapp.be.apiapplication.system.security.util.CookieUtil
 import yapp.be.domain.port.inbound.GetVolunteerUseCase
+import yapp.be.domain.port.inbound.SaveTokenUseCase
 import yapp.be.exceptions.CustomException
+import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Component
@@ -19,7 +23,9 @@ class AuthenticationSuccessHandler(
     private val REDIRECT_URI: String,
     private val jwtTokenProvider: JwtTokenProvider,
     private val getVolunteerUseCase: GetVolunteerUseCase,
-) : AuthenticationSuccessHandler {
+    private val saveTokenUseCase: SaveTokenUseCase,
+    private val jwtConfigProperties: JwtConfigProperties,
+) : SimpleUrlAuthenticationSuccessHandler() {
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -32,22 +38,14 @@ class AuthenticationSuccessHandler(
             val user = getVolunteerUseCase.getByEmail(userEmail)
             val token = jwtTokenProvider.generate(user.id, user.email, user.role)
 
-            response.sendRedirect(
-                UriComponentsBuilder.fromUriString(REDIRECT_URI)
-                    .queryParam("accessToken", token.accessToken)
-                    .queryParam("refreshToken", token.refreshToken)
-                    .build()
-                    .encode(StandardCharsets.UTF_8)
-                    .toUriString()
-            )
+            saveTokenUseCase.saveToken(token.accessToken, token.refreshToken, jwtConfigProperties.refresh.expire)
+            CookieUtil.addHttpOnlyCookie(SecurityTokenType.ACCESS.value, token.accessToken, jwtConfigProperties.access.expire.toInt())
+            CookieUtil.addHttpOnlyCookie(SecurityTokenType.REFRESH.value, token.refreshToken, jwtConfigProperties.refresh.expire.toInt())
+            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI")
         } catch (e: CustomException) {
-            response.sendRedirect(
-                UriComponentsBuilder.fromUriString(REDIRECT_URI)
-                    .queryParam("isMember", false)
-                    .build()
-                    .encode(StandardCharsets.UTF_8)
-                    .toUriString()
-            )
+            val param = "email=" + URLEncoder.encode(userEmail, StandardCharsets.UTF_8) +
+                "&isMember=" + false
+            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
         }
     }
 }

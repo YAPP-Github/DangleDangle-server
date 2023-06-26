@@ -49,7 +49,6 @@ class ShelterAuthController(
     @Operation(
         summary = "보호소 사용자 입력값 중복여부 체크",
     )
-
     fun checkShelterUserEmailDuplicate(
         @RequestParam value: String,
         @RequestParam type: ShelterSignUpCheckDuplicationType
