@@ -2,7 +2,11 @@ package yapp.be.apiapplication.auth.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.auth.service.model.*
+import yapp.be.apiapplication.auth.service.model.CheckUserNicknameExistResponseDto
+import yapp.be.apiapplication.auth.service.model.LoginVolunteerResponseDto
+import yapp.be.apiapplication.auth.service.model.LoginVolunteerRequestDto
+import yapp.be.apiapplication.auth.service.model.SignUpUserRequestDto
+import yapp.be.apiapplication.auth.service.model.SignUpUserWithEssentialInfoResponseDto
 import yapp.be.apiapplication.system.security.JwtConfigProperties
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
