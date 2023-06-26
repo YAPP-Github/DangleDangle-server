@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.auth.properties
+package yapp.be.apiapplication.system.security
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
