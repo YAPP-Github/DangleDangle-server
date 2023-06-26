@@ -10,10 +10,10 @@ import yapp.be.apiapplication.system.security.CustomOAuth2User
 import yapp.be.apiapplication.system.security.JwtConfigProperties
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
+import yapp.be.apiapplication.system.security.util.CookieUtil
 import yapp.be.domain.port.inbound.GetVolunteerUseCase
 import yapp.be.domain.port.inbound.SaveTokenUseCase
 import yapp.be.exceptions.CustomException
-import yapp.be.utils.CookieUtil
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 

@@ -1,4 +1,4 @@
-package yapp.be.utils
+package yapp.be.apiapplication.system.security.util
 
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
@@ -15,8 +15,6 @@ object CookieUtil {
     private val currentResponse: HttpServletResponse
         get() = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).response
             ?: throw IllegalStateException("HttpServletResponse 가 존재하지 않습니다.")
-
-
     /**
      * 현재 응답에 HttpOnly=true 쿠키 추가.
      */
