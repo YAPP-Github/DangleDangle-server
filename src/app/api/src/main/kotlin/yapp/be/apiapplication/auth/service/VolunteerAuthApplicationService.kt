@@ -46,7 +46,7 @@ class VolunteerAuthApplicationService(
         return CheckUserNicknameExistResponseDto(isExist)
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     fun issueToken(reqDto: LoginVolunteerRequestDto): LoginVolunteerResponseDto {
         val claims = jwtTokenProvider.parseClaims(reqDto.authCode.replace("Bearer ", ""), SecurityTokenType.ACCESS)
 
