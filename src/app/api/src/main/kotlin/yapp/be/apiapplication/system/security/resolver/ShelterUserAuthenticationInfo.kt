@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.system.security.annotations
+package yapp.be.apiapplication.system.security.resolver
 
 import yapp.be.model.Email
 

@@ -7,13 +7,12 @@ import io.jsonwebtoken.security.Keys
 import java.util.Collections
 import java.util.Date
 import javax.crypto.SecretKey
-import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
 import yapp.be.apiapplication.system.exception.ApiExceptionType
-import yapp.be.domain.model.SecurityToken
+import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
 import yapp.be.enum.Role
 import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
@@ -22,15 +21,18 @@ import yapp.be.model.Email
 class JwtTokenProvider(
     val jwtConfigProperties: JwtConfigProperties,
 ) {
-    private val log = LoggerFactory.getLogger(javaClass)
 
-    private fun generateToken(id: Long, email: Email, role: Role, securityTokenType: SecurityTokenType): String {
+    fun generateToken(id: Long, email: Email, role: Role, securityTokenType: SecurityTokenType): String {
         val properties = when (securityTokenType) {
             SecurityTokenType.ACCESS -> {
                 jwtConfigProperties.access
             }
 
             SecurityTokenType.REFRESH -> {
+                jwtConfigProperties.refresh
+            }
+
+            SecurityTokenType.AUTH -> {
                 jwtConfigProperties.refresh
             }
         }
@@ -48,15 +50,6 @@ class JwtTokenProvider(
             .compact()
     }
 
-    fun generate(id: Long, email: Email, role: Role): SecurityToken {
-        val accessToken = generateToken(id, email, role, SecurityTokenType.ACCESS)
-        val refreshToken = generateToken(id, email, role, SecurityTokenType.REFRESH)
-        return SecurityToken(
-            accessToken = accessToken,
-            refreshToken = refreshToken
-        )
-    }
-
     fun parseClaims(token: String, tokenType: SecurityTokenType): Claims? {
         try {
             val key: SecretKey = when (tokenType) {
@@ -65,6 +58,9 @@ class JwtTokenProvider(
                 }
                 SecurityTokenType.REFRESH -> {
                     Keys.hmacShaKeyFor(jwtConfigProperties.refresh.secret.toByteArray())
+                }
+                SecurityTokenType.AUTH -> {
+                    Keys.hmacShaKeyFor(jwtConfigProperties.auth.secret.toByteArray())
                 }
             }
             return Jwts.parser()
@@ -80,7 +76,7 @@ class JwtTokenProvider(
         val id = claims["id"].toString().toLong()
         val email = claims["email"].toString()
         val role = claims["role"] as? String ?: throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "Cannot Find Role")
-        val authorities = Collections.singletonList(SimpleGrantedAuthority("ROLE_$role"))
+        val authorities = Collections.singletonList(SimpleGrantedAuthority(role))
         val principal = CustomUserDetails(
             id = id,
             email = email,

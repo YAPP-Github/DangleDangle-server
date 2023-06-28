@@ -11,16 +11,18 @@ import redis.embedded.RedisServer
 class LocalRedisConfig(
     @Value("\${spring.cache.redis.port}")
     private val redisPort: Int,
-    private var redisServer: RedisServer?
 ) {
+
+    lateinit var redisServer: RedisServer
     @PostConstruct
+    @Throws(Exception::class)
     fun redisServer() {
         redisServer = RedisServer(redisPort)
-        redisServer!!.start()
+        redisServer.start()
     }
 
     @PreDestroy
     fun stopRedis() {
-        redisServer?.stop()
+        redisServer.stop()
     }
 }

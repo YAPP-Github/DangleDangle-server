@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import yapp.be.apiapplication.system.security.CustomOAuth2User
-import yapp.be.apiapplication.system.security.JwtConfigProperties
 import yapp.be.apiapplication.system.security.JwtTokenProvider
+import yapp.be.apiapplication.system.security.SecurityTokenType
+import yapp.be.apiapplication.system.security.oauth2.CustomOAuth2User
+import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
 import yapp.be.domain.port.inbound.GetVolunteerUseCase
 import yapp.be.domain.port.inbound.SaveTokenUseCase
 import yapp.be.exceptions.CustomException
@@ -30,15 +31,39 @@ class AuthenticationSuccessHandler(
         authentication: Authentication
     ) {
         val customOAuth2User = authentication.principal as CustomOAuth2User
-        val userEmail = customOAuth2User.oAuthAttributes.email
+        val userEmail = customOAuth2User.customOAuthAttributes.email
 
         try {
             val user = getVolunteerUseCase.getByEmail(userEmail)
-            val token = jwtTokenProvider.generate(user.id, user.email, user.role)
 
-            saveTokenUseCase.saveToken(token.accessToken, token.refreshToken, jwtConfigProperties.refresh.expire)
+            val authToken = jwtTokenProvider.generateToken(
+                id = user.id,
+                email = user.email,
+                role = user.role,
+                securityTokenType = SecurityTokenType.AUTH
+            )
 
-            val param = "authToken=" + URLEncoder.encode(token.accessToken, StandardCharsets.UTF_8)
+            val accessToken = jwtTokenProvider.generateToken(
+                id = user.id,
+                email = user.email,
+                role = user.role,
+                securityTokenType = SecurityTokenType.ACCESS
+            )
+            val refreshToken = jwtTokenProvider.generateToken(
+                id = user.id,
+                email = user.email,
+                role = user.role,
+                securityTokenType = SecurityTokenType.REFRESH
+            )
+
+            saveTokenUseCase.saveTokensWithAuthToken(
+                authToken = authToken,
+                accessToken = accessToken,
+                refreshToken = refreshToken,
+                jwtConfigProperties.auth.expire
+            )
+
+            val param = "authToken=" + URLEncoder.encode(authToken, StandardCharsets.UTF_8)
             redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
         } catch (e: CustomException) {
             val param = "email=" + URLEncoder.encode(userEmail, StandardCharsets.UTF_8) +

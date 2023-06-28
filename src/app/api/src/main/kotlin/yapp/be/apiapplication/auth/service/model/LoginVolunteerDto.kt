@@ -1,7 +1,7 @@
 package yapp.be.apiapplication.auth.service.model
 
 data class LoginVolunteerRequestDto(
-    val authCode: String
+    val authToken: String
 )
 
 class LoginVolunteerResponseDto(

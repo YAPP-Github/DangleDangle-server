@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.system.security
+package yapp.be.apiapplication.system.security.resolver
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.MethodParameter
@@ -7,8 +7,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
-import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthentication
-import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
+import yapp.be.apiapplication.system.security.CustomUserDetails
 import yapp.be.model.Email
 
 @Configuration
