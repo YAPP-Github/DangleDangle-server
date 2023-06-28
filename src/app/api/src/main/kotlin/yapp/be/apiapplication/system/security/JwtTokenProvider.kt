@@ -33,7 +33,7 @@ class JwtTokenProvider(
             }
 
             SecurityTokenType.AUTH -> {
-                jwtConfigProperties.refresh
+                jwtConfigProperties.auth
             }
         }
         val key: SecretKey = Keys.hmacShaKeyFor(properties.secret.toByteArray())
