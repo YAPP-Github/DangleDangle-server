@@ -62,6 +62,7 @@ class SecurityConfig(
 
         http.authorizeHttpRequests {
             it.requestMatchers(
+                AntPathRequestMatcher("/monitoring/health"),
                 AntPathRequestMatcher("/v1/auth/shelter/**"),
                 AntPathRequestMatcher("/oauth/authorize/**"),
                 AntPathRequestMatcher("/v1/auth/volunteer/**"),
