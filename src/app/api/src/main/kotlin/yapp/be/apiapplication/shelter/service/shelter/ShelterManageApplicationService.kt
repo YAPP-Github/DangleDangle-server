@@ -46,7 +46,7 @@ class ShelterManageApplicationService(
             profileImageUrl = shelter.profileImageUrl,
             outLinks = shelterOutLink.map {
                 GetOutLinkInfoDto(
-                    type = it.type,
+                    outLinkType = it.type,
                     url = it.url
                 )
             },
