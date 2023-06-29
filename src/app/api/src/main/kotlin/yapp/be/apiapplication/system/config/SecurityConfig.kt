@@ -60,7 +60,6 @@ class SecurityConfig(
                 AntPathRequestMatcher("/login/oauth2/**"),
                 AntPathRequestMatcher("/monitoring/health"),
                 AntPathRequestMatcher("/v1/auth/shelter/**"),
-                AntPathRequestMatcher("/oauth/authorize/**"),
                 AntPathRequestMatcher("/v1/auth/volunteer/**"),
             ).permitAll()
             it.requestMatchers(
