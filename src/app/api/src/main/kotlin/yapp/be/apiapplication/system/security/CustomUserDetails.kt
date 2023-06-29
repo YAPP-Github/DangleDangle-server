@@ -9,7 +9,6 @@ class CustomUserDetails(
     private var authorities: Collection<GrantedAuthority>,
     private var attributes: Map<String, Any>?
 ) : UserDetails {
-    // UserDetail Override
     override fun getAuthorities(): Collection<GrantedAuthority> {
         return authorities
     }

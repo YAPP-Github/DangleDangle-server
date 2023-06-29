@@ -20,8 +20,8 @@ import yapp.be.apiapplication.shelter.service.observationanimal.model.AddObserva
 import yapp.be.apiapplication.shelter.service.observationanimal.model.DeleteObservationAnimalResponseDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalResponseDto
 import yapp.be.apiapplication.shelter.service.observationanimal.model.GetObservationAnimalResponseDto
-import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthentication
-import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
+import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
+import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 
 @Tag(name = "특별 케어 동물 관리 api")
 @RequestMapping("/v1/shelter/admin/observation-animal")

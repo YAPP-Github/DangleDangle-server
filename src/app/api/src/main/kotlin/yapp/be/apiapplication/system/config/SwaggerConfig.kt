@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.servers.Server
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
+import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 
 @Configuration
 @SecurityScheme(

@@ -18,8 +18,8 @@ import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileIm
 import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoResponseDto
 import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoResponseDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
-import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthentication
-import yapp.be.apiapplication.system.security.annotations.ShelterUserAuthenticationInfo
+import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
+import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 
 @Tag(name = "보호소 정보 관리 api")
 @RequestMapping("/v1/shelter/admin")

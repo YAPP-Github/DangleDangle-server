@@ -10,6 +10,7 @@ import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoR
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoResponseDto
 import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.JwtTokenProvider
+import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.domain.port.inbound.CreateShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.SignUpShelterUseCase
@@ -34,15 +35,23 @@ class ShelterAuthApplicationService(
             throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "Login Fail")
         }
 
-        val tokens = jwtTokenProvider.generate(
+        val accessToken = jwtTokenProvider.generateToken(
             id = shelterUser.id,
             email = shelterUser.email,
-            role = Role.SHELTER
+            role = Role.SHELTER,
+            securityTokenType = SecurityTokenType.ACCESS
+        )
+
+        val refreshToken = jwtTokenProvider.generateToken(
+            id = shelterUser.id,
+            email = shelterUser.email,
+            role = Role.SHELTER,
+            securityTokenType = SecurityTokenType.REFRESH
         )
 
         return LoginShelterUserResponseDto(
-            accessToken = tokens.accessToken,
-            refreshToken = tokens.refreshToken
+            accessToken = accessToken,
+            refreshToken = refreshToken
         )
     }
 

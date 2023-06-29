@@ -8,6 +8,10 @@ import yapp.be.domain.port.outbound.TokenCommandHandler
 class DeleteTokenDomainService(
     private val tokenCommandHandler: TokenCommandHandler
 ) : DeleteTokenUseCase {
+    override fun deleteTokenByAuthToken(authToken: String) {
+        tokenCommandHandler.deleteTokenByAuthToken(authToken)
+    }
+
     override fun deleteToken(accessToken: String) {
         tokenCommandHandler.deleteToken(accessToken)
     }
