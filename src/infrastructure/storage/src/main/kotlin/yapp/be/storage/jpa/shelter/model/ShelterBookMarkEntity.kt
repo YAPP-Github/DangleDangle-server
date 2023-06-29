@@ -18,5 +18,5 @@ class ShelterBookMarkEntity(
     val shelterId: Long,
 
     @Column(name = "volunteer_id")
-    val volunteer_id: Long
+    val volunteerId: Long
 )
