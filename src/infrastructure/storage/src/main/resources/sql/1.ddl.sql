@@ -140,8 +140,6 @@ CREATE TABLE `shelter_bookmark`
     `id`                                  bigint            not null primary key auto_increment,
     `shelter_id`                          bigint            not null,
     `volunteer_id`                        bigint            not null,
-    `created_at`                          datetime          not null,
-    `modified_at`                         datetime,
      index IDX_SHELTER_BOOKMARK(`volunteer_id`,`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

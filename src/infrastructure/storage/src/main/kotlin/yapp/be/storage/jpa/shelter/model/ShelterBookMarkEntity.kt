@@ -1,7 +1,6 @@
 package yapp.be.storage.jpa.shelter.model
 
 import jakarta.persistence.*
-import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity
 @Table(
@@ -20,4 +19,4 @@ class ShelterBookMarkEntity(
 
     @Column(name = "volunteer_id")
     val volunteerId: Long
-) : BaseTimeEntity()
+)
