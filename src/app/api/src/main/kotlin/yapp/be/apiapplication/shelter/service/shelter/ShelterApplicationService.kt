@@ -23,7 +23,7 @@ class ShelterApplicationService(
         return BookMarkShelterResponseDto(
             shelterId = shelter.id,
             volunteerId = reqDto.volunteerId,
-            isBookMarked = shelterBookMark != null
+            bookMarked = shelterBookMark != null
         )
     }
 }

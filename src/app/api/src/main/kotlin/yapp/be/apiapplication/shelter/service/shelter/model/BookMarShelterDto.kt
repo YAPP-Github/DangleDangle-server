@@ -7,5 +7,5 @@ data class BookMarkShelterRequestDto(
 data class BookMarkShelterResponseDto(
     val shelterId: Long,
     val volunteerId: Long,
-    val isBookMarked: Boolean
+    val bookMarked: Boolean
 )
