@@ -26,7 +26,7 @@ data class GetBankAccountInfoDto(
     val accountNumber: String
 )
 data class GetOutLinkInfoDto(
-    val type: OutLinkType,
+    val outLinkType: OutLinkType,
     val url: String
 )
 
