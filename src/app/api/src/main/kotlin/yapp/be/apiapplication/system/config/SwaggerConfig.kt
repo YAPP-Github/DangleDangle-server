@@ -12,6 +12,7 @@ import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
+import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationInfo
 
 @Configuration
 @SecurityScheme(
@@ -25,7 +26,7 @@ import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 class SwaggerConfig {
 
     init {
-        val ignoreTypes = setOf<Class<*>>(ShelterUserAuthenticationInfo::class.java).toTypedArray()
+        val ignoreTypes = setOf<Class<*>>(ShelterUserAuthenticationInfo::class.java, VolunteerAuthenticationInfo::class.java).toTypedArray()
         SpringDocUtils.getConfig().addRequestWrapperToIgnore(*ignoreTypes)
     }
     @Bean

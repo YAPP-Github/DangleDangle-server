@@ -19,4 +19,4 @@ spring:
                         user-info-uri: https://kapi.kakao.com/v2/user/me
                         user-name-attribute: id
 oauth:
-    redirect-url: "http://localhost:3000/volunteer/redirect"
+    redirect-url: ${DEV_FRONT_REDIRECT_URL:http://localhost:3000/volunteer/redirect}
