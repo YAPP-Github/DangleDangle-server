@@ -23,7 +23,7 @@ class ObservationAnimalEntity(
     var profileImageUrl: String,
 
     @Column(name = "age")
-    var age: Int,
+    var age: String,
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)

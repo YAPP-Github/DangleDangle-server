@@ -42,7 +42,7 @@ class ManageObservationAnimalDomainService(
         shelterId: Long,
         images: List<String>,
         name: String,
-        age: Int,
+        age: String,
         gender: Gender,
         breed: String,
         specialNote: String
@@ -68,7 +68,7 @@ class ManageObservationAnimalDomainService(
         shelterId: Long,
         images: List<String>,
         name: String,
-        age: Int,
+        age: String,
         gender: Gender,
         breed: String,
         specialNote: String

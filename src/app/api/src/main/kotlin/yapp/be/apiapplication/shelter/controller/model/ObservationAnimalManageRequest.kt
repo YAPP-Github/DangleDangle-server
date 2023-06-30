@@ -7,7 +7,7 @@ import yapp.be.enum.Gender
 data class AddObservationAnimalRequest(
     val images: List<String>,
     val name: String,
-    val age: Int,
+    val age: String,
     val gender: Gender,
     val breed: String,
     val specialNote: String
@@ -28,7 +28,7 @@ data class AddObservationAnimalRequest(
 data class EditObservationAnimalRequest(
     val images: List<String>,
     val name: String,
-    val age: Int,
+    val age: String,
     val gender: Gender,
     val breed: String,
     val specialNote: String

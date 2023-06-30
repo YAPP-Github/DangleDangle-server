@@ -28,8 +28,6 @@ CREATE TABLE `shelter_user`
     unique index UDX_EMAIL (`email`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-# shelter의 경우, image가 여러개로 늘어날 수 있다. (이 때 별도의 테이블을 파야 할 듯)
 CREATE TABLE `shelter`
 (
     `id`                                  bigint       not null primary key auto_increment,
@@ -61,14 +59,13 @@ CREATE TABLE `shelter_out_link`
     index IDX_SHELTER_ID (`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-# 관찰동물의 경우 사진은 무조건 1장
 CREATE TABLE `observation_animal`
 (
     `id`                                  bigint          not null primary key auto_increment,
     `name`                                varchar(20)     not null,
     `profile_image_url`                   varchar(100)    not null,
     `special_note`                        varchar(255)    not null,
-    `age`                                 int             not null,
+    `age`                                 varchar(10)     not null,
     `gender`                              varchar(20)     not null,
     `breed`                               varchar(30)     not null,
     `shelter_id`                          bigint          not null,
