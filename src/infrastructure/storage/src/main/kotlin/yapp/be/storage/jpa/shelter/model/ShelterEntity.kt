@@ -48,7 +48,7 @@ class ShelterEntity(
         this.bankAccountNum = shelter.bankAccount?.accountNumber
         this.profileImageUrl = shelter.profileImageUrl
         this.parkingEnabled = shelter.parkingInfo?.parkingEnabled
-        this.parkingNotice = shelter.parkingInfo?.notice
+        this.parkingNotice = shelter.parkingInfo?.parkingNotice
         this.notice = shelter.notice
     }
 }

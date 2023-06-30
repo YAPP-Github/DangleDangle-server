@@ -53,12 +53,12 @@ class ShelterManageApplicationService(
             parkingInfo = shelter.parkingInfo?.let {
                 GetShelterParkingInfoDto(
                     parkingEnabled = it.parkingEnabled,
-                    notice = it.notice
+                    parkingNotice = it.parkingNotice
                 )
             },
             bankAccount = shelter.bankAccount?.let {
                 GetBankAccountInfoDto(
-                    name = it.name,
+                    bankName = it.name,
                     accountNumber = it.accountNumber
                 )
             },

@@ -66,7 +66,7 @@ class SecurityConfig(
                 AntPathRequestMatcher("/v1/shelter/admin/**")
             ).hasAuthority(Role.SHELTER.name)
             it.anyRequest()
-                .hasAuthority(Role.VOLUNTEER.name)
+                .hasAnyAuthority(Role.VOLUNTEER.name, Role.SHELTER.name)
         }
 
         http

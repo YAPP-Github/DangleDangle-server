@@ -23,7 +23,7 @@ fun Shelter.toEntityModel(): ShelterEntity {
         bankAccountNum = this.bankAccount?.accountNumber,
         notice = this.notice,
         parkingEnabled = this.parkingInfo?.parkingEnabled,
-        parkingNotice = this.parkingInfo?.notice,
+        parkingNotice = this.parkingInfo?.parkingNotice,
         profileImageUrl = this.profileImageUrl
     )
 }
@@ -48,7 +48,7 @@ fun ShelterEntity.toDomainModel(): Shelter {
             latitude = this.address.latitude
         ),
         parkingInfo = run {
-            if (this.parkingEnabled != null && this.parkingNotice != null) ShelterParkingInfo(parkingEnabled = this.parkingEnabled!!, notice = this.parkingNotice!!)
+            if (this.parkingEnabled != null && this.parkingNotice != null) ShelterParkingInfo(parkingEnabled = this.parkingEnabled!!, parkingNotice = this.parkingNotice!!)
             else null
         }
     )

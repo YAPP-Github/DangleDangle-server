@@ -28,7 +28,7 @@ class VolunteerAuthApplicationService(
             CreateUserCommand(
                 nickname = dto.nickname,
                 email = dto.email,
-                phone = dto.phone
+                phone = dto.phoneNumber
             )
         )
 

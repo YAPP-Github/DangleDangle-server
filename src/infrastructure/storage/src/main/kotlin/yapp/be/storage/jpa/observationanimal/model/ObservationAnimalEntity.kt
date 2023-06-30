@@ -20,20 +20,20 @@ class ObservationAnimalEntity(
     var name: String,
 
     @Column(name = "profile_image_url")
-    var profileImageUrl: String,
+    var profileImageUrl: String?,
 
     @Column(name = "age")
-    var age: Int,
+    var age: String?,
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    var gender: Gender,
+    var gender: Gender?,
 
     @Column(name = "special_note")
     var specialNote: String,
 
     @Column(name = "breed")
-    var breed: String,
+    var breed: String?,
 
     @Column(name = "shelter_id")
     var shelterId: Long
