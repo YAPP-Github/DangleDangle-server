@@ -42,9 +42,9 @@ class ManageObservationAnimalDomainService(
         shelterId: Long,
         images: List<String>,
         name: String,
-        age: String,
-        gender: Gender,
-        breed: String,
+        age: String?,
+        gender: Gender?,
+        breed: String?,
         specialNote: String
     ): ObservationAnimal {
 
@@ -53,7 +53,7 @@ class ManageObservationAnimalDomainService(
             name = name,
             age = age,
             gender = gender,
-            profileImageUrl = images.last(),
+            profileImageUrl = images.lastOrNull(),
             specialNote = specialNote,
             shelterId = shelter.id,
             breed = breed
@@ -68,15 +68,15 @@ class ManageObservationAnimalDomainService(
         shelterId: Long,
         images: List<String>,
         name: String,
-        age: String,
-        gender: Gender,
-        breed: String,
+        age: String?,
+        gender: Gender?,
+        breed: String?,
         specialNote: String
     ): ObservationAnimal {
         val observationAnimal = observationAnimalQueryHandler.findById(observationAnimalId)
         val updatedObservationAnimal = ObservationAnimal(
             id = observationAnimal.id,
-            profileImageUrl = images.last(),
+            profileImageUrl = images.lastOrNull(),
             name = name,
             age = age,
             gender = gender,

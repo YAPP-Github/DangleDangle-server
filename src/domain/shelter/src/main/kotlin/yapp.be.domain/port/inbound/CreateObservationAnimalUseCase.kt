@@ -8,9 +8,9 @@ interface CreateObservationAnimalUseCase {
         shelterId: Long,
         images: List<String>,
         name: String,
-        age: String,
-        gender: Gender,
-        breed: String,
+        age: String?,
+        gender: Gender?,
+        breed: String??,
         specialNote: String
     ): ObservationAnimal
 }
