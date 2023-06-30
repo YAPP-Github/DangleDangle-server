@@ -6,13 +6,13 @@ import yapp.be.model.Email
 data class VolunteerSignUpRequest(
     val nickname: String,
     val email: String,
-    val phone: String,
+    val phoneNumber: String,
 ) {
     fun toDto(): SignUpUserRequestDto {
         return SignUpUserRequestDto(
             email = Email(email),
             nickname = nickname,
-            phone = phone,
+            phoneNumber = phoneNumber,
         )
     }
 }

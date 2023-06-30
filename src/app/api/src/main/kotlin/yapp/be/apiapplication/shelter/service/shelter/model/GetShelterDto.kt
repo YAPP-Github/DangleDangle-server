@@ -22,7 +22,7 @@ data class GetShelterAddressInfoDto(
     val longitude: Double,
 )
 data class GetBankAccountInfoDto(
-    val name: String,
+    val bankName: String,
     val accountNumber: String
 )
 data class GetOutLinkInfoDto(
@@ -32,5 +32,5 @@ data class GetOutLinkInfoDto(
 
 data class GetShelterParkingInfoDto(
     val parkingEnabled: Boolean,
-    val notice: String?
+    val parkingNotice: String?
 )

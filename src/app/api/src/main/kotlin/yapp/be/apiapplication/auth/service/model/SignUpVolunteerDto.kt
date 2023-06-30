@@ -5,7 +5,7 @@ import yapp.be.model.Email
 class SignUpUserRequestDto(
     val nickname: String,
     val email: Email,
-    val phone: String,
+    val phoneNumber: String,
 )
 
 data class SignUpUserWithEssentialInfoResponseDto(

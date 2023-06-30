@@ -61,15 +61,15 @@ data class EditShelterAdditionalInfoRequest(
             },
             parkingInfo = parkingInfo?.let {
                 ShelterParkingInfo(
-                    parkingEnabled = this.parkingInfo.isParkingEnabled,
-                    notice = this.parkingInfo.parkingNotice
+                    parkingEnabled = this.parkingInfo.parkingEnabled,
+                    parkingNotice = this.parkingInfo.parkingNotice
                 )
             },
             notice = this.notice
         )
     }
     data class EditShelterParkingInfo(
-        val isParkingEnabled: Boolean,
+        val parkingEnabled: Boolean,
         val parkingNotice: String,
     )
     data class EditShelterDonationInfo(
