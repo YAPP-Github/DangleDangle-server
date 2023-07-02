@@ -11,6 +11,7 @@ data class Volunteer(
     val phone: String,
     val role: Role = Role.VOLUNTEER,
     val oAuthType: OAuthType = OAuthType.KAKAO,
+    val oAuthIdentifier: String,
     val oAuthAccessToken: String? = null,
     val oAuthRefreshToken: String? = null,
     val isDeleted: Boolean = false,

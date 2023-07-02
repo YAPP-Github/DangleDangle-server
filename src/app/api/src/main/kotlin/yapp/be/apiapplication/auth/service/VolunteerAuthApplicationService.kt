@@ -21,15 +21,21 @@ class VolunteerAuthApplicationService(
     private val createVolunteerUseCase: CreateVolunteerUseCase,
     private val checkVolunteerUseCase: CheckVolunteerUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
+    private val getOAuthNonMemberInfoUseCase: GetOAuthNonMemberInfoUseCase,
     private val jwtConfigProperties: JwtConfigProperties,
 ) {
     @Transactional
     fun register(dto: SignUpUserRequestDto): SignUpUserWithEssentialInfoResponseDto {
+
+        val oAuthNonMemberInfo = getOAuthNonMemberInfoUseCase.get(dto.email)
+            ?: throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "로그인 유효시간이 만료되었거나, 비정상적인 접근입니다.")
+
         val user = createVolunteerUseCase.create(
             CreateUserCommand(
                 nickname = dto.nickname,
                 email = dto.email,
-                phone = dto.phoneNumber
+                phone = dto.phoneNumber,
+                oAuthUserIdentifier = oAuthNonMemberInfo
             )
         )
 

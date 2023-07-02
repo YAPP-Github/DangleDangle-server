@@ -17,6 +17,7 @@ class CreateVolunteerDomainService(
             nickname = command.nickname,
             email = command.email,
             phone = command.phone,
+            oAuthIdentifier = command.oAuthUserIdentifier
         )
         return volunteerCommandHandler.save(volunteer)
     }

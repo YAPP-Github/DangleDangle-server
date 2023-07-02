@@ -15,16 +15,17 @@ class ModifyVolunteerDomainService(
 ) : ModifyVolunteerUseCase {
     @Transactional
     override fun updateUserToken(command: ModifyUserTokenCommand): Volunteer {
-        val userEntity = volunteerQueryHandler.findById(command.userId)
+        val user = volunteerQueryHandler.findById(command.userId)
         val updatedVolunteer = Volunteer(
             id = command.userId,
-            email = userEntity.email,
-            role = userEntity.role,
-            oAuthType = userEntity.oAuthType,
+            email = user.email,
+            role = user.role,
+            oAuthType = user.oAuthType,
+            oAuthIdentifier = user.oAuthIdentifier,
             oAuthAccessToken = command.oAuth2AccessToken,
             oAuthRefreshToken = command.oAuth2RefreshToken,
-            nickname = userEntity.nickname,
-            phone = userEntity.phone,
+            nickname = user.nickname,
+            phone = user.phone,
         )
         return volunteerCommandHandler.saveToken(updatedVolunteer)
     }
