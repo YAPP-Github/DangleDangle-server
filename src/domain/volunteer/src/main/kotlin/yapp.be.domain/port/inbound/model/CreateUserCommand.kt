@@ -6,4 +6,5 @@ data class CreateUserCommand(
     val nickname: String,
     val email: Email,
     val phone: String,
+    val oAuthUserIdentifier: String
 )

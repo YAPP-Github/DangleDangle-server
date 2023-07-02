@@ -4,7 +4,7 @@ import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Repository
 import java.time.Duration
 @Repository
-class RedisRepository(
+class RedisHandler(
     private val stringRedisTemplate: StringRedisTemplate
 ) {
     fun getData(key: String): String? {
@@ -21,11 +21,11 @@ class RedisRepository(
         valueOperations[key] = value
     }
 
-    fun setDataExpire(key: String, value: String, duration: Long) {
+    fun setDataExpire(key: String, value: String, duration: Duration) {
         if (stringRedisTemplate.hasKey(key)) {
             stringRedisTemplate.delete(key)
         }
-        stringRedisTemplate.opsForValue().set(key, value, Duration.ofSeconds(duration))
+        stringRedisTemplate.opsForValue().set(key, value, duration)
     }
 
     fun deleteData(key: String) {

@@ -5,13 +5,14 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Volunteer
 import yapp.be.domain.port.inbound.GetVolunteerUseCase
 import yapp.be.domain.port.outbound.VolunteerQueryHandler
+import yapp.be.model.Email
 
 @Service
 class GetVolunteerDomainService(
     private val volunteerQueryHandler: VolunteerQueryHandler
 ) : GetVolunteerUseCase {
     @Transactional(readOnly = true)
-    override fun getByEmail(email: String): Volunteer {
-        return volunteerQueryHandler.findByEmail(email)
+    override fun getByEmail(email: Email): Volunteer {
+        return volunteerQueryHandler.findByEmail(email.value)
     }
 }

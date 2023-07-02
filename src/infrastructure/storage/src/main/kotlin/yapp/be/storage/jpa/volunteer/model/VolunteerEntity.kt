@@ -24,6 +24,8 @@ class VolunteerEntity(
     @Column(name = "o_auth_type")
     @Enumerated(EnumType.STRING)
     var oAuthType: OAuthType = OAuthType.KAKAO,
+    @Column(name = "o_auth_identifier")
+    val oAuthIdentifier: String,
     @Column(name = "o_auth_access_token")
     var oAuthAccessToken: String? = null,
     @Column(name = "o_auth_refresh_token")

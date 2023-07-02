@@ -4,6 +4,7 @@ CREATE TABLE `volunteer`
 (
     `id`                                  bigint       not null primary key auto_increment,
     `o_auth_type`                         varchar(20)  not null,
+    `o_auth_identifier`                   varchar(50)  not null,
     `o_auth_access_token`                 varchar(100) null,
     `o_auth_refresh_token`                 varchar(100) null,
     `is_deleted`                          boolean      not null,

@@ -12,6 +12,7 @@ fun Volunteer.toEntityModel(): VolunteerEntity {
         role = this.role,
         phone = this.phone,
         oAuthType = this.oAuthType,
+        oAuthIdentifier = this.oAuthIdentifier,
         oAuthAccessToken = this.oAuthAccessToken,
         oAuthRefreshToken = this.oAuthRefreshToken,
         deleted = this.isDeleted,
@@ -26,6 +27,7 @@ fun VolunteerEntity.toDomainModel(): Volunteer {
         role = this.role,
         phone = this.phone,
         oAuthType = this.oAuthType,
+        oAuthIdentifier = this.oAuthIdentifier,
         oAuthAccessToken = this.oAuthAccessToken,
         oAuthRefreshToken = this.oAuthRefreshToken,
         isDeleted = this.deleted
