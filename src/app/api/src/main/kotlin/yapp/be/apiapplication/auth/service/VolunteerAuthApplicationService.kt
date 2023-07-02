@@ -12,6 +12,7 @@ import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
 import yapp.be.domain.port.inbound.*
 import yapp.be.domain.port.inbound.model.CreateUserCommand
 import yapp.be.exceptions.CustomException
+import java.time.Duration
 
 @Service
 class VolunteerAuthApplicationService(
@@ -52,7 +53,7 @@ class VolunteerAuthApplicationService(
         saveTokenUseCase.saveToken(
             accessToken = tokens[0],
             refreshToken = tokens[1],
-            expire = jwtConfigProperties.refresh.expire
+            expire = Duration.ofMillis(jwtConfigProperties.refresh.expire)
         )
 
         deleteTokenUseCase.deleteTokenByAuthToken(authToken = reqDto.authToken)

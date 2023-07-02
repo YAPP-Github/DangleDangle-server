@@ -3,36 +3,37 @@ package yapp.be.redis.repository
 import org.springframework.stereotype.Component
 import yapp.be.domain.port.outbound.TokenCommandHandler
 import yapp.be.domain.port.outbound.TokenQueryHandler
+import java.time.Duration
 
 @Component
 class TokenRepository(
-    private val redisRepository: RedisRepository,
+    private val redisHandler: RedisHandler,
 ) : TokenQueryHandler, TokenCommandHandler {
 
     override fun getTokensByAuthToken(authToken: String): String? {
-        return redisRepository.getData(authToken)
+        return redisHandler.getData(authToken)
     }
-    override fun saveToken(accessToken: String, refreshToken: String, expire: Long) {
-        redisRepository.setDataExpire(
+    override fun saveToken(accessToken: String, refreshToken: String, duration: Duration) {
+        redisHandler.setDataExpire(
             key = accessToken,
             value = refreshToken,
-            duration = expire
+            duration = duration
         )
     }
 
-    override fun saveTokensWithAuthToken(authToken: String, accessToken: String, refreshToken: String, expire: Long) {
-        redisRepository.setDataExpire(
+    override fun saveTokensWithAuthToken(authToken: String, accessToken: String, refreshToken: String, duration: Duration) {
+        redisHandler.setDataExpire(
             key = authToken,
             value = "$accessToken,$refreshToken",
-            duration = expire
+            duration = duration
         )
     }
 
     override fun deleteTokenByAuthToken(authToken: String) {
-        redisRepository.deleteData(authToken)
+        redisHandler.deleteData(authToken)
     }
 
     override fun deleteToken(accessToken: String) {
-        redisRepository.deleteData(accessToken)
+        redisHandler.deleteData(accessToken)
     }
 }

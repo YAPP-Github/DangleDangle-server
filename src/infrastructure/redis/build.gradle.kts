@@ -9,6 +9,7 @@ dependencies {
     implementation("it.ozimov:embedded-redis:$embeddedRedisVersion")
 
     implementation(project(":auth"))
+    implementation(project(":common"))
 }
 
 tasks.named<BootJar>("bootJar") {

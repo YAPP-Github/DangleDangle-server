@@ -1,16 +1,18 @@
 package yapp.be.domain.port.inbound
 
+import java.time.Duration
+
 interface SaveTokenUseCase {
 
     fun saveTokensWithAuthToken(
         authToken: String,
         accessToken: String,
         refreshToken: String,
-        authTokenExpire: Long
+        authTokenExpire: Duration
     )
     fun saveToken(
         accessToken: String,
         refreshToken: String,
-        expire: Long,
+        expire: Duration,
     )
 }
