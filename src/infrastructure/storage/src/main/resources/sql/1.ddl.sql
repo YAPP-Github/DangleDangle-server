@@ -85,8 +85,9 @@ CREATE TABLE `volunteer_event`
     `age_limit`                           varchar(20)      not null,
     `status`                              varchar(20)      not null,
     `shelter_id`                          bigint           not null,
-    `event_at`                            datetime        not null,
-    `created_at`                          datetime        not null,
+    `start_at`                            datetime         not null,
+    `end_at`                              datetime         not null,
+    `created_at`                          datetime         not null,
     `modified_at`                         datetime,
     index IDX_SHELTER_ID (`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

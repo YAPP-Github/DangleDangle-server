@@ -30,8 +30,10 @@ class VolunteerEventEntity(
     @Column(name = "age_limit")
     @Enumerated(EnumType.STRING)
     val ageLimit: AgeLimit,
-    @Column(name = "eventAt")
-    val eventAt: LocalDateTime,
+    @Column(name = "start_at")
+    val startAt: LocalDateTime,
+    @Column(name = "end_at")
+    val endAt: LocalDateTime,
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     val status: VolunteerEventStatus,
