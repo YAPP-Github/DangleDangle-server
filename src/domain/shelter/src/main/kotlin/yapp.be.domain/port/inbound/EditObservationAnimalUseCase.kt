@@ -1,7 +1,7 @@
 package yapp.be.domain.port.inbound
 
 import yapp.be.domain.model.ObservationAnimal
-import yapp.be.enum.Gender
+import yapp.be.enums.observaitonanimal.Gender
 
 interface EditObservationAnimalUseCase {
 

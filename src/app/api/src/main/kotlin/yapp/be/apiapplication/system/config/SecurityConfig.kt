@@ -22,7 +22,7 @@ import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
-import yapp.be.enum.Role
+import yapp.be.enums.volunteerevent.Role
 
 @Configuration
 @EnableWebSecurity

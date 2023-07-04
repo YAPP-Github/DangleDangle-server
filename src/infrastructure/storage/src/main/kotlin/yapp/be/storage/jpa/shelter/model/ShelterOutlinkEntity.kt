@@ -1,7 +1,7 @@
 package yapp.be.storage.jpa.shelter.model
 
 import jakarta.persistence.*
-import yapp.be.enum.OutLinkType
+import yapp.be.enums.volunteerevent.OutLinkType
 
 @Entity
 @Table(

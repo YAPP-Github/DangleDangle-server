@@ -1,7 +1,7 @@
 package yapp.be.domain.model
 
-import yapp.be.enum.OAuthType
-import yapp.be.enum.Role
+import yapp.be.enums.volunteerevent.OAuthType
+import yapp.be.enums.volunteerevent.Role
 import yapp.be.model.Email
 
 data class Volunteer(

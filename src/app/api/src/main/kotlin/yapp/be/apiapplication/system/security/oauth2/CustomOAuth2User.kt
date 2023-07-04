@@ -3,7 +3,7 @@ package yapp.be.apiapplication.system.security.oauth2
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.core.user.OAuth2User
-import yapp.be.enum.Role
+import yapp.be.enums.volunteerevent.Role
 import java.util.*
 
 class CustomOAuth2User(

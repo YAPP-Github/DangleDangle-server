@@ -13,7 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
 import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
-import yapp.be.enum.Role
+import yapp.be.enums.volunteerevent.Role
 import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
 

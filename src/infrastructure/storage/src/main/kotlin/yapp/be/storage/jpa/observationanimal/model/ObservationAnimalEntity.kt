@@ -2,7 +2,7 @@ package yapp.be.storage.jpa.observationanimal.model
 
 import jakarta.persistence.*
 import yapp.be.domain.model.ObservationAnimal
-import yapp.be.enum.Gender
+import yapp.be.enums.observaitonanimal.Gender
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity

@@ -14,7 +14,7 @@ import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.domain.port.inbound.CreateShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.SignUpShelterUseCase
-import yapp.be.enum.Role
+import yapp.be.enums.volunteerevent.Role
 import yapp.be.exceptions.CustomException
 import yapp.be.model.Email
 

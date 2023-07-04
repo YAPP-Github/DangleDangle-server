@@ -10,7 +10,7 @@ import yapp.be.domain.port.inbound.GetObservationAnimalUseCase
 import yapp.be.domain.port.outbound.ObservationAnimalCommandHandler
 import yapp.be.domain.port.outbound.ObservationAnimalQueryHandler
 import yapp.be.domain.port.outbound.ShelterQueryHandler
-import yapp.be.enum.Gender
+import yapp.be.enums.observaitonanimal.Gender
 
 @Service
 class ManageObservationAnimalDomainService(
