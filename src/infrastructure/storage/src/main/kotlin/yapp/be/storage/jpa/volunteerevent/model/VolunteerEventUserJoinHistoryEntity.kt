@@ -4,13 +4,13 @@ import jakarta.persistence.*
 
 @Entity
 @Table(
-    name = "volunteer_event_user_mapping",
+    name = "volunteer_event_user_join_history",
     indexes = [
         Index(name = "IDX_USER_ID", columnList = "volunteer_id"),
         Index(name = "IDX_VOLUNTEER_EVENT_ID", columnList = "volunteer_event_id")
     ]
 )
-class VolunteerEventUserMappingEntity(
+class VolunteerEventUserJoinHistoryEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

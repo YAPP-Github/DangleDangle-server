@@ -102,7 +102,6 @@ class ShelterManageController(
     fun addVolunteerEvent(
         @RequestBody req: AddVolunteerEventRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
-    ){
-
+    ) {
     }
 }

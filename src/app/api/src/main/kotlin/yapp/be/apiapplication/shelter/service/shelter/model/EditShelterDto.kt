@@ -18,7 +18,7 @@ data class EditShelterWithAdditionalInfoRequestDto(
     val bankAccount: BankAccount?,
     val notice: String?,
 
-    )
+)
 data class EditShelterWithAdditionalInfoResponseDto(
     val shelterId: Long,
     val shelterUserId: Long

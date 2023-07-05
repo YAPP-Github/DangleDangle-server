@@ -12,6 +12,8 @@ import yapp.be.model.Email
 
 @Configuration
 class VolunteerAuthenticationInfoArgumentResolver : HandlerMethodArgumentResolver {
+
+    private val NON_AUTHENTICATED_USER = "anonymousUser"
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.getParameterAnnotation(VolunteerAuthentication::class.java) != null &&
             parameter.parameterType == VolunteerAuthenticationInfo::class.java
@@ -22,13 +24,16 @@ class VolunteerAuthenticationInfoArgumentResolver : HandlerMethodArgumentResolve
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?
-    ): Any {
+    ): Any? {
         val authenticationToken = SecurityContextHolder.getContext().authentication
-        val principal = authenticationToken.principal as CustomUserDetails
-        return VolunteerAuthenticationInfo(
-            volunteerId = principal.id!!,
-            email = Email(principal.username)
+        return if (authenticationToken.name != NON_AUTHENTICATED_USER) {
+            val principal = authenticationToken.principal as CustomUserDetails
+            return VolunteerAuthenticationInfo(
+                volunteerId = principal.id!!,
+                email = Email(principal.username)
 
-        )
+            )
+        } else
+            null
     }
 }
