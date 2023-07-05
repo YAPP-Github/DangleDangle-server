@@ -21,7 +21,7 @@ import java.time.Year
 class VolunteerEventController(
     private val volunteerEventApplicationService: VolunteerEventApplicationService
 ) {
-    @GetMapping("/{shelterId}/volunteer-event")
+    @GetMapping
     fun getVolunteerEvents(
         @PathVariable shelterId: Long,
         @RequestParam year: Int,
