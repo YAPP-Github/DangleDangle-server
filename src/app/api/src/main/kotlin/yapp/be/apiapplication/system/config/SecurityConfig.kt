@@ -22,7 +22,7 @@ import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
-import yapp.be.enum.Role
+import yapp.be.enums.volunteerevent.Role
 
 @Configuration
 @EnableWebSecurity
@@ -61,6 +61,7 @@ class SecurityConfig(
                 AntPathRequestMatcher("/monitoring/health"),
                 AntPathRequestMatcher("/v1/auth/shelter/**"),
                 AntPathRequestMatcher("/v1/auth/volunteer/**"),
+                AntPathRequestMatcher("/v1/shelter/**"),
             ).permitAll()
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/admin/**")

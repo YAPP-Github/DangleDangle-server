@@ -80,10 +80,10 @@ CREATE TABLE `volunteer_event`
     `id`                                  bigint           not null primary key auto_increment,
     `title`                               varchar(50)      not null,
     `recruit_num`                         int              not null,
-    `participant_num`                     int              not null,
     `materials`                           varchar(100),
-    `age_limit`                           varchar(20)      not null,
-    `status`                              varchar(20)      not null,
+    `age_limit`                           varchar(30)      not null,
+    `status`                              varchar(30)      not null,
+    `category`                            varchar(30)      not null,
     `shelter_id`                          bigint           not null,
     `start_at`                            datetime         not null,
     `end_at`                              datetime         not null,
@@ -92,46 +92,23 @@ CREATE TABLE `volunteer_event`
     index IDX_SHELTER_ID (`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `volunteer_event_user_mapping`
+CREATE TABLE `volunteer_event_join_queue`
 (
-    `id`                                  bigint           not null primary key auto_increment,
-    `volunteer_event_id`                  bigint           not null,
-    `volunteer_id`                             bigint           not null,
+    `id`                                      bigint           not null primary key auto_increment,
+    `volunteer_event_id`                      bigint           not null,
+    `volunteer_id`                            bigint           not null,
     index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`),
     index IDX_VOLUNTEER_ID(`volunteer_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-CREATE TABLE `volunteer_event_activity_type`
-(
-    `id`                                  bigint            not null primary key auto_increment,
-    `name`                                varchar(20)       not null,
-    unique index UDX_NAME (`name`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `volunteer_event_activity_type_mapping`
-(
-    `id`                                  bigint            not null primary key auto_increment,
-    `volunteer_event_id`                  bigint            not null,
-    `volunteer_event_activity_type_id`    bigint            not null,
-    index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE `volunteer_event_waiting_queue`
 (
-    `id`                                  bigint            not null primary key auto_increment,
-    `volunteer_event_id`                  bigint            not null,
+    `id`                                       bigint            not null primary key auto_increment,
+    `volunteer_event_id`                       bigint            not null,
     `volunteer_id`                             bigint            not null,
-    index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-CREATE TABLE `volunteer_event_join_queue`
-(
-    `id`                                  bigint            not null primary key auto_increment,
-    `volunteer_event_id`                  bigint            not null,
-    `volunteer_id`                             bigint            not null,
-    index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`)
+    index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`),
+    index IDX_VOLUNTEER_EVENT_ID_AND_VOLUNTEER_ID(`volunteer_event_id`,`volunteer_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `shelter_bookmark`

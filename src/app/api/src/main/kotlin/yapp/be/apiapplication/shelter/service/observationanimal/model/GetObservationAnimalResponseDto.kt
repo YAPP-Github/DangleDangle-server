@@ -1,6 +1,6 @@
 package yapp.be.apiapplication.shelter.service.observationanimal.model
 
-import yapp.be.enum.Gender
+import yapp.be.enums.observaitonanimal.Gender
 
 data class GetObservationAnimalResponseDto(
     val id: Long,

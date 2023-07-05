@@ -7,6 +7,7 @@ import jakarta.persistence.*
     name = "volunteer_event_waiting_queue",
     indexes = [
         Index(name = "IDX_VOLUNTEER_EVENT_ID", columnList = "volunteer_event_id"),
+        Index(name = "IDX_VOLUNTEER_EVENT_ID_AND_VOLUNTEER_ID", columnList = "volunteer_event_id,volunteer_id"),
     ]
 )
 class VolunteerEventWaitingQueueEntity(

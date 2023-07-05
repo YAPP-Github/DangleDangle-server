@@ -1,4 +1,4 @@
-package yapp.be.enum
+package yapp.be.enums.volunteerevent
 
 enum class AgeLimit {
     // 나이제한 없음

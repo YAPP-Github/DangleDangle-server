@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventJoinQueueEntity
 
 @Repository
-interface VolunteerEventJoinQueueJpaRepository : JpaRepository<VolunteerEventJoinQueueEntity, Long>
+interface VolunteerEventJoinQueueJpaRepository : JpaRepository<VolunteerEventJoinQueueEntity, Long> {
+    fun findAllByVolunteerEventIdIn(volunteerEventIds: Collection<Long>): List<VolunteerEventJoinQueueEntity>
+}

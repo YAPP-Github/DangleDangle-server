@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import yapp.be.exceptions.CustomException
+import java.time.DateTimeException
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -19,6 +20,16 @@ class CustomExceptionHandler {
         return ErrorResponse(
             exceptionCode = e.type.code,
             message = e.message,
+            timeStamp = LocalDateTime.now()
+        )
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DateTimeException::class)
+    fun handleDateTimeException(e: DateTimeException): ErrorResponse {
+        return ErrorResponse(
+            exceptionCode = ApiExceptionType.INVALID_DATE_EXCEPTION.code,
+            message = e.message!!,
             timeStamp = LocalDateTime.now()
         )
     }

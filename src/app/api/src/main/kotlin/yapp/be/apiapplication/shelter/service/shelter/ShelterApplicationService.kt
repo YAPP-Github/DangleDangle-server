@@ -10,7 +10,7 @@ import yapp.be.domain.port.inbound.GetShelterUseCase
 @Service
 class ShelterApplicationService(
     private val getShelterUseCase: GetShelterUseCase,
-    private val bookMarkShelterUseCase: BookMarkShelterUseCase
+    private val bookMarkShelterUseCase: BookMarkShelterUseCase,
 ) {
     @Transactional
     fun bookMarkShelter(reqDto: BookMarkShelterRequestDto): BookMarkShelterResponseDto {
