@@ -60,7 +60,7 @@ allprojects {
             exclude { it.file.path.contains("$buildDir/generated/") }
         }
 
-        disabledRules.set(setOf("import-ordering", "no-wildcard-imports"))
+        disabledRules.set(setOf("import-ordering", "no-wildcard-imports", "filename"))
     }
 }
 

@@ -1,14 +1,20 @@
 package yapp.be.domain.port.inbound
 
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
+import java.time.Month
+import java.time.Year
 
 interface GetVolunteerEventUseCase {
 
-    fun getMemberVolunteerEvents(
+    fun getMemberVolunteerEventsByYearAndMonth(
         shelterId: Long,
-        volunteerId: Long
+        volunteerId: Long,
+        year: Year,
+        month: Month
     ): List<SimpleVolunteerEventInfo>
-    fun getNonMemberVolunteerEvents(
-        shelterId: Long
+    fun getNonMemberVolunteerEventsByYearAndMonth(
+        shelterId: Long,
+        year: Year,
+        month: Month
     ): List<SimpleVolunteerEventInfo>
 }

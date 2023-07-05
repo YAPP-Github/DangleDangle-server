@@ -3,9 +3,15 @@ package yapp.be.domain.port.outbound
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
 
 interface VolunteerEventQueryHandler {
-    fun findAllByShelterId(shelterId: Long): List<SimpleVolunteerEventInfo>
-    fun findAllWithVolunteerParticipationStatusByShelterIdAndVolunteerId(
+    fun findAllByShelterIdAndYearAndMonth(
         shelterId: Long,
-        volunteerId: Long
+        year: Int,
+        month: Int
+    ): List<SimpleVolunteerEventInfo>
+    fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndYearAndMonth(
+        shelterId: Long,
+        volunteerId: Long,
+        year: Int,
+        month: Int
     ): List<SimpleVolunteerEventInfo>
 }

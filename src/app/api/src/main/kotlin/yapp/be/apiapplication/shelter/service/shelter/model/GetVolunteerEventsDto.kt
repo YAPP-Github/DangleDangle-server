@@ -3,10 +3,14 @@ package yapp.be.apiapplication.shelter.service.shelter.model
 import yapp.be.enums.volunteerevent.UserEventWaitingStatus
 import yapp.be.enums.volunteerevent.VolunteerEventStatus
 import java.time.LocalDateTime
+import java.time.Month
+import java.time.Year
 
 data class GetVolunteerEventsRequestDto(
     val shelterId: Long,
-    val volunteerId: Long?
+    val volunteerId: Long?,
+    val year: Year,
+    val month: Month
 )
 
 data class GetVolunteerEventsResponseDto(

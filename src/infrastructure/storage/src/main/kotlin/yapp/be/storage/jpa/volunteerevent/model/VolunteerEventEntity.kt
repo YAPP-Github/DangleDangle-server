@@ -2,6 +2,7 @@ package yapp.be.storage.jpa.volunteerevent.model
 
 import jakarta.persistence.*
 import yapp.be.enums.volunteerevent.AgeLimit
+import yapp.be.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 import java.time.LocalDateTime
@@ -23,8 +24,6 @@ class VolunteerEventEntity(
     val title: String,
     @Column(name = "recruit_num")
     val recruitNum: Int,
-    @Column(name = "participant_num")
-    val participantNum: Int,
     @Column(name = "materials")
     var materials: String?,
     @Column(name = "age_limit")
@@ -37,4 +36,7 @@ class VolunteerEventEntity(
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     val status: VolunteerEventStatus,
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
+    val category: VolunteerEventCategory
 ) : BaseTimeEntity()

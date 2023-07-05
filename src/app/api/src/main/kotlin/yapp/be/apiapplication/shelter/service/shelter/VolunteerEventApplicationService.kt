@@ -16,9 +16,18 @@ class VolunteerEventApplicationService(
         reqDto: GetVolunteerEventsRequestDto
     ): GetVolunteerEventsResponseDto {
         val volunteerEvents = if (reqDto.volunteerId != null) {
-            getVolunteerEventUseCase.getMemberVolunteerEvents()
+            getVolunteerEventUseCase.getMemberVolunteerEventsByYearAndMonth(
+                shelterId = reqDto.shelterId,
+                volunteerId = reqDto.volunteerId,
+                year = reqDto.year,
+                month = reqDto.month
+            )
         } else {
-            getVolunteerEventUseCase.getNonMemberVolunteerEvents()
+            getVolunteerEventUseCase.getNonMemberVolunteerEventsByYearAndMonth(
+                shelterId = reqDto.shelterId,
+                year = reqDto.year,
+                month = reqDto.month
+            )
         }
 
         return GetVolunteerEventsResponseDto(
