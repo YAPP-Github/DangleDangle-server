@@ -6,7 +6,7 @@ dependencies {
     val embeddedRedisVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("it.ozimov:embedded-redis:$embeddedRedisVersion")
+    testImplementation("it.ozimov:embedded-redis:$embeddedRedisVersion")
 
     implementation(project(":auth"))
     implementation(project(":common"))
