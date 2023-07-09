@@ -6,7 +6,7 @@ import yapp.be.domain.model.ShelterUser
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.domain.port.outbound.ShelterQueryHandler
 import yapp.be.domain.port.outbound.ShelterUserQueryHandler
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @Service
 class GetShelterUserDomainService(

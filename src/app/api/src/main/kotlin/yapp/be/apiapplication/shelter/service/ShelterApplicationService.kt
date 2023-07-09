@@ -1,14 +1,14 @@
-package yapp.be.apiapplication.shelter.service.shelter
+package yapp.be.apiapplication.shelter.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.shelter.model.BookMarkShelterRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.BookMarkShelterResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetBankAccountInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetOutLinkInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAddressInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterParkingInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
+import yapp.be.apiapplication.shelter.service.model.BookMarkShelterRequestDto
+import yapp.be.apiapplication.shelter.service.model.BookMarkShelterResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetBankAccountInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetOutLinkInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterAddressInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterParkingInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterResponseDto
 import yapp.be.domain.port.inbound.BookMarkShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase

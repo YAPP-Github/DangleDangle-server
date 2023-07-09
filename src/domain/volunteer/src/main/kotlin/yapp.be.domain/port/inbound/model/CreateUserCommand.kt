@@ -1,6 +1,6 @@
 package yapp.be.domain.port.inbound.model
 
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 data class CreateUserCommand(
     val nickname: String,

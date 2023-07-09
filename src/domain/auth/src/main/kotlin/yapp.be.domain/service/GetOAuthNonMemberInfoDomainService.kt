@@ -3,7 +3,7 @@ package yapp.be.domain.service
 import org.springframework.stereotype.Service
 import yapp.be.domain.port.inbound.GetOAuthNonMemberInfoUseCase
 import yapp.be.domain.port.outbound.OAuthNonMemberInfoQueryHandler
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @Service
 class GetOAuthNonMemberInfoDomainService(

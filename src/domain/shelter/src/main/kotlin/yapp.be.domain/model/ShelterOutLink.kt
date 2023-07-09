@@ -1,6 +1,6 @@
 package yapp.be.domain.model
 
-import yapp.be.enums.volunteerevent.OutLinkType
+import yapp.be.model.enums.volunteerevent.OutLinkType
 
 data class ShelterOutLink(
     val id: Long = 0,

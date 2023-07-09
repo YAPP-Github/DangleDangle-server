@@ -1,6 +1,6 @@
 package yapp.be.domain.model
 
-import yapp.be.model.Address
+import yapp.be.model.vo.Address
 
 data class Shelter(
     val id: Long = 0,

@@ -1,7 +1,7 @@
 package yapp.be.apiapplication.auth.controller.model
 
 import yapp.be.apiapplication.auth.service.model.LoginShelterUserRequestDto
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 data class LoginShelterUserRequest(
     val email: String,

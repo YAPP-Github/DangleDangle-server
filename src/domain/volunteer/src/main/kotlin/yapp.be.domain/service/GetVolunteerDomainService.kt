@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Volunteer
 import yapp.be.domain.port.inbound.GetVolunteerUseCase
 import yapp.be.domain.port.outbound.VolunteerQueryHandler
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @Service
 class GetVolunteerDomainService(

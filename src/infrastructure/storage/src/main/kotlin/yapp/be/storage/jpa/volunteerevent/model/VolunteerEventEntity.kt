@@ -1,9 +1,9 @@
 package yapp.be.storage.jpa.volunteerevent.model
 
 import jakarta.persistence.*
-import yapp.be.enums.volunteerevent.AgeLimit
-import yapp.be.enums.volunteerevent.VolunteerEventCategory
-import yapp.be.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.enums.volunteerevent.AgeLimit
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 import java.time.LocalDateTime
 

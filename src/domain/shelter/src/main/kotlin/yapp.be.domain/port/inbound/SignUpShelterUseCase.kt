@@ -1,7 +1,7 @@
 package yapp.be.domain.port.inbound
 
 import yapp.be.domain.model.ShelterUser
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 interface SignUpShelterUseCase {
     fun signUpWithEssentialInfo(

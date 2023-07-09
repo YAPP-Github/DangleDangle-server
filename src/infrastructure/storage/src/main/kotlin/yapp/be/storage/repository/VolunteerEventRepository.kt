@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
-import yapp.be.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.exceptions.CustomException
-import yapp.be.model.Address
+import yapp.be.model.vo.Address
 import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventJoinQueueEntity
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventWaitingQueueEntity

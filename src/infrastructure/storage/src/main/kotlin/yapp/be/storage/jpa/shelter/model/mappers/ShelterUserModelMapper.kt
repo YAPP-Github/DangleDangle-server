@@ -1,7 +1,7 @@
 package yapp.be.storage.jpa.shelter.model.mappers
 
 import yapp.be.domain.model.ShelterUser
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 import yapp.be.storage.jpa.shelter.model.ShelterUserEntity
 
 fun ShelterUser.toEntityModel(): ShelterUserEntity {

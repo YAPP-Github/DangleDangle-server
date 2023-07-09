@@ -1,13 +1,13 @@
-package yapp.be.apiapplication.shelter.service.observationanimal
+package yapp.be.apiapplication.shelter.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.observationanimal.model.AddObservationAnimalRequestDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.AddObservationAnimalResponseDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.DeleteObservationAnimalResponseDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalRequestDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalResponseDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.GetObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.model.AddObservationAnimalRequestDto
+import yapp.be.apiapplication.shelter.service.model.AddObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.model.DeleteObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditObservationAnimalRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserObservationAnimalResponseDto
 import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.domain.port.inbound.CreateObservationAnimalUseCase
 import yapp.be.domain.port.inbound.DeleteObservationAnimalUseCase
@@ -15,6 +15,7 @@ import yapp.be.domain.port.inbound.EditObservationAnimalUseCase
 import yapp.be.domain.port.inbound.GetObservationAnimalUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.exceptions.CustomException
+import yapp.be.model.support.PagedResult
 
 @Service
 class ObservationAnimalManageApplicationService(
@@ -26,12 +27,19 @@ class ObservationAnimalManageApplicationService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getShelterObservationAnimals(shelterUserId: Long): List<GetObservationAnimalResponseDto> {
+    fun getShelterObservationAnimals(shelterUserId: Long, page: Int): PagedResult<GetShelterUserObservationAnimalResponseDto> {
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
 
-        return getObservationAnimalUseCase.getAllObservationAnimalsByShelterId(shelterUser.shelterId)
-            .map { observationAnimal ->
-                GetObservationAnimalResponseDto(
+        val observationAnimals = getObservationAnimalUseCase.getAllObservationAnimalsByShelterId(
+            shelterId = shelterUser.shelterId,
+            page = page
+        )
+
+        return PagedResult(
+            pageNumber = observationAnimals.pageNumber,
+            pageSize = observationAnimals.pageSize,
+            content = observationAnimals.content.map { observationAnimal ->
+                GetShelterUserObservationAnimalResponseDto(
                     id = observationAnimal.id,
                     shelterId = observationAnimal.shelterId,
                     name = observationAnimal.name,
@@ -42,13 +50,14 @@ class ObservationAnimalManageApplicationService(
                     breed = observationAnimal.breed
                 )
             }.toList()
+        )
     }
 
     @Transactional(readOnly = true)
-    fun getObservationAnimal(observationAnimalId: Long): GetObservationAnimalResponseDto {
+    fun getObservationAnimal(observationAnimalId: Long): GetShelterUserObservationAnimalResponseDto {
         val observationAnimal = getObservationAnimalUseCase.getObservationAnimalById(observationAnimalId)
 
-        return GetObservationAnimalResponseDto(
+        return GetShelterUserObservationAnimalResponseDto(
             id = observationAnimal.id,
             shelterId = observationAnimal.shelterId,
             name = observationAnimal.name,

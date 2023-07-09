@@ -8,7 +8,7 @@ import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 import yapp.be.apiapplication.system.security.CustomUserDetails
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @Configuration
 class VolunteerAuthenticationInfoArgumentResolver : HandlerMethodArgumentResolver {

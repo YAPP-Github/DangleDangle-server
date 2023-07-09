@@ -1,7 +1,7 @@
 package yapp.be.apiapplication.shelter.controller.model
 
-import yapp.be.enums.volunteerevent.AgeLimit
-import yapp.be.enums.volunteerevent.VolunteerEventCategory
+import yapp.be.model.enums.volunteerevent.AgeLimit
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import java.time.LocalDateTime
 
 data class AddVolunteerEventRequest(

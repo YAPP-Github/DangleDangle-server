@@ -1,18 +1,18 @@
-package yapp.be.apiapplication.shelter.service.shelter
+package yapp.be.apiapplication.shelter.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetBankAccountInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetOutLinkInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAddressInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterParkingInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAdminShelterResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditShelterWithAdditionalInfoRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditShelterWithAdditionalInfoResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetBankAccountInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetOutLinkInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterAddressInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterParkingInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserShelterResponseDto
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.port.inbound.GetShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
@@ -26,12 +26,12 @@ class ShelterManageApplicationService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getShelter(shelterUserId: Long): GetShelterAdminShelterResponseDto {
+    fun getShelter(shelterUserId: Long): GetShelterUserShelterResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
         val shelter = getShelterUseCase.getShelterById(shelterUser.shelterId)
         val shelterOutLink = getShelterUseCase.getShelterOutLinkByShelterId(shelterUser.shelterId)
 
-        return GetShelterAdminShelterResponseDto(
+        return GetShelterUserShelterResponseDto(
             id = shelter.id,
             name = shelter.name,
             phoneNumber = shelter.phoneNumber,

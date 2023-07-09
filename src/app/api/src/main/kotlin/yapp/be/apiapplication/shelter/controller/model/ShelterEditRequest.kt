@@ -1,13 +1,13 @@
 package yapp.be.apiapplication.shelter.controller.model
 
 import yapp.be.apiapplication.auth.controller.model.ShelterSignUpAddressInfo
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoRequestDto
-import yapp.be.model.Address
+import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditShelterWithAdditionalInfoRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoRequestDto
+import yapp.be.model.vo.Address
 import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.ShelterParkingInfo
-import yapp.be.enums.volunteerevent.OutLinkType
+import yapp.be.model.enums.volunteerevent.OutLinkType
 
 data class EditShelterProfileImageRequest(
     val url: String

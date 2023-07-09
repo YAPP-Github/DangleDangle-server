@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import yapp.be.apiapplication.shelter.service.shelter.ShelterApplicationService
-import yapp.be.apiapplication.shelter.service.shelter.model.BookMarkShelterRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.BookMarkShelterResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
+import yapp.be.apiapplication.shelter.service.ShelterApplicationService
+import yapp.be.apiapplication.shelter.service.model.BookMarkShelterRequestDto
+import yapp.be.apiapplication.shelter.service.model.BookMarkShelterResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterResponseDto
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthentication
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationInfo
 

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.port.inbound.CheckVolunteerUseCase
 import yapp.be.domain.port.outbound.VolunteerQueryHandler
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @Service
 class CheckVolunteerDomainService(

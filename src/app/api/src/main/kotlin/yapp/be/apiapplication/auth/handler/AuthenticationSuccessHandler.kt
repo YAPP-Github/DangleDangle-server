@@ -11,7 +11,7 @@ import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.apiapplication.system.security.oauth2.CustomOAuth2User
 import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
 import yapp.be.domain.port.inbound.*
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.Duration

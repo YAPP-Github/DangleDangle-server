@@ -1,8 +1,8 @@
 package yapp.be.domain.model
 
-import yapp.be.enums.volunteerevent.OAuthType
-import yapp.be.enums.volunteerevent.Role
-import yapp.be.model.Email
+import yapp.be.model.enums.volunteerevent.OAuthType
+import yapp.be.model.enums.volunteerevent.Role
+import yapp.be.model.vo.Email
 
 data class Volunteer(
     val id: Long = 0,

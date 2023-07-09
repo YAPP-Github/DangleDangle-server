@@ -1,8 +1,8 @@
 package yapp.be.apiapplication.shelter.controller.model
 
-import yapp.be.apiapplication.shelter.service.observationanimal.model.AddObservationAnimalRequestDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalRequestDto
-import yapp.be.enums.observaitonanimal.Gender
+import yapp.be.apiapplication.shelter.service.model.AddObservationAnimalRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditObservationAnimalRequestDto
+import yapp.be.model.enums.observaitonanimal.Gender
 
 data class AddObservationAnimalRequest(
     val images: List<String>,

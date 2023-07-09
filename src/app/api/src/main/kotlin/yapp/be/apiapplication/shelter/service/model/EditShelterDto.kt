@@ -1,9 +1,9 @@
-package yapp.be.apiapplication.shelter.service.shelter.model
+package yapp.be.apiapplication.shelter.service.model
 
-import yapp.be.model.Address
+import yapp.be.model.vo.Address
 import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.ShelterParkingInfo
-import yapp.be.enums.volunteerevent.OutLinkType
+import yapp.be.model.enums.volunteerevent.OutLinkType
 
 data class EditShelterProfileImageRequestDto(
     val profileImageUrl: String

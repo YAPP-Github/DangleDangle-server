@@ -14,9 +14,9 @@ import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.domain.port.inbound.CreateShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.SignUpShelterUseCase
-import yapp.be.enums.volunteerevent.Role
+import yapp.be.model.enums.volunteerevent.Role
 import yapp.be.exceptions.CustomException
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @Service
 class ShelterAuthApplicationService(

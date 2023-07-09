@@ -1,6 +1,6 @@
 package yapp.be.domain.model
 
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 data class ShelterUser(
     val id: Long = 0,

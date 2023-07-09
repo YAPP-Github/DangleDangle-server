@@ -1,4 +1,4 @@
-package yapp.be.model
+package yapp.be.model.vo
 
 data class Email(val value: String) {
     private val EMAIL_REGEX_VALUE = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+\$"

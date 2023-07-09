@@ -1,6 +1,6 @@
 package yapp.be.domain.port.inbound
 
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 interface CheckVolunteerUseCase {
     fun isExistByEmail(email: Email): Boolean
