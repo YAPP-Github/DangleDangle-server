@@ -2,9 +2,13 @@ package yapp.be.storage.repository
 
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
-import yapp.be.enums.volunteerevent.UserEventWaitingStatus
+import yapp.be.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.exceptions.CustomException
+import yapp.be.model.Address
+import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventJoinQueueEntity
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventWaitingQueueEntity
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJpaRepository
@@ -17,6 +21,41 @@ class VolunteerEventRepository(
     private val volunteerEventWaitingQueueJpaRepository: VolunteerEventWaitingQueueJpaRepository,
     private val volunteerEventJoinQueueJpaRepository: VolunteerEventJoinQueueJpaRepository,
 ) : VolunteerEventQueryHandler {
+
+    @Transactional(readOnly = true)
+    override fun findByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
+        val volunteerEventWithMyParticipationStatus =
+            volunteerEventJpaRepository
+                .findByIdAndShelterIdWithMyParticipationStatus(
+                    id = id,
+                    shelterId = shelterId
+                ) ?: throw CustomException(
+                type = StorageExceptionType.ENTITY_NOT_FOUND,
+                message = "봉사 정보를 찾을 수 없습니다."
+            )
+
+        return DetailVolunteerEventDto(
+            title = volunteerEventWithMyParticipationStatus.title,
+            address = Address(
+                address = volunteerEventWithMyParticipationStatus.address.address,
+                addressDetail = volunteerEventWithMyParticipationStatus.address.addressDetail,
+                postalCode = volunteerEventWithMyParticipationStatus.address.postalCode,
+                latitude = volunteerEventWithMyParticipationStatus.address.latitude,
+                longitude = volunteerEventWithMyParticipationStatus.address.longitude
+            ),
+            description = volunteerEventWithMyParticipationStatus.description,
+            ageLimit = volunteerEventWithMyParticipationStatus.ageLimit,
+            category = volunteerEventWithMyParticipationStatus.category,
+            eventStatus = volunteerEventWithMyParticipationStatus.eventStatus,
+            myParticipationStatus = when {
+                volunteerEventWithMyParticipationStatus.isJoining -> UserEventParticipationStatus.JOINING
+                volunteerEventWithMyParticipationStatus.isWaiting -> UserEventParticipationStatus.WAITING
+                else -> UserEventParticipationStatus.NONE
+            },
+            startAt = volunteerEventWithMyParticipationStatus.startAt,
+            endAt = volunteerEventWithMyParticipationStatus.endAt
+        )
+    }
 
     @Transactional(readOnly = true)
     override fun findAllByShelterIdAndYearAndMonth(
@@ -57,7 +96,7 @@ class VolunteerEventRepository(
                     recruitNum = it.recruitNum,
                     participantNum = joinQueue.size,
                     waitingNum = waitingQueue.size,
-                    myParticipationStatus = UserEventWaitingStatus.NONE,
+                    myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
             }.toList()
     }
@@ -110,13 +149,13 @@ class VolunteerEventRepository(
         volunteerId: Long,
         joinQueue: List<VolunteerEventJoinQueueEntity>,
         waitingQueue: List<VolunteerEventWaitingQueueEntity>
-    ): UserEventWaitingStatus {
+    ): UserEventParticipationStatus {
 
         return if (joinQueue.any { it.volunteerId == volunteerId })
-            UserEventWaitingStatus.JOINING
+            UserEventParticipationStatus.JOINING
         else if (waitingQueue.any { it.volunteerId == volunteerId })
-            UserEventWaitingStatus.WAITING
+            UserEventParticipationStatus.WAITING
         else
-            UserEventWaitingStatus.NONE
+            UserEventParticipationStatus.NONE
     }
 }

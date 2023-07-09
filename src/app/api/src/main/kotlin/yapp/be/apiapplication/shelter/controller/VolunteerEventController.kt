@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.service.shelter.VolunteerEventApplicationService
+import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsRequestDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsResponseDto
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthentication
@@ -35,6 +37,22 @@ class VolunteerEventController(
             month = Month.of(month)
         )
         val resDto = volunteerEventApplicationService.getVolunteerEvents(reqDto)
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @GetMapping("/{volunteerEventId}")
+    fun getVolunteerEvent(
+        @PathVariable shelterId: Long,
+        @PathVariable volunteerEventId: Long,
+        @VolunteerAuthentication volunteerInfo: VolunteerAuthenticationInfo?
+    ): ResponseEntity<GetDetailVolunteerEventResponseDto> {
+        val reqDto = GetVolunteerEventRequestDto(
+            shelterId = shelterId,
+            volunteerEventId = volunteerEventId
+
+        )
+        val resDto = volunteerEventApplicationService.getVolunteerEvent(reqDto)
 
         return ResponseEntity.ok(resDto)
     }

@@ -1,5 +1,5 @@
 package yapp.be.enums.volunteerevent
 
-enum class UserEventWaitingStatus {
+enum class UserEventParticipationStatus {
     NONE, JOINING, WAITING
 }

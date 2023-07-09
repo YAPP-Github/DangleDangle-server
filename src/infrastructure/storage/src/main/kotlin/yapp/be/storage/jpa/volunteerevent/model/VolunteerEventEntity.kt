@@ -24,8 +24,8 @@ class VolunteerEventEntity(
     val title: String,
     @Column(name = "recruit_num")
     val recruitNum: Int,
-    @Column(name = "materials")
-    var materials: String?,
+    @Column(name = "description", columnDefinition = "TEXT")
+    var description: String?,
     @Column(name = "age_limit")
     @Enumerated(EnumType.STRING)
     val ageLimit: AgeLimit,

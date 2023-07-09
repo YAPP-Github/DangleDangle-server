@@ -1,7 +1,10 @@
 package yapp.be.apiapplication.shelter.service.shelter.model
 
-import yapp.be.enums.volunteerevent.UserEventWaitingStatus
+import yapp.be.enums.volunteerevent.AgeLimit
+import yapp.be.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.Address
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.Year
@@ -13,18 +16,35 @@ data class GetVolunteerEventsRequestDto(
     val month: Month
 )
 
-data class GetVolunteerEventsResponseDto(
-    val events: List<GetVolunteerSimpleEventResponseDto>
+data class GetVolunteerEventRequestDto(
+    val shelterId: Long,
+    val volunteerEventId: Long
 )
-
-data class GetVolunteerSimpleEventResponseDto(
+data class GetVolunteerEventsResponseDto(
+    val events: List<GetSimpleVolunteerEventResponseDto>
+)
+data class GetSimpleVolunteerEventResponseDto(
     val volunteerEventId: Long,
+    val category: VolunteerEventCategory,
     val title: String,
     val eventStatus: VolunteerEventStatus,
-    val myParticipationStatus: UserEventWaitingStatus,
+    val myParticipationStatus: UserEventParticipationStatus,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
     val recruitNum: Int,
     val participantNum: Int,
     val waitingNum: Int,
+)
+
+data class GetDetailVolunteerEventResponseDto(
+    val title: String,
+    val address: Address,
+    val description: String,
+    val ageLimit: AgeLimit,
+    val category: VolunteerEventCategory,
+    val eventStatus: VolunteerEventStatus,
+    val myParticipationStatus: UserEventParticipationStatus,
+    val startAt: LocalDateTime,
+    val endAt: LocalDateTime
+
 )

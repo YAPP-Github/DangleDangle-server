@@ -1,6 +1,6 @@
 package yapp.be.apiapplication.shelter.service.shelter.model
 
-import yapp.be.domain.model.Address
+import yapp.be.model.Address
 import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.ShelterParkingInfo
 import yapp.be.enums.volunteerevent.OutLinkType

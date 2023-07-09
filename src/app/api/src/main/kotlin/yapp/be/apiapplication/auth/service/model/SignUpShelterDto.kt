@@ -1,6 +1,6 @@
 package yapp.be.apiapplication.auth.service.model
 
-import yapp.be.domain.model.Address
+import yapp.be.model.Address
 import yapp.be.model.Email
 
 class SignUpShelterWithEssentialInfoRequestDto(

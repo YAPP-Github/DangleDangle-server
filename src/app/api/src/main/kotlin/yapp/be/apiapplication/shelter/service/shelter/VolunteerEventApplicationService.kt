@@ -2,15 +2,36 @@ package yapp.be.apiapplication.shelter.service.shelter
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerSimpleEventResponseDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 
 @Service
 class VolunteerEventApplicationService(
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
 ) {
+
+    @Transactional(readOnly = true)
+    fun getVolunteerEvent(
+        reqDto: GetVolunteerEventRequestDto
+    ): GetDetailVolunteerEventResponseDto {
+        val volunteerEvent = getVolunteerEventUseCase
+            .getVolunteerEvent(
+                shelterId = reqDto.shelterId,
+                volunteerEventId = reqDto.volunteerEventId
+            )
+
+        return GetDetailVolunteerEventResponseDto(
+            title = volunteerEvent.title,
+            address = volunteerEvent.address,
+            description = volunteerEvent.description,
+            ageLimit = volunteerEvent.ageLimit,
+            category = volunteerEvent.category,
+            eventStatus = volunteerEvent.eventStatus,
+            myParticipationStatus = volunteerEvent.myParticipationStatus,
+            startAt = volunteerEvent.startAt,
+            endAt = volunteerEvent.endAt
+        )
+    }
+
     @Transactional(readOnly = true)
     fun getVolunteerEvents(
         reqDto: GetVolunteerEventsRequestDto
@@ -32,8 +53,9 @@ class VolunteerEventApplicationService(
 
         return GetVolunteerEventsResponseDto(
             events = volunteerEvents.map {
-                GetVolunteerSimpleEventResponseDto(
+                GetSimpleVolunteerEventResponseDto(
                     volunteerEventId = it.volunteerEventId,
+                    category = it.category,
                     title = it.title,
                     eventStatus = it.eventStatus,
                     myParticipationStatus = it.myParticipationStatus,
