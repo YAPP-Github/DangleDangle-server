@@ -80,7 +80,7 @@ CREATE TABLE `volunteer_event`
     `id`                                  bigint           not null primary key auto_increment,
     `title`                               varchar(50)      not null,
     `recruit_num`                         int              not null,
-    `materials`                           varchar(100),
+    `description`                         text,
     `age_limit`                           varchar(30)      not null,
     `status`                              varchar(30)      not null,
     `category`                            varchar(30)      not null,

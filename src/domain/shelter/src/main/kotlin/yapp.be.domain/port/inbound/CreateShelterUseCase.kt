@@ -1,6 +1,6 @@
 package yapp.be.domain.port.inbound
 
-import yapp.be.domain.model.Address
+import yapp.be.model.Address
 import yapp.be.domain.model.Shelter
 
 interface CreateShelterUseCase {

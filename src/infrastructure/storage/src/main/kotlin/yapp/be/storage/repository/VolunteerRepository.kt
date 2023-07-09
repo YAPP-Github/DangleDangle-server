@@ -15,11 +15,6 @@ import yapp.be.storage.jpa.volunteer.repository.VolunteerJpaRepository
 class VolunteerRepository(
     private val jpaRepository: VolunteerJpaRepository
 ) : VolunteerQueryHandler, VolunteerCommandHandler {
-    @Transactional(readOnly = true)
-    override fun countAll(): Int {
-        return jpaRepository.count().toInt()
-    }
-
     override fun save(volunteer: Volunteer): Volunteer {
         val volunteerEntity = jpaRepository.save(
             volunteer.toEntityModel()
