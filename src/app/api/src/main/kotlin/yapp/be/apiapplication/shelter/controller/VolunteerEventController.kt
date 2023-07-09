@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.service.shelter.VolunteerEventApplicationService
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetDetailVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.*
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthentication
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationInfo
 import java.time.Month

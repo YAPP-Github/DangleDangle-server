@@ -2,6 +2,11 @@ package yapp.be.apiapplication.shelter.service.shelter
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import yapp.be.apiapplication.shelter.service.shelter.model.GetDetailVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetSimpleVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsRequestDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsResponseDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 
 @Service
@@ -21,6 +26,7 @@ class VolunteerEventApplicationService(
 
         return GetDetailVolunteerEventResponseDto(
             title = volunteerEvent.title,
+            recruitNum = volunteerEvent.recruitNum,
             address = volunteerEvent.address,
             description = volunteerEvent.description,
             ageLimit = volunteerEvent.ageLimit,
@@ -28,7 +34,9 @@ class VolunteerEventApplicationService(
             eventStatus = volunteerEvent.eventStatus,
             myParticipationStatus = volunteerEvent.myParticipationStatus,
             startAt = volunteerEvent.startAt,
-            endAt = volunteerEvent.endAt
+            endAt = volunteerEvent.endAt,
+            joiningVolunteers = volunteerEvent.joiningVolunteers,
+            waitingVolunteers = volunteerEvent.waitingVolunteers
         )
     }
 

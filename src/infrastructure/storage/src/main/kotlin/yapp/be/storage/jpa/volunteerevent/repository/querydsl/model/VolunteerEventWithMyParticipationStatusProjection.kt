@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 
 class VolunteerEventWithMyParticipationStatusProjection @QueryProjection constructor(
     val title: String,
+    val recruitNum: Int,
     val address: Address,
     val description: String,
     val ageLimit: AgeLimit,

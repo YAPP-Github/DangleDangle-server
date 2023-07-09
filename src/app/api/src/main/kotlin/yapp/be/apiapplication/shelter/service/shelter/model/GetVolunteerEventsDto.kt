@@ -20,6 +20,11 @@ data class GetVolunteerEventRequestDto(
     val shelterId: Long,
     val volunteerEventId: Long
 )
+
+data class GetVolunteerEventParticipantsRequestDto(
+    val shelterId: Long,
+    val volunteerEventId: Long
+)
 data class GetVolunteerEventsResponseDto(
     val events: List<GetSimpleVolunteerEventResponseDto>
 )
@@ -38,6 +43,7 @@ data class GetSimpleVolunteerEventResponseDto(
 
 data class GetDetailVolunteerEventResponseDto(
     val title: String,
+    val recruitNum: Int,
     val address: Address,
     val description: String,
     val ageLimit: AgeLimit,
@@ -45,6 +51,11 @@ data class GetDetailVolunteerEventResponseDto(
     val eventStatus: VolunteerEventStatus,
     val myParticipationStatus: UserEventParticipationStatus,
     val startAt: LocalDateTime,
-    val endAt: LocalDateTime
-
+    val endAt: LocalDateTime,
+    val joiningVolunteers: List<String>,
+    val waitingVolunteers: List<String>
+)
+data class GetDetailVolunteerEventParticipantsResponseDto(
+    val joinVolunteers: List<String>,
+    val waitingVolunteers: List<String>
 )

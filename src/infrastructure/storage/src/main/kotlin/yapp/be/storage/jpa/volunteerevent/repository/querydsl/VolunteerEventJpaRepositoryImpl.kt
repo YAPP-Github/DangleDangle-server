@@ -24,6 +24,7 @@ class VolunteerEventJpaRepositoryImpl(
             .select(
                 QVolunteerEventWithMyParticipationStatusProjection(
                     volunteerEventEntity.title,
+                    volunteerEventEntity.recruitNum,
                     shelterEntity.address,
                     volunteerEventEntity.description,
                     volunteerEventEntity.ageLimit,

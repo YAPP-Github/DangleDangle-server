@@ -34,8 +34,18 @@ class VolunteerEventRepository(
                 message = "봉사 정보를 찾을 수 없습니다."
             )
 
+        val joiningParticipants = volunteerEventJoinQueueJpaRepository.findAllJoinParticipantsByVolunteerEventId(volunteerEventId = id)
+            .map { it.nickname }.toList()
+        val waitingParticipants = if (volunteerEventWithMyParticipationStatus.recruitNum <= joiningParticipants.size) {
+            volunteerEventWaitingQueueJpaRepository.findAllWaitParticipantsByVolunteerEventId(volunteerEventId = id)
+                .map { it.nickname }.toList()
+        } else {
+            listOf()
+        }
+
         return DetailVolunteerEventDto(
             title = volunteerEventWithMyParticipationStatus.title,
+            recruitNum = volunteerEventWithMyParticipationStatus.recruitNum,
             address = Address(
                 address = volunteerEventWithMyParticipationStatus.address.address,
                 addressDetail = volunteerEventWithMyParticipationStatus.address.addressDetail,
@@ -53,7 +63,9 @@ class VolunteerEventRepository(
                 else -> UserEventParticipationStatus.NONE
             },
             startAt = volunteerEventWithMyParticipationStatus.startAt,
-            endAt = volunteerEventWithMyParticipationStatus.endAt
+            endAt = volunteerEventWithMyParticipationStatus.endAt,
+            joiningVolunteers = joiningParticipants,
+            waitingVolunteers = waitingParticipants
         )
     }
 
