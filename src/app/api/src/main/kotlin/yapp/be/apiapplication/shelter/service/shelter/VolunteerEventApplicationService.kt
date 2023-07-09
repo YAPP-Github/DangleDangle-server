@@ -48,14 +48,14 @@ class VolunteerEventApplicationService(
             getVolunteerEventUseCase.getMemberVolunteerEventsByYearAndMonth(
                 shelterId = reqDto.shelterId,
                 volunteerId = reqDto.volunteerId,
-                year = reqDto.year,
-                month = reqDto.month
+                from = reqDto.from,
+                to = reqDto.to
             )
         } else {
             getVolunteerEventUseCase.getNonMemberVolunteerEventsByYearAndMonth(
                 shelterId = reqDto.shelterId,
-                year = reqDto.year,
-                month = reqDto.month
+                from = reqDto.from,
+                to = reqDto.to
             )
         }
 

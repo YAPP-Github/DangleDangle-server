@@ -2,6 +2,7 @@ package yapp.be.storage.jpa.volunteerevent.repository.querydsl
 
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
+import java.time.LocalDateTime
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.storage.jpa.shelter.model.QShelterEntity.shelterEntity
@@ -11,7 +12,6 @@ import yapp.be.storage.jpa.volunteerevent.model.QVolunteerEventWaitingQueueEntit
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.QVolunteerEventWithMyParticipationStatusProjection
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEventWithMyParticipationStatusProjection
-import java.time.YearMonth
 
 @Component
 class VolunteerEventJpaRepositoryImpl(
@@ -50,7 +50,7 @@ class VolunteerEventJpaRepositoryImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun findAllByShelterIdAndYearAndMonth(shelterId: Long, year: Int, month: Int): List<VolunteerEventEntity> {
+    override fun findAllByShelterIdAndYearAndMonth(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<VolunteerEventEntity> {
         return queryFactory
             .selectFrom(volunteerEventEntity)
             .from(volunteerEventEntity)
@@ -58,19 +58,16 @@ class VolunteerEventJpaRepositoryImpl(
                 volunteerEventEntity.shelterId.eq(shelterId)
                     .and(
                         isEventAtBetweenYearAndMonth(
-                            year = year,
-                            month = month
+                            from = from,
+                            to = to,
                         )
                     )
             ).fetch()
     }
 
-    private fun isEventAtBetweenYearAndMonth(year: Int, month: Int): BooleanExpression {
-        val date = YearMonth.of(year, month)
-        val startOfMonth = date.atDay(1).atStartOfDay()
-        val endOfMonth = date.atEndOfMonth().atTime(23, 59, 59)
+    private fun isEventAtBetweenYearAndMonth(from: LocalDateTime, to: LocalDateTime): BooleanExpression {
 
-        return volunteerEventEntity.startAt.between(startOfMonth, endOfMonth)
-            .and(volunteerEventEntity.endAt.between(startOfMonth, endOfMonth))
+        return volunteerEventEntity.startAt.between(from, to)
+            .and(volunteerEventEntity.endAt.between(from, to))
     }
 }

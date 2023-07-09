@@ -57,20 +57,14 @@ class SecurityConfig(
 
         http.authorizeHttpRequests {
             it.requestMatchers(
-                AntPathRequestMatcher("/login/oauth2/**"),
-                AntPathRequestMatcher("/monitoring/health"),
-                AntPathRequestMatcher("/v1/auth/shelter/**"),
-                AntPathRequestMatcher("/v1/auth/volunteer/**"),
-                AntPathRequestMatcher("/v1/shelter/{shelterId}"),
-                AntPathRequestMatcher("/v1/shelter/{shelterId}/volunteer-event/{volunteerEventId}"),
-            ).permitAll()
+                AntPathRequestMatcher("/v1/shelter/{shelterId}/bookmark"),
+            ).hasAnyRole(Role.VOLUNTEER.name)
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/admin/**")
             ).hasAuthority(Role.SHELTER.name)
             it.anyRequest()
-                .hasAnyAuthority(Role.VOLUNTEER.name, Role.SHELTER.name)
+                .permitAll()
         }
-
         http
             .exceptionHandling {
                 it.accessDeniedHandler(customAccessDeniedHandler)

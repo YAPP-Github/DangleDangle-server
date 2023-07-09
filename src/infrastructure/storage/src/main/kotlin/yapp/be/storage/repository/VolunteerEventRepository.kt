@@ -1,5 +1,6 @@
 package yapp.be.storage.repository
 
+import java.time.LocalDateTime
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
@@ -72,14 +73,14 @@ class VolunteerEventRepository(
     @Transactional(readOnly = true)
     override fun findAllByShelterIdAndYearAndMonth(
         shelterId: Long,
-        year: Int,
-        month: Int
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<SimpleVolunteerEventInfo> {
         val volunteerEventEntityMap =
             volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonth(
                 shelterId = shelterId,
-                year = year,
-                month = month
+                from = from,
+                to = to
             ).associateBy { it.id }
 
         val joinQueueEntityMap =
@@ -95,8 +96,8 @@ class VolunteerEventRepository(
         return volunteerEventEntityMap
             .values
             .map {
-                val joinQueue = joinQueueEntityMap[it.id]!!
-                val waitingQueue = waitingQueueEntityMap[it.id]!!
+                val joinQueue = joinQueueEntityMap[it.id]
+                val waitingQueue = waitingQueueEntityMap[it.id]
 
                 SimpleVolunteerEventInfo(
                     volunteerEventId = it.id,
@@ -106,20 +107,25 @@ class VolunteerEventRepository(
                     endAt = it.endAt,
                     eventStatus = it.status,
                     recruitNum = it.recruitNum,
-                    participantNum = joinQueue.size,
-                    waitingNum = waitingQueue.size,
+                    participantNum = joinQueue?.size ?: 0,
+                    waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
             }.toList()
     }
 
     @Transactional(readOnly = true)
-    override fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndYearAndMonth(shelterId: Long, volunteerId: Long, year: Int, month: Int): List<SimpleVolunteerEventInfo> {
+    override fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndYearAndMonth(
+        shelterId: Long,
+        volunteerId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime
+    ): List<SimpleVolunteerEventInfo> {
         val volunteerEventEntityMap =
             volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonth(
                 shelterId = shelterId,
-                year = year,
-                month = month
+                from = from,
+                to = to
             ).associateBy { it.id }
 
         val joinQueueEntityMap =

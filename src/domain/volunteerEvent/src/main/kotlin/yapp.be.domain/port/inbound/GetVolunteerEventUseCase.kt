@@ -1,9 +1,8 @@
 package yapp.be.domain.port.inbound
 
+import java.time.LocalDateTime
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
-import java.time.Month
-import java.time.Year
 
 interface GetVolunteerEventUseCase {
 
@@ -15,12 +14,12 @@ interface GetVolunteerEventUseCase {
     fun getMemberVolunteerEventsByYearAndMonth(
         shelterId: Long,
         volunteerId: Long,
-        year: Year,
-        month: Month
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<SimpleVolunteerEventInfo>
     fun getNonMemberVolunteerEventsByYearAndMonth(
         shelterId: Long,
-        year: Year,
-        month: Month
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<SimpleVolunteerEventInfo>
 }

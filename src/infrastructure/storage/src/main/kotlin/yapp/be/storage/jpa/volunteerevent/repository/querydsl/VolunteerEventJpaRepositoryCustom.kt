@@ -1,5 +1,6 @@
 package yapp.be.storage.jpa.volunteerevent.repository.querydsl
 
+import java.time.LocalDateTime
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEventWithMyParticipationStatusProjection
 
@@ -11,7 +12,7 @@ interface VolunteerEventJpaRepositoryCustom {
 
     fun findAllByShelterIdAndYearAndMonth(
         shelterId: Long,
-        year: Int,
-        month: Int,
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<VolunteerEventEntity>
 }
