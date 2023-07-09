@@ -20,6 +20,11 @@ class GetShelterUserDomainService(
     }
 
     @Transactional(readOnly = true)
+    override fun getShelterUserByShelterId(shelterId: Long): ShelterUser {
+        return shelterUserQueryHandler.findByShelterId(shelterId)
+    }
+
+    @Transactional(readOnly = true)
     override fun getShelterUserByEmail(email: Email): ShelterUser? {
         return shelterUserQueryHandler.findByEmail(email)
     }

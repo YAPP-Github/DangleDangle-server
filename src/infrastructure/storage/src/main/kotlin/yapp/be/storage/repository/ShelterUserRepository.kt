@@ -26,10 +26,20 @@ class ShelterUserRepository(
         return shelterUserEntity.toDomainModel()
     }
 
+    @Transactional(readOnly = true)
     override fun findById(shelterUserId: Long): ShelterUser {
         val shelterUserEntity = shelterUserJpaRepository.findByIdOrNull(shelterUserId) ?: throw CustomException(
-            StorageExceptionType.ENTITY_NOT_FOUND, "Shelter User Not Found"
+            StorageExceptionType.ENTITY_NOT_FOUND, "보호소 사용자를 찾을 수 없습니다."
         )
+        return shelterUserEntity.toDomainModel()
+    }
+
+    @Transactional(readOnly = true)
+    override fun findByShelterId(shelterId: Long): ShelterUser {
+        val shelterUserEntity = shelterUserJpaRepository.findByShelterId(shelterId)
+            ?: throw CustomException(
+                StorageExceptionType.ENTITY_NOT_FOUND, "보호소 사용자를 찾을 수 없습니다.")
+
         return shelterUserEntity.toDomainModel()
     }
 
