@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*
 import yapp.be.apiapplication.shelter.service.shelter.ShelterApplicationService
 import yapp.be.apiapplication.shelter.service.shelter.model.BookMarkShelterRequestDto
 import yapp.be.apiapplication.shelter.service.shelter.model.BookMarkShelterResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthentication
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationInfo
 
@@ -25,8 +26,9 @@ class ShelterController(
     )
     fun getShelterInfo(
         @PathVariable shelterId: Long,
-    ): ResponseEntity<String> {
-        return ResponseEntity.ok("Hello")
+    ): ResponseEntity<GetShelterResponseDto> {
+        val resDto = shelterApplicationService.getShelter(shelterId)
+        return ResponseEntity.ok(resDto)
     }
 
     @PostMapping("/{shelterId}/bookmark")

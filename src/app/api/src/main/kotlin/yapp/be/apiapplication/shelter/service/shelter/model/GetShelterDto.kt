@@ -5,6 +5,20 @@ import yapp.be.enums.volunteerevent.OutLinkType
 data class GetShelterResponseDto(
     val id: Long,
     val name: String,
+    val email: String,
+    val phoneNumber: String,
+    val description: String,
+    val address: GetShelterAddressInfoDto,
+    val profileImageUrl: String?,
+    val outLinks: List<GetOutLinkInfoDto>,
+    val parkingInfo: GetShelterParkingInfoDto?,
+    val bankAccount: GetBankAccountInfoDto?,
+    val notice: String?,
+)
+
+data class GetShelterAdminShelterResponseDto(
+    val id: Long,
+    val name: String,
     val phoneNumber: String,
     val description: String,
     val address: GetShelterAddressInfoDto,

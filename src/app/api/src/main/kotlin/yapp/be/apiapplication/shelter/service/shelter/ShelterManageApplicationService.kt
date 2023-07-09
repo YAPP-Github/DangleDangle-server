@@ -12,7 +12,7 @@ import yapp.be.apiapplication.shelter.service.shelter.model.GetBankAccountInfoDt
 import yapp.be.apiapplication.shelter.service.shelter.model.GetOutLinkInfoDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAddressInfoDto
 import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterParkingInfoDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterResponseDto
+import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAdminShelterResponseDto
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.port.inbound.GetShelterUseCase
 import yapp.be.domain.port.inbound.GetShelterUserUseCase
@@ -26,12 +26,12 @@ class ShelterManageApplicationService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getShelter(shelterUserId: Long): GetShelterResponseDto {
+    fun getShelter(shelterUserId: Long): GetShelterAdminShelterResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
         val shelter = getShelterUseCase.getShelterById(shelterUser.shelterId)
         val shelterOutLink = getShelterUseCase.getShelterOutLinkByShelterId(shelterUser.shelterId)
 
-        return GetShelterResponseDto(
+        return GetShelterAdminShelterResponseDto(
             id = shelter.id,
             name = shelter.name,
             phoneNumber = shelter.phoneNumber,

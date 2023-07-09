@@ -6,6 +6,8 @@ import yapp.be.model.Email
 interface ShelterUserQueryHandler {
 
     fun findById(shelterUserId: Long): ShelterUser
+
+    fun findByShelterId(shelterId:Long) : ShelterUser
     fun findByEmail(email: Email): ShelterUser?
     fun existByEmail(email: Email): Boolean
 }
