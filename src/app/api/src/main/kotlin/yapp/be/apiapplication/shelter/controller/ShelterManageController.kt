@@ -15,11 +15,11 @@ import yapp.be.apiapplication.shelter.controller.model.AddVolunteerEventRequest
 import yapp.be.apiapplication.shelter.controller.model.EditShelterAdditionalInfoRequest
 import yapp.be.apiapplication.shelter.controller.model.EditShelterEssentialInfoRequest
 import yapp.be.apiapplication.shelter.controller.model.EditShelterProfileImageRequest
-import yapp.be.apiapplication.shelter.service.shelter.ShelterManageApplicationService
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterProfileImageResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditShelterWithAdditionalInfoResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.EditWithEssentialInfoResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetShelterAdminShelterResponseDto
+import yapp.be.apiapplication.shelter.service.ShelterManageApplicationService
+import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditShelterWithAdditionalInfoResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserShelterResponseDto
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 
@@ -34,7 +34,7 @@ class ShelterManageController(
         summary = "보호소 정보 가져오기"
     )
     @GetMapping
-    fun getShelter(@ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo): ResponseEntity<GetShelterAdminShelterResponseDto> {
+    fun getShelter(@ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo): ResponseEntity<GetShelterUserShelterResponseDto> {
         val resDto = shelterManageApplicationService.getShelter(shelterUserInfo.shelterUserId)
         return ResponseEntity.ok(resDto)
     }

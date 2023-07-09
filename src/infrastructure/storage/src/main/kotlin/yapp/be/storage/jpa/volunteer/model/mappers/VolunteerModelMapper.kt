@@ -1,7 +1,7 @@
 package yapp.be.storage.jpa.volunteer.model.mappers
 
 import yapp.be.domain.model.Volunteer
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 import yapp.be.storage.jpa.volunteer.model.VolunteerEntity
 
 fun Volunteer.toEntityModel(): VolunteerEntity {

@@ -1,11 +1,11 @@
-package yapp.be.apiapplication.shelter.service.shelter.model
+package yapp.be.apiapplication.shelter.service.model
 
 import java.time.LocalDateTime
-import yapp.be.enums.volunteerevent.AgeLimit
-import yapp.be.enums.volunteerevent.UserEventParticipationStatus
-import yapp.be.enums.volunteerevent.VolunteerEventCategory
-import yapp.be.enums.volunteerevent.VolunteerEventStatus
-import yapp.be.model.Address
+import yapp.be.model.enums.volunteerevent.AgeLimit
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.vo.Address
 
 data class GetVolunteerEventsRequestDto(
     val shelterId: Long,

@@ -1,6 +1,6 @@
 package yapp.be.domain.model
 
-import yapp.be.enums.observaitonanimal.Gender
+import yapp.be.model.enums.observaitonanimal.Gender
 
 data class ObservationAnimal(
     val id: Long = 0,

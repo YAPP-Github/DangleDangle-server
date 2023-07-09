@@ -11,17 +11,19 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.controller.model.AddObservationAnimalRequest
 import yapp.be.apiapplication.shelter.controller.model.EditObservationAnimalRequest
-import yapp.be.apiapplication.shelter.service.observationanimal.ObservationAnimalManageApplicationService
-import yapp.be.apiapplication.shelter.service.observationanimal.model.AddObservationAnimalResponseDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.DeleteObservationAnimalResponseDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.EditObservationAnimalResponseDto
-import yapp.be.apiapplication.shelter.service.observationanimal.model.GetObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.ObservationAnimalManageApplicationService
+import yapp.be.apiapplication.shelter.service.model.AddObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.model.DeleteObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditObservationAnimalResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserObservationAnimalResponseDto
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
+import yapp.be.model.support.PagedResult
 
 @Tag(name = "특별 케어 동물 관리 api")
 @RequestMapping("/v1/shelter/admin/observation-animal")
@@ -36,9 +38,13 @@ class ObservationAnimalManageController(
         summary = "특별 케어 동물 리스트가져오기"
     )
     fun getObservationAnimals(
+        @RequestParam page: Int,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
-    ): ResponseEntity<List<GetObservationAnimalResponseDto>> {
-        val resDto = observationAnimalManageApplicationService.getShelterObservationAnimals(shelterUserInfo.shelterUserId)
+    ): ResponseEntity<PagedResult<GetShelterUserObservationAnimalResponseDto>> {
+        val resDto = observationAnimalManageApplicationService.getShelterObservationAnimals(
+            shelterUserId = shelterUserInfo.shelterUserId,
+            page = page
+        )
         return ResponseEntity.ok(resDto)
     }
 
@@ -50,7 +56,7 @@ class ObservationAnimalManageController(
     fun getObservationAnimal(
         @PathVariable observationAnimalId: Long,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
-    ): ResponseEntity<GetObservationAnimalResponseDto> {
+    ): ResponseEntity<GetShelterUserObservationAnimalResponseDto> {
         val resDto = observationAnimalManageApplicationService.getObservationAnimal(observationAnimalId)
         return ResponseEntity.ok(resDto)
     }

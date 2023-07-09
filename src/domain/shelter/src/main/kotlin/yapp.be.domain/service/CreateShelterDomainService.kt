@@ -1,7 +1,7 @@
 package yapp.be.domain.service
 
 import org.springframework.stereotype.Service
-import yapp.be.model.Address
+import yapp.be.model.vo.Address
 import yapp.be.domain.model.Shelter
 import yapp.be.domain.port.inbound.CreateShelterUseCase
 import yapp.be.domain.port.outbound.ShelterCommandHandler

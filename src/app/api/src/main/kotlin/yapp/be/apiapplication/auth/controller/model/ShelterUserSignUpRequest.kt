@@ -1,8 +1,8 @@
 package yapp.be.apiapplication.auth.controller.model
 
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoRequestDto
-import yapp.be.model.Address
-import yapp.be.model.Email
+import yapp.be.model.vo.Address
+import yapp.be.model.vo.Email
 
 data class SignUpWithEssentialInfoRequest(
     val email: String,

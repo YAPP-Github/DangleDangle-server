@@ -10,7 +10,8 @@ import yapp.be.domain.port.inbound.GetObservationAnimalUseCase
 import yapp.be.domain.port.outbound.ObservationAnimalCommandHandler
 import yapp.be.domain.port.outbound.ObservationAnimalQueryHandler
 import yapp.be.domain.port.outbound.ShelterQueryHandler
-import yapp.be.enums.observaitonanimal.Gender
+import yapp.be.model.enums.observaitonanimal.Gender
+import yapp.be.model.support.PagedResult
 
 @Service
 class ManageObservationAnimalDomainService(
@@ -20,8 +21,14 @@ class ManageObservationAnimalDomainService(
 ) : CreateObservationAnimalUseCase, GetObservationAnimalUseCase, EditObservationAnimalUseCase, DeleteObservationAnimalUseCase {
 
     @Transactional(readOnly = true)
-    override fun getAllObservationAnimalsByShelterId(shelterId: Long): List<ObservationAnimal> {
-        return observationAnimalQueryHandler.findAllByShelterId(shelterId)
+    override fun getAllObservationAnimalsByShelterId(
+        page: Int,
+        shelterId: Long
+    ): PagedResult<ObservationAnimal> {
+        return observationAnimalQueryHandler.findAllByShelterId(
+            shelterId = shelterId,
+            page = page
+        )
     }
 
     @Transactional(readOnly = true)

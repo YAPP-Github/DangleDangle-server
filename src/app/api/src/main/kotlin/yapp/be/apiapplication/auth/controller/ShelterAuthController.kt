@@ -20,7 +20,7 @@ import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoResponseDto
 import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.exceptions.CustomException
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @RestController
 @Tag(name = "보호소 회원가입/로그인 api")

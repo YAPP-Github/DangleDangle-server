@@ -1,8 +1,8 @@
 package yapp.be.domain.model.dto
 
-import yapp.be.enums.volunteerevent.UserEventParticipationStatus
-import yapp.be.enums.volunteerevent.VolunteerEventCategory
-import yapp.be.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import java.time.LocalDateTime
 
 data class SimpleVolunteerEventInfo(

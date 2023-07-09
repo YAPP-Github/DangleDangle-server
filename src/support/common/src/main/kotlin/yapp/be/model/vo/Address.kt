@@ -1,4 +1,4 @@
-package yapp.be.model
+package yapp.be.model.vo
 
 data class Address(
     val address: String,

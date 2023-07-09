@@ -2,7 +2,7 @@ package yapp.be.domain.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.model.Address
+import yapp.be.model.vo.Address
 import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.Shelter
 import yapp.be.domain.model.ShelterOutLink

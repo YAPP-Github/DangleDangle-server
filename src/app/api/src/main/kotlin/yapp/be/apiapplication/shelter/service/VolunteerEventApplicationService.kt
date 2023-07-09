@@ -1,12 +1,12 @@
-package yapp.be.apiapplication.shelter.service.shelter
+package yapp.be.apiapplication.shelter.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.shelter.model.GetDetailVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetSimpleVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.shelter.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetSimpleVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
+import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 
 @Service

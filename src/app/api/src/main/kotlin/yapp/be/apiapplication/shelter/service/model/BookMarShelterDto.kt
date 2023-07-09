@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.service.shelter.model
+package yapp.be.apiapplication.shelter.service.model
 
 data class BookMarkShelterRequestDto(
     val shelterId: Long,

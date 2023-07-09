@@ -1,6 +1,6 @@
 package yapp.be.domain.port.inbound
 
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 import java.time.Duration
 
 interface SaveOAuthNonMemberInfoUseCase {

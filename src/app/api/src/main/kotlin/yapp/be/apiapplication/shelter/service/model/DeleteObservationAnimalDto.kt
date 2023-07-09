@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.service.observationanimal.model
+package yapp.be.apiapplication.shelter.service.model
 
 class DeleteObservationAnimalResponseDto(
     val observationAnimalId: Long

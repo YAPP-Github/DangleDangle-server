@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.ShelterUser
 import yapp.be.domain.port.inbound.SignUpShelterUseCase
 import yapp.be.domain.port.outbound.ShelterUserCommandHandler
-import yapp.be.model.Email
+import yapp.be.model.vo.Email
 
 @Service
 class SignUpShelterDomainService(
