@@ -11,6 +11,7 @@ dependencies {
     val openApiVersion: String by project
     val jsonWebTokenVersion: String by project
     val jjwtApiVersion: String by project
+    val embeddedRedisVersion: String by project
 
     compileOnly("org.springframework:spring-tx")
 
@@ -36,6 +37,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVersion")
     implementation("io.jsonwebtoken:jjwt-api:$jjwtApiVersion")
+
+    testImplementation("it.ozimov:embedded-redis:$embeddedRedisVersion")
 
     if (Os.isFamily(Os.FAMILY_MAC)) {
         // for-mac
