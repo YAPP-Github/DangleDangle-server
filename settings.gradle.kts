@@ -36,6 +36,7 @@ includeProject(":volunteerEvent", "src/domain/volunteerEvent")
 // support
 includeProject(":logger", "src/support/logger")
 includeProject(":common", "src/support/common")
+includeProject(":lock", "src/support/lock")
 
 // infrastructure
 includeProject(":storage", "src/infrastructure/storage")

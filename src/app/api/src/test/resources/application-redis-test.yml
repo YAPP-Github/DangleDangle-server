@@ -1,7 +1,5 @@
 spring:
-    cache:
-        type: redis
+    data:
         redis:
-            time-to-live: 3600 # 데이터 유지 시간(sec)
-            host: localhost
+            host: 127.0.0.1
             port: 6379

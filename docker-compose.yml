@@ -12,3 +12,9 @@ services:
       MYSQL_DATABASE: dangledangle
     ports:
       - "3308:3306"
+  redis:
+      image: redis
+      ports:
+          - "6379:6379"
+      labels:
+          - "mode=standalone"

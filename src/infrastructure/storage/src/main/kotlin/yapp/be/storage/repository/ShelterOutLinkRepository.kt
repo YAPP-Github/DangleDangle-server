@@ -1,6 +1,6 @@
 package yapp.be.storage.repository
 
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.port.outbound.ShelterOutLinkCommandHandler
@@ -9,7 +9,7 @@ import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
 import yapp.be.storage.jpa.shelter.model.mappers.toEntityModel
 import yapp.be.storage.jpa.shelter.repository.ShelterOutLinkJpaRepository
 
-@Repository
+@Component
 class ShelterOutLinkRepository(
     private val shelterOutLinkJpaRepository: ShelterOutLinkJpaRepository
 ) : ShelterOutLinkQueryHandler, ShelterOutLinkCommandHandler {

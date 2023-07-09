@@ -61,7 +61,7 @@ class SecurityConfig(
                 AntPathRequestMatcher("/monitoring/health"),
                 AntPathRequestMatcher("/v1/auth/shelter/**"),
                 AntPathRequestMatcher("/v1/auth/volunteer/**"),
-                AntPathRequestMatcher("/v1/shelter/**"),
+                AntPathRequestMatcher("/v1/shelter/{shetlerId}"),
             ).permitAll()
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/admin/**")

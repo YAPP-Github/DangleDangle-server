@@ -25,7 +25,6 @@ class ShelterController(
     )
     fun getShelterInfo(
         @PathVariable shelterId: Long,
-        @VolunteerAuthentication volunteerInfo: VolunteerAuthenticationInfo
     ): ResponseEntity<String> {
         return ResponseEntity.ok("Hello")
     }
