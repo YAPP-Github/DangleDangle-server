@@ -10,7 +10,7 @@ data class VolunteerEvent(
     val shelterId: Long,
     val title: String,
     val recruitNum: Int,
-    val material: String,
+    val description: String,
     val ageLimit: AgeLimit,
     val date: LocalDate,
     val viewCnt: Int,
