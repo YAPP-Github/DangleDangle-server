@@ -1,5 +1,6 @@
 package yapp.be.domain.port.outbound
 
+import java.time.LocalDateTime
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
 
@@ -11,13 +12,13 @@ interface VolunteerEventQueryHandler {
     ): DetailVolunteerEventDto
     fun findAllByShelterIdAndYearAndMonth(
         shelterId: Long,
-        year: Int,
-        month: Int
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<SimpleVolunteerEventInfo>
     fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndYearAndMonth(
         shelterId: Long,
         volunteerId: Long,
-        year: Int,
-        month: Int
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<SimpleVolunteerEventInfo>
 }

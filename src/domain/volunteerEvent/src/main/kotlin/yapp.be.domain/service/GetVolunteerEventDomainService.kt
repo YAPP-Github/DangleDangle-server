@@ -1,13 +1,12 @@
 package yapp.be.domain.service
 
+import java.time.LocalDateTime
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
-import java.time.Month
-import java.time.Year
 
 @Service
 class GetVolunteerEventDomainService(
@@ -26,27 +25,27 @@ class GetVolunteerEventDomainService(
     override fun getMemberVolunteerEventsByYearAndMonth(
         shelterId: Long,
         volunteerId: Long,
-        year: Year,
-        month: Month
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<SimpleVolunteerEventInfo> {
         return volunteerEventQueryHandler.findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndYearAndMonth(
             shelterId = shelterId,
             volunteerId = volunteerId,
-            year = year.value,
-            month = month.value
+            from = from,
+            to = to
         )
     }
 
     @Transactional(readOnly = true)
     override fun getNonMemberVolunteerEventsByYearAndMonth(
         shelterId: Long,
-        year: Year,
-        month: Month
+        from: LocalDateTime,
+        to: LocalDateTime
     ): List<SimpleVolunteerEventInfo> {
         return volunteerEventQueryHandler.findAllByShelterIdAndYearAndMonth(
             shelterId = shelterId,
-            year = year.value,
-            month = month.value
+            from = from,
+            to = to
         )
     }
 }
