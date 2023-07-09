@@ -7,20 +7,19 @@ import org.springframework.boot.test.context.TestConfiguration
 import redis.embedded.RedisServer
 
 @TestConfiguration
-class TestRedisConfiguration(redisProperties: RedisProperties) {
-    private val redisServer: RedisServer
-
-    init {
-        redisServer = RedisServer(redisProperties.port)
-    }
-
+class TestRedisConfiguration(
+    private val redisProperties: RedisProperties
+) {
+    lateinit var redisServer: RedisServer
     @PostConstruct
-    fun postConstruct() {
+    @Throws(Exception::class)
+    fun redisServer() {
+        redisServer = RedisServer(redisProperties.port)
         redisServer.start()
     }
 
     @PreDestroy
-    fun preDestroy() {
+    fun stopRedis() {
         redisServer.stop()
     }
 }
