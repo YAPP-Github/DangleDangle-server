@@ -62,7 +62,7 @@ class AuthenticationSuccessHandler(
                 authToken = authToken,
                 accessToken = accessToken,
                 refreshToken = refreshToken,
-                authTokenExpire = Duration.ofMillis(jwtConfigProperties.auth.expire)
+                authTokenExpire = Duration.ofMinutes(jwtConfigProperties.auth.expire / (1000 * 60L))
             )
 
             val param = "authToken=" + URLEncoder.encode(authToken, StandardCharsets.UTF_8)
