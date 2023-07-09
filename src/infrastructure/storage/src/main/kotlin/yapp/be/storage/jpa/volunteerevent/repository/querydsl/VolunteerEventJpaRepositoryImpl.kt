@@ -2,12 +2,12 @@ package yapp.be.storage.jpa.volunteerevent.repository.querydsl
 
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import yapp.be.storage.jpa.volunteerevent.model.QVolunteerEventEntity.volunteerEventEntity
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
 import java.time.YearMonth
 
-@Repository
+@Component
 class VolunteerEventJpaRepositoryImpl(
     private val queryFactory: JPAQueryFactory
 ) : VolunteerEventJpaRepositoryCustom {

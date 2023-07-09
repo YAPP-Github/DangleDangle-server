@@ -1,9 +1,9 @@
 package yapp.be.redis.repository
 
 import org.springframework.data.redis.core.StringRedisTemplate
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import java.time.Duration
-@Repository
+@Component
 class RedisHandler(
     private val stringRedisTemplate: StringRedisTemplate
 ) {

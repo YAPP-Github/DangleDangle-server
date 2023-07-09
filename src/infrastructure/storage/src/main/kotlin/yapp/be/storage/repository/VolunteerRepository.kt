@@ -1,7 +1,7 @@
 package yapp.be.storage.repository
 
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Volunteer
 import yapp.be.domain.port.outbound.VolunteerCommandHandler
@@ -11,8 +11,7 @@ import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.volunteer.model.mappers.toDomainModel
 import yapp.be.storage.jpa.volunteer.model.mappers.toEntityModel
 import yapp.be.storage.jpa.volunteer.repository.VolunteerJpaRepository
-
-@Repository
+@Component
 class VolunteerRepository(
     private val jpaRepository: VolunteerJpaRepository
 ) : VolunteerQueryHandler, VolunteerCommandHandler {
