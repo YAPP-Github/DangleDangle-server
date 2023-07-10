@@ -8,6 +8,8 @@ import yapp.be.storage.jpa.common.model.Address
 import java.time.LocalDateTime
 
 class VolunteerEventWithMyParticipationStatusProjection @QueryProjection constructor(
+    val shelterName: String,
+    val shelterProfileImageUrl: String?,
     val title: String,
     val recruitNum: Int,
     val address: Address,

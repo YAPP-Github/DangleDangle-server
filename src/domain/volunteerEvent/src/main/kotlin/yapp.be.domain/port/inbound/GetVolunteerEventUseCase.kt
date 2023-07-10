@@ -11,13 +11,18 @@ interface GetVolunteerEventUseCase {
         volunteerEventId: Long
     ): DetailVolunteerEventDto
 
-    fun getMemberVolunteerEventsByYearAndMonth(
+    fun getShelterUserVolunteerEventsByDateRange(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime
+    ): List<SimpleVolunteerEventInfo>
+    fun getMemberVolunteerEventsByDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
     ): List<SimpleVolunteerEventInfo>
-    fun getNonMemberVolunteerEventsByYearAndMonth(
+    fun getNonMemberVolunteerEventsByDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime

@@ -25,6 +25,8 @@ class VolunteerEventApplicationService(
             )
 
         return GetDetailVolunteerEventResponseDto(
+            shelterName = volunteerEvent.shelterName,
+            shelterProfileImageUrl = volunteerEvent.shelterProfileImageUrl,
             title = volunteerEvent.title,
             recruitNum = volunteerEvent.recruitNum,
             address = volunteerEvent.address,
@@ -45,14 +47,14 @@ class VolunteerEventApplicationService(
         reqDto: GetVolunteerEventsRequestDto
     ): GetVolunteerEventsResponseDto {
         val volunteerEvents = if (reqDto.volunteerId != null) {
-            getVolunteerEventUseCase.getMemberVolunteerEventsByYearAndMonth(
+            getVolunteerEventUseCase.getMemberVolunteerEventsByDateRange(
                 shelterId = reqDto.shelterId,
                 volunteerId = reqDto.volunteerId,
                 from = reqDto.from,
                 to = reqDto.to
             )
         } else {
-            getVolunteerEventUseCase.getNonMemberVolunteerEventsByYearAndMonth(
+            getVolunteerEventUseCase.getNonMemberVolunteerEventsByDateRange(
                 shelterId = reqDto.shelterId,
                 from = reqDto.from,
                 to = reqDto.to
