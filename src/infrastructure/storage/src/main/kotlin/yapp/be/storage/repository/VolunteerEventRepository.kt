@@ -49,6 +49,8 @@ class VolunteerEventRepository(
         }
 
         return DetailVolunteerEventDto(
+            shelterName = volunteerEventWithMyParticipationStatus.shelterName,
+            shelterProfileImageUrl = volunteerEventWithMyParticipationStatus.shelterProfileImageUrl,
             title = volunteerEventWithMyParticipationStatus.title,
             recruitNum = volunteerEventWithMyParticipationStatus.recruitNum,
             address = Address(
@@ -75,7 +77,7 @@ class VolunteerEventRepository(
     }
 
     @Transactional(readOnly = true)
-    override fun findAllByShelterIdAndYearAndMonth(
+    override fun findAllByShelterIdAndDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
@@ -119,7 +121,7 @@ class VolunteerEventRepository(
     }
 
     @Transactional(readOnly = true)
-    override fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndYearAndMonth(
+    override fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,

@@ -17,7 +17,7 @@ enum class IterationCycle(
     },
     BIWEEKLY("격주") {
         override fun getNextDate(base: LocalDateTime): LocalDateTime {
-            return base.plusWeeks(1)
+            return base.plusWeeks(2)
         }
     },
     MONTHLY("매월") {

@@ -7,6 +7,11 @@ import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.vo.Address
 
+data class GetShelterUserVolunteerEventsRequestDto(
+    val shelterUserId: Long,
+    val from: LocalDateTime,
+    val to: LocalDateTime
+)
 data class GetVolunteerEventsRequestDto(
     val shelterId: Long,
     val volunteerId: Long?,
@@ -19,10 +24,15 @@ data class GetVolunteerEventRequestDto(
     val volunteerEventId: Long
 )
 
-data class GetVolunteerEventParticipantsRequestDto(
-    val shelterId: Long,
+data class GetShelterUserVolunteerEventRequestDto(
+    val shelterUserId: Long,
     val volunteerEventId: Long
 )
+
+data class GetShelterUserVolunteerEventsResponseDto(
+    val events: List<GetSimpleVolunteerEventResponseDto>
+)
+
 data class GetVolunteerEventsResponseDto(
     val events: List<GetSimpleVolunteerEventResponseDto>
 )
@@ -40,6 +50,8 @@ data class GetSimpleVolunteerEventResponseDto(
 )
 
 data class GetDetailVolunteerEventResponseDto(
+    val shelterName: String,
+    val shelterProfileImageUrl: String?,
     val title: String,
     val recruitNum: Int,
     val address: Address,
