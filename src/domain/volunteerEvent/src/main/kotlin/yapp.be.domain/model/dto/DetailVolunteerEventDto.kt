@@ -8,7 +8,7 @@ import yapp.be.model.vo.Address
 import java.time.LocalDateTime
 
 data class DetailVolunteerEventDto(
-    val id:Long,
+    val id: Long,
     val shelterName: String,
     val shelterProfileImageUrl: String?,
     val title: String,

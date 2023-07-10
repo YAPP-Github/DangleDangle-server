@@ -33,7 +33,8 @@ class ParticipateVolunteerEventDomainService(
         if (prevJoinQueue != null) {
             throw CustomException(
                 type = VolunteerEventExceptionType.ALREADY_PARTICIPATE,
-                message = "이미 참여중인 봉사입니다.")
+                message = "이미 참여중인 봉사입니다."
+            )
         }
 
         if (prevWaitingQueue != null) {
@@ -41,18 +42,19 @@ class ParticipateVolunteerEventDomainService(
                 .deleteVolunteerEventWaitingQueue(prevWaitingQueue)
         }
 
-
         return volunteerEventCommandHandler
-            .saveVolunteerEventJoinQueue(VolunteerEventJoinQueue(
-                volunteerId = volunteerId,
-                volunteerEventId = volunteerEventId
-            ))
+            .saveVolunteerEventJoinQueue(
+                VolunteerEventJoinQueue(
+                    volunteerId = volunteerId,
+                    volunteerEventId = volunteerEventId
+                )
+            )
     }
 
     override fun waitingVolunteerEvent(
         volunteerId: Long,
         volunteerEventId: Long
-    ):VolunteerEventWaitingQueue {
+    ): VolunteerEventWaitingQueue {
         val prevJoinQueue = volunteerEventQueryHandler
             .findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(
                 volunteerId = volunteerId,
@@ -65,7 +67,7 @@ class ParticipateVolunteerEventDomainService(
                 volunteerEventId = volunteerEventId
             )
 
-        if(prevJoinQueue != null || prevWaitingQueue != null){
+        if (prevJoinQueue != null || prevWaitingQueue != null) {
             throw CustomException(
                 type = VolunteerEventExceptionType.ALREADY_PARTICIPATE,
                 message = "이미 봉사에 참여중이거나 대기중입니다."
