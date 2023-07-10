@@ -66,8 +66,6 @@ class VolunteerEventJpaRepositoryImpl(
     }
 
     private fun isEventAtBetweenYearAndMonth(from: LocalDateTime, to: LocalDateTime): BooleanExpression {
-
         return volunteerEventEntity.startAt.between(from, to)
-            .and(volunteerEventEntity.endAt.between(from, to))
     }
 }

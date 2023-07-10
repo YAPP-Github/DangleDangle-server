@@ -3,8 +3,10 @@ package yapp.be.storage.repository
 import java.time.LocalDateTime
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
+import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.exceptions.CustomException
@@ -12,6 +14,8 @@ import yapp.be.model.vo.Address
 import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventJoinQueueEntity
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventWaitingQueueEntity
+import yapp.be.storage.jpa.volunteerevent.model.mappers.toDomainModel
+import yapp.be.storage.jpa.volunteerevent.model.mappers.toEntityModel
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJpaRepository
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJoinQueueJpaRepository
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventWaitingQueueJpaRepository
@@ -21,7 +25,7 @@ class VolunteerEventRepository(
     private val volunteerEventJpaRepository: VolunteerEventJpaRepository,
     private val volunteerEventWaitingQueueJpaRepository: VolunteerEventWaitingQueueJpaRepository,
     private val volunteerEventJoinQueueJpaRepository: VolunteerEventJoinQueueJpaRepository,
-) : VolunteerEventQueryHandler {
+) : VolunteerEventQueryHandler, VolunteerEventCommandHandler {
 
     @Transactional(readOnly = true)
     override fun findByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
@@ -141,8 +145,8 @@ class VolunteerEventRepository(
         return volunteerEventEntityMap
             .values
             .map {
-                val joinQueue = joinQueueEntityMap[it.id]!!
-                val waitingQueue = waitingQueueEntityMap[it.id]!!
+                val joinQueue = joinQueueEntityMap[it.id]
+                val waitingQueue = waitingQueueEntityMap[it.id]
 
                 SimpleVolunteerEventInfo(
                     volunteerEventId = it.id,
@@ -152,12 +156,12 @@ class VolunteerEventRepository(
                     endAt = it.endAt,
                     eventStatus = it.status,
                     recruitNum = it.recruitNum,
-                    participantNum = joinQueue.size,
-                    waitingNum = waitingQueue.size,
+                    participantNum = joinQueue?.size ?: 0,
+                    waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = getMyParticipationStatus(
                         volunteerId = volunteerId,
-                        joinQueue = joinQueue,
-                        waitingQueue = waitingQueue
+                        joinQueue = joinQueue ?: listOf(),
+                        waitingQueue = waitingQueue ?: listOf()
                     ),
                 )
             }.toList()
@@ -175,5 +179,20 @@ class VolunteerEventRepository(
             UserEventParticipationStatus.WAITING
         else
             UserEventParticipationStatus.NONE
+    }
+
+    override fun save(volunteerEvent: VolunteerEvent): VolunteerEvent {
+        val volunteerEventEntity = volunteerEvent.toEntityModel()
+        return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
+    }
+
+    @Transactional
+    override fun saveAll(volunteerEvents: Collection<VolunteerEvent>): List<VolunteerEvent> {
+        val volunteerEventEntities = volunteerEvents.map {
+            it.toEntityModel()
+        }.toList()
+
+        return volunteerEventJpaRepository.saveAll(volunteerEventEntities)
+            .map { it.toDomainModel() }.toList()
     }
 }
