@@ -9,15 +9,15 @@ import yapp.be.apiapplication.shelter.service.model.GetOutLinkInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterAddressInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterParkingInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterResponseDto
-import yapp.be.domain.port.inbound.BookMarkShelterUseCase
-import yapp.be.domain.port.inbound.GetShelterUseCase
-import yapp.be.domain.port.inbound.GetShelterUserUseCase
+import yapp.be.domain.port.inbound.shelter.AddShelterBookMarkUseCase
+import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 
 @Service
 class ShelterApplicationService(
     private val getShelterUseCase: GetShelterUseCase,
     private val getShelterUserUseCase: GetShelterUserUseCase,
-    private val bookMarkShelterUseCase: BookMarkShelterUseCase,
+    private val addShelterBookMarkUseCase: AddShelterBookMarkUseCase,
 ) {
     @Transactional(readOnly = true)
     fun getShelter(shelterId: Long): GetShelterResponseDto {
@@ -62,7 +62,7 @@ class ShelterApplicationService(
     }
     fun bookMarkShelter(reqDto: BookMarkShelterRequestDto): BookMarkShelterResponseDto {
         val shelter = getShelterUseCase.getShelterById(shelterId = reqDto.shelterId)
-        val shelterBookMark = bookMarkShelterUseCase.doBookMark(
+        val shelterBookMark = addShelterBookMarkUseCase.doBookMark(
             shelterId = shelter.id,
             volunteerId = reqDto.volunteerId
         )

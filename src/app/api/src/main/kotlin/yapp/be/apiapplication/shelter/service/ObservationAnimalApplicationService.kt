@@ -3,7 +3,7 @@ package yapp.be.apiapplication.shelter.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.GetObservationAnimalResponseDto
-import yapp.be.domain.port.inbound.GetObservationAnimalUseCase
+import yapp.be.domain.port.inbound.observationanimal.GetObservationAnimalUseCase
 import yapp.be.model.support.PagedResult
 
 @Service

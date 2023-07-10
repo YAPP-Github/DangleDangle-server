@@ -14,9 +14,9 @@ import yapp.be.apiapplication.shelter.service.model.GetShelterAddressInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterParkingInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserShelterResponseDto
 import yapp.be.domain.model.ShelterOutLink
-import yapp.be.domain.port.inbound.GetShelterUseCase
-import yapp.be.domain.port.inbound.GetShelterUserUseCase
-import yapp.be.domain.port.inbound.EditShelterUseCase
+import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
+import yapp.be.domain.port.inbound.shelter.EditShelterUseCase
 
 @Service
 class ShelterManageApplicationService(

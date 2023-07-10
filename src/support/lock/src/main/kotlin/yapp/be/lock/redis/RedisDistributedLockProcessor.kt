@@ -19,16 +19,13 @@ class RedisDistributedLockProcessor(
     ): Any? {
         println("I'm Calling -> $key ${Thread.currentThread().name}")
         val rLock = redissonClient.getLock(key)
-        val start = System.currentTimeMillis()
 
         try {
             /**
              * leaseTime : Lock 점유 시간
              * waitTime  : Lock 대기 시간
              */
-            println("TryLock -> $key ${Thread.currentThread().name}")
             val isLockAcquired = rLock.tryLock(timeOut, leaseTime, TimeUnit.MILLISECONDS)
-            println(isLockAcquired)
             if (!isLockAcquired) {
                 throw CustomException(
                     type = LockExceptionType.LOCK_ACQUIRED_FAILED,
@@ -39,8 +36,6 @@ class RedisDistributedLockProcessor(
         } finally {
             if (rLock.isHeldByCurrentThread) {
                 rLock.unlock()
-                println("UnLock -> $key ${Thread.currentThread().name}")
-                println("Process Time -> ${System.currentTimeMillis() - start}")
             }
         }
     }

@@ -4,6 +4,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsRequestDto
@@ -11,15 +15,20 @@ import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEvent
 import yapp.be.apiapplication.shelter.service.model.GetSimpleVolunteerEventResponseDto
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.port.inbound.AddVolunteerEventUseCase
-import yapp.be.domain.port.inbound.GetShelterUserUseCase
+import yapp.be.domain.port.inbound.DeleteVolunteerEventUseCase
+import yapp.be.domain.port.inbound.EditVolunteerEventUseCase
+import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
+import yapp.be.lock.DistributedLock
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 
 @Service
 class VolunteerEventManageApplicationService(
     private val getShelterUserUseCase: GetShelterUserUseCase,
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
-    private val addVolunteerEventUseCase: AddVolunteerEventUseCase
+    private val addVolunteerEventUseCase: AddVolunteerEventUseCase,
+    private val editVolunteerEventUseCase: EditVolunteerEventUseCase,
+    private val deleteVolunteerEventUseCase: DeleteVolunteerEventUseCase
 ) {
 
     @Transactional(readOnly = true)
@@ -103,5 +112,38 @@ class VolunteerEventManageApplicationService(
             } ?: addVolunteerEventUseCase.addVolunteerEvent(volunteerEvent)
 
         return AddVolunteerEventResponseDto(volunteerEventsId)
+    }
+
+    @Transactional
+    @DistributedLock(
+        prefix = "volunteerEvent",
+        identifiers = ["volunteerEventId"],
+        timeOut = 3000L,
+        leaseTime = 5000L
+    )
+    fun editVolunteerEvent(volunteerEventId: Long, reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
+        TODO()
+    }
+
+    @Transactional
+    @DistributedLock(
+        prefix = "volunteerEvent",
+        identifiers = ["reqDto.volunteerEventId"],
+        timeOut = 3000L,
+        leaseTime = 5000L
+    )
+    fun deleteVolunteerEvent(reqDto: DeleteVolunteerEventRequestDto): DeleteVolunteerEventResponseDto {
+        val shelterUser = getShelterUserUseCase
+            .getShelterUserById(reqDto.shelterUserId)
+
+        deleteVolunteerEventUseCase
+            .deleteByIdAndShelterId(
+                id = reqDto.volunteerEventId,
+                shelterId = shelterUser.shelterId
+            )
+
+        return DeleteVolunteerEventResponseDto(
+            volunteerEventId = reqDto.volunteerEventId
+        )
     }
 }

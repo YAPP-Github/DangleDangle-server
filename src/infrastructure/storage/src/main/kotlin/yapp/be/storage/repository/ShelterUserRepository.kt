@@ -4,8 +4,8 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.ShelterUser
-import yapp.be.domain.port.outbound.ShelterUserCommandHandler
-import yapp.be.domain.port.outbound.ShelterUserQueryHandler
+import yapp.be.domain.port.outbound.shelteruser.ShelterUserCommandHandler
+import yapp.be.domain.port.outbound.shelteruser.ShelterUserQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.model.vo.Email
 import yapp.be.storage.config.exceptions.StorageExceptionType

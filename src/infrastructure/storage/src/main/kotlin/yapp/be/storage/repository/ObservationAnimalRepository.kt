@@ -5,8 +5,8 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.ObservationAnimal
-import yapp.be.domain.port.outbound.ObservationAnimalCommandHandler
-import yapp.be.domain.port.outbound.ObservationAnimalQueryHandler
+import yapp.be.domain.port.outbound.observationanimal.ObservationAnimalCommandHandler
+import yapp.be.domain.port.outbound.observationanimal.ObservationAnimalQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.model.support.PagedResult
 import yapp.be.storage.config.PAGE_SIZE
@@ -38,19 +38,21 @@ class ObservationAnimalRepository(
             content = observationAnimalEntities.content.map { it.toDomainModel() }
         )
     }
+
     @Transactional(readOnly = true)
     override fun findByIdAndShelterId(observationAnimalId: Long, shelterId: Long): ObservationAnimal {
         return observationAnimalJpaRepository.findByIdAndShelterId(
             id = observationAnimalId,
             shelterId = shelterId
-        ) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found")
+        )?.toDomainModel() ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found")
     }
 
     @Transactional(readOnly = true)
     override fun findById(observationAnimalId: Long): ObservationAnimal {
-        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId) ?: throw CustomException(
-            StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found"
-        )
+        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId)
+            ?: throw CustomException(
+                StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found"
+            )
         return observationAnimalEntity.toDomainModel()
     }
 
@@ -69,10 +71,17 @@ class ObservationAnimalRepository(
     }
 
     @Transactional
-    override fun delete(observationAnimalId: Long): ObservationAnimal {
-        val observationAnimalEntity = observationAnimalJpaRepository.findByIdOrNull(observationAnimalId) ?: throw CustomException(
-            StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found"
+    override fun delete(
+        observationAnimalId: Long,
+        shelterId: Long
+    ): ObservationAnimal {
+        val observationAnimalEntity = observationAnimalJpaRepository.findByIdAndShelterId(
+            id = observationAnimalId,
+            shelterId = shelterId
         )
+            ?: throw CustomException(
+                StorageExceptionType.ENTITY_NOT_FOUND, "Observation Animal Not Found"
+            )
         observationAnimalJpaRepository.delete(observationAnimalEntity)
 
         return observationAnimalEntity.toDomainModel()
