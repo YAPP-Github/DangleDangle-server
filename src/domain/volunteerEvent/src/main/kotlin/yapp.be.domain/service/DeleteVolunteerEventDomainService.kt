@@ -11,7 +11,7 @@ class DeleteVolunteerEventDomainService(
 ) : DeleteVolunteerEventUseCase {
     @Transactional
     override fun deleteByIdAndShelterId(id: Long, shelterId: Long) {
-        volunteerEventCommandHandler.deleteByIdAndShelterId(
+        volunteerEventCommandHandler.deleteVolunteerEventByIdAndShelterId(
             id = id,
             shelterId = shelterId
         )

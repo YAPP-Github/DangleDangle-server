@@ -7,11 +7,19 @@ import yapp.be.apiapplication.shelter.service.model.GetSimpleVolunteerEventRespo
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
+import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
+import yapp.be.domain.port.inbound.ParticipateVolunteerEventUseCase
+import yapp.be.exceptions.CustomException
+import yapp.be.lock.DistributedLock
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 
 @Service
 class VolunteerEventApplicationService(
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
+    private val participationVolunteerEventUseCase: ParticipateVolunteerEventUseCase
 ) {
 
     @Transactional(readOnly = true)
@@ -77,5 +85,48 @@ class VolunteerEventApplicationService(
                 )
             }
         )
+    }
+
+    @Transactional
+    @DistributedLock(
+        prefix = "volunteerEvent",
+        identifiers = ["reqDto.volunteerEventId"],
+        timeOut = 3000L,
+        leaseTime = 5000L
+    )
+    fun participateVolunteerEvent(
+        reqDto: ParticipateVolunteerEventRequestDto
+    ):ParticipateVolunteerEventResponseDto{
+        val volunteerEvent = getVolunteerEventUseCase.getVolunteerEvent(
+            shelterId = reqDto.shelterId,
+            volunteerEventId = reqDto.volunteerEventId
+        )
+
+        val isFullCapacity = volunteerEvent.recruitNum <= volunteerEvent.joiningVolunteers.size
+
+
+       if(isFullCapacity){
+           participationVolunteerEventUseCase
+               .waitingVolunteerEvent(
+                   volunteerId = reqDto.volunteerId,
+                   volunteerEventId = reqDto.volunteerEventId
+               )
+
+           return ParticipateVolunteerEventResponseDto(
+               type = UserEventParticipationStatus.WAITING,
+               volunteerEventId = reqDto.volunteerEventId
+           )
+       }else{
+           participationVolunteerEventUseCase
+               .joinVolunteerEvent(
+                   volunteerId = reqDto.volunteerId,
+                   volunteerEventId = reqDto.volunteerEventId
+               )
+
+           return ParticipateVolunteerEventResponseDto(
+               type = UserEventParticipationStatus.JOINING,
+               volunteerEventId = reqDto.volunteerEventId
+           )
+       }
     }
 }

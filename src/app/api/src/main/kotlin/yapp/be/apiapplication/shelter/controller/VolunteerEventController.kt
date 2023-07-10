@@ -13,11 +13,14 @@ import yapp.be.apiapplication.system.security.resolver.VolunteerAuthentication
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationInfo
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
 
 @Tag(name = "봉사 이벤트 api")
 @RestController
@@ -66,6 +69,26 @@ class VolunteerEventController(
 
         )
         val resDto = volunteerEventApplicationService.getVolunteerEvent(reqDto)
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{volunteerEventId}/participate")
+    @Operation(
+        summary = "봉사이벤트 참여"
+    )
+    fun participateVolunteerEvent(
+        @PathVariable shelterId: Long,
+        @PathVariable volunteerEventId: Long,
+        @VolunteerAuthentication volunteerInfo: VolunteerAuthenticationInfo
+    ): ResponseEntity<ParticipateVolunteerEventResponseDto> {
+        val reqDto = ParticipateVolunteerEventRequestDto(
+            shelterId = shelterId,
+            volunteerId = volunteerInfo.volunteerId,
+            volunteerEventId = volunteerEventId
+        )
+        val resDto = volunteerEventApplicationService.participateVolunteerEvent(reqDto)
 
         return ResponseEntity.ok(resDto)
     }

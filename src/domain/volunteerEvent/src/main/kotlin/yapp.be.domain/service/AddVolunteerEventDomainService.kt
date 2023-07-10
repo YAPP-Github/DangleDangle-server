@@ -29,13 +29,13 @@ class AddVolunteerEventDomainService(
         }
 
         return volunteerEventCommandHandler
-            .saveAll(volunteerEvents)
+            .saveAllVolunteerEvents(volunteerEvents)
             .map { it.id }.toList()
     }
 
     @Transactional
     override fun addVolunteerEvent(volunteerEvent: VolunteerEvent): List<Long> {
-        return listOf(volunteerEventCommandHandler.save(volunteerEvent).id)
+        return listOf(volunteerEventCommandHandler.saveVolunteerEvent(volunteerEvent).id)
     }
 
     private fun canIterate(startAt: LocalDateTime, iteration: Iteration): Boolean {
