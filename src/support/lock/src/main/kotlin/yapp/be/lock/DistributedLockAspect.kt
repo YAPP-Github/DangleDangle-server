@@ -18,7 +18,6 @@ class DistributedLockAspect(
 
     @Around("@annotation(distributedLock)")
     fun lock(pjp: ProceedingJoinPoint, distributedLock: DistributedLock): Any? {
-        println("Aspect Start ${Thread.currentThread()}")
         val identifiers = distributedLock.identifiers
         val dynamicKey = keyGenerator.generate(
             arguments = pjp.args,

@@ -11,9 +11,9 @@ import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoR
 import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
-import yapp.be.domain.port.inbound.CreateShelterUseCase
-import yapp.be.domain.port.inbound.GetShelterUserUseCase
-import yapp.be.domain.port.inbound.SignUpShelterUseCase
+import yapp.be.domain.port.inbound.shelter.AddShelterUseCase
+import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
+import yapp.be.domain.port.inbound.shelteruser.SignUpShelterUseCase
 import yapp.be.model.enums.volunteerevent.Role
 import yapp.be.exceptions.CustomException
 import yapp.be.model.vo.Email
@@ -23,7 +23,7 @@ class ShelterAuthApplicationService(
     private val encoder: PasswordEncoder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val getShelterUserUseCase: GetShelterUserUseCase,
-    private val createShelterUseCase: CreateShelterUseCase,
+    private val addShelterUseCase: AddShelterUseCase,
     private val signUpShelterUseCase: SignUpShelterUseCase
 ) {
 
@@ -57,7 +57,7 @@ class ShelterAuthApplicationService(
 
     @Transactional
     fun signUpWithEssentialInfo(reqDto: SignUpShelterWithEssentialInfoRequestDto): SignUpShelterWithEssentialInfoResponseDto {
-        val shelter = createShelterUseCase.create(
+        val shelter = addShelterUseCase.create(
             name = reqDto.name,
             address = reqDto.address,
             description = reqDto.description,

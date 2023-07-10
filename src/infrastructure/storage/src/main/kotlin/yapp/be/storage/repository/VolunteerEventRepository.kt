@@ -197,4 +197,17 @@ class VolunteerEventRepository(
         return volunteerEventJpaRepository.saveAll(volunteerEventEntities)
             .map { it.toDomainModel() }.toList()
     }
+
+    @Transactional
+    override fun deleteByIdAndShelterId(id: Long, shelterId: Long) {
+        val volunteerEventEntity = volunteerEventJpaRepository.findByIdAndShelterId(
+            id = id,
+            shelterId = shelterId
+        ) ?: throw CustomException(
+            type = StorageExceptionType.ENTITY_NOT_FOUND,
+            message = "봉사 정보를 찾을 수 없습니다."
+        )
+
+        volunteerEventJpaRepository.delete(volunteerEventEntity)
+    }
 }

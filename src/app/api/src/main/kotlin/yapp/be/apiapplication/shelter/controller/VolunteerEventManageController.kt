@@ -6,16 +6,22 @@ import java.time.LocalDate
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.controller.model.AddVolunteerEventRequest
+import yapp.be.apiapplication.shelter.controller.model.EditVolunteerEventRequest
 import yapp.be.apiapplication.shelter.service.VolunteerEventManageApplicationService
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsRequestDto
@@ -50,7 +56,7 @@ class VolunteerEventManageController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/volunteer-event")
+    @GetMapping
     @Operation(
         summary = "봉사 이벤트 리스트 조회"
     )
@@ -73,7 +79,7 @@ class VolunteerEventManageController(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/volunteer-event")
+    @PostMapping
     @Operation(
         summary = "봉사 이벤트 추가"
     )
@@ -87,6 +93,46 @@ class VolunteerEventManageController(
                 shelterUserId = shelterUserInfo.shelterUserId,
                 reqDto = reqDto
             )
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{volunteerEventId}")
+    @Operation(
+        summary = "봉사 이벤트 수정"
+    )
+    fun editVolunteerEvent(
+        @PathVariable volunteerEventId: Long,
+        @RequestBody req: EditVolunteerEventRequest,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
+    ): ResponseEntity<EditVolunteerEventResponseDto> {
+        val reqDto = req.toDto()
+        val resDto = volunteerEventManageApplicationService
+            .editVolunteerEvent(
+                volunteerEventId = volunteerEventId,
+                reqDto = reqDto
+            )
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{volunteerEventId}")
+    @Operation(
+        summary = "봉사 이벤트 삭제"
+    )
+    fun deleteVolunteerEvent(
+        @PathVariable volunteerEventId: Long,
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
+    ): ResponseEntity<DeleteVolunteerEventResponseDto> {
+
+        val reqDto = DeleteVolunteerEventRequestDto(
+            volunteerEventId = volunteerEventId,
+            shelterUserId = shelterUserInfo.shelterUserId
+        )
+        val resDto = volunteerEventManageApplicationService
+            .deleteVolunteerEvent(reqDto)
 
         return ResponseEntity.ok(resDto)
     }

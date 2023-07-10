@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Shelter
 import yapp.be.domain.model.ShelterBookMark
-import yapp.be.domain.port.outbound.ShelterBookMarkCommandHandler
-import yapp.be.domain.port.outbound.ShelterBookMarkQueryHandler
-import yapp.be.domain.port.outbound.ShelterCommandHandler
-import yapp.be.domain.port.outbound.ShelterQueryHandler
+import yapp.be.domain.port.outbound.shelter.ShelterBookMarkCommandHandler
+import yapp.be.domain.port.outbound.shelter.ShelterBookMarkQueryHandler
+import yapp.be.domain.port.outbound.shelter.ShelterCommandHandler
+import yapp.be.domain.port.outbound.shelter.ShelterQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
