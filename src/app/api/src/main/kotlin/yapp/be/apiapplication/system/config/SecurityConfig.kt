@@ -58,7 +58,8 @@ class SecurityConfig(
         http.authorizeHttpRequests {
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/{shelterId}/bookmark"),
-            ).hasAnyRole(Role.VOLUNTEER.name)
+                AntPathRequestMatcher("/v1/shelter/{shelterId}/volunteer-event/{volunteerEventId}/participate"),
+            ).hasAnyAuthority(Role.VOLUNTEER.name)
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/admin/**")
             ).hasAuthority(Role.SHELTER.name)

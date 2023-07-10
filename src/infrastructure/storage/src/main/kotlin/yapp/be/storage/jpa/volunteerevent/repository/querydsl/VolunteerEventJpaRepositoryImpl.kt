@@ -23,6 +23,7 @@ class VolunteerEventJpaRepositoryImpl(
         return queryFactory
             .select(
                 QVolunteerEventWithMyParticipationStatusProjection(
+                    volunteerEventEntity.id,
                     shelterEntity.name,
                     shelterEntity.profileImageUrl,
                     volunteerEventEntity.title,

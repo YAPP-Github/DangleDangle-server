@@ -17,7 +17,6 @@ class RedisDistributedLockProcessor(
         leaseTime: Long,
         operation: () -> Any?
     ): Any? {
-        println("I'm Calling -> $key ${Thread.currentThread().name}")
         val rLock = redissonClient.getLock(key)
 
         try {

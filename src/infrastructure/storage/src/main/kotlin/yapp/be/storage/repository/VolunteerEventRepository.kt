@@ -4,6 +4,8 @@ import java.time.LocalDateTime
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.VolunteerEvent
+import yapp.be.domain.model.VolunteerEventJoinQueue
+import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
 import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
@@ -49,6 +51,7 @@ class VolunteerEventRepository(
         }
 
         return DetailVolunteerEventDto(
+            id = volunteerEventWithMyParticipationStatus.id,
             shelterName = volunteerEventWithMyParticipationStatus.shelterName,
             shelterProfileImageUrl = volunteerEventWithMyParticipationStatus.shelterProfileImageUrl,
             title = volunteerEventWithMyParticipationStatus.title,
@@ -169,6 +172,24 @@ class VolunteerEventRepository(
             }.toList()
     }
 
+    @Transactional(readOnly = true)
+    override fun findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long): VolunteerEventJoinQueue? {
+        return volunteerEventJoinQueueJpaRepository
+            .findByVolunteerIdAndVolunteerEventId(
+                volunteerId = volunteerId,
+                volunteerEventId = volunteerEventId
+            )?.toDomainModel()
+    }
+
+    @Transactional(readOnly = true)
+    override fun findVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long): VolunteerEventWaitingQueue? {
+        return volunteerEventWaitingQueueJpaRepository
+            .findByVolunteerIdAndVolunteerEventId(
+                volunteerId = volunteerId,
+                volunteerEventId = volunteerEventId
+            )?.toDomainModel()
+    }
+
     private fun getMyParticipationStatus(
         volunteerId: Long,
         joinQueue: List<VolunteerEventJoinQueueEntity>,
@@ -183,13 +204,13 @@ class VolunteerEventRepository(
             UserEventParticipationStatus.NONE
     }
 
-    override fun save(volunteerEvent: VolunteerEvent): VolunteerEvent {
+    override fun saveVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
         val volunteerEventEntity = volunteerEvent.toEntityModel()
         return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
     }
 
     @Transactional
-    override fun saveAll(volunteerEvents: Collection<VolunteerEvent>): List<VolunteerEvent> {
+    override fun saveAllVolunteerEvents(volunteerEvents: Collection<VolunteerEvent>): List<VolunteerEvent> {
         val volunteerEventEntities = volunteerEvents.map {
             it.toEntityModel()
         }.toList()
@@ -199,7 +220,7 @@ class VolunteerEventRepository(
     }
 
     @Transactional
-    override fun deleteByIdAndShelterId(id: Long, shelterId: Long) {
+    override fun deleteVolunteerEventByIdAndShelterId(id: Long, shelterId: Long) {
         val volunteerEventEntity = volunteerEventJpaRepository.findByIdAndShelterId(
             id = id,
             shelterId = shelterId
@@ -209,5 +230,29 @@ class VolunteerEventRepository(
         )
 
         volunteerEventJpaRepository.delete(volunteerEventEntity)
+    }
+
+    @Transactional
+    override fun saveVolunteerEventJoinQueue(volunteerEventJoinQueue: VolunteerEventJoinQueue): VolunteerEventJoinQueue {
+        return volunteerEventJoinQueueJpaRepository
+            .save(volunteerEventJoinQueue.toEntityModel()).toDomainModel()
+    }
+
+    @Transactional
+    override fun saveVolunteerEventJoinQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue {
+        return volunteerEventWaitingQueueJpaRepository
+            .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
+    }
+
+    @Transactional
+    override fun saveVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue {
+        return volunteerEventWaitingQueueJpaRepository
+            .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
+    }
+
+    @Transactional
+    override fun deleteVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue) {
+        volunteerEventWaitingQueueJpaRepository
+            .delete(volunteerEventWaitingQueue.toEntityModel())
     }
 }
