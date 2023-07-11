@@ -1,5 +1,7 @@
 package yapp.be.apiapplication.shelter.service
 
+import java.time.LocalDateTime
+import java.time.LocalTime
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventRequestDto
@@ -19,6 +21,9 @@ import yapp.be.domain.port.inbound.DeleteVolunteerEventUseCase
 import yapp.be.domain.port.inbound.EditVolunteerEventUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
+import yapp.be.domain.port.inbound.model.EditVolunteerEventCommand
+import yapp.be.domain.service.exceptions.VolunteerEventExceptionType
+import yapp.be.exceptions.CustomException
 import yapp.be.lock.DistributedLock
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 
@@ -81,7 +86,7 @@ class VolunteerEventManageApplicationService(
                     startAt = it.startAt,
                     endAt = it.endAt,
                     recruitNum = it.recruitNum,
-                    participantNum = it.participantNum,
+                    joinNum = it.participantNum,
                     waitingNum = it.waitingNum
                 )
             }
@@ -90,6 +95,28 @@ class VolunteerEventManageApplicationService(
 
     @Transactional
     fun addVolunteerEvent(shelterUserId: Long, reqDto: AddVolunteerEventRequestDto): AddVolunteerEventResponseDto {
+
+        if (LocalDateTime.now().isAfter(reqDto.startAt)) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
+                message = "날짜와 시간은 현 시점 이후로만 선택 가능합니다."
+            )
+        }
+
+        if (reqDto.startAt.isAfter(reqDto.endAt)) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
+                message = "시작시간은 종료시간 보다 이전이어야 합니다."
+            )
+        }
+
+        if (reqDto.iteration != null && reqDto.endAt.isAfter(reqDto.iteration.iterationEndAt.atTime(LocalTime.now()))) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
+                message = "반복주기 종료일은 종료시간보다 앞에올 수 없습니다."
+            )
+        }
+
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
 
         val volunteerEvent = VolunteerEvent(
@@ -117,12 +144,47 @@ class VolunteerEventManageApplicationService(
     @Transactional
     @DistributedLock(
         prefix = "volunteerEvent",
-        identifiers = ["volunteerEventId"],
+        identifiers = ["reqDto.volunteerEventId"],
         timeOut = 3000L,
         leaseTime = 5000L
     )
-    fun editVolunteerEvent(volunteerEventId: Long, reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
-        TODO()
+    fun editVolunteerEvent(reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
+
+        if (LocalDateTime.now().isAfter(reqDto.startAt)) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
+                message = "날짜와 시간은 현 시점 이후로만 선택 가능합니다."
+            )
+        }
+
+        if (reqDto.startAt.isAfter(reqDto.endAt)) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
+                message = "시작시간은 종료시간 보다 이전이어야 합니다."
+            )
+        }
+
+        val shelterUser = getShelterUserUseCase
+            .getShelterUserById(reqDto.shelterUserId)
+
+        val command = EditVolunteerEventCommand(
+            volunteerEventId = reqDto.volunteerEventId,
+            shelterId = shelterUser.shelterId,
+            title = reqDto.title,
+            recruitNum = reqDto.recruitNum,
+            description = reqDto.description,
+            category = reqDto.category,
+            status = reqDto.status,
+            ageLimit = reqDto.ageLimit,
+            startAt = reqDto.startAt,
+            endAt = reqDto.endAt
+        )
+        val updatedVolunteerEvent = editVolunteerEventUseCase
+            .editVolunteerEvent(command)
+
+        return EditVolunteerEventResponseDto(
+            volunteerEventId = updatedVolunteerEvent.id
+        )
     }
 
     @Transactional

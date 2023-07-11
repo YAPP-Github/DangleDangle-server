@@ -1,6 +1,7 @@
 package yapp.be.domain.port.outbound
 
 import java.time.LocalDateTime
+import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
@@ -11,13 +12,18 @@ interface VolunteerEventQueryHandler {
     fun findByIdAndShelterId(
         id: Long,
         shelterId: Long
+    ): VolunteerEvent
+
+    fun findDetailVolunteerEventInfoByIdAndShelterId(
+        id: Long,
+        shelterId: Long
     ): DetailVolunteerEventDto
-    fun findAllByShelterIdAndDateRange(
+    fun findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
     ): List<SimpleVolunteerEventInfo>
-    fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
+    fun findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,

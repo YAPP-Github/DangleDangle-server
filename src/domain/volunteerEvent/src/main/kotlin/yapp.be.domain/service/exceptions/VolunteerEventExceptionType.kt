@@ -4,5 +4,7 @@ import yapp.be.exceptions.CustomExceptionType
 
 enum class VolunteerEventExceptionType(override val code: String) : CustomExceptionType {
     ALREADY_PARTICIPATE("VOLUNTEER_EVENT-001"),
-    PARTICIPATION_INFO_NOT_FOUND("VOLUNTEER_EVENT-002")
+    PARTICIPATION_INFO_NOT_FOUND("VOLUNTEER_EVENT-002"),
+    INVALID_RECRUIT_NUM_EDIT("VOLUNTEER_EVENT-003"),
+    INVALID_DATE_RANGE_EDIT("VOLUNTEER_EVENT-004")
 }

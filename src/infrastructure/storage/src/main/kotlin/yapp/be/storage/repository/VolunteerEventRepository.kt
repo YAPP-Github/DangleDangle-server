@@ -1,6 +1,7 @@
 package yapp.be.storage.repository
 
 import java.time.LocalDateTime
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.VolunteerEvent
@@ -31,7 +32,19 @@ class VolunteerEventRepository(
 ) : VolunteerEventQueryHandler, VolunteerEventCommandHandler {
 
     @Transactional(readOnly = true)
-    override fun findByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
+    override fun findByIdAndShelterId(id: Long, shelterId: Long): VolunteerEvent {
+        return volunteerEventJpaRepository
+            .findByIdAndShelterId(
+                id = id,
+                shelterId = shelterId
+            )?.toDomainModel() ?: throw CustomException(
+            type = StorageExceptionType.ENTITY_NOT_FOUND,
+            message = "봉사 정보를 찾을 수 없습니다."
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun findDetailVolunteerEventInfoByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
         val volunteerEventWithMyParticipationStatus =
             volunteerEventJpaRepository
                 .findByIdAndShelterIdWithMyParticipationStatus(
@@ -91,7 +104,7 @@ class VolunteerEventRepository(
     }
 
     @Transactional(readOnly = true)
-    override fun findAllByShelterIdAndDateRange(
+    override fun findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
@@ -135,7 +148,7 @@ class VolunteerEventRepository(
     }
 
     @Transactional(readOnly = true)
-    override fun findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
+    override fun findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
@@ -215,6 +228,7 @@ class VolunteerEventRepository(
             UserEventParticipationStatus.NONE
     }
 
+    @Transactional
     override fun saveVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
         val volunteerEventEntity = volunteerEvent.toEntityModel()
         return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
@@ -262,6 +276,15 @@ class VolunteerEventRepository(
     }
 
     @Transactional
+    override fun updateVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
+        val volunteerEventEntity = volunteerEventJpaRepository.findByIdOrNull(volunteerEvent.id)
+            ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "봉사 정보를 찾을 수 없습니다.")
+        volunteerEventEntity.update(volunteerEvent)
+
+        return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
+    }
+
+    @Transactional
     override fun deleteVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
         return volunteerEventJoinQueueJpaRepository
             .deleteByVolunteerIdAndVolunteerEventId(
@@ -270,6 +293,7 @@ class VolunteerEventRepository(
             )
     }
 
+    @Transactional
     override fun deleteVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
         return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerIdAndVolunteerEventId(
             volunteerId = volunteerId,
