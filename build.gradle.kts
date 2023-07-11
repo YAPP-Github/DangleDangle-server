@@ -39,7 +39,10 @@ allprojects {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
+        testImplementation("io.kotest:kotest-runner-junit5:${property("kotestVersion")}")
+        testImplementation("io.kotest:kotest-assertions-core:${property("kotestVersion")}")
+        testImplementation("io.kotest:kotest-framework-datatest:${property("kotestVersion")}")
+        testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("io.mockk:mockk:${property("mockkVersion")}")
     }
