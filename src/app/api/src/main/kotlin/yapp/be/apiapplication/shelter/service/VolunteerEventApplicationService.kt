@@ -9,15 +9,19 @@ import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRequestDto
+import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventResponseDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.ParticipateVolunteerEventUseCase
+import yapp.be.domain.port.inbound.WithDrawVolunteerEventUseCase
 import yapp.be.lock.DistributedLock
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 
 @Service
 class VolunteerEventApplicationService(
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
-    private val participationVolunteerEventUseCase: ParticipateVolunteerEventUseCase
+    private val withDrawVolunteerEventUseCase: WithDrawVolunteerEventUseCase,
+    private val participationVolunteerEventUseCase: ParticipateVolunteerEventUseCase,
 ) {
 
     @Transactional(readOnly = true)
@@ -43,8 +47,8 @@ class VolunteerEventApplicationService(
             myParticipationStatus = volunteerEvent.myParticipationStatus,
             startAt = volunteerEvent.startAt,
             endAt = volunteerEvent.endAt,
-            joiningVolunteers = volunteerEvent.joiningVolunteers,
-            waitingVolunteers = volunteerEvent.waitingVolunteers
+            joiningVolunteers = volunteerEvent.joiningVolunteers.map { it.nickName },
+            waitingVolunteers = volunteerEvent.waitingVolunteers.map { it.nickName }
         )
     }
 
@@ -106,7 +110,9 @@ class VolunteerEventApplicationService(
             participationVolunteerEventUseCase
                 .waitingVolunteerEvent(
                     volunteerId = reqDto.volunteerId,
-                    volunteerEventId = reqDto.volunteerEventId
+                    volunteerEventId = reqDto.volunteerEventId,
+                    joinParticipants = volunteerEvent.joiningVolunteers.map { it.id },
+                    waitingParticipants = volunteerEvent.waitingVolunteers.map { it.id }
                 )
 
             return ParticipateVolunteerEventResponseDto(
@@ -117,7 +123,9 @@ class VolunteerEventApplicationService(
             participationVolunteerEventUseCase
                 .joinVolunteerEvent(
                     volunteerId = reqDto.volunteerId,
-                    volunteerEventId = reqDto.volunteerEventId
+                    volunteerEventId = reqDto.volunteerEventId,
+                    joinParticipants = volunteerEvent.joiningVolunteers.map { it.id },
+                    waitingParticipants = volunteerEvent.waitingVolunteers.map { it.id }
                 )
 
             return ParticipateVolunteerEventResponseDto(
@@ -125,5 +133,34 @@ class VolunteerEventApplicationService(
                 volunteerEventId = reqDto.volunteerEventId
             )
         }
+    }
+
+    @Transactional
+    @DistributedLock(
+        prefix = "volunteerEvent",
+        identifiers = ["reqDto.volunteerEventId"],
+        timeOut = 3000L,
+        leaseTime = 5000L
+    )
+    fun withdrawVolunteerEvent(
+        reqDto: WithdrawVolunteerEventRequestDto
+    ): WithdrawVolunteerEventResponseDto {
+        val volunteerEvent = getVolunteerEventUseCase.getVolunteerEvent(
+            shelterId = reqDto.shelterId,
+            volunteerEventId = reqDto.volunteerEventId
+        )
+
+        withDrawVolunteerEventUseCase
+            .withdrawVolunteerEvent(
+                volunteerId = reqDto.volunteerId,
+                volunteerEventId = volunteerEvent.id,
+                joinParticipants = volunteerEvent.joiningVolunteers.map { it.id },
+                waitingParticipants = volunteerEvent.waitingVolunteers.map { it.id }
+            )
+
+        return WithdrawVolunteerEventResponseDto(
+            volunteerId = reqDto.volunteerId,
+            volunteerEventId = reqDto.volunteerEventId
+        )
     }
 }

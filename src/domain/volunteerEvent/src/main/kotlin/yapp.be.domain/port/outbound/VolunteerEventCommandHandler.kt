@@ -13,5 +13,13 @@ interface VolunteerEventCommandHandler {
     fun saveVolunteerEventJoinQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue
 
     fun saveVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue
-    fun deleteVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue)
+
+    fun deleteVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(
+        volunteerId: Long,
+        volunteerEventId: Long
+    )
+    fun deleteVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(
+        volunteerId: Long,
+        volunteerEventId: Long
+    )
 }

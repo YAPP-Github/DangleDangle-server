@@ -8,6 +8,7 @@ import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
+import yapp.be.domain.model.dto.VolunteerEventParticipantInfoDto
 import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
@@ -42,10 +43,20 @@ class VolunteerEventRepository(
             )
 
         val joiningParticipants = volunteerEventJoinQueueJpaRepository.findAllJoinParticipantsByVolunteerEventId(volunteerEventId = id)
-            .map { it.nickname }.toList()
+            .map {
+                VolunteerEventParticipantInfoDto(
+                    id = it.id,
+                    nickName = it.nickname
+                )
+            }.toList()
         val waitingParticipants = if (volunteerEventWithMyParticipationStatus.recruitNum <= joiningParticipants.size) {
             volunteerEventWaitingQueueJpaRepository.findAllWaitParticipantsByVolunteerEventId(volunteerEventId = id)
-                .map { it.nickname }.toList()
+                .map {
+                    VolunteerEventParticipantInfoDto(
+                        id = it.id,
+                        nickName = it.nickname
+                    )
+                }.toList()
         } else {
             listOf()
         }
@@ -251,8 +262,18 @@ class VolunteerEventRepository(
     }
 
     @Transactional
-    override fun deleteVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue) {
-        volunteerEventWaitingQueueJpaRepository
-            .delete(volunteerEventWaitingQueue.toEntityModel())
+    override fun deleteVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
+        return volunteerEventJoinQueueJpaRepository
+            .deleteByVolunteerIdAndVolunteerEventId(
+                volunteerId = volunteerId,
+                volunteerEventId = volunteerEventId
+            )
+    }
+
+    override fun deleteVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
+        return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerIdAndVolunteerEventId(
+            volunteerId = volunteerId,
+            volunteerEventId = volunteerEventId
+        )
     }
 }

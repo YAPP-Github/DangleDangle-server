@@ -55,8 +55,8 @@ class VolunteerEventManageApplicationService(
             myParticipationStatus = volunteerEvent.myParticipationStatus,
             startAt = volunteerEvent.startAt,
             endAt = volunteerEvent.endAt,
-            joiningVolunteers = volunteerEvent.joiningVolunteers,
-            waitingVolunteers = volunteerEvent.waitingVolunteers
+            joiningVolunteers = volunteerEvent.joiningVolunteers.map { it.nickName },
+            waitingVolunteers = volunteerEvent.waitingVolunteers.map { it.nickName }
         )
     }
 
