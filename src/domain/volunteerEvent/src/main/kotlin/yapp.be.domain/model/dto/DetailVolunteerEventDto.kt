@@ -16,11 +16,16 @@ data class DetailVolunteerEventDto(
     val description: String,
     val ageLimit: AgeLimit,
     val recruitNum: Int,
-    val waitingVolunteers: List<String>,
-    val joiningVolunteers: List<String>,
+    val waitingVolunteers: List<VolunteerEventParticipantInfoDto>,
+    val joiningVolunteers: List<VolunteerEventParticipantInfoDto>,
     val category: VolunteerEventCategory,
     val eventStatus: VolunteerEventStatus,
     val myParticipationStatus: UserEventParticipationStatus,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime
+)
+
+data class VolunteerEventParticipantInfoDto(
+    val id: Long,
+    val nickName: String
 )

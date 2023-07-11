@@ -7,4 +7,6 @@ import yapp.be.storage.jpa.volunteerevent.repository.querydsl.VolunteerEventWait
 interface VolunteerEventWaitingQueueJpaRepository : JpaRepository<VolunteerEventWaitingQueueEntity, Long>, VolunteerEventWaitingQueueJpaRepositoryCustom {
     fun findByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long): VolunteerEventWaitingQueueEntity?
     fun findAllByVolunteerEventIdIn(volunteerEventIds: Collection<Long>): List<VolunteerEventWaitingQueueEntity>
+
+    fun deleteByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long)
 }

@@ -59,6 +59,7 @@ class SecurityConfig(
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/{shelterId}/bookmark"),
                 AntPathRequestMatcher("/v1/shelter/{shelterId}/volunteer-event/{volunteerEventId}/participate"),
+                AntPathRequestMatcher("/v1/shelter/{shelterId}/volunteer-event/{volunteerEventId}/withdraw"),
             ).hasAnyAuthority(Role.VOLUNTEER.name)
             it.requestMatchers(
                 AntPathRequestMatcher("/v1/shelter/admin/**")
