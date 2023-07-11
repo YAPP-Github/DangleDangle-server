@@ -6,6 +6,7 @@ import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 import java.time.LocalDateTime
+import yapp.be.domain.model.VolunteerEvent
 
 @Entity
 @Table(
@@ -21,22 +22,33 @@ class VolunteerEventEntity(
     @Column(name = "shelter_id")
     val shelterId: Long,
     @Column(name = "title")
-    val title: String,
+    var title: String,
     @Column(name = "recruit_num")
-    val recruitNum: Int,
+    var recruitNum: Int,
     @Column(name = "description", columnDefinition = "TEXT")
     var description: String?,
     @Column(name = "age_limit")
     @Enumerated(EnumType.STRING)
-    val ageLimit: AgeLimit,
+    var ageLimit: AgeLimit,
     @Column(name = "start_at")
-    val startAt: LocalDateTime,
+    var startAt: LocalDateTime,
     @Column(name = "end_at")
-    val endAt: LocalDateTime,
+    var endAt: LocalDateTime,
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    val status: VolunteerEventStatus,
+    var status: VolunteerEventStatus,
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
-    val category: VolunteerEventCategory
-) : BaseTimeEntity()
+    var category: VolunteerEventCategory
+) : BaseTimeEntity() {
+    fun update(volunteerEvent: VolunteerEvent) {
+        this.title = volunteerEvent.title
+        this.description = volunteerEvent.description
+        this.recruitNum = volunteerEvent.recruitNum
+        this.status = volunteerEvent.volunteerEventStatus
+        this.category = volunteerEvent.volunteerEventCategory
+        this.startAt = volunteerEvent.startAt
+        this.endAt = volunteerEvent.endAt
+        this.ageLimit = volunteerEvent.ageLimit
+    }
+}

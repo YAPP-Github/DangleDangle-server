@@ -19,6 +19,7 @@ import yapp.be.domain.port.inbound.DeleteVolunteerEventUseCase
 import yapp.be.domain.port.inbound.EditVolunteerEventUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
+import yapp.be.domain.port.inbound.model.EditVolunteerEventCommand
 import yapp.be.lock.DistributedLock
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 
@@ -81,7 +82,7 @@ class VolunteerEventManageApplicationService(
                     startAt = it.startAt,
                     endAt = it.endAt,
                     recruitNum = it.recruitNum,
-                    participantNum = it.participantNum,
+                    joinNum = it.participantNum,
                     waitingNum = it.waitingNum
                 )
             }
@@ -117,12 +118,32 @@ class VolunteerEventManageApplicationService(
     @Transactional
     @DistributedLock(
         prefix = "volunteerEvent",
-        identifiers = ["volunteerEventId"],
+        identifiers = ["reqDto.volunteerEventId"],
         timeOut = 3000L,
         leaseTime = 5000L
     )
-    fun editVolunteerEvent(volunteerEventId: Long, reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
-        TODO()
+    fun editVolunteerEvent(reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
+        val shelterUser = getShelterUserUseCase
+            .getShelterUserById(reqDto.shelterUserId)
+
+        val command = EditVolunteerEventCommand(
+            volunteerEventId = reqDto.volunteerEventId,
+            shelterId = shelterUser.shelterId,
+            title = reqDto.title,
+            recruitNum = reqDto.recruitNum,
+            description = reqDto.description,
+            category = reqDto.category,
+            status = reqDto.status,
+            ageLimit = reqDto.ageLimit,
+            startAt = reqDto.startAt,
+            endAt = reqDto.endAt
+        )
+        val updatedVolunteerEvent = editVolunteerEventUseCase
+            .editVolunteerEvent(command)
+
+        return EditVolunteerEventResponseDto(
+            volunteerEventId = updatedVolunteerEvent.id
+        )
     }
 
     @Transactional

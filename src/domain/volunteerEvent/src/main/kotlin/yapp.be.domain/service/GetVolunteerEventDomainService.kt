@@ -15,7 +15,7 @@ class GetVolunteerEventDomainService(
 
     @Transactional(readOnly = true)
     override fun getVolunteerEvent(shelterId: Long, volunteerEventId: Long): DetailVolunteerEventDto {
-        return volunteerEventQueryHandler.findByIdAndShelterId(
+        return volunteerEventQueryHandler.findDetailVolunteerEventInfoByIdAndShelterId(
             id = volunteerEventId,
             shelterId = shelterId
         )
@@ -24,7 +24,7 @@ class GetVolunteerEventDomainService(
     @Transactional(readOnly = true)
     override fun getShelterUserVolunteerEventsByDateRange(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<SimpleVolunteerEventInfo> {
         return volunteerEventQueryHandler
-            .findAllByShelterIdAndDateRange(
+            .findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
                 shelterId = shelterId,
                 from = from,
                 to = to
@@ -38,7 +38,7 @@ class GetVolunteerEventDomainService(
         from: LocalDateTime,
         to: LocalDateTime
     ): List<SimpleVolunteerEventInfo> {
-        return volunteerEventQueryHandler.findAllWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
+        return volunteerEventQueryHandler.findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
             shelterId = shelterId,
             volunteerId = volunteerId,
             from = from,
@@ -52,7 +52,7 @@ class GetVolunteerEventDomainService(
         from: LocalDateTime,
         to: LocalDateTime
     ): List<SimpleVolunteerEventInfo> {
-        return volunteerEventQueryHandler.findAllByShelterIdAndDateRange(
+        return volunteerEventQueryHandler.findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
             shelterId = shelterId,
             from = from,
             to = to

@@ -21,6 +21,7 @@ import yapp.be.apiapplication.shelter.service.VolunteerEventManageApplicationSer
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventRequestDto
@@ -107,12 +108,20 @@ class VolunteerEventManageController(
         @RequestBody req: EditVolunteerEventRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditVolunteerEventResponseDto> {
-        val reqDto = req.toDto()
+        val reqDto = EditVolunteerEventRequestDto(
+            shelterUserId = shelterUserInfo.shelterUserId,
+            volunteerEventId = volunteerEventId,
+            title = req.title,
+            recruitNum = req.recruitNum,
+            description = req.description,
+            category = req.category,
+            ageLimit = req.ageLimit,
+            startAt = req.startAt,
+            status = req.status,
+            endAt = req.endAt
+        )
         val resDto = volunteerEventManageApplicationService
-            .editVolunteerEvent(
-                volunteerEventId = volunteerEventId,
-                reqDto = reqDto
-            )
+            .editVolunteerEvent(reqDto)
 
         return ResponseEntity.ok(resDto)
     }
