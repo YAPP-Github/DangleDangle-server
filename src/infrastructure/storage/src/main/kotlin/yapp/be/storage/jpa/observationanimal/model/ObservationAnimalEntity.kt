@@ -16,7 +16,7 @@ class ObservationAnimalEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     var name: String,
 
     @Column(name = "profile_image_url")
@@ -29,13 +29,13 @@ class ObservationAnimalEntity(
     @Enumerated(EnumType.STRING)
     var gender: Gender?,
 
-    @Column(name = "special_note")
+    @Column(name = "special_note", nullable = false)
     var specialNote: String,
 
     @Column(name = "breed")
     var breed: String?,
 
-    @Column(name = "shelter_id")
+    @Column(name = "shelter_id", nullable = false)
     var shelterId: Long
 ) : BaseTimeEntity() {
     fun update(observationAnimal: ObservationAnimal) {

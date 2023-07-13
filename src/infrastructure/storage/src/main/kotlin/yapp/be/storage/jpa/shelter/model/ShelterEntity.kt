@@ -11,14 +11,14 @@ class ShelterEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     var name: String,
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     var description: String,
-    @Column
+    @Column(nullable = false)
     @Embedded
     var address: Address,
-    @Column(name = "phone_num")
+    @Column(name = "phone_num", nullable = false)
     var phoneNum: String,
     @Column(name = "bank_name")
     var bankName: String?,

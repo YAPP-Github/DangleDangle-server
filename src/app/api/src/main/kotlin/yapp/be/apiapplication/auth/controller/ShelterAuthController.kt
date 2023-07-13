@@ -2,6 +2,7 @@ package yapp.be.apiapplication.auth.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -35,7 +36,7 @@ class ShelterAuthController(
         summary = "보호소 사용자 로그인",
     )
     fun loginShelterUser(
-        @RequestBody
+        @RequestBody @Valid
         req: LoginShelterUserRequest
     ): ResponseEntity<LoginShelterUserResponseDto> {
         val reqDto = req.toDto()

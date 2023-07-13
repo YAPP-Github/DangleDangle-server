@@ -10,15 +10,19 @@ import yapp.be.model.enums.volunteerevent.IterationCycle
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 
 data class AddVolunteerEventRequest(
-    val title: String,
+    var title: String,
     val recruitNum: Int,
-    val description: String?,
+    var description: String?,
     val category: VolunteerEventCategory,
     val ageLimit: AgeLimit,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
     val iteration: AddVolunteerEventIterationInfo?
 ) {
+    init {
+        title = title.trim()
+        description = description?.trim()
+    }
     fun toDto(): AddVolunteerEventRequestDto {
         return AddVolunteerEventRequestDto(
             title = this.title,
