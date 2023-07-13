@@ -39,7 +39,9 @@ class VolunteerEventEntity(
     var status: VolunteerEventStatus,
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
-    var category: VolunteerEventCategory
+    var category: VolunteerEventCategory,
+    @Column(name = "is_deleted")
+    var deleted: Boolean = false
 ) : BaseTimeEntity() {
     fun update(volunteerEvent: VolunteerEvent) {
         this.title = volunteerEvent.title
@@ -50,5 +52,9 @@ class VolunteerEventEntity(
         this.startAt = volunteerEvent.startAt
         this.endAt = volunteerEvent.endAt
         this.ageLimit = volunteerEvent.ageLimit
+    }
+
+    fun delete() {
+        this.deleted = true
     }
 }

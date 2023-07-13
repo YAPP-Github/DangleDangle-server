@@ -14,8 +14,11 @@ import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRespon
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.ParticipateVolunteerEventUseCase
 import yapp.be.domain.port.inbound.WithDrawVolunteerEventUseCase
+import yapp.be.domain.service.exceptions.VolunteerEventExceptionType
+import yapp.be.exceptions.CustomException
 import yapp.be.lock.DistributedLock
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 
 @Service
 class VolunteerEventApplicationService(
@@ -103,6 +106,13 @@ class VolunteerEventApplicationService(
             shelterId = reqDto.shelterId,
             volunteerEventId = reqDto.volunteerEventId
         )
+
+        if (volunteerEvent.eventStatus != VolunteerEventStatus.IN_PROGRESS) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.PARTICIPATION_VALIDATION_FAIL,
+                message = "모집중인 봉사가 아닙니다."
+            )
+        }
 
         val isFullCapacity = volunteerEvent.recruitNum <= volunteerEvent.joiningVolunteers.size
 

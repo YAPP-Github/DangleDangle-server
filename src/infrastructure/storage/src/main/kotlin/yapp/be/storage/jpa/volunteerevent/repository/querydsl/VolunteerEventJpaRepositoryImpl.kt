@@ -48,6 +48,7 @@ class VolunteerEventJpaRepositoryImpl(
             .where(
                 volunteerEventEntity.id.eq(id)
                     .and(volunteerEventEntity.shelterId.eq(shelterId))
+                    .and(volunteerEventEntity.deleted.isFalse)
             )
             .fetchOne()
     }
@@ -64,6 +65,8 @@ class VolunteerEventJpaRepositoryImpl(
                             from = from,
                             to = to,
                         )
+                    ).and(
+                        volunteerEventEntity.deleted.isFalse
                     )
             ).fetch()
     }
