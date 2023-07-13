@@ -1,5 +1,8 @@
 package yapp.be.apiapplication.shelter.controller.model
 
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.NotBlank
+import org.hibernate.validator.constraints.Length
 import java.time.LocalDate
 import yapp.be.model.enums.volunteerevent.AgeLimit
 import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
@@ -10,12 +13,20 @@ import yapp.be.model.enums.volunteerevent.IterationCycle
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 
 data class AddVolunteerEventRequest(
+    @field:NotBlank(message = "일정 제목을 입력해주세요")
     var title: String,
+    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:Min(1, message = "최소 한명 이상이어야 합니다.")
     val recruitNum: Int,
+    @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
     var description: String?,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val category: VolunteerEventCategory,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val ageLimit: AgeLimit,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val startAt: LocalDateTime,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val endAt: LocalDateTime,
     val iteration: AddVolunteerEventIterationInfo?
 ) {
@@ -46,15 +57,29 @@ data class AddVolunteerEventRequest(
 }
 
 data class EditVolunteerEventRequest(
-    val title: String,
+    @field:NotBlank(message = "일정 제목을 입력해주세요")
+    var title: String,
+    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:Min(1, message = "최소 한명 이상이어야 합니다.")
     val recruitNum: Int,
-    val description: String?,
+    @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
+    var description: String?,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val category: VolunteerEventCategory,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val status: VolunteerEventStatus,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val ageLimit: AgeLimit,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val startAt: LocalDateTime,
+    @field:NotBlank(message = "값이 비어있습니다.")
     val endAt: LocalDateTime,
-)
+) {
+    init {
+        title = title.trim()
+        description = description?.trim()
+    }
+}
 
 data class AddVolunteerEventIterationInfo(
     val iterationEndAt: LocalDate,

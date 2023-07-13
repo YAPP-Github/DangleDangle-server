@@ -73,7 +73,7 @@ class ShelterAuthController(
         summary = "보호소 사용자 회원가입",
     )
     fun signUpWithEssentialInfo(
-        @RequestBody
+        @RequestBody @Valid
         req: SignUpWithEssentialInfoRequest
     ): ResponseEntity<SignUpShelterWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()

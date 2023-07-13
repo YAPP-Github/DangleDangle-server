@@ -2,6 +2,7 @@ package yapp.be.apiapplication.auth.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -27,7 +28,7 @@ class VolunteerAuthController(
         summary = "봉사자 회원가입",
     )
     fun register(
-        @RequestBody req: VolunteerSignUpRequest,
+        @RequestBody @Valid req: VolunteerSignUpRequest,
     ): ResponseEntity<SignUpUserWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
         val resDto = volunteerAuthApplicationService.register(reqDto)
@@ -57,7 +58,7 @@ class VolunteerAuthController(
         summary = "봉사자 토큰 발급",
     )
     fun issueUserToken(
-        @RequestBody req: LoginVolunteerRequest,
+        @RequestBody @Valid req: LoginVolunteerRequest,
     ): ResponseEntity<LoginVolunteerResponseDto> {
         val reqDto = req.toDto()
         val resDto = volunteerAuthApplicationService.issueToken(reqDto)
