@@ -68,6 +68,7 @@ class VolunteerEventController(
     ): ResponseEntity<GetDetailVolunteerEventResponseDto> {
         val reqDto = GetVolunteerEventRequestDto(
             shelterId = shelterId,
+            volunteerId = volunteerInfo?.volunteerId,
             volunteerEventId = volunteerEventId
 
         )

@@ -31,11 +31,21 @@ class VolunteerEventApplicationService(
     fun getVolunteerEvent(
         reqDto: GetVolunteerEventRequestDto
     ): GetDetailVolunteerEventResponseDto {
-        val volunteerEvent = getVolunteerEventUseCase
-            .getVolunteerEvent(
-                shelterId = reqDto.shelterId,
-                volunteerEventId = reqDto.volunteerEventId
-            )
+        val volunteerEvent =
+            if (reqDto.volunteerId != null) {
+                getVolunteerEventUseCase
+                    .getMemberDetailVolunteerEventInfo(
+                        shelterId = reqDto.shelterId,
+                        volunteerId = reqDto.volunteerId,
+                        volunteerEventId = reqDto.volunteerEventId
+                    )
+            } else {
+                getVolunteerEventUseCase
+                    .getNonMemberDetailVolunteerEventInfo(
+                        shelterId = reqDto.shelterId,
+                        volunteerEventId = reqDto.volunteerEventId
+                    )
+            }
 
         return GetDetailVolunteerEventResponseDto(
             shelterName = volunteerEvent.shelterName,
@@ -102,8 +112,9 @@ class VolunteerEventApplicationService(
     fun participateVolunteerEvent(
         reqDto: ParticipateVolunteerEventRequestDto
     ): ParticipateVolunteerEventResponseDto {
-        val volunteerEvent = getVolunteerEventUseCase.getVolunteerEvent(
+        val volunteerEvent = getVolunteerEventUseCase.getMemberDetailVolunteerEventInfo(
             shelterId = reqDto.shelterId,
+            volunteerId = reqDto.volunteerId,
             volunteerEventId = reqDto.volunteerEventId
         )
 
@@ -155,18 +166,33 @@ class VolunteerEventApplicationService(
     fun withdrawVolunteerEvent(
         reqDto: WithdrawVolunteerEventRequestDto
     ): WithdrawVolunteerEventResponseDto {
-        val volunteerEvent = getVolunteerEventUseCase.getVolunteerEvent(
+        val volunteerEvent = getVolunteerEventUseCase.getMemberDetailVolunteerEventInfo(
             shelterId = reqDto.shelterId,
+            volunteerId = reqDto.volunteerId,
             volunteerEventId = reqDto.volunteerEventId
         )
 
-        withDrawVolunteerEventUseCase
-            .withdrawVolunteerEvent(
-                volunteerId = reqDto.volunteerId,
-                volunteerEventId = volunteerEvent.id,
-                joinParticipants = volunteerEvent.joiningVolunteers.map { it.id },
-                waitingParticipants = volunteerEvent.waitingVolunteers.map { it.id }
+        val joinParticipants = volunteerEvent.joiningVolunteers.map { it.id }
+        val waitingParticipants = volunteerEvent.waitingVolunteers.map { it.id }
+
+        if (joinParticipants.contains(reqDto.volunteerId)) {
+            withDrawVolunteerEventUseCase
+                .withdrawJoinQueue(
+                    volunteerId = reqDto.volunteerId,
+                    volunteerEventId = reqDto.volunteerEventId
+                )
+        } else if (waitingParticipants.contains(reqDto.volunteerId)) {
+            withDrawVolunteerEventUseCase
+                .withdrawWaitingQueue(
+                    volunteerId = reqDto.volunteerId,
+                    volunteerEventId = reqDto.volunteerEventId
+                )
+        } else {
+            throw CustomException(
+                type = VolunteerEventExceptionType.PARTICIPATION_INFO_NOT_FOUND,
+                message = "봉사 참여 정보를 찾을 수 없습니다."
             )
+        }
 
         return WithdrawVolunteerEventResponseDto(
             volunteerId = reqDto.volunteerId,
