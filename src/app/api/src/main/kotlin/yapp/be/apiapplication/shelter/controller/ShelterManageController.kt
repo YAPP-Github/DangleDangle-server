@@ -2,6 +2,7 @@ package yapp.be.apiapplication.shelter.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -43,7 +44,7 @@ class ShelterManageController(
         summary = "보호소 대표 이미지 변경"
     )
     fun editShelterProfileImage(
-        @RequestBody req: EditShelterProfileImageRequest,
+        @RequestBody @Valid req: EditShelterProfileImageRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditShelterProfileImageResponseDto> {
         val reqDto = req.toDto()
@@ -61,7 +62,7 @@ class ShelterManageController(
         summary = "보호소 필수정보 Edit",
     )
     fun editEssentialShelterInfo(
-        @RequestBody req: EditShelterEssentialInfoRequest,
+        @RequestBody @Valid req: EditShelterEssentialInfoRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
@@ -79,7 +80,7 @@ class ShelterManageController(
         summary = "보호소 추가정보 Edit",
     )
     fun editAdditionalShelterInfo(
-        @RequestBody req: EditShelterAdditionalInfoRequest,
+        @RequestBody @Valid req: EditShelterAdditionalInfoRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditShelterWithAdditionalInfoResponseDto> {
         val reqDto = req.toDto()

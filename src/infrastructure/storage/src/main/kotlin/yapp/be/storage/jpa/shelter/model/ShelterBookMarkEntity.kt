@@ -14,9 +14,9 @@ class ShelterBookMarkEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @Column(name = "shelter_id")
+    @Column(name = "shelter_id", nullable = false)
     val shelterId: Long,
 
-    @Column(name = "volunteer_id")
+    @Column(name = "volunteer_id", nullable = false)
     val volunteerId: Long
 )

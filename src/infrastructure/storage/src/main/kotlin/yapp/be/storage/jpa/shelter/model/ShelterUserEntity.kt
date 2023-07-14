@@ -16,12 +16,12 @@ class ShelterUserEntity(
     @Column(name = "id", nullable = false)
     val id: Long = 0,
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     val email: String,
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     val password: String,
 
-    @Column(name = "shelter_id")
+    @Column(name = "shelter_id", nullable = false)
     val shelterId: Long,
 ) : BaseTimeEntity()

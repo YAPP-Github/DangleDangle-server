@@ -2,6 +2,7 @@ package yapp.be.apiapplication.shelter.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import java.time.LocalDate
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
@@ -85,7 +86,7 @@ class VolunteerEventManageController(
         summary = "봉사 이벤트 추가"
     )
     fun addVolunteerEvent(
-        @RequestBody req: AddVolunteerEventRequest,
+        @RequestBody @Valid req: AddVolunteerEventRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<AddVolunteerEventResponseDto> {
         val reqDto = req.toDto()
@@ -105,7 +106,7 @@ class VolunteerEventManageController(
     )
     fun editVolunteerEvent(
         @PathVariable volunteerEventId: Long,
-        @RequestBody req: EditVolunteerEventRequest,
+        @RequestBody @Valid req: EditVolunteerEventRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<EditVolunteerEventResponseDto> {
         val reqDto = EditVolunteerEventRequestDto(
