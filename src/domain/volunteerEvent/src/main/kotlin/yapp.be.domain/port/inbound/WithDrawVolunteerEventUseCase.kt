@@ -1,10 +1,14 @@
 package yapp.be.domain.port.inbound
 
 interface WithDrawVolunteerEventUseCase {
-    fun withdrawVolunteerEvent(
+
+    fun withdrawJoinQueue(
         volunteerId: Long,
-        volunteerEventId: Long,
-        joinParticipants: List<Long>,
-        waitingParticipants: List<Long>
-    ): Result<Unit>
+        volunteerEventId: Long
+    )
+
+    fun withdrawWaitingQueue(
+        volunteerId: Long,
+        volunteerEventId: Long
+    )
 }

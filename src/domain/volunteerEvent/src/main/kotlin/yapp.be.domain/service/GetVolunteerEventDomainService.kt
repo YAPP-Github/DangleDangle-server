@@ -3,6 +3,7 @@ package yapp.be.domain.service
 import java.time.LocalDateTime
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
@@ -14,11 +15,39 @@ class GetVolunteerEventDomainService(
 ) : GetVolunteerEventUseCase {
 
     @Transactional(readOnly = true)
-    override fun getVolunteerEvent(shelterId: Long, volunteerEventId: Long): DetailVolunteerEventDto {
-        return volunteerEventQueryHandler.findDetailVolunteerEventInfoByIdAndShelterId(
+    override fun getVolunteerEvent(shelterId: Long, volunteerEventId: Long): VolunteerEvent {
+        return volunteerEventQueryHandler
+            .findByIdAndShelterId(
+                id = volunteerEventId,
+                shelterId = shelterId
+            )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getMemberDetailVolunteerEventInfo(shelterId: Long, volunteerId: Long, volunteerEventId: Long): DetailVolunteerEventDto {
+        return volunteerEventQueryHandler.findDetailVolunteerEventInfoByIdAndShelterIdAndVolunteerId(
             id = volunteerEventId,
+            volunteerId = volunteerId,
             shelterId = shelterId
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getNonMemberDetailVolunteerEventInfo(shelterId: Long, volunteerEventId: Long): DetailVolunteerEventDto {
+        return volunteerEventQueryHandler
+            .findDetailVolunteerEventInfoByIdAndShelterId(
+                id = volunteerEventId,
+                shelterId = shelterId
+            )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getShelterUserDetailVolunteerEventInfo(shelterId: Long, volunteerEventId: Long): DetailVolunteerEventDto {
+        return volunteerEventQueryHandler
+            .findDetailVolunteerEventInfoByIdAndShelterId(
+                id = volunteerEventId,
+                shelterId = shelterId
+            )
     }
 
     @Transactional(readOnly = true)

@@ -18,6 +18,12 @@ interface VolunteerEventQueryHandler {
         id: Long,
         shelterId: Long
     ): DetailVolunteerEventDto
+
+    fun findDetailVolunteerEventInfoByIdAndShelterIdAndVolunteerId(
+        id: Long,
+        volunteerId: Long,
+        shelterId: Long
+    ): DetailVolunteerEventDto
     fun findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
         shelterId: Long,
         from: LocalDateTime,

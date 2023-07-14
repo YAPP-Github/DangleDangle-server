@@ -42,7 +42,7 @@ class VolunteerEventManageApplicationService(
             .getShelterUserById(reqDto.shelterUserId)
 
         val volunteerEvent = getVolunteerEventUseCase
-            .getVolunteerEvent(
+            .getShelterUserDetailVolunteerEventInfo(
                 shelterId = shelterUser.shelterId,
                 volunteerEventId = reqDto.volunteerEventId
             )
@@ -149,7 +149,6 @@ class VolunteerEventManageApplicationService(
         leaseTime = 5000L
     )
     fun editVolunteerEvent(reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
-
         if (LocalDateTime.now().isAfter(reqDto.startAt)) {
             throw CustomException(
                 type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
@@ -164,8 +163,31 @@ class VolunteerEventManageApplicationService(
             )
         }
 
+        val now = LocalDateTime.now()
+
         val shelterUser = getShelterUserUseCase
             .getShelterUserById(reqDto.shelterUserId)
+
+        val volunteerEvent =
+            getVolunteerEventUseCase
+                .getShelterUserDetailVolunteerEventInfo(
+                    shelterId = shelterUser.shelterId,
+                    volunteerEventId = reqDto.volunteerEventId
+                )
+
+        if (volunteerEvent.joiningVolunteers.size > volunteerEvent.recruitNum || volunteerEvent.recruitNum == 0) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.INVALID_RECRUIT_NUM_EDIT,
+                message = "정원을 현재 참여 중 인원보다 적게 수정할 수 없습니다."
+            )
+        }
+
+        if (volunteerEvent.endAt.isBefore(volunteerEvent.startAt) || volunteerEvent.startAt.isBefore(now) || volunteerEvent.endAt.isBefore(now)) {
+            throw CustomException(
+                type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
+                message = "잘못된 날짜 설정입니다."
+            )
+        }
 
         val command = EditVolunteerEventCommand(
             volunteerEventId = reqDto.volunteerEventId,
