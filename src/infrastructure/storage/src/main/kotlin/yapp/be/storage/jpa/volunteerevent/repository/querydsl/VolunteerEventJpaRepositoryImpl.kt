@@ -17,7 +17,7 @@ class VolunteerEventJpaRepositoryImpl(
 ) : VolunteerEventJpaRepositoryCustom {
 
     @Transactional(readOnly = true)
-    override fun findByIdAndShelterId(id: Long, shelterId: Long): VolunteerEventWithMyParticipationStatusProjection? {
+    override fun findWithParticipationStatusByIdAndShelterId(id: Long, shelterId: Long): VolunteerEventWithMyParticipationStatusProjection? {
         return queryFactory
             .select(
                 QVolunteerEventWithMyParticipationStatusProjection(

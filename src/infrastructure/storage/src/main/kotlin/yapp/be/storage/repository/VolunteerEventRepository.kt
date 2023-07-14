@@ -8,7 +8,7 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
-import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
+import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerEventParticipantInfoDto
 import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
@@ -47,7 +47,7 @@ class VolunteerEventRepository(
     override fun findDetailVolunteerEventInfoByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
         val volunteerEventWithMyParticipationStatus =
             volunteerEventJpaRepository
-                .findByIdAndShelterId(
+                .findWithParticipationStatusByIdAndShelterId(
                     id = id,
                     shelterId = shelterId
                 ) ?: throw CustomException(
@@ -104,7 +104,7 @@ class VolunteerEventRepository(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo> {
+    ): List<SimpleVolunteerEventDto> {
         val volunteerEventEntityMap =
             volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonth(
                 shelterId = shelterId,
@@ -128,7 +128,7 @@ class VolunteerEventRepository(
                 val joinQueue = joinQueueEntityMap[it.id]
                 val waitingQueue = waitingQueueEntityMap[it.id]
 
-                SimpleVolunteerEventInfo(
+                SimpleVolunteerEventDto(
                     volunteerEventId = it.id,
                     title = it.title,
                     category = it.category,
@@ -149,7 +149,7 @@ class VolunteerEventRepository(
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo> {
+    ): List<SimpleVolunteerEventDto> {
         val volunteerEventEntityMap =
             volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonth(
                 shelterId = shelterId,
@@ -173,7 +173,7 @@ class VolunteerEventRepository(
                 val joinQueue = joinQueueEntityMap[it.id]
                 val waitingQueue = waitingQueueEntityMap[it.id]
 
-                SimpleVolunteerEventInfo(
+                SimpleVolunteerEventDto(
                     volunteerEventId = it.id,
                     title = it.title,
                     category = it.category,

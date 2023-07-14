@@ -2,7 +2,7 @@ package yapp.be.domain.port.inbound
 
 import java.time.LocalDateTime
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
-import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
+import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 
 interface GetVolunteerEventUseCase {
 
@@ -15,16 +15,16 @@ interface GetVolunteerEventUseCase {
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo>
+    ): List<SimpleVolunteerEventDto>
     fun getMemberVolunteerEventsByDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo>
+    ): List<SimpleVolunteerEventDto>
     fun getNonMemberVolunteerEventsByDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo>
+    ): List<SimpleVolunteerEventDto>
 }

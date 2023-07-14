@@ -2,6 +2,10 @@ package yapp.be.apiapplication.shelter.service.model
 
 import yapp.be.model.enums.volunteerevent.OutLinkType
 
+data class GetShelterRequestDto(
+    val shelterId: Long,
+    val volunteerId: Long?
+)
 data class GetShelterResponseDto(
     val id: Long,
     val name: String,
@@ -13,6 +17,7 @@ data class GetShelterResponseDto(
     val outLinks: List<GetOutLinkInfoDto>,
     val parkingInfo: GetShelterParkingInfoDto?,
     val bankAccount: GetBankAccountInfoDto?,
+    val bookMarked: Boolean,
     val notice: String?,
 )
 

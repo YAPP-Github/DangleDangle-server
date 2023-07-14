@@ -4,6 +4,7 @@ import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.Shelter
 import yapp.be.domain.model.ShelterParkingInfo
 import yapp.be.storage.jpa.common.model.Address
+import yapp.be.storage.jpa.common.model.toDomainModel
 import yapp.be.storage.jpa.shelter.model.ShelterEntity
 
 fun Shelter.toEntityModel(): ShelterEntity {
@@ -40,13 +41,7 @@ fun ShelterEntity.toDomainModel(): Shelter {
             if (this.bankName != null && this.bankAccountNum != null) BankAccount(name = this.bankName!!, accountNumber = this.bankAccountNum!!)
             else null
         },
-        address = yapp.be.model.vo.Address(
-            address = this.address.address,
-            addressDetail = this.address.addressDetail,
-            postalCode = this.address.postalCode,
-            longitude = this.address.longitude,
-            latitude = this.address.latitude
-        ),
+        address = this.address.toDomainModel(),
         parkingInfo = run {
             if (this.parkingEnabled != null && this.parkingNotice != null) ShelterParkingInfo(parkingEnabled = this.parkingEnabled!!, parkingNotice = this.parkingNotice!!)
             else null

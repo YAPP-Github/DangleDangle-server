@@ -8,6 +8,7 @@ import yapp.be.apiapplication.shelter.service.model.GetBankAccountInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetOutLinkInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterAddressInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterParkingInfoDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterResponseDto
 import yapp.be.domain.port.inbound.shelter.AddShelterBookMarkUseCase
 import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
@@ -20,8 +21,16 @@ class ShelterApplicationService(
     private val addShelterBookMarkUseCase: AddShelterBookMarkUseCase,
 ) {
     @Transactional(readOnly = true)
-    fun getShelter(shelterId: Long): GetShelterResponseDto {
-        val shelter = getShelterUseCase.getShelterById(shelterId)
+    fun getShelter(reqDto: GetShelterRequestDto): GetShelterResponseDto {
+        val shelter = if (reqDto.volunteerId != null) {
+            getShelterUseCase.getMemberShelterInfoByIdAndVolunteerId(
+                shelterId = reqDto.shelterId,
+                volunteerId = reqDto.volunteerId
+            )
+        } else {
+            getShelterUseCase.getNonMemberShelterInfoById(reqDto.shelterId)
+        }
+
         val shelterUser = getShelterUserUseCase.getShelterUserByShelterId(shelter.id)
         val shelterOutLink = getShelterUseCase.getShelterOutLinkByShelterId(shelterUser.shelterId)
 
@@ -57,7 +66,8 @@ class ShelterApplicationService(
                     accountNumber = it.accountNumber
                 )
             },
-            notice = shelter.notice
+            notice = shelter.notice,
+            bookMarked = shelter.bookMarked
         )
     }
     fun bookMarkShelter(reqDto: BookMarkShelterRequestDto): BookMarkShelterResponseDto {

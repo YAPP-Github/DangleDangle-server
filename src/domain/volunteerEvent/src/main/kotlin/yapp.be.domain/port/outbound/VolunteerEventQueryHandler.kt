@@ -5,7 +5,7 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
-import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
+import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 
 interface VolunteerEventQueryHandler {
 
@@ -22,13 +22,13 @@ interface VolunteerEventQueryHandler {
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo>
+    ): List<SimpleVolunteerEventDto>
     fun findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo>
+    ): List<SimpleVolunteerEventDto>
 
     fun findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(
         volunteerId: Long,
