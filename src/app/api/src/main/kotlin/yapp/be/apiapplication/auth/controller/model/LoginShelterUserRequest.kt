@@ -5,7 +5,7 @@ import yapp.be.apiapplication.auth.service.model.LoginShelterUserRequestDto
 import yapp.be.model.vo.Email
 
 data class LoginShelterUserRequest(
-    @field:Pattern(regexp = "^[a-zA-Z0-9._%+-]@[a-zA-Z0-9-]\\.[a-zA-Z0-9-.]\$", message = "잘못된 이메일 형식입니다.")
+    @field:Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9-.]+\$", message = "잘못된 이메일 형식입니다.")
     val email: String,
     @field:Pattern(
         regexp = "^(?!((?:[A-Za-z]+)|(?:[~!@#\$%^&*()_+=]+)|(?:[0-9]+))\$)[A-Za-z\\d~!@#\$%^&*()_+=]{8,15}\$",

@@ -18,8 +18,6 @@ class VolunteerEventWithMyParticipationStatusProjection @QueryProjection constru
     val ageLimit: AgeLimit,
     val category: VolunteerEventCategory,
     val eventStatus: VolunteerEventStatus,
-    val isJoining: Boolean,
-    val isWaiting: Boolean,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime
 )

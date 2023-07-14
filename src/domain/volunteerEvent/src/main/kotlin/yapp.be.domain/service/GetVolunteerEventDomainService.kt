@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
-import yapp.be.domain.model.dto.SimpleVolunteerEventInfo
+import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 
 @Service
@@ -22,7 +22,7 @@ class GetVolunteerEventDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getShelterUserVolunteerEventsByDateRange(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<SimpleVolunteerEventInfo> {
+    override fun getShelterUserVolunteerEventsByDateRange(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<SimpleVolunteerEventDto> {
         return volunteerEventQueryHandler
             .findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
                 shelterId = shelterId,
@@ -37,7 +37,7 @@ class GetVolunteerEventDomainService(
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo> {
+    ): List<SimpleVolunteerEventDto> {
         return volunteerEventQueryHandler.findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
             shelterId = shelterId,
             volunteerId = volunteerId,
@@ -51,7 +51,7 @@ class GetVolunteerEventDomainService(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventInfo> {
+    ): List<SimpleVolunteerEventDto> {
         return volunteerEventQueryHandler.findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
             shelterId = shelterId,
             from = from,

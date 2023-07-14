@@ -8,7 +8,7 @@ import yapp.be.model.vo.Email
 data class VolunteerSignUpRequest(
     @field:NotBlank(message = "값이 비어있습니다.")
     val nickname: String,
-    @field:Pattern(regexp = "^[a-zA-Z0-9._%+-]@[a-zA-Z0-9-]\\.[a-zA-Z0-9-.]\$", message = "잘못된 이메일 형식입니다.")
+    @field:Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9-.]+\$", message = "잘못된 이메일 형식입니다.")
     val email: String,
     @field:Pattern(
         regexp = "^\\d{3}\\d{3,4}\\d{4}\$",

@@ -5,7 +5,7 @@ import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import java.time.LocalDateTime
 
-data class SimpleVolunteerEventInfo(
+data class SimpleVolunteerEventDto(
     val volunteerEventId: Long,
     val title: String,
     val category: VolunteerEventCategory,
