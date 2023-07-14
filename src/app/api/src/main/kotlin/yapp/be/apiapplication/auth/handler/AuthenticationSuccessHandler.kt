@@ -2,7 +2,6 @@ package yapp.be.apiapplication.auth.handler
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
@@ -18,8 +17,6 @@ import java.time.Duration
 
 @Component
 class AuthenticationSuccessHandler(
-    @Value("\${oauth.redirect-url}")
-    private val REDIRECT_URI: String,
     private val jwtTokenProvider: JwtTokenProvider,
     private val saveOAuthNonMemberInfoUseCase: SaveOAuthNonMemberInfoUseCase,
     private val getVolunteerUseCase: GetVolunteerUseCase,
@@ -27,6 +24,8 @@ class AuthenticationSuccessHandler(
     private val saveTokenUseCase: SaveTokenUseCase,
     private val jwtConfigProperties: JwtConfigProperties,
 ) : SimpleUrlAuthenticationSuccessHandler() {
+
+    private val REDIRECT_URI = "/volunteer/redirect"
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -35,6 +34,7 @@ class AuthenticationSuccessHandler(
         val customOAuth2User = authentication.principal as CustomOAuth2User
         val userEmail = Email(customOAuth2User.customOAuthAttributes.email)
         val isMember = checkVolunteerUseCase.isExistByEmail(userEmail)
+        val clientRedirectHost = request.getHeader("referer")
 
         if (isMember) {
             val user = getVolunteerUseCase.getByEmail(userEmail)
@@ -66,7 +66,7 @@ class AuthenticationSuccessHandler(
             )
 
             val param = "authToken=" + URLEncoder.encode(authToken, StandardCharsets.UTF_8)
-            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
+            redirectStrategy.sendRedirect(request, response, "$clientRedirectHost$REDIRECT_URI?$param")
         } else {
             saveOAuthNonMemberInfoUseCase.saveOAuthNonMemberInfo(
                 email = userEmail,
@@ -75,7 +75,7 @@ class AuthenticationSuccessHandler(
             )
             val param = "email=" + URLEncoder.encode(userEmail.value, StandardCharsets.UTF_8) +
                 "&isMember=" + false
-            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
+            redirectStrategy.sendRedirect(request, response, "$clientRedirectHost$REDIRECT_URI?$param")
         }
     }
 }
