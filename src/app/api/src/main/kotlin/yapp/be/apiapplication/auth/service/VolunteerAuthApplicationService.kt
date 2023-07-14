@@ -13,7 +13,6 @@ import yapp.be.domain.port.inbound.*
 import yapp.be.domain.port.inbound.model.CreateUserCommand
 import yapp.be.exceptions.CustomException
 import java.time.Duration
-import yapp.be.model.enums.volunteerevent.Role
 
 @Service
 class VolunteerAuthApplicationService(
@@ -66,7 +65,6 @@ class VolunteerAuthApplicationService(
         deleteTokenUseCase.deleteTokenByAuthToken(authToken = reqDto.authToken)
 
         return LoginVolunteerResponseDto(
-            role = Role.VOLUNTEER,
             accessToken = tokens[0],
             refreshToken = tokens[1]
         )

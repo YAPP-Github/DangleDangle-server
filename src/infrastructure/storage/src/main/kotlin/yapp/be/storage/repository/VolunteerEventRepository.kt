@@ -47,7 +47,7 @@ class VolunteerEventRepository(
     override fun findDetailVolunteerEventInfoByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
         val volunteerEventWithMyParticipationStatus =
             volunteerEventJpaRepository
-                .findByIdAndShelterIdWithMyParticipationStatus(
+                .findByIdAndShelterId(
                     id = id,
                     shelterId = shelterId
                 ) ?: throw CustomException(
@@ -91,11 +91,7 @@ class VolunteerEventRepository(
             ageLimit = volunteerEventWithMyParticipationStatus.ageLimit,
             category = volunteerEventWithMyParticipationStatus.category,
             eventStatus = volunteerEventWithMyParticipationStatus.eventStatus,
-            myParticipationStatus = when {
-                volunteerEventWithMyParticipationStatus.isJoining -> UserEventParticipationStatus.JOINING
-                volunteerEventWithMyParticipationStatus.isWaiting -> UserEventParticipationStatus.WAITING
-                else -> UserEventParticipationStatus.NONE
-            },
+            myParticipationStatus = UserEventParticipationStatus.NONE,
             startAt = volunteerEventWithMyParticipationStatus.startAt,
             endAt = volunteerEventWithMyParticipationStatus.endAt,
             joiningVolunteers = joiningParticipants,
