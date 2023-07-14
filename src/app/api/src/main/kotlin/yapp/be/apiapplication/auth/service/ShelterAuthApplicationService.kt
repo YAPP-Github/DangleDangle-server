@@ -50,7 +50,6 @@ class ShelterAuthApplicationService(
         )
 
         return LoginShelterUserResponseDto(
-            role = Role.SHELTER,
             accessToken = accessToken,
             refreshToken = refreshToken
         )
