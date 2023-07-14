@@ -34,7 +34,7 @@ class VolunteerEventRepository(
     @Transactional(readOnly = true)
     override fun findByIdAndShelterId(id: Long, shelterId: Long): VolunteerEvent {
         return volunteerEventJpaRepository
-            .findByIdAndShelterId(
+            .findByIdAndShelterIdAndDeletedIsFalse(
                 id = id,
                 shelterId = shelterId
             )?.toDomainModel() ?: throw CustomException(
@@ -193,7 +193,9 @@ class VolunteerEventRepository(
                         waitingQueue = waitingQueue ?: listOf()
                     ),
                 )
-            }.toList()
+            }
+            .sortedBy { it.volunteerEventId }
+            .toList()
     }
 
     @Transactional(readOnly = true)
@@ -246,15 +248,16 @@ class VolunteerEventRepository(
 
     @Transactional
     override fun deleteVolunteerEventByIdAndShelterId(id: Long, shelterId: Long) {
-        val volunteerEventEntity = volunteerEventJpaRepository.findByIdAndShelterId(
+        val volunteerEventEntity = volunteerEventJpaRepository.findByIdAndShelterIdAndDeletedIsFalse(
             id = id,
             shelterId = shelterId
         ) ?: throw CustomException(
             type = StorageExceptionType.ENTITY_NOT_FOUND,
             message = "봉사 정보를 찾을 수 없습니다."
         )
+        volunteerEventEntity.delete()
 
-        volunteerEventJpaRepository.delete(volunteerEventEntity)
+        volunteerEventJpaRepository.save(volunteerEventEntity)
     }
 
     @Transactional
