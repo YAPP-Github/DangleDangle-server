@@ -10,6 +10,8 @@ on:
             - 'src/infrastructure/client/**'
             - 'src/infrastructure/storage/**'
             - 'src/support/logger/**'
+            - 'src/support/common/**'
+            - 'src/support/lock/**'
         types: [ closed ]
 jobs:
     build:

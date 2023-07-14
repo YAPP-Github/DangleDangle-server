@@ -13,6 +13,8 @@ on:
             - 'src/infrastructure/client/**'
             - 'src/infrastructure/storage/**'
             - 'src/support/logger/**'
+            - 'src/support/common/**'
+            - 'src/support/lock/**'
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -45,6 +47,9 @@ jobs:
             - name: Storage Test
               id: storageTest
               run: ./gradlew :storage:test
+            - name: Lock Test
+              id: lockTest
+              run: ./gradlew :lock:test
 
             - name: Comment when Lint was Failed
               uses: peter-evans/create-or-update-comment@v2
