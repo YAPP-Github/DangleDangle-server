@@ -14,11 +14,13 @@ class DistributedLockAopTest @Autowired constructor(
 ) : StringSpec({
 
     "분산락 적용 동시성 테스트" {
+        // when
         val successCount = AtomicLong()
         ConcurrencyHelper.execute(
             { redissonService.test(1) },
             successCount
         )
+        // then
         println(successCount.toLong())
         redissonService.apply shouldBe 20
     }
