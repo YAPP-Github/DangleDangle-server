@@ -10,9 +10,14 @@ on:
             - 'src/app/api/**'
             - 'src/domain/auth/**'
             - 'src/domain/volunteer/**'
+            - 'src/domain/volunteerEvent/**'
+            - 'src/domain/shelter/**'
             - 'src/infrastructure/client/**'
             - 'src/infrastructure/storage/**'
+            - 'src/infrastructure/redis/**'
             - 'src/support/logger/**'
+            - 'src/support/lock/**'
+            - 'src/support/common/**'
 jobs:
     build:
         runs-on: ubuntu-latest
