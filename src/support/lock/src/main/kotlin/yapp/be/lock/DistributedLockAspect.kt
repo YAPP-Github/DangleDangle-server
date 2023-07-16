@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1)
 class DistributedLockAspect(
     private val keyGenerator: LockKeyGenerator,
-    private val distributedLockProcessor: DistributedLockProcessor
+    private val distributedLockProcessor: DistributedLockProcessor,
+    private val distributedNewTransaction: DistributedNewTransaction,
 ) {
 
     @Around("@annotation(distributedLock)")
@@ -29,7 +30,7 @@ class DistributedLockAspect(
             key = key,
             timeOut = distributedLock.timeOut,
             leaseTime = distributedLock.leaseTime,
-            operation = { pjp.proceed() }
+            operation = { distributedNewTransaction.proceed(pjp) }
         )
 
         return result
