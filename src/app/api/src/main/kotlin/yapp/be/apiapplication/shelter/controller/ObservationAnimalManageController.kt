@@ -2,6 +2,7 @@ package yapp.be.apiapplication.shelter.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -67,7 +68,7 @@ class ObservationAnimalManageController(
         summary = "특별 케어 동물 추가"
     )
     fun addObservationAnimal(
-        @RequestBody req: AddObservationAnimalRequest,
+        @RequestBody @Valid req: AddObservationAnimalRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<AddObservationAnimalResponseDto> {
         val reqDto = req.toDto()
@@ -86,7 +87,7 @@ class ObservationAnimalManageController(
     )
     fun editObservationAnimal(
         @PathVariable observationAnimalId: Long,
-        @RequestBody req: EditObservationAnimalRequest,
+        @RequestBody @Valid req: EditObservationAnimalRequest,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
 
     ): ResponseEntity<EditObservationAnimalResponseDto> {

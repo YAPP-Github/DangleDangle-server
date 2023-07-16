@@ -17,8 +17,8 @@ class ShelterOutlinkEntity(
     @Column(name = "url")
     val url: String,
     @Enumerated(EnumType.STRING)
-    @Column(name = "out_link_type")
+    @Column(name = "out_link_type", nullable = false)
     val outLinkType: OutLinkType,
-    @Column(name = "shelter_id")
+    @Column(name = "shelter_id", nullable = false)
     val shelterId: Long,
 )
