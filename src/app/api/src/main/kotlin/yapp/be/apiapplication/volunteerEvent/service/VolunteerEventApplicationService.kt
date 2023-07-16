@@ -1,16 +1,16 @@
-package yapp.be.apiapplication.shelter.service
+package yapp.be.apiapplication.volunteerEvent.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.GetSimpleVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
-import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetDetailVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetSimpleVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetVolunteerEventsRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.ParticipateVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.ParticipateVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.WithdrawVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.WithdrawVolunteerEventResponseDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.ParticipateVolunteerEventUseCase
 import yapp.be.domain.port.inbound.WithDrawVolunteerEventUseCase

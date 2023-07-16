@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.controller.model
+package yapp.be.apiapplication.volunteerEvent.controller.model
 
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
@@ -7,7 +7,7 @@ import java.time.LocalDate
 import yapp.be.model.enums.volunteerevent.AgeLimit
 import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import java.time.LocalDateTime
-import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.AddVolunteerEventRequestDto
 import yapp.be.domain.model.Iteration
 import yapp.be.model.enums.volunteerevent.IterationCycle
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus

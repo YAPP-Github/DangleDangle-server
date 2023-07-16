@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.service.model
+package yapp.be.apiapplication.volunteerEvent.service.model
 
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 

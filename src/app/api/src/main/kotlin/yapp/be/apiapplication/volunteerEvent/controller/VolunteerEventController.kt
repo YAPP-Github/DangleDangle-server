@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.controller
+package yapp.be.apiapplication.volunteerEvent.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import yapp.be.apiapplication.shelter.service.VolunteerEventApplicationService
+import yapp.be.apiapplication.volunteerEvent.service.VolunteerEventApplicationService
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthentication
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationInfo
 import org.springframework.format.annotation.DateTimeFormat
@@ -16,14 +16,14 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.ResponseStatus
-import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
-import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetDetailVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetVolunteerEventsRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.ParticipateVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.ParticipateVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.WithdrawVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.WithdrawVolunteerEventResponseDto
 
 @Tag(name = "봉사 이벤트 api")
 @RestController

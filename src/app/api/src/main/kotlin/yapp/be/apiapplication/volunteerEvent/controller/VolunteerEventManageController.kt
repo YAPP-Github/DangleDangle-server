@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.controller
+package yapp.be.apiapplication.volunteerEvent.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import yapp.be.apiapplication.shelter.controller.model.AddVolunteerEventRequest
-import yapp.be.apiapplication.shelter.controller.model.EditVolunteerEventRequest
-import yapp.be.apiapplication.shelter.service.VolunteerEventManageApplicationService
-import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsResponseDto
+import yapp.be.apiapplication.volunteerEvent.controller.model.AddVolunteerEventRequest
+import yapp.be.apiapplication.volunteerEvent.controller.model.EditVolunteerEventRequest
+import yapp.be.apiapplication.volunteerEvent.service.VolunteerEventManageApplicationService
+import yapp.be.apiapplication.volunteerEvent.service.model.AddVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.DeleteVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.DeleteVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.EditVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.EditVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetDetailVolunteerEventResponseDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetShelterUserVolunteerEventRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetShelterUserVolunteerEventsRequestDto
+import yapp.be.apiapplication.volunteerEvent.service.model.GetShelterUserVolunteerEventsResponseDto
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 

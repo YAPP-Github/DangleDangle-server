@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.service.model
+package yapp.be.apiapplication.volunteerEvent.service.model
 
 import java.time.LocalDateTime
 import yapp.be.domain.model.Iteration
