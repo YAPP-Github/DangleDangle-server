@@ -1,13 +1,16 @@
-package yapp.be.storage.testFixture
-
+import yapp.be.domain.model.*
 import yapp.be.model.enums.observaitonanimal.Gender
 import yapp.be.model.enums.volunteerevent.*
 import yapp.be.storage.jpa.common.model.Address
 import yapp.be.storage.jpa.observationanimal.model.ObservationAnimalEntity
+import yapp.be.storage.jpa.observationanimal.model.mappers.toDomainModel
 import yapp.be.storage.jpa.shelter.model.ShelterEntity
 import yapp.be.storage.jpa.shelter.model.ShelterUserEntity
+import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
 import yapp.be.storage.jpa.volunteer.model.VolunteerEntity
+import yapp.be.storage.jpa.volunteer.model.mappers.toDomainModel
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
+import yapp.be.storage.jpa.volunteerevent.model.mappers.toDomainModel
 import java.time.LocalDateTime
 import java.util.*
 
@@ -23,7 +26,7 @@ object Fixture {
         oAuthAccessToken: String? = UUID.randomUUID().toString(),
         oAuthRefreshToken: String? = UUID.randomUUID().toString(),
         deleted: Boolean = false,
-    ): VolunteerEntity {
+    ): Volunteer {
         return VolunteerEntity(
             id,
             email,
@@ -35,7 +38,7 @@ object Fixture {
             oAuthAccessToken,
             oAuthRefreshToken,
             deleted,
-        )
+        ).toDomainModel()
     }
 
     fun createVolunteerEventEntity(
@@ -49,7 +52,7 @@ object Fixture {
         endAt: LocalDateTime = LocalDateTime.now().plusMinutes(30),
         status: VolunteerEventStatus = VolunteerEventStatus.IN_PROGRESS,
         category: VolunteerEventCategory = VolunteerEventCategory.WALKING,
-    ): VolunteerEventEntity {
+    ): VolunteerEvent {
         return VolunteerEventEntity(
             id,
             shelterId,
@@ -61,7 +64,7 @@ object Fixture {
             endAt,
             status,
             category,
-        )
+        ).toDomainModel()
     }
 
     fun createShelterUserEntity(
@@ -69,13 +72,13 @@ object Fixture {
         email: String = UUID.randomUUID().toString().substring(0, 5) + "@naver.com",
         password: String = "P@ssw0rd",
         shelterId: Long = 0,
-    ): ShelterUserEntity {
+    ): ShelterUser {
         return ShelterUserEntity(
             id,
             email,
             password,
             shelterId,
-        )
+        ).toDomainModel()
     }
 
     fun createShelterEntity(
@@ -96,7 +99,7 @@ object Fixture {
         parkingEnabled: Boolean? = true,
         parkingNotice: String? = UUID.randomUUID().toString(),
         profileImageUrl: String? = UUID.randomUUID().toString(),
-    ): ShelterEntity {
+    ): Shelter {
         return ShelterEntity(
             id,
             name,
@@ -109,10 +112,10 @@ object Fixture {
             parkingEnabled,
             parkingNotice,
             profileImageUrl,
-        )
+        ).toDomainModel()
     }
 
-    fun createObservationAnimalEntity(
+    fun createObservationAnimal(
         id: Long = 0,
         name: String = UUID.randomUUID().toString(),
         profileImageUrl: String = UUID.randomUUID().toString(),
@@ -121,7 +124,7 @@ object Fixture {
         specialNote: String = UUID.randomUUID().toString(),
         breed: String? = UUID.randomUUID().toString(),
         shelterId: Long = 0,
-    ): ObservationAnimalEntity {
+    ): ObservationAnimal {
         return ObservationAnimalEntity(
             id,
             name,
@@ -131,6 +134,6 @@ object Fixture {
             specialNote,
             breed,
             shelterId,
-        )
+        ).toDomainModel()
     }
 }

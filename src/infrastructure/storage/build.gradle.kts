@@ -2,9 +2,12 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     kotlin("jvm")
     kotlin("plugin.jpa")
+    `java-test-fixtures`
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":volunteer")))
+    implementation(project(mapOf("path" to ":volunteer")))
     val queryDslVersion: String by project
     val testContainerVersion: String by project
 
@@ -24,10 +27,10 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
     testImplementation("org.testcontainers:mysql:$testContainerVersion")
 
-    testImplementation(testFixtures(project(":shelter")))
-    testImplementation(testFixtures(project(":auth")))
-    testImplementation(testFixtures(project(":volunteer")))
-    testImplementation(testFixtures(project(":volunteerEvent")))
+    testFixturesImplementation(project(":common"))
+    testFixturesImplementation(project(":volunteer"))
+    testFixturesImplementation(project(":volunteerEvent"))
+    testFixturesImplementation(project(":shelter"))
 }
 
 allOpen { // 추가적으로 열어줄 allOpen
