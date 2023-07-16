@@ -2,7 +2,6 @@ spring:
     config:
         import:
             - classpath:application-oauth-test.yml
-            - classpath:application-redis-test.yml
     datasource:
         url: jdbc:h2:mem:testdb
         username: sa

@@ -7,9 +7,9 @@ plugins {
 
 dependencies {
     implementation(project(mapOf("path" to ":volunteer")))
-    implementation(project(mapOf("path" to ":volunteer")))
     val queryDslVersion: String by project
     val testContainerVersion: String by project
+    val kotestVersion: String by project
 
     kapt("com.querydsl:querydsl-apt:$queryDslVersion")
     runtimeOnly("com.mysql:mysql-connector-j")
@@ -23,9 +23,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
 
-    testImplementation("org.testcontainers:testcontainers:$testContainerVersion")
-    testImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
-    testImplementation("org.testcontainers:mysql:$testContainerVersion")
+    testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")
+    testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
+    testFixturesImplementation("org.testcontainers:mysql:$testContainerVersion")
+    testFixturesImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testFixturesImplementation("org.springframework.boot:spring-boot-starter-test")
 
     testFixturesImplementation(project(":common"))
     testFixturesImplementation(project(":volunteer"))

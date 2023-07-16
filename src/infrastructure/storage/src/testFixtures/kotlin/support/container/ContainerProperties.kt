@@ -1,4 +1,4 @@
-package yapp.be.storage.support.container
+package support.container
 
 object ContainerProperties {
     const val imageName = "mysql:8.0"

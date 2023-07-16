@@ -2,7 +2,7 @@ package yapp.be.storage.test
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import yapp.be.storage.support.container.ContainerTestBase
+import support.container.ContainerTestBase
 
 class StorageTest : ContainerTestBase() {
     @Test

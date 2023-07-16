@@ -24,12 +24,12 @@ class ShelterApplicationServiceTest @Autowired constructor(
 ) : StringSpec({
     var shelterId by Delegates.notNull<Long>()
     var volunteerId by Delegates.notNull<Long>()
-    lateinit var bookmarkShelterRequestDto : BookMarkShelterRequestDto
+    lateinit var bookmarkShelterRequestDto: BookMarkShelterRequestDto
 
     beforeEach {
         volunteerId = volunteerCommandHandler.save(Fixture.createVolunteerEntity()).id
         shelterId = shelterCommandHandler.create(Fixture.createShelterEntity()).id
-        bookmarkShelterRequestDto = BookMarkShelterRequestDto(shelterId,volunteerId)
+        bookmarkShelterRequestDto = BookMarkShelterRequestDto(shelterId, volunteerId)
     }
 
     "보호소를 즐겨찾기할 수 있다." {

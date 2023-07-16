@@ -41,6 +41,8 @@ dependencies {
 
     testImplementation("it.ozimov:embedded-redis:$embeddedRedisVersion")
     testImplementation(testFixtures(project(":storage")))
+    testImplementation(testFixtures(project(":redis")))
+
     if (Os.isFamily(Os.FAMILY_MAC)) {
         // for-mac
         implementation("io.netty:netty-resolver-dns-native-macos:4.1.86.Final:osx-aarch_64")

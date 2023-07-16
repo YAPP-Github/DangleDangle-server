@@ -1,4 +1,4 @@
-package yapp.be.storage.support.container
+package support.container
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
@@ -10,7 +10,7 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.MountableFile
-import yapp.be.storage.support.configuration.StorageTestConfiguration
+import support.configuration.StorageTestConfiguration
 
 @SpringBootTest(properties = ["spring.config.location=classpath:application-test.yml"])
 @Transactional
