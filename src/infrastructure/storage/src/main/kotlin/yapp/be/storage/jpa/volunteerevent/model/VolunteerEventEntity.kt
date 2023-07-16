@@ -19,27 +19,29 @@ class VolunteerEventEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    @Column(name = "shelter_id")
+    @Column(name = "shelter_id", nullable = false)
     val shelterId: Long,
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     var title: String,
-    @Column(name = "recruit_num")
+    @Column(name = "recruit_num", nullable = false)
     var recruitNum: Int,
     @Column(name = "description", columnDefinition = "TEXT")
     var description: String?,
-    @Column(name = "age_limit")
+    @Column(name = "age_limit", nullable = false)
     @Enumerated(EnumType.STRING)
     var ageLimit: AgeLimit,
-    @Column(name = "start_at")
+    @Column(name = "start_at", nullable = false)
     var startAt: LocalDateTime,
-    @Column(name = "end_at")
+    @Column(name = "end_at", nullable = false)
     var endAt: LocalDateTime,
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     var status: VolunteerEventStatus,
-    @Column(name = "category")
+    @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
-    var category: VolunteerEventCategory
+    var category: VolunteerEventCategory,
+    @Column(name = "is_deleted")
+    var deleted: Boolean = false
 ) : BaseTimeEntity() {
     fun update(volunteerEvent: VolunteerEvent) {
         this.title = volunteerEvent.title
@@ -50,5 +52,9 @@ class VolunteerEventEntity(
         this.startAt = volunteerEvent.startAt
         this.endAt = volunteerEvent.endAt
         this.ageLimit = volunteerEvent.ageLimit
+    }
+
+    fun delete() {
+        this.deleted = true
     }
 }

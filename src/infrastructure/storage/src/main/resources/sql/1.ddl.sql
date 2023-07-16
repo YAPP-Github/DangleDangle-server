@@ -87,6 +87,7 @@ CREATE TABLE `volunteer_event`
     `shelter_id`                          bigint           not null,
     `start_at`                            datetime         not null,
     `end_at`                              datetime         not null,
+    `is_deleted`                          bit(1)           not null default 0,
     `created_at`                          datetime         not null,
     `modified_at`                         datetime,
     index IDX_SHELTER_ID (`shelter_id`)

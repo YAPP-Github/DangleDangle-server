@@ -1,5 +1,8 @@
 package yapp.be.apiapplication.shelter.controller.model
 
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Pattern
+import org.hibernate.validator.constraints.Length
 import yapp.be.apiapplication.auth.controller.model.ShelterSignUpAddressInfo
 import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageRequestDto
 import yapp.be.apiapplication.shelter.service.model.EditShelterWithAdditionalInfoRequestDto
@@ -10,6 +13,7 @@ import yapp.be.domain.model.ShelterParkingInfo
 import yapp.be.model.enums.volunteerevent.OutLinkType
 
 data class EditShelterProfileImageRequest(
+    @field:NotBlank(message = "값이 비어있습니다.")
     val url: String
 ) {
     fun toDto(): EditShelterProfileImageRequestDto {
@@ -20,8 +24,15 @@ data class EditShelterProfileImageRequest(
 }
 
 data class EditShelterEssentialInfoRequest(
+    @field:NotBlank(message = "값이 비어있습니다.")
     val name: String,
+    @field:Pattern(
+        regexp = "^\\d{2,3}\\d{3,4}\\d{4}\$",
+        message = "올바른 전화번호 형식인지 확인해주세요. (- 제외 필요)"
+    )
     val phoneNumber: String,
+    @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
+    @field:NotBlank(message = "값이 비어있습니다.")
     val description: String,
     val address: ShelterSignUpAddressInfo,
 
@@ -77,6 +88,7 @@ data class EditShelterAdditionalInfoRequest(
         val bankName: String
     )
     data class EditShelterOutLinkInfo(
+        @field:NotBlank(message = "값이 비어있습니다.")
         val outLinkType: OutLinkType,
         val url: String
     )

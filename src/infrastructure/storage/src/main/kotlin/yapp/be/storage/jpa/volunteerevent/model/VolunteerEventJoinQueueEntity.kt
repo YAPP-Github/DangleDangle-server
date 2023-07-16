@@ -14,8 +14,8 @@ class VolunteerEventJoinQueueEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    @Column(name = "volunteer_id")
+    @Column(name = "volunteer_id", nullable = false)
     val volunteerId: Long,
-    @Column(name = "volunteer_event_id")
+    @Column(name = "volunteer_event_id", nullable = false)
     val volunteerEventId: Long,
 )

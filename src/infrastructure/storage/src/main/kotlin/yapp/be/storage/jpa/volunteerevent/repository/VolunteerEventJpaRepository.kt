@@ -5,5 +5,5 @@ import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.VolunteerEventJpaRepositoryCustom
 
 interface VolunteerEventJpaRepository : JpaRepository<VolunteerEventEntity, Long>, VolunteerEventJpaRepositoryCustom {
-    fun findByIdAndShelterId(id: Long, shelterId: Long): VolunteerEventEntity?
+    fun findByIdAndShelterIdAndDeletedIsFalse(id: Long, shelterId: Long): VolunteerEventEntity?
 }

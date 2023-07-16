@@ -21,6 +21,7 @@ data class GetVolunteerEventsRequestDto(
 
 data class GetVolunteerEventRequestDto(
     val shelterId: Long,
+    val volunteerId: Long?,
     val volunteerEventId: Long
 )
 
