@@ -11,13 +11,10 @@ dependencies {
     implementation(project(":common"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation(project(mapOf("path" to ":storage")))
 
     testFixturesImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")
     testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
-    testFixturesImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    testFixturesImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.named<BootJar>("bootJar") {

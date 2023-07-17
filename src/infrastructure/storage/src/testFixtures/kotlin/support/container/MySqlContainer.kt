@@ -15,7 +15,7 @@ class MySqlContainer : BeforeProjectListener, AfterProjectListener {
     companion object {
         @Container
         @JvmStatic
-        val instance: KGenericContainer =
+        private val instance: KGenericContainer =
             KGenericContainer(MySqlContainerProperties.imageName)
                 .apply {
                     withEnv("MYSQL_DATABASE", MySqlContainerProperties.DATABASE)
@@ -28,9 +28,9 @@ class MySqlContainer : BeforeProjectListener, AfterProjectListener {
     override suspend fun beforeProject() {
         instance.start()
 
-        System.setProperty("spring.datasource.username", "root")
-        System.setProperty("spring.datasource.password", MySqlContainerProperties.PASSWORD)
-        System.setProperty("spring.datasource.url", "jdbc:mysql://${instance.host}:${instance.getMappedPort(MySqlContainerProperties.PORT)}/${MySqlContainerProperties.DATABASE}")
+        System.setProperty("DATASOURCE_USERNAME", "root")
+        System.setProperty("DATASOURCE_PASSWORD", MySqlContainerProperties.PASSWORD)
+        System.setProperty("DATASOURCE_URL", "jdbc:mysql://${instance.host}:${instance.getMappedPort(MySqlContainerProperties.PORT)}/${MySqlContainerProperties.DATABASE}")
     }
 
     override suspend fun afterProject() {
