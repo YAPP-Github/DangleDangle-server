@@ -1,4 +1,4 @@
-package support.configuration
+package yapp.be.storage.test
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.test.context.ContextConfiguration

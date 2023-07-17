@@ -20,19 +20,17 @@ dependencies {
     implementation(project(":shelter"))
     implementation(project(":volunteerEvent"))
 
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
-
-    testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")
-    testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
-    testFixturesImplementation("org.testcontainers:mysql:$testContainerVersion")
-    testFixturesImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    testFixturesImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     testFixturesImplementation(project(":common"))
     testFixturesImplementation(project(":volunteer"))
     testFixturesImplementation(project(":volunteerEvent"))
     testFixturesImplementation(project(":shelter"))
+
+    testFixturesImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")
+    testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
 }
 
 allOpen { // 추가적으로 열어줄 allOpen
