@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import yapp.be.apiapplication.shelter.service.ShelterApplicationService
 import yapp.be.apiapplication.shelter.service.model.BookMarkShelterRequestDto
+import yapp.be.config.TestRedisConfiguration
 import yapp.be.domain.port.outbound.VolunteerCommandHandler
 import yapp.be.domain.port.outbound.shelter.ShelterBookMarkQueryHandler
 import yapp.be.domain.port.outbound.shelter.ShelterCommandHandler
@@ -15,6 +16,7 @@ import kotlin.properties.Delegates
 
 @SpringBootTest(
     properties = ["spring.config.location=classpath:application-test.yml"],
+    classes = [TestRedisConfiguration::class]
 )
 class ShelterApplicationServiceTest @Autowired constructor(
     private val shelterApplicationService: ShelterApplicationService,

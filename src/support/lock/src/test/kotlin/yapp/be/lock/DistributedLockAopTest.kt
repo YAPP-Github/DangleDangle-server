@@ -6,9 +6,13 @@ import org.assertj.core.api.Assertions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.stereotype.Service
+import yapp.be.config.TestRedisConfiguration
 import java.util.concurrent.atomic.AtomicLong
 
-@SpringBootTest
+@SpringBootTest(
+    properties = ["spring.config.location=classpath:application-test.yml"],
+    classes = [TestRedisConfiguration::class]
+)
 class DistributedLockAopTest @Autowired constructor(
     private val redissonService: RedissonService
 ) : StringSpec({

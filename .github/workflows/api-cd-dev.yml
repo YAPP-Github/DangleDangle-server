@@ -2,7 +2,7 @@ name: api-cd-dev
 
 on:
     pull_request:
-        branches: [ feat/YW2-134 ]
+        branches: [ dev ]
         paths:
             - 'src/app/api/**'
             - 'src/domain/auth/**'
