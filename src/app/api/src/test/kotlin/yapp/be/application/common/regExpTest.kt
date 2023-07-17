@@ -1,4 +1,4 @@
-package yapp.be.common
+package yapp.be.application.common
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.string.shouldMatch

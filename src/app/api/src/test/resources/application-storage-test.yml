@@ -1,0 +1,14 @@
+spring:
+    jpa:
+        database: mysql
+        show-sql: true
+        hibernate:
+            ddl-auto: create
+        properties:
+            hibernate:
+                format_sql: true
+                dialect: org.hibernate.dialect.MySQLDialect
+    datasource:
+        url: ${DATASOURCE_URL}
+        password: ${DATASOURCE_PASSWORD}
+        username: ${DATASOURCE_USERNAME}

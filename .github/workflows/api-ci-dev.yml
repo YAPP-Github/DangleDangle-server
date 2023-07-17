@@ -48,6 +48,9 @@ jobs:
               id: apiTest
               run: ./gradlew :api:test
             - name: Storage Test
+              id: RedisTest
+              run: ./gradlew :redis:test
+            - name: Storage Test
               id: storageTest
               run: ./gradlew :storage:test
 

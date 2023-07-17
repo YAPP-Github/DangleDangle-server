@@ -1,24 +1,19 @@
-package yapp.be.shelter.service
+package yapp.be.application.shelter.service
 
 import Fixture
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import yapp.be.apiapplication.shelter.service.ShelterApplicationService
 import yapp.be.apiapplication.shelter.service.model.BookMarkShelterRequestDto
-import yapp.be.config.TestRedisConfiguration
 import yapp.be.domain.port.outbound.VolunteerCommandHandler
 import yapp.be.domain.port.outbound.shelter.ShelterBookMarkQueryHandler
 import yapp.be.domain.port.outbound.shelter.ShelterCommandHandler
 import kotlin.properties.Delegates
 
-@SpringBootTest(
-    properties = ["spring.config.location=classpath:application-test.yml"],
-    classes = [TestRedisConfiguration::class]
-)
-class ShelterApplicationServiceTest @Autowired constructor(
+@SpringBootTest
+class ShelterApplicationServiceTest(
     private val shelterApplicationService: ShelterApplicationService,
     private val shelterBookMarkQueryHandler: ShelterBookMarkQueryHandler,
     private val volunteerCommandHandler: VolunteerCommandHandler,
