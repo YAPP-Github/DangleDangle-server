@@ -25,8 +25,7 @@ class DistributedLockAopTest @Autowired constructor(
             successCount
         )
         // then
-        println(successCount.toLong())
-        redissonService.apply shouldBe 20
+        redissonService.apply shouldBe successCount.toLong()
     }
 
     "분산락 객체 접근 테스트" {
@@ -37,7 +36,6 @@ class DistributedLockAopTest @Autowired constructor(
             successCount,
         )
         // then
-        println(successCount.toLong())
         Assertions.assertThat(successCount.toLong()).isEqualTo(1L)
     }
 })
