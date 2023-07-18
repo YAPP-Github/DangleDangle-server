@@ -24,7 +24,7 @@ class LockKeyGenerateTest : BehaviorSpec({
                 arguments = parameterValues,
                 methodSignature = methodSignature
             )
-            println(key)
+
             Then("파라미터의 값과 구분자를 통해 Key를 생성한다. ") {
                 key shouldBe parameterValues.joinToString(":")
             }
