@@ -2,11 +2,14 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     kotlin("jvm")
     kotlin("plugin.jpa")
+    `java-test-fixtures`
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":volunteer")))
     val queryDslVersion: String by project
     val testContainerVersion: String by project
+    val kotestVersion: String by project
 
     kapt("com.querydsl:querydsl-apt:$queryDslVersion")
     runtimeOnly("com.mysql:mysql-connector-j")
@@ -17,17 +20,17 @@ dependencies {
     implementation(project(":shelter"))
     implementation(project(":volunteerEvent"))
 
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    testImplementation("org.testcontainers:testcontainers:$testContainerVersion")
-    testImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
-    testImplementation("org.testcontainers:mysql:$testContainerVersion")
+    testFixturesImplementation(project(":common"))
+    testFixturesImplementation(project(":volunteer"))
+    testFixturesImplementation(project(":volunteerEvent"))
+    testFixturesImplementation(project(":shelter"))
 
-    testImplementation(testFixtures(project(":shelter")))
-    testImplementation(testFixtures(project(":auth")))
-    testImplementation(testFixtures(project(":volunteer")))
-    testImplementation(testFixtures(project(":volunteerEvent")))
+    testFixturesImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testFixturesImplementation("org.testcontainers:testcontainers:$testContainerVersion")
+    testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainerVersion")
 }
 
 allOpen { // 추가적으로 열어줄 allOpen

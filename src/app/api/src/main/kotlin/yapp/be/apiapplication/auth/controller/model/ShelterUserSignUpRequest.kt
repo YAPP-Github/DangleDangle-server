@@ -4,21 +4,24 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.hibernate.validator.constraints.Length
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoRequestDto
+import yapp.be.model.support.EMAIL_REGEX
+import yapp.be.model.support.PASSWORD_REGEX
+import yapp.be.model.support.PHONE_REGEX
 import yapp.be.model.vo.Address
 import yapp.be.model.vo.Email
 
 data class SignUpWithEssentialInfoRequest(
-    @field:Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9-.]+\$", message = "잘못된 이메일 형식입니다.")
+    @field:Pattern(regexp = EMAIL_REGEX, message = "잘못된 이메일 형식입니다.")
     val email: String,
     @field:Pattern(
-        regexp = "^(?!((?:[A-Za-z]+)|(?:[~!@#\$%^&*()_+=]+)|(?:[0-9]+))\$)[A-Za-z\\d~!@#\$%^&*()_+=]{8,15}\$",
+        regexp = PASSWORD_REGEX,
         message = "비밀번호는 영문, 숫자, 특수문자 2가지 조합 8~15자이어야 합니다."
     )
     val password: String,
     @field:NotBlank(message = "값이 비어있습니다.")
     val name: String,
     @field:Pattern(
-        regexp = "^\\d{2,3}\\d{3,4}\\d{4}\$",
+        regexp = PHONE_REGEX,
         message = "올바른 전화번호 형식인지 확인해주세요. (- 제외 필요)"
     )
     val phoneNumber: String,
