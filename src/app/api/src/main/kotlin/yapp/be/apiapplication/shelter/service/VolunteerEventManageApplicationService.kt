@@ -144,9 +144,7 @@ class VolunteerEventManageApplicationService(
     @Transactional
     @DistributedLock(
         prefix = "volunteerEvent",
-        identifiers = ["reqDto.volunteerEventId"],
-        timeOut = 3000L,
-        leaseTime = 5000L
+        identifiers = ["reqDto.volunteerEventId"]
     )
     fun editVolunteerEvent(reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
         if (LocalDateTime.now().isAfter(reqDto.startAt)) {
@@ -212,9 +210,7 @@ class VolunteerEventManageApplicationService(
     @Transactional
     @DistributedLock(
         prefix = "volunteerEvent",
-        identifiers = ["reqDto.volunteerEventId"],
-        timeOut = 3000L,
-        leaseTime = 5000L
+        identifiers = ["reqDto.volunteerEventId"]
     )
     fun deleteVolunteerEvent(reqDto: DeleteVolunteerEventRequestDto): DeleteVolunteerEventResponseDto {
         val shelterUser = getShelterUserUseCase

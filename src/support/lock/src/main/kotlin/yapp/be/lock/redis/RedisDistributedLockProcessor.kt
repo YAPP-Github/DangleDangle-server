@@ -21,10 +21,12 @@ class RedisDistributedLockProcessor(
 
         try {
             /**
+             * Transaction의 TimeOut은 4초이다.
+             *
              * leaseTime : Lock 점유 시간
              * waitTime  : Lock 대기 시간
              */
-            val isLockAcquired = rLock.tryLock(timeOut, leaseTime, TimeUnit.MILLISECONDS)
+            val isLockAcquired = rLock.tryLock(timeOut, leaseTime, TimeUnit.SECONDS)
             if (!isLockAcquired) {
                 throw CustomException(
                     type = LockExceptionType.LOCK_ACQUIRED_FAILED,

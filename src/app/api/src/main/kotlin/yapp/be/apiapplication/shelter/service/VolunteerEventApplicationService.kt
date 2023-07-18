@@ -105,9 +105,7 @@ class VolunteerEventApplicationService(
     @Transactional
     @DistributedLock(
         prefix = "volunteerEvent",
-        identifiers = ["reqDto.volunteerEventId"],
-        timeOut = 3000L,
-        leaseTime = 5000L
+        identifiers = ["reqDto.volunteerEventId"]
     )
     fun participateVolunteerEvent(
         reqDto: ParticipateVolunteerEventRequestDto
@@ -159,9 +157,7 @@ class VolunteerEventApplicationService(
     @Transactional
     @DistributedLock(
         prefix = "volunteerEvent",
-        identifiers = ["reqDto.volunteerEventId"],
-        timeOut = 3000L,
-        leaseTime = 5000L
+        identifiers = ["reqDto.volunteerEventId"]
     )
     fun withdrawVolunteerEvent(
         reqDto: WithdrawVolunteerEventRequestDto
