@@ -43,11 +43,11 @@ jobs:
               run: chmod +x gradlew
             - name: Lint-Check
               id: lintCheck
-              run: ./gradlew :api:ktlintCheck
+              run: ./gradlew ktlintCheck
             - name: API Test
               id: apiTest
               run: ./gradlew :api:test
-            - name: Storage Test
+            - name: Redis Test
               id: RedisTest
               run: ./gradlew :redis:test
             - name: Storage Test

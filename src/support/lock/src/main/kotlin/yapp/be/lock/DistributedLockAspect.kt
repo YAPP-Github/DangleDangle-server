@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component
 class DistributedLockAspect(
     private val keyGenerator: LockKeyGenerator,
     private val distributedLockProcessor: DistributedLockProcessor,
-    private val distributedNewTransaction: DistributedNewTransaction,
 ) {
 
     @Around("@annotation(distributedLock)")
@@ -30,7 +29,7 @@ class DistributedLockAspect(
             key = key,
             timeOut = distributedLock.timeOut,
             leaseTime = distributedLock.leaseTime,
-            operation = { distributedNewTransaction.proceed(pjp) }
+            operation = { pjp.proceed() }
         )
 
         return result
