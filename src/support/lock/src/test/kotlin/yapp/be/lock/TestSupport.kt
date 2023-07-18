@@ -38,12 +38,13 @@ class SampleService {
         identifiers = ["id"],
     )
     fun invokeWithLock(id: Int) {
-        // Lock의 TimeOut이 3초기 때문에 하나가 실행되기 위해서는 로직이 3초간 실행되어야한다.
-        Thread.sleep(3000L)
+        // Lock의 TimeOut이 3초기 때문에 하나가 실행되기 위해서는 로직이 4초간 실행되어야한다.
+        Thread.sleep(4000L)
     }
-
     fun invokeWithoutLock(id: Int) {
-        // Lock의 TimeOut이 3초기 때문에 하나가 실행되기 위해서는 로직이 3초간 실행되어야한다.
-        Thread.sleep(3000L)
+        // Lock의 TimeOut이 3초기 때문에 하나가 실행되기 위해서는 로직이 4초간 실행되어야한다.
+        Thread.sleep(4000L)
     }
 }
+
+data class SampleObj(val p1: Int, val p2: String)

@@ -12,7 +12,7 @@ class DistributedLockAopTest(
 ) : BehaviorSpec({
 
     Given("분산락이 적용되어 을 때") {
-        When("여러개의 요청이 동시에 들어왔다") {
+        When("여러개의 요청이 동시에 들어왔다면") {
             val successCount = ConcurrencyHelper.execute { service.invokeWithLock(id = 1) }
             Then("하나의 요청만 성공해야 한다.") {
                 successCount shouldBe 1
