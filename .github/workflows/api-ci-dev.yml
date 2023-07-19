@@ -53,6 +53,9 @@ jobs:
             - name: Storage Test
               id: storageTest
               run: ./gradlew :storage:test
+            - name: Lock Test
+              id: lockTest
+              run: ./gradlew :lock:test
 
             - name: Comment when Lint was Failed
               uses: peter-evans/create-or-update-comment@v2

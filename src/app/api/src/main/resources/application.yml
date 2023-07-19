@@ -4,6 +4,8 @@ spring:
       matching-strategy: ant_path_matcher
   profiles:
     active: local
+  transaction:
+    default-timeout: 4
   config:
     import:
       - application-actuator.yml
@@ -14,8 +16,6 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger
-server:
-    port: 8080
 
 jwt:
     access:

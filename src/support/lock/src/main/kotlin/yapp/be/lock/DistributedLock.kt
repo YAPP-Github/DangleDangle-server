@@ -4,7 +4,5 @@ package yapp.be.lock
 @Target(AnnotationTarget.FUNCTION)
 annotation class DistributedLock(
     val prefix: String,
-    val identifiers: Array<String>,
-    val timeOut: Long,
-    val leaseTime: Long,
+    val identifiers: Array<String>
 )

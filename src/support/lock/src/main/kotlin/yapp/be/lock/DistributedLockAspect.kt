@@ -16,6 +16,9 @@ class DistributedLockAspect(
     private val distributedLockProcessor: DistributedLockProcessor,
 ) {
 
+    private val LOCK_TIMEOUT_SECONDS = 3L
+    private val LOCK_LEASE_SECONDS = 5L
+
     @Around("@annotation(distributedLock)")
     fun lock(pjp: ProceedingJoinPoint, distributedLock: DistributedLock): Any? {
         val identifiers = distributedLock.identifiers
@@ -27,8 +30,8 @@ class DistributedLockAspect(
         val key = "${distributedLock.prefix}:$dynamicKey"
         val result = distributedLockProcessor.operateWithLock(
             key = key,
-            timeOut = distributedLock.timeOut,
-            leaseTime = distributedLock.leaseTime,
+            timeOut = LOCK_TIMEOUT_SECONDS,
+            leaseTime = LOCK_LEASE_SECONDS,
             operation = { pjp.proceed() }
         )
 

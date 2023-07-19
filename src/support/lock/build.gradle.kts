@@ -5,13 +5,12 @@ plugins {
 
 dependencies {
     val redissonVersion: String by project
-    val embeddedRedisVersion: String by project
 
     implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.redisson:redisson-spring-boot-starter:$redissonVersion")
 
-    testImplementation("it.ozimov:embedded-redis:$embeddedRedisVersion")
+    testImplementation(testFixtures(project(":redis")))
 }
 
 tasks.named<BootJar>("bootJar") {
