@@ -4,7 +4,9 @@ import yapp.be.model.enums.volunteerevent.*
 import yapp.be.storage.jpa.common.model.Address
 import yapp.be.storage.jpa.observationanimal.model.ObservationAnimalEntity
 import yapp.be.storage.jpa.observationanimal.model.mappers.toDomainModel
+import yapp.be.storage.jpa.shelter.model.ShelterBookMarkEntity
 import yapp.be.storage.jpa.shelter.model.ShelterEntity
+import yapp.be.storage.jpa.shelter.model.ShelterOutlinkEntity
 import yapp.be.storage.jpa.shelter.model.ShelterUserEntity
 import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
 import yapp.be.storage.jpa.volunteer.model.VolunteerEntity
@@ -133,6 +135,32 @@ object Fixture {
             gender,
             specialNote,
             breed,
+            shelterId,
+        ).toDomainModel()
+    }
+
+    fun createShelterBookmark(
+        id: Long = 0,
+        shelterId: Long = 0,
+        volunteerId: Long = 0,
+    ): ShelterBookMark {
+        return ShelterBookMarkEntity(
+            id,
+            shelterId,
+            volunteerId,
+        ).toDomainModel()
+    }
+
+    fun createShelterOutLink(
+        id: Long = 0,
+        url: String = UUID.randomUUID().toString(),
+        outLinkType: OutLinkType = OutLinkType.INSTAGRAM,
+        shelterId: Long = 0,
+    ): ShelterOutLink {
+        return ShelterOutlinkEntity(
+            id,
+            url,
+            outLinkType,
             shelterId,
         ).toDomainModel()
     }
