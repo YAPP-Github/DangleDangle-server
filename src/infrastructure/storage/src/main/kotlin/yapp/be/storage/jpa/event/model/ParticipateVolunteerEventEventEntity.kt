@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "participate_volunteer_event_event")
-class ParticipateVolunteerEventEventEntity (
+class ParticipateVolunteerEventEventEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

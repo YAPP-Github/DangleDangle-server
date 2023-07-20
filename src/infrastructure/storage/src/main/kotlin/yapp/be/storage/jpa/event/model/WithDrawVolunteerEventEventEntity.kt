@@ -5,7 +5,7 @@ import yapp.be.model.enums.event.EventStatus
 import java.time.LocalDateTime
 @Entity
 @Table(name = "with_draw_volunteer_event_event")
-class WithDrawVolunteerEventEventEntity (
+class WithDrawVolunteerEventEventEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

@@ -11,7 +11,7 @@ class AddVolunteerEventEventEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     @Column(name = "volunteer_id", nullable = false)
-    val volunteerId : Long,
+    val volunteerId: Long,
     @Column(name = "shelter_id", nullable = false)
     val shelterId: Long,
     @Column(name = "volunteer_event_id", nullable = false)
