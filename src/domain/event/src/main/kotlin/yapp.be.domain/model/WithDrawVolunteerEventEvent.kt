@@ -4,6 +4,7 @@ package yapp.be.domain.model
 // 1. 당사자에게 정상적으로 취소되었다고 알림
 // 2. 대기자들에게 자리가 비었다고 알림
 data class WithDrawVolunteerEventEvent (
+    val id: Long = 0,
     val withDrawVolunteerId: Long,
     val waitingVolunteerId: List<Long>,
     val volunteerEventId: Long,
