@@ -8,13 +8,13 @@ import yapp.be.model.support.PHONE_REGEX
 import yapp.be.model.vo.Email
 
 data class VolunteerSignUpRequest(
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:NotBlank(message = "닉네임 값이 비어있습니다.")
     val nickname: String,
     @field:Pattern(regexp = EMAIL_REGEX, message = "잘못된 이메일 형식입니다.")
     val email: String,
     @field:Pattern(
         regexp = PHONE_REGEX,
-        message = "입력이 불가능한 문자가 포함되어 있어요"
+        message = "잘못된 번호 형식입니다."
     )
     val phoneNumber: String,
 ) {

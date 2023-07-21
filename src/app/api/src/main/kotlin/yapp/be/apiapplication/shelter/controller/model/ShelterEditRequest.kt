@@ -1,5 +1,6 @@
 package yapp.be.apiapplication.shelter.controller.model
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.hibernate.validator.constraints.Length
@@ -34,6 +35,7 @@ data class EditShelterEssentialInfoRequest(
     @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
     @field:NotBlank(message = "값이 비어있습니다.")
     val description: String,
+    @field:Valid
     val address: ShelterSignUpAddressInfo,
 
 ) {

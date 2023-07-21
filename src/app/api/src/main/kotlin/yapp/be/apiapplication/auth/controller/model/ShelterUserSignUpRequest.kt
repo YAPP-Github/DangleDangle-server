@@ -1,7 +1,10 @@
 package yapp.be.apiapplication.auth.controller.model
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
+import kotlin.math.max
 import org.hibernate.validator.constraints.Length
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoRequestDto
 import yapp.be.model.support.EMAIL_REGEX
@@ -28,6 +31,7 @@ data class SignUpWithEssentialInfoRequest(
     @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
     @field:NotBlank(message = "값이 비어있습니다.")
     val description: String,
+    @field:Valid
     val address: ShelterSignUpAddressInfo,
 ) {
     fun toDto(): SignUpShelterWithEssentialInfoRequestDto {
@@ -49,13 +53,15 @@ data class SignUpWithEssentialInfoRequest(
 }
 
 data class ShelterSignUpAddressInfo(
+    @field:NotBlank(message = "주소 값이 비어있습니다.")
     val address: String,
+    @field:NotBlank(message = "상세주소 값이 비어있습니다.")
     val addressDetail: String,
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:Length(min = 5, max = 5, message = "우편번호는 5자리 입니다.")
     val postalCode: String,
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:NotNull(message = "위도 값이 비어있습니다.")
     val latitude: Double,
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:NotNull(message = "경도 값이 비어있습니다.")
     val longitude: Double
 )
 

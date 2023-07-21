@@ -55,12 +55,12 @@ class ShelterRepository(
             profileImageUrl = shelterWithBookMarkInfo.profileImageUrl,
             bankAccount = run {
                 if (shelterWithBookMarkInfo.bankName.isNullOrEmpty() || shelterWithBookMarkInfo.bankAccountNum.isNullOrEmpty()) null
-                else BankAccount(name = shelterWithBookMarkInfo.bankName!!, accountNumber = shelterWithBookMarkInfo.bankAccountNum!!)
+                else BankAccount(name = shelterWithBookMarkInfo.bankName, accountNumber = shelterWithBookMarkInfo.bankAccountNum)
             },
             address = shelterWithBookMarkInfo.address.toDomainModel(),
             parkingInfo = run {
                 if (shelterWithBookMarkInfo.parkingEnabled == null || shelterWithBookMarkInfo.parkingNotice.isNullOrEmpty()) null
-                else ShelterParkingInfo(parkingEnabled = shelterWithBookMarkInfo.parkingEnabled!!, parkingNotice = shelterWithBookMarkInfo.parkingNotice)
+                else ShelterParkingInfo(parkingEnabled = shelterWithBookMarkInfo.parkingEnabled, parkingNotice = shelterWithBookMarkInfo.parkingNotice)
             },
             bookMarked = shelterWithBookMarkInfo.bookMarked
 
