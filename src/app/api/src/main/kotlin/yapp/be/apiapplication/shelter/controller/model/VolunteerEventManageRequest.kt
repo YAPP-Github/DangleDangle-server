@@ -1,7 +1,9 @@
 package yapp.be.apiapplication.shelter.controller.model
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 import java.time.LocalDate
 import yapp.be.model.enums.volunteerevent.AgeLimit
@@ -15,19 +17,21 @@ import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 data class AddVolunteerEventRequest(
     @field:NotBlank(message = "일정 제목을 입력해주세요")
     var title: String,
-    @field:NotBlank(message = "값이 비어있습니다.")
+
+    @field:NotNull(message = "모집인원은 필수 값 입니다.")
     @field:Min(1, message = "최소 한명 이상이어야 합니다.")
     val recruitNum: Int,
     @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
     var description: String?,
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:NotNull(message = "값이 비어있습니다.")
     val category: VolunteerEventCategory,
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:NotNull(message = "값이 비어있습니다.")
     val ageLimit: AgeLimit,
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:NotNull(message = "값이 비어있습니다.")
     val startAt: LocalDateTime,
-    @field:NotBlank(message = "값이 비어있습니다.")
+    @field:NotNull(message = "값이 비어있습니다.")
     val endAt: LocalDateTime,
+    @field:Valid
     val iteration: AddVolunteerEventIterationInfo?
 ) {
     init {
@@ -82,6 +86,8 @@ data class EditVolunteerEventRequest(
 }
 
 data class AddVolunteerEventIterationInfo(
+    @NotNull(message = "반복 주기의 마감날짜가 비어있습니다.")
     val iterationEndAt: LocalDate,
+    @NotNull(message = "반복 주기가 비어있습니다.")
     val iterationCycle: IterationCycle
 )

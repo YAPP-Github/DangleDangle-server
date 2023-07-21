@@ -94,7 +94,7 @@ class ObservationAnimalManageApplicationService(
         )
 
         val updatedObservationAnimal = editObservationAnimalUseCase.editObservationAnimal(
-            observationAnimalId = observationAnimalId,
+            observationAnimalId = observationAnimal.id,
             shelterId = shelterUser.shelterId,
             name = reqDto.name,
             age = reqDto.age,
