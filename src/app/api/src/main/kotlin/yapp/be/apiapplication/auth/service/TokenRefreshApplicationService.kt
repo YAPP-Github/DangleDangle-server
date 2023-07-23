@@ -25,7 +25,7 @@ class TokenRefreshApplicationService(
     private val deleteTokenUseCase: DeleteTokenUseCase,
     private val jwtConfigProperties: JwtConfigProperties,
 ) {
-    @Transactional(readOnly = true)
+    @Transactional
     fun refresh(reqDto: TokenRefreshRequestDto): TokenRefreshResponseDto {
         val flag = checkTokenUseCase.checkToken(
             accessToken = reqDto.accessToken,
