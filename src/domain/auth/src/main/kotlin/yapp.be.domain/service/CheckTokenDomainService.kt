@@ -12,6 +12,6 @@ class CheckTokenDomainService(
 
     @Transactional(readOnly = true)
     override fun checkToken(accessToken: String, refreshToken: String): Boolean {
-        return tokenQueryHandler.checkToken(accessToken, refreshToken)
+        return tokenQueryHandler.getTokenByAccessToken(accessToken) == refreshToken
     }
 }

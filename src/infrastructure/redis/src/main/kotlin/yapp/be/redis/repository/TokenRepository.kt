@@ -21,11 +21,6 @@ class TokenRepository(
         return redisHandler.getData(accessToken)
     }
 
-    @Transactional(readOnly = true)
-    override fun checkToken(accessToken: String, refreshToken: String): Boolean {
-        return redisHandler.getData(accessToken) == refreshToken
-    }
-
     @Transactional
     override fun saveToken(accessToken: String, refreshToken: String, duration: Duration) {
         redisHandler.setDataExpire(
