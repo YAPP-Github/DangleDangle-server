@@ -5,4 +5,8 @@ interface CheckTokenUseCase {
         accessToken: String,
         refreshToken: String,
     ): Boolean
+
+    fun checkLogoutToken(
+        accessToken: String,
+    ): Boolean
 }

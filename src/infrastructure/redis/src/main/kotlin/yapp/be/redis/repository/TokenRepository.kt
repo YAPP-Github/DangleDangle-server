@@ -31,6 +31,15 @@ class TokenRepository(
     }
 
     @Transactional
+    override fun saveLogoutToken(accessToken: String, value: String, duration: Duration) {
+        redisHandler.setDataExpire(
+            key = accessToken,
+            value = value,
+            duration = duration
+        )
+    }
+
+    @Transactional
     override fun saveTokensWithAuthToken(authToken: String, accessToken: String, refreshToken: String, duration: Duration) {
         redisHandler.setDataExpire(
             key = authToken,

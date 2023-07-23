@@ -7,6 +7,6 @@ interface TokenCommandHandler {
     fun deleteTokenByAuthToken(authToken: String)
     fun deleteToken(accessToken: String)
     fun saveToken(accessToken: String, refreshToken: String, duration: Duration)
-
+    fun saveLogoutToken(accessToken: String, value: String, duration: Duration)
     fun saveTokensWithAuthToken(authToken: String, accessToken: String, refreshToken: String, duration: Duration)
 }

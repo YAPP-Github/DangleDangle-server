@@ -15,4 +15,9 @@ interface SaveTokenUseCase {
         refreshToken: String,
         expire: Duration,
     )
+
+    fun saveLogoutToken(
+        accessToken: String,
+        expire: Duration
+    )
 }

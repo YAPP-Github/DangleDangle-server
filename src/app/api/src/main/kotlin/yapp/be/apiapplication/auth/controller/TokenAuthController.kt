@@ -7,17 +7,17 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import yapp.be.apiapplication.auth.controller.model.TokenRefreshRequest
-import yapp.be.apiapplication.auth.service.TokenRefreshApplicationService
+import yapp.be.apiapplication.auth.service.TokenAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.TokenRefreshResponseDto
 
 @RestController
-@Tag(name = "토큰 재발급 api")
-@RequestMapping("/v1/auth/token")
+@Tag(name = "인증 관련 api")
+@RequestMapping("/v1/auth")
 class TokenAuthController(
-    val tokenRefreshApplicationService: TokenRefreshApplicationService,
+    val tokenAuthApplicationService: TokenAuthApplicationService,
 ) {
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/refresh")
+    @PostMapping("/token/refresh")
     @Operation(
         summary = "만료된 access token 재발급",
     )
@@ -26,8 +26,21 @@ class TokenAuthController(
         req: TokenRefreshRequest
     ): ResponseEntity<TokenRefreshResponseDto> {
         val reqDto = req.toDto()
-        val resDto = tokenRefreshApplicationService.refresh(reqDto)
+        val resDto = tokenAuthApplicationService.refresh(reqDto)
 
         return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/logout")
+    @Operation(
+        summary = "로그아웃",
+    )
+    fun loginShelterUser(
+        @RequestHeader(value = "Authorization") accessToken: String
+    ): ResponseEntity<String> {
+        val resDto = tokenAuthApplicationService.logout(accessToken.replace("Bearer ", ""))
+
+        return ResponseEntity.ok("Logout Success")
     }
 }

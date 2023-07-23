@@ -22,6 +22,7 @@ import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
+import yapp.be.domain.port.inbound.CheckTokenUseCase
 import yapp.be.model.enums.volunteerevent.Role
 
 @Configuration
@@ -32,7 +33,8 @@ class SecurityConfig(
     private val customAccessDeniedHandler: CustomAccessDeniedHandler,
     private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val customOAuth2UserService: CustomOAuth2UserService,
-    private val authenticationSuccessHandler: AuthenticationSuccessHandler
+    private val authenticationSuccessHandler: AuthenticationSuccessHandler,
+    private val checkTokenUseCase: CheckTokenUseCase,
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -75,7 +77,8 @@ class SecurityConfig(
             .addFilterBefore(
                 JwtAuthenticationFilter(
                     jwtTokenProvider = jwtTokenProvider,
-                    filterExceptionHandler = filterExceptionHandler
+                    filterExceptionHandler = filterExceptionHandler,
+                    checkTokenUseCase = checkTokenUseCase,
                 ),
                 UsernamePasswordAuthenticationFilter::class.java
             )

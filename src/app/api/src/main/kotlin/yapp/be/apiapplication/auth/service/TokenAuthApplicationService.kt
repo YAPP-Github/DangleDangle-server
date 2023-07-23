@@ -17,7 +17,7 @@ import yapp.be.model.vo.Email
 import java.time.Duration
 
 @Service
-class TokenRefreshApplicationService(
+class TokenAuthApplicationService(
     private val checkTokenUseCase: CheckTokenUseCase,
     private val jwtTokenProvider: JwtTokenProvider,
     private val saveTokenUseCase: SaveTokenUseCase,
@@ -54,6 +54,15 @@ class TokenRefreshApplicationService(
         return TokenRefreshResponseDto(
             accessToken = accessToken,
             refreshToken = reqDto.refreshToken,
+        )
+    }
+
+    @Transactional
+    fun logout(accessToken: String) {
+        deleteTokenUseCase.deleteToken(accessToken)
+        saveTokenUseCase.saveLogoutToken(
+            accessToken = accessToken,
+            expire = Duration.ofMillis(jwtConfigProperties.access.expire),
         )
     }
 }
