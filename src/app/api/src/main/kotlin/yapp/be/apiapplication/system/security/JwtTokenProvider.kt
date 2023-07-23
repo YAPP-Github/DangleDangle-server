@@ -1,8 +1,7 @@
 package yapp.be.apiapplication.system.security
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.*
+import io.jsonwebtoken.io.DecodingException
 import io.jsonwebtoken.security.Keys
 import java.util.Collections
 import java.util.Date
@@ -68,7 +67,13 @@ class JwtTokenProvider(
                 .parseClaimsJws(token)
                 .body
         } catch (e: SecurityException) {
-            throw SecurityException("Invalid JWT signature")
+            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "유효하지 않은 토큰입니다.")
+        } catch (e: ExpiredJwtException) {
+            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "만료된 토큰입니다. 다시 로그인을 진행해주세요.")
+        } catch (e: DecodingException) {
+            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "잘못된 인증입니다.")
+        } catch (e: MalformedJwtException) {
+            throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "손상된 토큰입니다.")
         }
     }
 
