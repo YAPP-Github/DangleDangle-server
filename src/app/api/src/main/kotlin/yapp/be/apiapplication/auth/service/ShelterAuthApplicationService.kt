@@ -32,7 +32,7 @@ class ShelterAuthApplicationService(
     private val jwtConfigProperties: JwtConfigProperties,
 ) {
 
-    @Transactional(readOnly = true)
+    @Transactional
     fun login(reqDto: LoginShelterUserRequestDto): LoginShelterUserResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserByEmail(reqDto.email)
 
