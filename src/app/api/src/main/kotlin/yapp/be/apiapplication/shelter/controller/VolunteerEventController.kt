@@ -70,7 +70,6 @@ class VolunteerEventController(
             shelterId = shelterId,
             volunteerId = volunteerInfo?.volunteerId,
             volunteerEventId = volunteerEventId
-
         )
         val resDto = volunteerEventApplicationService.getVolunteerEvent(reqDto)
 

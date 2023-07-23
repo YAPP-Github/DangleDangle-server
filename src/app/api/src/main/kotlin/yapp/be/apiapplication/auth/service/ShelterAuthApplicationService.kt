@@ -12,7 +12,6 @@ import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
-import yapp.be.domain.port.inbound.GetTokenUseCase
 import yapp.be.domain.port.inbound.SaveTokenUseCase
 import yapp.be.domain.port.inbound.shelter.AddShelterUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
@@ -30,7 +29,6 @@ class ShelterAuthApplicationService(
     private val addShelterUseCase: AddShelterUseCase,
     private val signUpShelterUseCase: SignUpShelterUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
-    private val getTokenUseCase: GetTokenUseCase,
     private val jwtConfigProperties: JwtConfigProperties,
 ) {
 
