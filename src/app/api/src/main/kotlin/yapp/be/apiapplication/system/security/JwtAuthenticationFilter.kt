@@ -24,8 +24,8 @@ class JwtAuthenticationFilter(
 
             if (token != null) {
                 val accessToken = token.replace("Bearer ", "")
-                if (checkTokenUseCase.checkLogoutToken(accessToken)) {
-                    throw CustomException(ApiExceptionType.INVALID_TOKEN, "로그아웃 상태입니다. 재 로그인을 해주세요")
+                if (checkTokenUseCase.isTokenBlackList(accessToken)) {
+                    throw CustomException(ApiExceptionType.INVALID_TOKEN, "올바르지 않은 토큰입니다.")
                 }
 
                 val claims = jwtTokenProvider.parseClaims(accessToken, SecurityTokenType.ACCESS)

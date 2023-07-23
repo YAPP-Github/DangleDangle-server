@@ -7,14 +7,14 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import yapp.be.apiapplication.auth.controller.model.TokenRefreshRequest
-import yapp.be.apiapplication.auth.service.TokenAuthApplicationService
+import yapp.be.apiapplication.auth.service.UserAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.TokenRefreshResponseDto
 
 @RestController
 @Tag(name = "인증 관련 api")
 @RequestMapping("/v1/auth")
 class TokenAuthController(
-    val tokenAuthApplicationService: TokenAuthApplicationService,
+    val userAuthApplicationService: UserAuthApplicationService,
 ) {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/token/refresh")
@@ -26,7 +26,7 @@ class TokenAuthController(
         req: TokenRefreshRequest
     ): ResponseEntity<TokenRefreshResponseDto> {
         val reqDto = req.toDto()
-        val resDto = tokenAuthApplicationService.refresh(reqDto)
+        val resDto = userAuthApplicationService.refresh(reqDto)
 
         return ResponseEntity.ok(resDto)
     }
@@ -39,7 +39,7 @@ class TokenAuthController(
     fun loginShelterUser(
         @RequestHeader(value = "Authorization") accessToken: String
     ): ResponseEntity<String> {
-        val resDto = tokenAuthApplicationService.logout(accessToken.replace("Bearer ", ""))
+        val resDto = userAuthApplicationService.logout(accessToken.replace("Bearer ", ""))
 
         return ResponseEntity.ok("Logout Success")
     }

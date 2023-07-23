@@ -8,6 +8,7 @@ import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
+import yapp.be.domain.model.BlackListTokenType
 import yapp.be.domain.port.inbound.CheckTokenUseCase
 import yapp.be.domain.port.inbound.DeleteTokenUseCase
 import yapp.be.domain.port.inbound.SaveTokenUseCase
@@ -17,7 +18,7 @@ import yapp.be.model.vo.Email
 import java.time.Duration
 
 @Service
-class TokenAuthApplicationService(
+class UserAuthApplicationService(
     private val checkTokenUseCase: CheckTokenUseCase,
     private val jwtTokenProvider: JwtTokenProvider,
     private val saveTokenUseCase: SaveTokenUseCase,
@@ -26,7 +27,7 @@ class TokenAuthApplicationService(
 ) {
     @Transactional
     fun refresh(reqDto: TokenRefreshRequestDto): TokenRefreshResponseDto {
-        val isValidRefreshToken = checkTokenUseCase.checkToken(
+        val isValidRefreshToken = checkTokenUseCase.isValidRefreshToken(
             accessToken = reqDto.accessToken,
             refreshToken = reqDto.refreshToken,
         )
@@ -46,8 +47,9 @@ class TokenAuthApplicationService(
             securityTokenType = SecurityTokenType.ACCESS
         )
         saveTokenUseCase.saveToken(
-            accessToken = accessToken,
-            refreshToken = reqDto.refreshToken,
+            token = accessToken,
+            value = reqDto.refreshToken,
+            prefix = "",
             expire = Duration.ofMillis(jwtConfigProperties.refresh.expire),
         )
 
@@ -60,8 +62,10 @@ class TokenAuthApplicationService(
     @Transactional
     fun logout(accessToken: String) {
         deleteTokenUseCase.deleteToken(accessToken)
-        saveTokenUseCase.saveLogoutToken(
-            accessToken = accessToken,
+        saveTokenUseCase.saveToken(
+            prefix = BlackListTokenType.LOGOUT.value,
+            token = accessToken,
+            value = BlackListTokenType.LOGOUT.value,
             expire = Duration.ofMillis(jwtConfigProperties.access.expire),
         )
     }

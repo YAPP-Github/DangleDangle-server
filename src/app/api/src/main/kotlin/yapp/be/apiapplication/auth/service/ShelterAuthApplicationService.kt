@@ -55,8 +55,9 @@ class ShelterAuthApplicationService(
         )
 
         saveTokenUseCase.saveToken(
-            accessToken = accessToken,
-            refreshToken = refreshToken,
+            token = accessToken,
+            value = refreshToken,
+            prefix = "",
             expire = Duration.ofMillis(jwtConfigProperties.refresh.expire)
         )
 

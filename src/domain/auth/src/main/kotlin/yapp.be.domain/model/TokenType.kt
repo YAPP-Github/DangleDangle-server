@@ -4,6 +4,6 @@ enum class SecurityTokenType {
     ACCESS, REFRESH
 }
 
-enum class LogoutTokenType(val value: String) {
+enum class BlackListTokenType(val value: String) {
     LOGOUT("logout")
 }

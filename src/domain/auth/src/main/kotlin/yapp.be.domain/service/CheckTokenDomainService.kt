@@ -2,7 +2,7 @@ package yapp.be.domain.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.model.LogoutTokenType
+import yapp.be.domain.model.BlackListTokenType
 import yapp.be.domain.port.inbound.CheckTokenUseCase
 import yapp.be.domain.port.outbound.TokenQueryHandler
 
@@ -12,12 +12,12 @@ class CheckTokenDomainService(
 ) : CheckTokenUseCase {
 
     @Transactional(readOnly = true)
-    override fun checkToken(accessToken: String, refreshToken: String): Boolean {
+    override fun isValidRefreshToken(accessToken: String, refreshToken: String): Boolean {
         return tokenQueryHandler.getTokenByAccessToken(accessToken) == refreshToken
     }
 
     @Transactional(readOnly = true)
-    override fun checkLogoutToken(accessToken: String): Boolean {
-        return tokenQueryHandler.getTokenByAccessToken(accessToken) == LogoutTokenType.LOGOUT.value
+    override fun isTokenBlackList(accessToken: String): Boolean {
+        return tokenQueryHandler.getTokenByAccessToken(accessToken) == BlackListTokenType.LOGOUT.value
     }
 }

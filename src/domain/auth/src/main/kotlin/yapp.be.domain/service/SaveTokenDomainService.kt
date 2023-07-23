@@ -2,7 +2,6 @@ package yapp.be.domain.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.model.LogoutTokenType
 import yapp.be.domain.port.inbound.SaveTokenUseCase
 import yapp.be.domain.port.outbound.TokenCommandHandler
 import java.time.Duration
@@ -23,22 +22,15 @@ class SaveTokenDomainService(
 
     @Transactional
     override fun saveToken(
+        prefix: String,
         accessToken: String,
         refreshToken: String,
         expire: Duration,
     ) {
         tokenCommandHandler.saveToken(
-            accessToken = accessToken,
-            refreshToken = refreshToken,
-            duration = expire
-        )
-    }
-
-    @Transactional
-    override fun saveLogoutToken(accessToken: String, expire: Duration) {
-        tokenCommandHandler.saveLogoutToken(
-            accessToken = accessToken,
-            value = LogoutTokenType.LOGOUT.value,
+            prefix = prefix,
+            token = accessToken,
+            value = refreshToken,
             duration = expire
         )
     }
