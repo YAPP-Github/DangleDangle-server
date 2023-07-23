@@ -11,4 +11,8 @@ class GetTokenDomainService(
     override fun getTokensByAuthToken(authToken: String): String? {
         return tokenQueryHandler.getTokensByAuthToken(authToken)
     }
+
+    override fun getTokenByAccessToken(accessToken: String): String? {
+        return tokenQueryHandler.getTokenByAccessToken(accessToken)
+    }
 }

@@ -11,12 +11,16 @@ import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoR
 import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
+import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
+import yapp.be.domain.port.inbound.GetTokenUseCase
+import yapp.be.domain.port.inbound.SaveTokenUseCase
 import yapp.be.domain.port.inbound.shelter.AddShelterUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 import yapp.be.domain.port.inbound.shelteruser.SignUpShelterUseCase
 import yapp.be.model.enums.volunteerevent.Role
 import yapp.be.exceptions.CustomException
 import yapp.be.model.vo.Email
+import java.time.Duration
 
 @Service
 class ShelterAuthApplicationService(
@@ -24,7 +28,10 @@ class ShelterAuthApplicationService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val getShelterUserUseCase: GetShelterUserUseCase,
     private val addShelterUseCase: AddShelterUseCase,
-    private val signUpShelterUseCase: SignUpShelterUseCase
+    private val signUpShelterUseCase: SignUpShelterUseCase,
+    private val saveTokenUseCase: SaveTokenUseCase,
+    private val getTokenUseCase: GetTokenUseCase,
+    private val jwtConfigProperties: JwtConfigProperties,
 ) {
 
     @Transactional(readOnly = true)
@@ -47,6 +54,12 @@ class ShelterAuthApplicationService(
             email = shelterUser.email,
             role = Role.SHELTER,
             securityTokenType = SecurityTokenType.REFRESH
+        )
+
+        saveTokenUseCase.saveToken(
+            accessToken = accessToken,
+            refreshToken = refreshToken,
+            expire = Duration.ofMillis(jwtConfigProperties.refresh.expire)
         )
 
         return LoginShelterUserResponseDto(

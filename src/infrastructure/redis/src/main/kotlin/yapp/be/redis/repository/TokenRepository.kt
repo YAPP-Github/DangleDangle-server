@@ -13,6 +13,11 @@ class TokenRepository(
     override fun getTokensByAuthToken(authToken: String): String? {
         return redisHandler.getData(authToken)
     }
+
+    override fun getTokenByAccessToken(accessToken: String): String? {
+        return redisHandler.getData(accessToken)
+    }
+
     override fun saveToken(accessToken: String, refreshToken: String, duration: Duration) {
         redisHandler.setDataExpire(
             key = accessToken,
