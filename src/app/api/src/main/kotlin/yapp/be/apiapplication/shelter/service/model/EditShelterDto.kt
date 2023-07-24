@@ -8,6 +8,7 @@ import yapp.be.model.enums.volunteerevent.OutLinkType
 data class EditShelterProfileImageRequestDto(
     val profileImageUrl: String
 )
+
 data class EditShelterProfileImageResponseDto(
     val shelterId: Long
 )
@@ -17,8 +18,8 @@ data class EditShelterWithAdditionalInfoRequestDto(
     val parkingInfo: ShelterParkingInfo?,
     val bankAccount: BankAccount?,
     val notice: String?,
-
 )
+
 data class EditShelterWithAdditionalInfoResponseDto(
     val shelterId: Long,
     val shelterUserId: Long

@@ -52,7 +52,6 @@ class ShelterApplicationServiceTest(
             val unBookMarkResponse = shelterApplicationService.bookMarkShelter(bookmarkShelterRequestDto)
             Then("보호소 즐겨찾기가 해제된다.") {
                 val bookMark = shelterBookMarkQueryHandler.getShelterIdAndVolunteerId(shelterId, volunteerId)
-
                 bookMark shouldBe null
                 unBookMarkResponse.bookMarked shouldBe false
             }
@@ -69,6 +68,21 @@ class ShelterApplicationServiceTest(
         When("봉사자가 보호소 찾기를 시도하면") {
             val shelterResponse = shelterApplicationService.getShelter(getShelterRequestDto)
             Then("북마크한 보호소의 정보를 얻을 수 있다.") {
+                shelterResponse shouldNotBe null
+                shelterResponse.id shouldBe shelterId
+                shelterResponse.email shouldBe shelterUser.email.value
+            }
+        }
+    }
+
+    Given("비로그인 상태에서") {
+        val shelterId = shelterCommandHandler.create(Fixture.createShelterEntity()).id
+        val shelterUser = shelterUserCommandHandler.save(Fixture.createShelterUserEntity(shelterId = shelterId))
+        val shelterOutLink = shelterOutLinkCommandHandler.upsertAll(shelterId, listOf(Fixture.createShelterOutLink(shelterId = shelterId)))
+        val getShelterRequestDto = GetShelterRequestDto(shelterId, null)
+        When("보호소 찾기를 시도하면") {
+            val shelterResponse = shelterApplicationService.getShelter(getShelterRequestDto)
+            Then("해당 보호소의 정보를 얻을 수 있다.") {
                 shelterResponse shouldNotBe null
                 shelterResponse.id shouldBe shelterId
                 shelterResponse.email shouldBe shelterUser.email.value

@@ -24,7 +24,6 @@ class ShelterManageApplicationService(
     private val getShelterUserUseCase: GetShelterUserUseCase,
     private val editShelterUseCase: EditShelterUseCase
 ) {
-
     @Transactional(readOnly = true)
     fun getShelter(shelterUserId: Long): GetShelterUserShelterResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
@@ -63,7 +62,6 @@ class ShelterManageApplicationService(
                 )
             },
             notice = shelter.notice
-
         )
     }
 
