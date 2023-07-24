@@ -1,8 +1,12 @@
 package yapp.be.redis.repository
 
+import org.springframework.data.redis.core.Cursor
+import org.springframework.data.redis.core.ScanOptions
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
+
+
 @Component
 class RedisHandler(
     private val stringRedisTemplate: StringRedisTemplate
@@ -13,7 +17,15 @@ class RedisHandler(
     }
 
     fun getKeys(pattern: String): Set<String> {
-        return stringRedisTemplate.keys(pattern)
+        val result: MutableSet<String> = mutableSetOf()
+        val scanOptions = ScanOptions.scanOptions().match(pattern).count(10).build()
+        val keys: Cursor<String> = stringRedisTemplate.scan(scanOptions)
+
+        while (keys.hasNext()) {
+            result.add(keys.next())
+        }
+
+        return result
     }
 
     fun setData(key: String, value: String) {
