@@ -11,7 +11,7 @@ interface SaveTokenUseCase {
         authTokenExpire: Duration
     )
     fun saveToken(
-        prefix: String,
+        prefix: String = "",
         token: String,
         value: String,
         expire: Duration,

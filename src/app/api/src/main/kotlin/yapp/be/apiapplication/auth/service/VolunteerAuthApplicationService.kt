@@ -59,7 +59,6 @@ class VolunteerAuthApplicationService(
         saveTokenUseCase.saveToken(
             token = tokens[0],
             value = tokens[1],
-            prefix = "",
             expire = Duration.ofMillis(jwtConfigProperties.refresh.expire)
         )
 

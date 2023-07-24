@@ -49,7 +49,6 @@ class UserAuthApplicationService(
         saveTokenUseCase.saveToken(
             token = accessToken,
             value = reqDto.refreshToken,
-            prefix = "",
             expire = Duration.ofMillis(jwtConfigProperties.refresh.expire),
         )
 
