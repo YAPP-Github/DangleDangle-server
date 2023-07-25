@@ -5,10 +5,14 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterVolunteerEventStatDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 
 interface VolunteerEventQueryHandler {
 
+    fun findStatByShelterId(
+        shelterId: Long
+    ): ShelterVolunteerEventStatDto
     fun findByIdAndShelterId(
         id: Long,
         shelterId: Long

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterVolunteerEventStatDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
@@ -13,6 +14,11 @@ import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 class GetVolunteerEventDomainService(
     private val volunteerEventQueryHandler: VolunteerEventQueryHandler
 ) : GetVolunteerEventUseCase {
+
+    @Transactional(readOnly = true)
+    override fun getShelterVolunteerEventStat(shelterId: Long): ShelterVolunteerEventStatDto {
+        return volunteerEventQueryHandler.findStatByShelterId(shelterId)
+    }
 
     @Transactional(readOnly = true)
     override fun getVolunteerEvent(shelterId: Long, volunteerEventId: Long): VolunteerEvent {
