@@ -7,12 +7,15 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
+import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
+import yapp.be.domain.port.inbound.CheckTokenUseCase
 import yapp.be.exceptions.CustomException
 
 class JwtAuthenticationFilter(
     private val jwtTokenProvider: JwtTokenProvider,
-    private val filterExceptionHandler: FilterExceptionHandler
+    private val filterExceptionHandler: FilterExceptionHandler,
+    private val checkTokenUseCase: CheckTokenUseCase,
 ) : GenericFilterBean() {
 
     override fun doFilter(request: ServletRequest, response: ServletResponse, filterChain: FilterChain) {
@@ -20,7 +23,12 @@ class JwtAuthenticationFilter(
             val token = (request as HttpServletRequest).getHeader("Authorization")
 
             if (token != null) {
-                val claims = jwtTokenProvider.parseClaims(token.replace("Bearer ", ""), SecurityTokenType.ACCESS)
+                val accessToken = token.replace("Bearer ", "")
+                if (checkTokenUseCase.isTokenBlackList(accessToken)) {
+                    throw CustomException(ApiExceptionType.INVALID_TOKEN, "올바르지 않은 토큰입니다.")
+                }
+
+                val claims = jwtTokenProvider.parseClaims(accessToken, SecurityTokenType.ACCESS)
                 if (claims != null) {
                     SecurityContextHolder.getContext().authentication = jwtTokenProvider.getAuthentication(claims)
                 }

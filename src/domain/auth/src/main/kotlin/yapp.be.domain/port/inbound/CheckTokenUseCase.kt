@@ -1,8 +1,12 @@
 package yapp.be.domain.port.inbound
 
 interface CheckTokenUseCase {
-    fun checkToken(
+    fun isValidRefreshToken(
         accessToken: String,
         refreshToken: String,
+    ): Boolean
+
+    fun isTokenBlackList(
+        accessToken: String,
     ): Boolean
 }

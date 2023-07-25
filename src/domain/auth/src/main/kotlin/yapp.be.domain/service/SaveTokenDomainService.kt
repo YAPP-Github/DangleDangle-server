@@ -22,13 +22,15 @@ class SaveTokenDomainService(
 
     @Transactional
     override fun saveToken(
+        prefix: String,
         accessToken: String,
         refreshToken: String,
         expire: Duration,
     ) {
         tokenCommandHandler.saveToken(
-            accessToken = accessToken,
-            refreshToken = refreshToken,
+            prefix = prefix,
+            token = accessToken,
+            value = refreshToken,
             duration = expire
         )
     }

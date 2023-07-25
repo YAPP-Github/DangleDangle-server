@@ -57,8 +57,8 @@ class VolunteerAuthApplicationService(
             ?: throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "AuthToken이 만료되었거나, 올바르지 않습니다.")
 
         saveTokenUseCase.saveToken(
-            accessToken = tokens[0],
-            refreshToken = tokens[1],
+            token = tokens[0],
+            value = tokens[1],
             expire = Duration.ofMillis(jwtConfigProperties.refresh.expire)
         )
 

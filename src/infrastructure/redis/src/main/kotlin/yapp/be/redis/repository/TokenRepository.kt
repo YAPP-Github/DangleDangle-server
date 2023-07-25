@@ -22,10 +22,10 @@ class TokenRepository(
     }
 
     @Transactional
-    override fun saveToken(accessToken: String, refreshToken: String, duration: Duration) {
+    override fun saveToken(prefix: String, token: String, value: String, duration: Duration) {
         redisHandler.setDataExpire(
-            key = accessToken,
-            value = refreshToken,
+            key = prefix + token,
+            value = value,
             duration = duration
         )
     }
