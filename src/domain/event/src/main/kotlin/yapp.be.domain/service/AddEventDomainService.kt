@@ -13,15 +13,13 @@ class AddEventDomainService(
 ) : AddEventUseCase {
     @Transactional
     override fun addEvent(
-        volunteerId: Long,
-        volunteerEventId: Long,
-        shelterId: Long,
+        recordId: String,
+        json: String,
         type: EventType,
     ): Event {
         val event = Event(
-            volunteerId = volunteerId,
-            volunteerEventId = volunteerEventId,
-            shelterId = shelterId,
+            recordId = recordId,
+            json = json,
             type = type
         )
         return eventCommandHandler.saveEvent(event)

@@ -19,8 +19,4 @@ class EventRepository(
         )
         return eventEntity.toDomainModel()
     }
-    @Transactional(readOnly = true)
-    override fun get(): List<Event> {
-        return eventJpaRepository.findByEventStatusOrderByCreatedAt().map { it.toDomainModel() }
-    }
 }

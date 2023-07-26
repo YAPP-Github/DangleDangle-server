@@ -5,9 +5,8 @@ import yapp.be.model.enums.event.EventType
 
 interface AddEventUseCase {
     fun addEvent(
-        volunteerId: Long,
-        volunteerEventId: Long,
-        shelterId: Long,
+        recordId: String,
+        json: String,
         type: EventType,
     ): Event
 }

@@ -8,6 +8,7 @@ dependencies {
     val kotestVersion: String by project
 
     implementation(project(":auth"))
+    implementation(project(":event"))
     implementation(project(":common"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")

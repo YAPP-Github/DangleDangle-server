@@ -1,15 +1,21 @@
 package yapp.be.domain.model
 
-import yapp.be.model.enums.event.EventStatus
 import yapp.be.model.enums.event.EventType
-import java.time.LocalDateTime
+import java.io.Serializable
 
 data class Event(
-    val id: Long = 0,
-    val volunteerId: Long,
-    val volunteerEventId: Long,
-    val shelterId: Long,
+    val recordId: String,
+    val json: String,
     val type: EventType,
-    val status: EventStatus = EventStatus.BEFORE_PROCESSING,
-    val createdAt: LocalDateTime = LocalDateTime.now()
-)
+) : Serializable {
+    constructor(id: String, map: Map<String, String>) : this(
+        id,
+        map["json"]!!,
+        EventType.valueOf(map["type"]!!),
+    )
+    fun toMap(): Map<ByteArray, ByteArray> =
+        mapOf(
+            "json".toByteArray() to this.json.toByteArray(),
+            "type".toByteArray() to this.type.toString().toByteArray(),
+        )
+}

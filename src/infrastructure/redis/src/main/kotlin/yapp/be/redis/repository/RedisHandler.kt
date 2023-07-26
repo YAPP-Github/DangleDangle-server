@@ -1,15 +1,19 @@
 package yapp.be.redis.repository
 
+import org.springframework.data.redis.connection.stream.Consumer
+import org.springframework.data.redis.connection.stream.MapRecord
+import org.springframework.data.redis.connection.stream.PendingMessage
 import org.springframework.data.redis.core.Cursor
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.ScanOptions
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
 
-
 @Component
 class RedisHandler(
-    private val stringRedisTemplate: StringRedisTemplate
+    private val stringRedisTemplate: StringRedisTemplate,
+    private val redisTemplate: RedisTemplate<String, Any>
 ) {
     fun getData(key: String): String? {
         val valueOperations = stringRedisTemplate.opsForValue()
@@ -43,4 +47,30 @@ class RedisHandler(
     fun deleteData(key: String) {
         stringRedisTemplate.delete(key)
     }
+
+    fun getPendingMessages(streamKey: String, consumerGroup: String) =
+        redisTemplate.opsForStream<Any, Any>().pending(streamKey, consumerGroup)
+
+    fun getPendingMessagesPerConsumer(streamKey: String, consumerGroup: String, consumerName: String) =
+        redisTemplate.opsForStream<Any, Any>().pending(streamKey, Consumer.from(consumerGroup, consumerName))
+
+    fun claimMessage(
+        streamKey: String,
+        consumerGroup: String,
+        consumer: String,
+        timeout: Long,
+        pendingMessage: PendingMessage,
+    ): List<MapRecord<String, String, String>> {
+        println("Claiming message ${pendingMessage.id}")
+        return redisTemplate.opsForStream<String, String>().claim(
+            streamKey,
+            consumerGroup,
+            consumer,
+            Duration.ofMillis(timeout),
+            pendingMessage.id
+        )
+    }
+
+    fun acknowledge(group: String, record: MapRecord<String, String, String>) =
+        redisTemplate.opsForStream<Any, Any>().acknowledge(group, record)
 }
