@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.storage.jpa.shelter.model.QShelterEntity.shelterEntity
 import yapp.be.storage.jpa.volunteerevent.model.QVolunteerEventEntity.volunteerEventEntity
+import yapp.be.storage.jpa.volunteerevent.model.QVolunteerEventJoinQueueEntity.volunteerEventJoinQueueEntity
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.QVolunteerEventWithMyParticipationStatusProjection
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEventWithMyParticipationStatusProjection
@@ -15,6 +16,16 @@ import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEve
 class VolunteerEventJpaRepositoryImpl(
     private val queryFactory: JPAQueryFactory
 ) : VolunteerEventJpaRepositoryCustom {
+
+    @Transactional(readOnly = true)
+    override fun findAllByVolunteerId(volunteerId: Long): List<VolunteerEventEntity> {
+        return queryFactory
+            .selectFrom(volunteerEventEntity)
+            .join(volunteerEventJoinQueueEntity)
+            .on(volunteerEventJoinQueueEntity.volunteerEventId.eq(volunteerEventEntity.id))
+            .where(volunteerEventJoinQueueEntity.volunteerId.eq(volunteerId))
+            .fetch()
+    }
 
     @Transactional(readOnly = true)
     override fun findWithParticipationStatusByIdAndShelterId(id: Long, shelterId: Long): VolunteerEventWithMyParticipationStatusProjection? {
