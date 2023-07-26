@@ -3,9 +3,14 @@ package yapp.be.domain.port.inbound
 import java.time.LocalDateTime
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterVolunteerEventStatDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 
 interface GetVolunteerEventUseCase {
+
+    fun getShelterVolunteerEventStat(
+        shelterId: Long
+    ): ShelterVolunteerEventStatDto
 
     fun getVolunteerEvent(
         shelterId: Long,

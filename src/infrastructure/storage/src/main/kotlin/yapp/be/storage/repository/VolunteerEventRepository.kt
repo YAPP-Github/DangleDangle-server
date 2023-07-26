@@ -8,12 +8,14 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterVolunteerEventStatDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerEventParticipantInfoDto
 import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.vo.Address
 import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.volunteerevent.model.mappers.toDomainModel
@@ -28,6 +30,19 @@ class VolunteerEventRepository(
     private val volunteerEventWaitingQueueJpaRepository: VolunteerEventWaitingQueueJpaRepository,
     private val volunteerEventJoinQueueJpaRepository: VolunteerEventJoinQueueJpaRepository,
 ) : VolunteerEventQueryHandler, VolunteerEventCommandHandler {
+
+    @Transactional(readOnly = true)
+    override fun findStatByShelterId(shelterId: Long): ShelterVolunteerEventStatDto {
+        val volunteerEventEntities =
+            volunteerEventJpaRepository.findAllByShelterId(shelterId)
+
+        val volunteerEntityStatusMap = volunteerEventEntities.groupBy { it.status }
+
+        return ShelterVolunteerEventStatDto(
+            done = volunteerEntityStatusMap[VolunteerEventStatus.DONE]?.size ?: 0,
+            inProgress = volunteerEntityStatusMap[VolunteerEventStatus.IN_PROGRESS]?.size ?: 0
+        )
+    }
 
     @Transactional(readOnly = true)
     override fun findByIdAndShelterId(id: Long, shelterId: Long): VolunteerEvent {
