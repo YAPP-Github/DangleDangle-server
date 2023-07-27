@@ -3,6 +3,7 @@ package yapp.be.redis.repository
 import org.springframework.stereotype.Component
 import yapp.be.domain.port.outbound.TokenCommandHandler
 import yapp.be.domain.port.outbound.TokenQueryHandler
+import yapp.be.redis.handler.RedisHandler
 import java.time.Duration
 
 @Component
@@ -13,6 +14,7 @@ class TokenRepository(
     override fun getTokensByAuthToken(authToken: String): String? {
         return redisHandler.getData(authToken)
     }
+
     override fun saveToken(accessToken: String, refreshToken: String, duration: Duration) {
         redisHandler.setDataExpire(
             key = accessToken,

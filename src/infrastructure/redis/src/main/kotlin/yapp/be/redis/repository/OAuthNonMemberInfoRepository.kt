@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component
 import yapp.be.domain.port.outbound.OAuthNonMemberInfoCommandHandler
 import yapp.be.domain.port.outbound.OAuthNonMemberInfoQueryHandler
 import yapp.be.model.vo.Email
+import yapp.be.redis.handler.RedisHandler
 import java.time.Duration
 
 @Component

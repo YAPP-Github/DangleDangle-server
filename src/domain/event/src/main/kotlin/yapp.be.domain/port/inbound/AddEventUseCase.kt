@@ -1,12 +1,7 @@
 package yapp.be.domain.port.inbound
 
-import yapp.be.domain.model.Event
-import yapp.be.model.enums.event.EventType
+import yapp.be.domain.port.inbound.model.CreateEventsCommand
 
 interface AddEventUseCase {
-    fun addEvent(
-        recordId: String,
-        json: String,
-        type: EventType,
-    ): Event
+    fun create(command: CreateEventsCommand)
 }

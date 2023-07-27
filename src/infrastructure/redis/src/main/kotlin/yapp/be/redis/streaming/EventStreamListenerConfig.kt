@@ -2,7 +2,6 @@ package yapp.be.redis.streaming
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.redis.RedisSystemException
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.connection.stream.Consumer
 import org.springframework.data.redis.connection.stream.ReadOffset
@@ -11,7 +10,7 @@ import org.springframework.data.redis.stream.StreamMessageListenerContainer
 import org.springframework.data.redis.stream.Subscription
 import org.springframework.scheduling.annotation.Scheduled
 import yapp.be.domain.model.Event
-import yapp.be.redis.repository.RedisHandler
+import yapp.be.redis.handler.RedisHandler
 import java.net.InetAddress
 import java.time.Duration
 
@@ -71,7 +70,7 @@ class EventStreamListenerConfig(
                     ReadOffset.from("0-0"),
                     true
                 )
-        } catch (e: RedisSystemException) {
+        } catch (e: Exception) {
             println("Consumer group already exists")
         }
     }

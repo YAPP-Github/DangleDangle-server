@@ -4,7 +4,7 @@ import org.springframework.data.redis.connection.stream.MapRecord
 import org.springframework.data.redis.stream.StreamListener
 import org.springframework.stereotype.Service
 import yapp.be.domain.model.Event
-import yapp.be.redis.repository.RedisHandler
+import yapp.be.redis.handler.RedisHandler
 
 @Service
 class EventStreamListener(
