@@ -1,0 +1,7 @@
+mail:
+    add:
+        template: "AddEvent.ftl"
+    participate:
+        template: "ParticipateEvent.ftl"
+    withdraw:
+        template: "WithDrawEvent.ftl"

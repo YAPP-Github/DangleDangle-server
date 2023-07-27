@@ -1,5 +1,6 @@
 package yapp.be.redis.repository
 
+import org.springframework.data.redis.connection.stream.MapRecord
 import org.springframework.data.redis.connection.stream.ObjectRecord
 import org.springframework.data.redis.connection.stream.StreamRecords
 import org.springframework.stereotype.Component
@@ -24,7 +25,14 @@ class EventRepository(
         }
     }
 
-    override fun saveEventsPipeLined(event: List<Event>) {
-        TODO("Not yet implemented")
+    @Transactional
+    override fun saveEventsPipeLined(events: List<Event>) {
+        val records = events.map {
+            MapRecord.create<ByteArray, ByteArray, ByteArray>(
+                streamKey.toByteArray(),
+                it.toMap()
+            )
+        }
+        redisHandler.xAddPipelined(records)
     }
 }
