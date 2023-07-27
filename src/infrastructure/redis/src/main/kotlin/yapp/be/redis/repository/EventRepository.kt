@@ -6,30 +6,30 @@ import org.springframework.data.redis.connection.stream.StreamRecords
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Event
+import yapp.be.domain.model.SendEvent
 import yapp.be.domain.port.outbound.*
 import yapp.be.redis.handler.RedisHandler
 
 @Component
 class EventRepository(
     private val redisHandler: RedisHandler
-) : EventCommandHandler {
+) : EventCommandHandler, SendEventCommandHandler {
     private val streamKey: String = "event-stream"
+    private val newStreamKey: String = "new-event-stream"
     @Transactional
-    override fun saveEvents(events: List<Event>) {
-        events.forEach { event ->
-            val record: ObjectRecord<String, Event> = StreamRecords.newRecord()
-                .ofObject<Event>(event)
-                .withStreamKey(streamKey)
+    override fun saveEvent(event: Event) {
+        val record: ObjectRecord<String, Event> = StreamRecords.newRecord()
+            .ofObject<Event>(event)
+            .withStreamKey(streamKey)
 
-            redisHandler.xAdd(record)
-        }
+        redisHandler.xAdd(record)
     }
 
     @Transactional
-    override fun saveEventsPipeLined(events: List<Event>) {
-        val records = events.map {
+    override fun saveSendEventsPipeLined(sendEvents: List<SendEvent>) {
+        val records = sendEvents.map {
             MapRecord.create<ByteArray, ByteArray, ByteArray>(
-                streamKey.toByteArray(),
+                newStreamKey.toByteArray(),
                 it.toMap()
             )
         }

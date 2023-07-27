@@ -1,7 +1,7 @@
 package yapp.be.domain.port.inbound
 
-import yapp.be.domain.port.inbound.model.CreateEventsCommand
+import yapp.be.domain.port.inbound.model.CreateEventCommand
 
 interface AddEventUseCase {
-    fun create(command: CreateEventsCommand)
+    fun create(command: CreateEventCommand)
 }
