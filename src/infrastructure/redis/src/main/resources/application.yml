@@ -1,7 +1,0 @@
-event-kakao:
-    stream-key: event-stream
-    consumer-group: kakaotalk
-    batch-size: 1000000
-    pending-messages:
-        check-interval: 0/1 * * ? * *
-        timeout: 60000
