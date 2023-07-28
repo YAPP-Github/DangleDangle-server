@@ -8,9 +8,10 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
-import yapp.be.domain.model.dto.ShelterVolunteerEventStatDto
+import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerEventParticipantInfoDto
+import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
 import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 import yapp.be.exceptions.CustomException
@@ -32,13 +33,28 @@ class VolunteerEventRepository(
 ) : VolunteerEventQueryHandler, VolunteerEventCommandHandler {
 
     @Transactional(readOnly = true)
-    override fun findStatByShelterId(shelterId: Long): ShelterVolunteerEventStatDto {
+    override fun findVolunteerStatByVolunteerId(volunteerId: Long): VolunteerVolunteerEventStatDto {
+        val volunteerEventEntities = volunteerEventJpaRepository.findAllByVolunteerId(volunteerId)
+        val volunteerEventEntityStatMap =
+            volunteerEventEntities.groupBy { it.status }
+
+        val volunteerEventWaitingQueueEntities = volunteerEventWaitingQueueJpaRepository.findAllByVolunteerId(volunteerId)
+
+        return VolunteerVolunteerEventStatDto(
+            done = volunteerEventEntityStatMap[VolunteerEventStatus.DONE]?.size ?: 0,
+            waiting = volunteerEventWaitingQueueEntities.size,
+            joining = volunteerEventEntityStatMap[VolunteerEventStatus.IN_PROGRESS]?.size ?: 0
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun findShelterUserStatByShelterId(shelterId: Long): ShelterUserVolunteerEventStatDto {
         val volunteerEventEntities =
             volunteerEventJpaRepository.findAllByShelterId(shelterId)
 
         val volunteerEntityStatusMap = volunteerEventEntities.groupBy { it.status }
 
-        return ShelterVolunteerEventStatDto(
+        return ShelterUserVolunteerEventStatDto(
             done = volunteerEntityStatusMap[VolunteerEventStatus.DONE]?.size ?: 0,
             inProgress = volunteerEntityStatusMap[VolunteerEventStatus.IN_PROGRESS]?.size ?: 0
         )

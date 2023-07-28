@@ -20,7 +20,7 @@ class ShelterMyController(
 
     @GetMapping
     @Operation(
-        summary = "My 정보 가져오기"
+        summary = "보호소 My 정보 가져오기"
     )
     fun getShelterMyProfile(
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
