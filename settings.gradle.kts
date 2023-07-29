@@ -32,12 +32,12 @@ includeProject(":auth", "src/domain/auth")
 includeProject(":common", "src/domain/common")
 includeProject(":shelter", "src/domain/shelter")
 includeProject(":volunteerEvent", "src/domain/volunteerEvent")
-includeProject(":event", "src/domain/event")
 
 // support
 includeProject(":logger", "src/support/logger")
 includeProject(":common", "src/support/common")
 includeProject(":lock", "src/support/lock")
+includeProject(":event", "src/support/event")
 
 // infrastructure
 includeProject(":storage", "src/infrastructure/storage")

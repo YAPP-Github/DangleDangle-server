@@ -2,14 +2,12 @@ package yapp.be.redis.handler
 
 import org.springframework.data.redis.connection.stream.Consumer
 import org.springframework.data.redis.connection.stream.MapRecord
-import org.springframework.data.redis.connection.stream.ObjectRecord
 import org.springframework.data.redis.connection.stream.PendingMessage
 import org.springframework.data.redis.core.Cursor
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.ScanOptions
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
-import yapp.be.domain.model.Event
 import java.time.Duration
 
 @Component
@@ -48,11 +46,6 @@ class RedisHandler(
 
     fun deleteData(key: String) {
         stringRedisTemplate.delete(key)
-    }
-
-    fun xAdd(value: ObjectRecord<String, Event>) {
-        redisTemplate.opsForStream<Any, Any>()
-            .add(value)
     }
 
     fun xAddPipelined(value: List<MapRecord<ByteArray, ByteArray, ByteArray>>) {

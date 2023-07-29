@@ -1,17 +1,26 @@
 package yapp.be.model.vo
 
-data class AddEventEntity(
+data class UpdateEventEntity(
     val volunteerEventId: String,
+    val volunteerIds: List<String>,
+)
+
+data class VolunteerReminderEventEntity(
+    val volunteerEventId: String,
+    val volunteerIds: List<String>,
+)
+
+data class ShelterReminderEventEntity(
     val shelterId: String,
-    val likedVolunteerIds: List<String>,
+    val volunteerEventId: String,
 )
 
-data class ParticipateEventEntity(
+data class DeleteEventEntity(
     val volunteerEventId: String,
-    val volunteerId: String, // 참여 신청한 사람
+    val volunteerIds: List<String>,
 )
 
-data class WithdrawEventEntity(
+data class EnableJoinEventEntity(
     val volunteerEventId: String,
-    val waitingVolunteerIds: List<String>, // 대기 신청한 사람
+    val waitingVolunteerIds: List<String>,
 )

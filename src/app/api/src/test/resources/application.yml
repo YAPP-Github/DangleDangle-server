@@ -14,3 +14,10 @@ jwt:
     auth:
         expire: ${AUTH_TOKEN_EXPIRE:300000} # 5 min
         secret: ${AUTH_TOKEN_SECRET:5f95a5f5c5b5a5a5958f8f7f7e7e7d7d7c6b6a696867666564636261605f}
+event:
+    stream-key: event-stream
+    consumer-group: kakaotalk
+    batch-size: 1000000
+    pending-messages:
+        check-interval: 0/1 * * ? * *
+        timeout: 60000

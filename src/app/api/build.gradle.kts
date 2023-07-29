@@ -28,6 +28,7 @@ dependencies {
     implementation(project(":volunteer"))
     implementation(project(":volunteerEvent"))
     implementation(project(":shelter"))
+    implementation(project(":event"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
