@@ -22,6 +22,13 @@ class VolunteerRepository(
         return volunteerEntity.toDomainModel()
     }
 
+    override fun update(volunteer: Volunteer): Volunteer {
+        val volunteerEntity = jpaRepository.findByIdOrNull(volunteer.id) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.")
+        volunteerEntity.update(volunteer)
+
+        return volunteerEntity.toDomainModel()
+    }
+
     @Transactional(readOnly = true)
     override fun findByEmail(email: String): Volunteer {
         val volunteerEntity = jpaRepository.findByEmail(email) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.")
@@ -42,14 +49,5 @@ class VolunteerRepository(
     @Transactional(readOnly = true)
     override fun isExistByNickname(nickname: String): Boolean {
         return jpaRepository.findByNickname(nickname) != null
-    }
-
-    override fun saveToken(volunteer: Volunteer): Volunteer {
-        val volunteerEntity = jpaRepository.findByIdOrNull(volunteer.id)
-            ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "User Not Found")
-        volunteerEntity.update(volunteer)
-        jpaRepository.save(volunteerEntity)
-
-        return volunteerEntity.toDomainModel()
     }
 }

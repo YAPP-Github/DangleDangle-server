@@ -1,7 +1,9 @@
 package yapp.be.apiapplication.volunteer.service.model
 data class GetVolunteerMyProfileResponseDto(
-    val name: String,
-    val historyStat: VolunteerVolunteerEventHistoryStatInfo
+    val nickName: String,
+    val historyStat: VolunteerVolunteerEventHistoryStatInfo,
+    val phoneNumber: String,
+    val alarm: Boolean
 )
 
 data class VolunteerVolunteerEventHistoryStatInfo(
