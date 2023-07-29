@@ -16,10 +16,4 @@ data class Volunteer(
     val oAuthRefreshToken: String? = null,
     val isDeleted: Boolean = false,
     val alarmEnabled: Boolean = true,
-) {
-    fun updateInfo() {
-    }
-
-    fun updateToken() {
-    }
-}
+)
