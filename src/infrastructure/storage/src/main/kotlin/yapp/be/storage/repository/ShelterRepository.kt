@@ -114,6 +114,12 @@ class ShelterRepository(
     }
 
     @Transactional(readOnly = true)
+    override fun getAllBookMarkedShelterByVolunteerId(volunteerId: Long): List<Shelter> {
+        return shelterJpaRepository.findAllBookMarkedShelterByVolunteerId(volunteerId)
+            .map { it.toDomainModel() }
+    }
+
+    @Transactional(readOnly = true)
     override fun getShelterIdAndVolunteerId(shelterId: Long, volunteerId: Long): ShelterBookMark? {
         val shelterBookMarkEntity = shelterBookMarkJpaRepository.findByShelterIdAndVolunteerId(
             shelterId = shelterId,

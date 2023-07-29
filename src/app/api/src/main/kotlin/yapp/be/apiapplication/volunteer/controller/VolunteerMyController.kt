@@ -13,6 +13,7 @@ import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationIn
 import yapp.be.apiapplication.volunteer.controller.model.EditVolunteerMyProfileRequest
 import yapp.be.apiapplication.volunteer.service.VolunteerMyApplicationService
 import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResponseDto
+import yapp.be.apiapplication.volunteer.service.model.GetVolunteerBookMarkedShelterResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerMyProfileResponseDto
 
 @RestController
@@ -31,6 +32,19 @@ class VolunteerMyController(
     ): ResponseEntity<GetVolunteerMyProfileResponseDto> {
         val resDto = volunteerMyApplicationService
             .getVolunteerMyProfile(volunteerId = volunteerUserInfo.volunteerId)
+        return ResponseEntity.ok(resDto)
+    }
+
+    @GetMapping("/bookmarks")
+    @Operation(
+        summary = "봉사자 My 즐겨찾기 보호소 가져오기"
+    )
+    fun getVolunteerBookMarkedShelters(
+        @VolunteerAuthentication volunteerUserInfo: VolunteerAuthenticationInfo
+    ): ResponseEntity<GetVolunteerBookMarkedShelterResponseDto> {
+        val resDto = volunteerMyApplicationService
+            .getVolunteerBookMarkedShelters(volunteerId = volunteerUserInfo.volunteerId)
+
         return ResponseEntity.ok(resDto)
     }
 
