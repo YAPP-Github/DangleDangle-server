@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.storage.jpa.shelter.repository.querydsl.model.ShelterWithBookMarkProjection
 import yapp.be.storage.jpa.shelter.model.QShelterEntity.shelterEntity
 import yapp.be.storage.jpa.shelter.model.QShelterBookMarkEntity.shelterBookMarkEntity
+import yapp.be.storage.jpa.shelter.model.ShelterEntity
 import yapp.be.storage.jpa.shelter.repository.querydsl.model.QShelterWithBookMarkProjection
 
 @Component
@@ -42,5 +43,16 @@ class ShelterJpaRepositoryImpl(
             .where(
                 shelterEntity.id.eq(id)
             ).fetchOne()
+    }
+
+    @Transactional(readOnly = true)
+    override fun findAllBookMarkedShelterByVolunteerId(volunteerId: Long): List<ShelterEntity> {
+        return queryFactory
+            .selectFrom(
+                shelterEntity
+            ).join(shelterBookMarkEntity)
+            .on(shelterEntity.id.eq(shelterBookMarkEntity.shelterId))
+            .where(shelterBookMarkEntity.volunteerId.eq(volunteerId))
+            .fetch()
     }
 }

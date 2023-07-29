@@ -6,17 +6,25 @@ import yapp.be.domain.model.Shelter
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.dto.ShelterDto
 import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.port.outbound.shelter.ShelterBookMarkQueryHandler
 import yapp.be.domain.port.outbound.shelter.ShelterOutLinkQueryHandler
 import yapp.be.domain.port.outbound.shelter.ShelterQueryHandler
 
 @Service
 class GetShelterDomainService(
     private val shelterQueryHandler: ShelterQueryHandler,
-    private val shelterOutLinkQueryHandler: ShelterOutLinkQueryHandler
+    private val shelterOutLinkQueryHandler: ShelterOutLinkQueryHandler,
+    private val shelterBookMarkQueryHandler: ShelterBookMarkQueryHandler
 ) : GetShelterUseCase {
     @Transactional(readOnly = true)
     override fun getShelterById(shelterId: Long): Shelter {
         return shelterQueryHandler.findById(shelterId)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getVolunteerBookMarkedShelterByVolunteerId(volunteerId: Long): List<Shelter> {
+        return shelterBookMarkQueryHandler
+            .getAllBookMarkedShelterByVolunteerId(volunteerId)
     }
 
     @Transactional(readOnly = true)
