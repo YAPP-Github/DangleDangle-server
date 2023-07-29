@@ -4,5 +4,6 @@ import yapp.be.domain.model.Volunteer
 
 interface VolunteerCommandHandler {
     fun save(volunteer: Volunteer): Volunteer
-    fun saveToken(volunteer: Volunteer): Volunteer
+
+    fun update(volunteer: Volunteer): Volunteer
 }
