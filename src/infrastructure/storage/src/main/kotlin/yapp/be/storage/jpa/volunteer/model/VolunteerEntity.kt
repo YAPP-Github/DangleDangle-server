@@ -32,6 +32,13 @@ class VolunteerEntity(
     var oAuthRefreshToken: String? = null,
     @Column(name = "is_deleted", nullable = false)
     var deleted: Boolean = false,
+    @Column(name = "is_alarm_enabled", nullable = false)
+    val alarmEnabled: Boolean = true,
+    @Column(name = "is_personal_information_terms_enabled", nullable = false)
+    val personalInformationTermsEnabled: Boolean = true,
+    @Column(name = "is_service_terms_enabled")
+    val serviceTermsEnabled: Boolean = true
+
 ) : BaseTimeEntity() {
     fun update(volunteer: Volunteer) {
         this.nickname = volunteer.nickname
@@ -39,6 +46,8 @@ class VolunteerEntity(
         this.oAuthType = volunteer.oAuthType
         this.oAuthAccessToken = volunteer.oAuthAccessToken
         this.oAuthRefreshToken = volunteer.oAuthRefreshToken
-        this.deleted = volunteer.isDeleted
+    }
+    fun delete() {
+        this.deleted = true
     }
 }

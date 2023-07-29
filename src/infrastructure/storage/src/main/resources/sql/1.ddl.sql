@@ -12,7 +12,10 @@ CREATE TABLE `volunteer`
     `phone`                           varchar(13)  not null,
     `email`                               varchar(100) not null,
     `user_role`                           varchar(20)  not null,
-    `created_at`                          datetime    not null,
+    `is_alarm_enabled`                    boolean      not null,
+    `is_personal_information_terms_enabled` boolean    not null,
+    `is_service_terms_enabled`            boolean      not null,
+    `created_at`                          datetime     not null,
     `modified_at`                         datetime,
     unique index UDX_EMAIL (`email`),
     unique index UDX_NICKNAME(`nickname`)
