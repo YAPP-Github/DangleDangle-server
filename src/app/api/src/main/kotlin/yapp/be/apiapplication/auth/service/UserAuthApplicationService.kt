@@ -2,6 +2,7 @@ package yapp.be.apiapplication.auth.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import yapp.be.apiapplication.auth.service.model.LogoutResponseDto
 import yapp.be.apiapplication.auth.service.model.TokenRefreshRequestDto
 import yapp.be.apiapplication.auth.service.model.TokenRefreshResponseDto
 import yapp.be.apiapplication.system.exception.ApiExceptionType
@@ -59,7 +60,7 @@ class UserAuthApplicationService(
     }
 
     @Transactional
-    fun logout(accessToken: String) {
+    fun logout(accessToken: String): LogoutResponseDto {
         deleteTokenUseCase.deleteToken(accessToken)
         saveTokenUseCase.saveToken(
             prefix = BlackListTokenType.LOGOUT.value,
@@ -67,5 +68,6 @@ class UserAuthApplicationService(
             value = BlackListTokenType.LOGOUT.value,
             expire = Duration.ofMillis(jwtConfigProperties.access.expire),
         )
+        return LogoutResponseDto("Logout Success")
     }
 }

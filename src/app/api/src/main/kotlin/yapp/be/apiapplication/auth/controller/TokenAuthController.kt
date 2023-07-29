@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import yapp.be.apiapplication.auth.controller.model.TokenRefreshRequest
 import yapp.be.apiapplication.auth.service.UserAuthApplicationService
+import yapp.be.apiapplication.auth.service.model.LogoutResponseDto
 import yapp.be.apiapplication.auth.service.model.TokenRefreshResponseDto
 
 @RestController
@@ -38,9 +39,9 @@ class TokenAuthController(
     )
     fun loginShelterUser(
         @RequestHeader(value = "Authorization") accessToken: String
-    ): ResponseEntity<String> {
+    ): ResponseEntity<LogoutResponseDto> {
         val resDto = userAuthApplicationService.logout(accessToken.replace("Bearer ", ""))
 
-        return ResponseEntity.ok("Logout Success")
+        return ResponseEntity.ok(resDto)
     }
 }
