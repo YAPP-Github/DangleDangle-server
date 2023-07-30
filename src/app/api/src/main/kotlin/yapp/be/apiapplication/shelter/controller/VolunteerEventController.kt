@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListRequestDto
+import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListResponseDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRequestDto
@@ -44,8 +44,8 @@ class VolunteerEventController(
         from: LocalDate,
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         to: LocalDate,
-    ): ResponseEntity<GetVolunteerEventsResponseDto> {
-        val reqDto = GetVolunteerEventsRequestDto(
+    ): ResponseEntity<GetVolunteerEventListResponseDto> {
+        val reqDto = GetVolunteerEventListRequestDto(
             shelterId = shelterId,
             volunteerId = volunteerInfo?.volunteerId,
             from = from.atStartOfDay(),

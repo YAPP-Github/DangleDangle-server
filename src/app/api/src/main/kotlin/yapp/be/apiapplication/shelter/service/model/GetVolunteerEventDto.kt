@@ -7,35 +7,14 @@ import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.vo.Address
 
-data class GetShelterUserVolunteerEventsRequestDto(
-    val shelterUserId: Long,
-    val from: LocalDateTime,
-    val to: LocalDateTime
-)
-data class GetVolunteerEventsRequestDto(
-    val shelterId: Long,
-    val volunteerId: Long?,
-    val from: LocalDateTime,
-    val to: LocalDateTime
-)
-
-data class GetVolunteerEventRequestDto(
-    val shelterId: Long,
-    val volunteerId: Long?,
-    val volunteerEventId: Long
-)
-
 data class GetShelterUserVolunteerEventRequestDto(
     val shelterUserId: Long,
     val volunteerEventId: Long
 )
-
-data class GetShelterUserVolunteerEventsResponseDto(
-    val events: List<GetSimpleVolunteerEventResponseDto>
-)
-
-data class GetVolunteerEventsResponseDto(
-    val events: List<GetSimpleVolunteerEventResponseDto>
+data class GetVolunteerEventRequestDto(
+    val shelterId: Long,
+    val volunteerId: Long?,
+    val volunteerEventId: Long
 )
 data class GetSimpleVolunteerEventResponseDto(
     val volunteerEventId: Long,
@@ -66,7 +45,17 @@ data class GetDetailVolunteerEventResponseDto(
     val joiningVolunteers: List<String>,
     val waitingVolunteers: List<String>
 )
-data class GetDetailVolunteerEventParticipantsResponseDto(
-    val joinVolunteers: List<String>,
-    val waitingVolunteers: List<String>
+
+data class GetVolunteerMyVolunteerEventHistoryResponseDto(
+    val volunteerEventId: Long,
+    val shelterName: String,
+    val title: String,
+    val category: VolunteerEventCategory,
+    val eventStatus: VolunteerEventStatus,
+    val myParticipationStatus: UserEventParticipationStatus,
+    val startAt: LocalDateTime,
+    val endAt: LocalDateTime,
+    val recruitNum: Int,
+    val participantNum: Int,
+    val waitingNum: Int,
 )

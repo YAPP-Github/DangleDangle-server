@@ -7,6 +7,7 @@ import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
 import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 
@@ -19,11 +20,17 @@ interface GetVolunteerEventUseCase {
         shelterId: Long
     ): ShelterUserVolunteerEventStatDto
 
-    fun getAllShelterVolunteerEvent(
+    fun getAllShelterVolunteerEventHistory(
         page: Int,
         shelterId: Long,
         status: VolunteerEventStatus?
     ): PagedResult<ShelterSimpleVolunteerEventDto>
+
+    fun getAllVolunteerVolunteerEventHistory(
+        page: Int,
+        volunteerId: Long,
+        status: UserEventParticipationStatus?
+    ): PagedResult<VolunteerSimpleVolunteerEventDto>
 
     fun getVolunteerEvent(
         shelterId: Long,

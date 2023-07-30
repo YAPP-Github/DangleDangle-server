@@ -186,6 +186,178 @@ class VolunteerEventQueryRepository(
         )
     }
 
+    override fun findAllVolunteerVolunteerEventByVolunteerId(page: Int, volunteerId: Long): PagedResult<VolunteerSimpleVolunteerEventDto> {
+        val pageable = PageRequest.of(
+            page,
+            PAGE_SIZE
+        )
+
+        val histories = volunteerEventJpaRepository
+            .findAllVolunteerEventByVolunteerId(
+                volunteerId = volunteerId,
+                pageable = pageable
+            )
+
+        val eventIds = histories.content.map { it.id }
+
+        val joinParticipantMap = volunteerEventJoinQueueJpaRepository
+            .findAllByVolunteerEventIdIn(eventIds)
+            .groupBy { it.volunteerEventId }
+
+        val waitingParticipantMap = volunteerEventWaitingQueueJpaRepository
+            .findAllByVolunteerEventIdIn(eventIds)
+            .groupBy { it.volunteerEventId }
+
+        return PagedResult(
+            pageNumber = histories.number,
+            pageSize = histories.size,
+            content = histories.content.map {
+                VolunteerSimpleVolunteerEventDto(
+                    volunteerEventId = it.id,
+                    shelterName = it.shelterName,
+                    title = it.title,
+                    category = it.category,
+                    eventStatus = it.eventStatus,
+                    myParticipationStatus = UserEventParticipationStatus.valueOf(it.myParticipationStatus),
+                    startAt = it.startAt,
+                    endAt = it.endAt,
+                    recruitNum = it.recruitNum,
+                    participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                    waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+                )
+            }
+        )
+    }
+
+    override fun findAllVolunteerVolunteerEventByVolunteerIdAndStatus(page: Int, volunteerId: Long, status: UserEventParticipationStatus): PagedResult<VolunteerSimpleVolunteerEventDto> {
+        val pageable = PageRequest.of(
+            page,
+            PAGE_SIZE
+        )
+
+        return when (status) {
+
+            UserEventParticipationStatus.DONE -> {
+                val histories = volunteerEventJoinQueueJpaRepository
+                    .findAllDoneVolunteerEventByVolunteerId(
+                        volunteerId = volunteerId,
+                        pageable = pageable
+                    )
+
+                val eventIds = histories.content.map { it.id }
+
+                val joinParticipantMap = volunteerEventJoinQueueJpaRepository
+                    .findAllByVolunteerEventIdIn(eventIds)
+                    .groupBy { it.volunteerEventId }
+
+                val waitingParticipantMap = volunteerEventWaitingQueueJpaRepository
+                    .findAllByVolunteerEventIdIn(eventIds)
+                    .groupBy { it.volunteerEventId }
+
+                PagedResult(
+                    pageNumber = histories.number,
+                    pageSize = histories.size,
+                    content = histories.content.map {
+                        VolunteerSimpleVolunteerEventDto(
+                            volunteerEventId = it.id,
+                            shelterName = it.shelterName,
+                            title = it.title,
+                            category = it.category,
+                            eventStatus = it.eventStatus,
+                            myParticipationStatus = UserEventParticipationStatus.DONE,
+                            startAt = it.startAt,
+                            endAt = it.endAt,
+                            recruitNum = it.recruitNum,
+                            participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                            waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+
+                        )
+                    }
+                )
+            }
+
+            UserEventParticipationStatus.JOINING -> {
+                val histories = volunteerEventJoinQueueJpaRepository
+                    .findAllJoinVolunteerEventByVolunteerId(
+                        volunteerId = volunteerId,
+                        pageable = pageable
+                    )
+
+                val eventIds = histories.content.map { it.id }
+
+                val joinParticipantMap = volunteerEventJoinQueueJpaRepository
+                    .findAllByVolunteerEventIdIn(eventIds)
+                    .groupBy { it.volunteerEventId }
+
+                val waitingParticipantMap = volunteerEventWaitingQueueJpaRepository
+                    .findAllByVolunteerEventIdIn(eventIds)
+                    .groupBy { it.volunteerEventId }
+
+                PagedResult(
+                    pageNumber = histories.number,
+                    pageSize = histories.size,
+                    content = histories.content.map {
+                        VolunteerSimpleVolunteerEventDto(
+                            volunteerEventId = it.id,
+                            shelterName = it.shelterName,
+                            title = it.title,
+                            category = it.category,
+                            eventStatus = it.eventStatus,
+                            myParticipationStatus = UserEventParticipationStatus.JOINING,
+                            startAt = it.startAt,
+                            endAt = it.endAt,
+                            recruitNum = it.recruitNum,
+                            participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                            waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+                        )
+                    }
+                )
+            }
+            UserEventParticipationStatus.WAITING -> {
+                val histories = volunteerEventWaitingQueueJpaRepository
+                    .findAllWaitingVolunteerEventByVolunteerId(
+                        volunteerId = volunteerId,
+                        pageable = pageable
+                    )
+
+                val eventIds = histories.content.map { it.id }
+
+                val joinParticipantMap = volunteerEventJoinQueueJpaRepository
+                    .findAllByVolunteerEventIdIn(eventIds)
+                    .groupBy { it.volunteerEventId }
+
+                val waitingParticipantMap = volunteerEventWaitingQueueJpaRepository
+                    .findAllByVolunteerEventIdIn(eventIds)
+                    .groupBy { it.volunteerEventId }
+
+                PagedResult(
+                    pageNumber = histories.number,
+                    pageSize = histories.size,
+                    content = histories.content.map {
+                        VolunteerSimpleVolunteerEventDto(
+                            volunteerEventId = it.id,
+                            shelterName = it.shelterName,
+                            title = it.title,
+                            category = it.category,
+                            eventStatus = it.eventStatus,
+                            myParticipationStatus = UserEventParticipationStatus.WAITING,
+                            startAt = it.startAt,
+                            endAt = it.endAt,
+                            recruitNum = it.recruitNum,
+                            participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                            waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+                        )
+                    }
+                )
+            }
+            else -> PagedResult(
+                0,
+                PAGE_SIZE,
+                emptyList()
+            )
+        }
+    }
+
     override fun findDetailVolunteerEventInfoByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
         val volunteerEventWithMyParticipationStatus =
             volunteerEventJpaRepository
@@ -241,7 +413,7 @@ class VolunteerEventQueryRepository(
         )
     }
     override fun findDetailVolunteerEventInfoByIdAndShelterIdAndVolunteerId(id: Long, volunteerId: Long, shelterId: Long): DetailVolunteerEventDto {
-        val volunteerEventWithMyParticipationStatus =
+        val volunteerEventWithShelterInfo =
             volunteerEventJpaRepository
                 .findWithParticipationStatusByIdAndShelterId(
                     id = id,
@@ -258,7 +430,7 @@ class VolunteerEventQueryRepository(
                     nickName = it.nickname
                 )
             }.toList()
-        val waitingParticipants = if (volunteerEventWithMyParticipationStatus.recruitNum <= joiningParticipants.size) {
+        val waitingParticipants = if (volunteerEventWithShelterInfo.recruitNum <= joiningParticipants.size) {
             volunteerEventWaitingQueueJpaRepository.findAllWaitParticipantsByVolunteerEventId(volunteerEventId = id)
                 .map {
                     VolunteerEventParticipantInfoDto(
@@ -271,29 +443,30 @@ class VolunteerEventQueryRepository(
         }
 
         return DetailVolunteerEventDto(
-            id = volunteerEventWithMyParticipationStatus.id,
-            shelterName = volunteerEventWithMyParticipationStatus.shelterName,
-            shelterProfileImageUrl = volunteerEventWithMyParticipationStatus.shelterProfileImageUrl,
-            title = volunteerEventWithMyParticipationStatus.title,
-            recruitNum = volunteerEventWithMyParticipationStatus.recruitNum,
+            id = volunteerEventWithShelterInfo.id,
+            shelterName = volunteerEventWithShelterInfo.shelterName,
+            shelterProfileImageUrl = volunteerEventWithShelterInfo.shelterProfileImageUrl,
+            title = volunteerEventWithShelterInfo.title,
+            recruitNum = volunteerEventWithShelterInfo.recruitNum,
             address = Address(
-                address = volunteerEventWithMyParticipationStatus.address.address,
-                addressDetail = volunteerEventWithMyParticipationStatus.address.addressDetail,
-                postalCode = volunteerEventWithMyParticipationStatus.address.postalCode,
-                latitude = volunteerEventWithMyParticipationStatus.address.latitude,
-                longitude = volunteerEventWithMyParticipationStatus.address.longitude
+                address = volunteerEventWithShelterInfo.address.address,
+                addressDetail = volunteerEventWithShelterInfo.address.addressDetail,
+                postalCode = volunteerEventWithShelterInfo.address.postalCode,
+                latitude = volunteerEventWithShelterInfo.address.latitude,
+                longitude = volunteerEventWithShelterInfo.address.longitude
             ),
-            description = volunteerEventWithMyParticipationStatus.description,
-            ageLimit = volunteerEventWithMyParticipationStatus.ageLimit,
-            category = volunteerEventWithMyParticipationStatus.category,
-            eventStatus = volunteerEventWithMyParticipationStatus.eventStatus,
+            description = volunteerEventWithShelterInfo.description,
+            ageLimit = volunteerEventWithShelterInfo.ageLimit,
+            category = volunteerEventWithShelterInfo.category,
+            eventStatus = volunteerEventWithShelterInfo.eventStatus,
             myParticipationStatus = getMyParticipationStatus(
                 volunteerId = volunteerId,
+                status = volunteerEventWithShelterInfo.eventStatus,
                 joinQueue = joiningParticipants.map { it.id },
                 waitingQueue = waitingParticipants.map { it.id }
             ),
-            startAt = volunteerEventWithMyParticipationStatus.startAt,
-            endAt = volunteerEventWithMyParticipationStatus.endAt,
+            startAt = volunteerEventWithShelterInfo.startAt,
+            endAt = volunteerEventWithShelterInfo.endAt,
             joiningVolunteers = joiningParticipants,
             waitingVolunteers = waitingParticipants
         )
@@ -329,11 +502,12 @@ class VolunteerEventQueryRepository(
 
                 VolunteerSimpleVolunteerEventDto(
                     volunteerEventId = it.id,
+                    shelterName = it.shelterName,
                     title = it.title,
                     category = it.category,
                     startAt = it.startAt,
                     endAt = it.endAt,
-                    eventStatus = it.status,
+                    eventStatus = it.eventStatus,
                     recruitNum = it.recruitNum,
                     participantNum = joinQueue?.size ?: 0,
                     waitingNum = waitingQueue?.size ?: 0,
@@ -373,16 +547,18 @@ class VolunteerEventQueryRepository(
 
                 VolunteerSimpleVolunteerEventDto(
                     volunteerEventId = it.id,
+                    shelterName = it.shelterName,
                     title = it.title,
                     category = it.category,
                     startAt = it.startAt,
                     endAt = it.endAt,
-                    eventStatus = it.status,
+                    eventStatus = it.eventStatus,
                     recruitNum = it.recruitNum,
                     participantNum = joinQueue?.size ?: 0,
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = getMyParticipationStatus(
                         volunteerId = volunteerId,
+                        status = it.eventStatus,
                         joinQueue = joinQueue?.map { it.volunteerId } ?: listOf(),
                         waitingQueue = waitingQueue?.map { it.volunteerId } ?: listOf()
                     ),
@@ -410,15 +586,22 @@ class VolunteerEventQueryRepository(
 
     private fun getMyParticipationStatus(
         volunteerId: Long,
+        status: VolunteerEventStatus,
         joinQueue: List<Long>,
         waitingQueue: List<Long>
     ): UserEventParticipationStatus {
 
-        return if (joinQueue.any { it == volunteerId })
-            UserEventParticipationStatus.JOINING
-        else if (waitingQueue.any { it == volunteerId })
-            UserEventParticipationStatus.WAITING
-        else
-            UserEventParticipationStatus.NONE
+        val isJoining = joinQueue.any { it == volunteerId }
+        val isWaiting = waitingQueue.any { it == volunteerId }
+
+        return when {
+            isJoining -> when (status) {
+                VolunteerEventStatus.IN_PROGRESS -> UserEventParticipationStatus.JOINING
+                VolunteerEventStatus.CLOSED -> UserEventParticipationStatus.NONE
+                else -> UserEventParticipationStatus.DONE
+            }
+            isWaiting -> UserEventParticipationStatus.WAITING
+            else -> UserEventParticipationStatus.NONE
+        }
     }
 }

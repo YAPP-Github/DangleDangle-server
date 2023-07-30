@@ -3,8 +3,8 @@ package yapp.be.apiapplication.shelter.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyProfileResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterMyVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.shelter.service.model.ShelterVolunteerEventHistoryStatInfo
-import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
@@ -35,12 +35,31 @@ class ShelterMyApplicationService(
         page: Int,
         shelterId: Long,
         status: VolunteerEventStatus?
-    ): PagedResult<ShelterSimpleVolunteerEventDto> {
-        return getVolunteerEventUseCase
-            .getAllShelterVolunteerEvent(
+    ): PagedResult<GetShelterMyVolunteerEventHistoryResponseDto> {
+        val shelter = getShelterUseCase.getShelterById(shelterId)
+        val histories = getVolunteerEventUseCase
+            .getAllShelterVolunteerEventHistory(
                 page = page,
                 status = status,
-                shelterId = shelterId
+                shelterId = shelter.id
             )
+
+        return PagedResult(
+            pageNumber = histories.pageNumber,
+            pageSize = histories.pageSize,
+            content = histories.content.map {
+                GetShelterMyVolunteerEventHistoryResponseDto(
+                    volunteerEventId = it.volunteerEventId,
+                    title = it.title,
+                    category = it.category,
+                    eventStatus = it.eventStatus,
+                    startAt = it.startAt,
+                    endAt = it.endAt,
+                    recruitNum = it.recruitNum,
+                    participantNum = it.participantNum,
+                    waitingNum = it.waitingNum
+                )
+            }
+        )
     }
 }

@@ -11,6 +11,7 @@ import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 
@@ -30,7 +31,7 @@ class GetVolunteerEventDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getAllShelterVolunteerEvent(
+    override fun getAllShelterVolunteerEventHistory(
         page: Int,
         shelterId: Long,
         status: VolunteerEventStatus?
@@ -46,6 +47,24 @@ class GetVolunteerEventDomainService(
                 .findAllShelterVolunteerEventByShelterIdAndStatus(
                     page = page,
                     shelterId = shelterId,
+                    status = status
+                )
+        }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAllVolunteerVolunteerEventHistory(page: Int, volunteerId: Long, status: UserEventParticipationStatus?): PagedResult<VolunteerSimpleVolunteerEventDto> {
+        return if (status == null) {
+            volunteerEventQueryHandler
+                .findAllVolunteerVolunteerEventByVolunteerId(
+                    page = page,
+                    volunteerId = volunteerId
+                )
+        } else {
+            volunteerEventQueryHandler
+                .findAllVolunteerVolunteerEventByVolunteerIdAndStatus(
+                    page = page,
+                    volunteerId = volunteerId,
                     status = status
                 )
         }

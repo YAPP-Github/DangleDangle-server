@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetSimpleVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListRequestDto
+import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListResponseDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRequestDto
@@ -67,8 +67,8 @@ class VolunteerEventApplicationService(
 
     @Transactional(readOnly = true)
     fun getVolunteerEvents(
-        reqDto: GetVolunteerEventsRequestDto
-    ): GetVolunteerEventsResponseDto {
+        reqDto: GetVolunteerEventListRequestDto
+    ): GetVolunteerEventListResponseDto {
         val volunteerEvents = if (reqDto.volunteerId != null) {
             getVolunteerEventUseCase.getMemberVolunteerEventsByDateRange(
                 shelterId = reqDto.shelterId,
@@ -84,7 +84,7 @@ class VolunteerEventApplicationService(
             )
         }
 
-        return GetVolunteerEventsResponseDto(
+        return GetVolunteerEventListResponseDto(
             events = volunteerEvents.map {
                 GetSimpleVolunteerEventResponseDto(
                     volunteerEventId = it.volunteerEventId,

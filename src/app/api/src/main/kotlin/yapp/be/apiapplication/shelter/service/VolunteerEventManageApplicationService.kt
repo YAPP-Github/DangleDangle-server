@@ -12,8 +12,8 @@ import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListRequestDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetSimpleVolunteerEventResponseDto
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.port.inbound.AddVolunteerEventUseCase
@@ -66,7 +66,7 @@ class VolunteerEventManageApplicationService(
     }
 
     @Transactional(readOnly = true)
-    fun getVolunteerEvents(reqDto: GetShelterUserVolunteerEventsRequestDto): GetShelterUserVolunteerEventsResponseDto {
+    fun getVolunteerEvents(reqDto: GetShelterUserVolunteerEventListRequestDto): GetShelterUserVolunteerEventListResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(reqDto.shelterUserId)
         val volunteerEvents = getVolunteerEventUseCase
             .getShelterUserVolunteerEventsByDateRange(
@@ -75,7 +75,7 @@ class VolunteerEventManageApplicationService(
                 to = reqDto.to
             )
 
-        return GetShelterUserVolunteerEventsResponseDto(
+        return GetShelterUserVolunteerEventListResponseDto(
             volunteerEvents.map {
                 GetSimpleVolunteerEventResponseDto(
                     volunteerEventId = it.volunteerEventId,
