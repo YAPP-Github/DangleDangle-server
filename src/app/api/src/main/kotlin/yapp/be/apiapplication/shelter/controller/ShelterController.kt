@@ -13,6 +13,7 @@ import yapp.be.apiapplication.shelter.service.model.GetShelterResponseDto
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthentication
 import yapp.be.apiapplication.system.security.resolver.VolunteerAuthenticationInfo
 
+// v1/shelter/search?type=[KEYWORD | POSITION] & query=""
 @Tag(name = "보호소 api")
 @RestController
 @RequestMapping("/v1/shelter")
