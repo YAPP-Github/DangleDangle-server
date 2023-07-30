@@ -1,24 +1,17 @@
-package yapp.be.storage.repository
+package yapp.be.storage.repository.command
 
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.port.outbound.shelter.ShelterOutLinkCommandHandler
-import yapp.be.domain.port.outbound.shelter.ShelterOutLinkQueryHandler
-import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
 import yapp.be.storage.jpa.shelter.model.mappers.toEntityModel
 import yapp.be.storage.jpa.shelter.repository.ShelterOutLinkJpaRepository
 
 @Component
-class ShelterOutLinkRepository(
+@Transactional
+class ShelterOutLinkCommandRepository(
     private val shelterOutLinkJpaRepository: ShelterOutLinkJpaRepository
-) : ShelterOutLinkQueryHandler, ShelterOutLinkCommandHandler {
-    @Transactional(readOnly = true)
-    override fun findAllByShelterId(shelterId: Long): List<ShelterOutLink> {
-        val shelterOutLinkEntities = shelterOutLinkJpaRepository.findAllByShelterId(shelterId)
-        return shelterOutLinkEntities.map { it.toDomainModel() }
-    }
-
+) : ShelterOutLinkCommandHandler {
     override fun upsertAll(shelterId: Long, outLinks: List<ShelterOutLink>): List<ShelterOutLink> {
         if (outLinks.isEmpty()) {
             shelterOutLinkJpaRepository.deleteAllByShelterId(shelterId)

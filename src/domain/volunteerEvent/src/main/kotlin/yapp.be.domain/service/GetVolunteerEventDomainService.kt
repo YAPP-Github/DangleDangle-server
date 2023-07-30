@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
-import yapp.be.domain.model.dto.SimpleVolunteerEventDto
+import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.support.PagedResult
 
 @Service
 class GetVolunteerEventDomainService(
@@ -24,6 +27,28 @@ class GetVolunteerEventDomainService(
     @Transactional(readOnly = true)
     override fun getShelterVolunteerEventStat(shelterId: Long): ShelterUserVolunteerEventStatDto {
         return volunteerEventQueryHandler.findShelterUserStatByShelterId(shelterId)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAllShelterVolunteerEvent(
+        page: Int,
+        shelterId: Long,
+        status: VolunteerEventStatus?
+    ): PagedResult<ShelterSimpleVolunteerEventDto> {
+
+        return if (status == null) {
+            volunteerEventQueryHandler.findAllShelterVolunteerEventByShelterId(
+                page = page,
+                shelterId = shelterId
+            )
+        } else {
+            volunteerEventQueryHandler
+                .findAllShelterVolunteerEventByShelterIdAndStatus(
+                    page = page,
+                    shelterId = shelterId,
+                    status = status
+                )
+        }
     }
 
     @Transactional(readOnly = true)
@@ -63,9 +88,9 @@ class GetVolunteerEventDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getShelterUserVolunteerEventsByDateRange(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<SimpleVolunteerEventDto> {
+    override fun getShelterUserVolunteerEventsByDateRange(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<VolunteerSimpleVolunteerEventDto> {
         return volunteerEventQueryHandler
-            .findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
+            .findAllVolunteerSimpleVolunteerEventInfosByShelterIdAndDateRange(
                 shelterId = shelterId,
                 from = from,
                 to = to
@@ -78,8 +103,8 @@ class GetVolunteerEventDomainService(
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto> {
-        return volunteerEventQueryHandler.findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
+    ): List<VolunteerSimpleVolunteerEventDto> {
+        return volunteerEventQueryHandler.findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
             shelterId = shelterId,
             volunteerId = volunteerId,
             from = from,
@@ -92,8 +117,8 @@ class GetVolunteerEventDomainService(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto> {
-        return volunteerEventQueryHandler.findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
+    ): List<VolunteerSimpleVolunteerEventDto> {
+        return volunteerEventQueryHandler.findAllVolunteerSimpleVolunteerEventInfosByShelterIdAndDateRange(
             shelterId = shelterId,
             from = from,
             to = to

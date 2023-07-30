@@ -5,9 +5,12 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
-import yapp.be.domain.model.dto.SimpleVolunteerEventDto
+import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.support.PagedResult
 
 interface VolunteerEventQueryHandler {
 
@@ -23,6 +26,9 @@ interface VolunteerEventQueryHandler {
         shelterId: Long
     ): VolunteerEvent
 
+    fun findAllShelterVolunteerEventByShelterId(page: Int, shelterId: Long): PagedResult<ShelterSimpleVolunteerEventDto>
+    fun findAllShelterVolunteerEventByShelterIdAndStatus(page: Int, shelterId: Long, status: VolunteerEventStatus): PagedResult<ShelterSimpleVolunteerEventDto>
+
     fun findDetailVolunteerEventInfoByIdAndShelterId(
         id: Long,
         shelterId: Long
@@ -33,17 +39,17 @@ interface VolunteerEventQueryHandler {
         volunteerId: Long,
         shelterId: Long
     ): DetailVolunteerEventDto
-    fun findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
+    fun findAllVolunteerSimpleVolunteerEventInfosByShelterIdAndDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto>
-    fun findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
+    ): List<VolunteerSimpleVolunteerEventDto>
+    fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto>
+    ): List<VolunteerSimpleVolunteerEventDto>
 
     fun findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(
         volunteerId: Long,
