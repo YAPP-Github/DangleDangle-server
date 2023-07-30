@@ -1,38 +1,40 @@
-package yapp.be.storage.repository
+package yapp.be.storage.repository.query
 
 import java.time.LocalDateTime
-import org.springframework.data.repository.findByIdOrNull
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
-import yapp.be.domain.model.dto.SimpleVolunteerEventDto
+import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerEventParticipantInfoDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
-import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.support.PagedResult
 import yapp.be.model.vo.Address
+import yapp.be.storage.config.PAGE_SIZE
 import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.volunteerevent.model.mappers.toDomainModel
-import yapp.be.storage.jpa.volunteerevent.model.mappers.toEntityModel
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJoinQueueJpaRepository
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJpaRepository
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventWaitingQueueJpaRepository
 
 @Component
-class VolunteerEventRepository(
+@Transactional(readOnly = true)
+class VolunteerEventQueryRepository(
     private val volunteerEventJpaRepository: VolunteerEventJpaRepository,
     private val volunteerEventWaitingQueueJpaRepository: VolunteerEventWaitingQueueJpaRepository,
     private val volunteerEventJoinQueueJpaRepository: VolunteerEventJoinQueueJpaRepository,
-) : VolunteerEventQueryHandler, VolunteerEventCommandHandler {
+) : VolunteerEventQueryHandler {
 
-    @Transactional(readOnly = true)
     override fun findVolunteerStatByVolunteerId(volunteerId: Long): VolunteerVolunteerEventStatDto {
         val volunteerEventEntities = volunteerEventJpaRepository.findAllByVolunteerId(volunteerId)
         val volunteerEventEntityStatMap =
@@ -47,7 +49,6 @@ class VolunteerEventRepository(
         )
     }
 
-    @Transactional(readOnly = true)
     override fun findShelterUserStatByShelterId(shelterId: Long): ShelterUserVolunteerEventStatDto {
         val volunteerEventEntities =
             volunteerEventJpaRepository.findAllByShelterId(shelterId)
@@ -60,7 +61,6 @@ class VolunteerEventRepository(
         )
     }
 
-    @Transactional(readOnly = true)
     override fun findByIdAndShelterId(id: Long, shelterId: Long): VolunteerEvent {
         return volunteerEventJpaRepository
             .findByIdAndShelterIdAndDeletedIsFalse(
@@ -72,7 +72,120 @@ class VolunteerEventRepository(
         )
     }
 
-    @Transactional(readOnly = true)
+    override fun findAllShelterVolunteerEventByShelterId(
+        page: Int,
+        shelterId: Long
+    ): PagedResult<ShelterSimpleVolunteerEventDto> {
+        val pageable = PageRequest.of(
+            page,
+            PAGE_SIZE,
+            Sort.by("id").descending()
+        )
+
+        val shelterVolunteerEvents = volunteerEventJpaRepository.findAllByShelterId(
+            shelterId = shelterId,
+            pageable = pageable,
+        )
+
+        val shelterVolunteerEventEntityMap =
+            shelterVolunteerEvents
+                .content
+                .associateBy { it.id }
+
+        val joinQueueEntityMap =
+            volunteerEventJoinQueueJpaRepository
+                .findAllByVolunteerEventIdIn(shelterVolunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        val waitingQueueEntityMap =
+            volunteerEventWaitingQueueJpaRepository
+                .findAllByVolunteerEventIdIn(shelterVolunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        return PagedResult(
+            pageNumber = shelterVolunteerEvents.number,
+            pageSize = shelterVolunteerEvents.size,
+            content = shelterVolunteerEventEntityMap
+                .values
+                .map {
+                    val joinQueue = joinQueueEntityMap[it.id]
+                    val waitingQueue = waitingQueueEntityMap[it.id]
+
+                    ShelterSimpleVolunteerEventDto(
+                        volunteerEventId = it.id,
+                        title = it.title,
+                        category = it.category,
+                        startAt = it.startAt,
+                        endAt = it.endAt,
+                        eventStatus = it.status,
+                        recruitNum = it.recruitNum,
+                        participantNum = joinQueue?.size ?: 0,
+                        waitingNum = waitingQueue?.size ?: 0,
+                    )
+                }
+                .sortedBy { it.volunteerEventId }
+                .toList()
+        )
+    }
+
+    override fun findAllShelterVolunteerEventByShelterIdAndStatus(
+        page: Int,
+        shelterId: Long,
+        status: VolunteerEventStatus
+    ): PagedResult<ShelterSimpleVolunteerEventDto> {
+        val pageable = PageRequest.of(
+            page,
+            PAGE_SIZE,
+            Sort.by("id").descending()
+        )
+
+        val shelterVolunteerEvents = volunteerEventJpaRepository.findAllByShelterIdAndStatus(
+            shelterId = shelterId,
+            status = status,
+            pageable = pageable,
+        )
+
+        val shelterVolunteerEventEntityMap =
+            shelterVolunteerEvents
+                .content
+                .associateBy { it.id }
+
+        val joinQueueEntityMap =
+            volunteerEventJoinQueueJpaRepository
+                .findAllByVolunteerEventIdIn(shelterVolunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        val waitingQueueEntityMap =
+            volunteerEventWaitingQueueJpaRepository
+                .findAllByVolunteerEventIdIn(shelterVolunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        return PagedResult(
+            pageNumber = shelterVolunteerEvents.number,
+            pageSize = shelterVolunteerEvents.size,
+            content = shelterVolunteerEventEntityMap
+                .values
+                .map {
+                    val joinQueue = joinQueueEntityMap[it.id]
+                    val waitingQueue = waitingQueueEntityMap[it.id]
+
+                    ShelterSimpleVolunteerEventDto(
+                        volunteerEventId = it.id,
+                        title = it.title,
+                        category = it.category,
+                        startAt = it.startAt,
+                        endAt = it.endAt,
+                        eventStatus = it.status,
+                        recruitNum = it.recruitNum,
+                        participantNum = joinQueue?.size ?: 0,
+                        waitingNum = waitingQueue?.size ?: 0,
+                    )
+                }
+                .sortedBy { it.volunteerEventId }
+                .toList()
+        )
+    }
+
     override fun findDetailVolunteerEventInfoByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerEventDto {
         val volunteerEventWithMyParticipationStatus =
             volunteerEventJpaRepository
@@ -127,8 +240,6 @@ class VolunteerEventRepository(
             waitingVolunteers = waitingParticipants
         )
     }
-
-    @Transactional(readOnly = true)
     override fun findDetailVolunteerEventInfoByIdAndShelterIdAndVolunteerId(id: Long, volunteerId: Long, shelterId: Long): DetailVolunteerEventDto {
         val volunteerEventWithMyParticipationStatus =
             volunteerEventJpaRepository
@@ -188,12 +299,11 @@ class VolunteerEventRepository(
         )
     }
 
-    @Transactional(readOnly = true)
-    override fun findAllSimpleVolunteerEventInfosByShelterIdAndDateRange(
+    override fun findAllVolunteerSimpleVolunteerEventInfosByShelterIdAndDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto> {
+    ): List<VolunteerSimpleVolunteerEventDto> {
         val volunteerEventEntityMap =
             volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonth(
                 shelterId = shelterId,
@@ -217,7 +327,7 @@ class VolunteerEventRepository(
                 val joinQueue = joinQueueEntityMap[it.id]
                 val waitingQueue = waitingQueueEntityMap[it.id]
 
-                SimpleVolunteerEventDto(
+                VolunteerSimpleVolunteerEventDto(
                     volunteerEventId = it.id,
                     title = it.title,
                     category = it.category,
@@ -232,13 +342,12 @@ class VolunteerEventRepository(
             }.toList()
     }
 
-    @Transactional(readOnly = true)
-    override fun findAllSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
+    override fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto> {
+    ): List<VolunteerSimpleVolunteerEventDto> {
         val volunteerEventEntityMap =
             volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonth(
                 shelterId = shelterId,
@@ -262,7 +371,7 @@ class VolunteerEventRepository(
                 val joinQueue = joinQueueEntityMap[it.id]
                 val waitingQueue = waitingQueueEntityMap[it.id]
 
-                SimpleVolunteerEventDto(
+                VolunteerSimpleVolunteerEventDto(
                     volunteerEventId = it.id,
                     title = it.title,
                     category = it.category,
@@ -283,7 +392,6 @@ class VolunteerEventRepository(
             .toList()
     }
 
-    @Transactional(readOnly = true)
     override fun findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long): VolunteerEventJoinQueue? {
         return volunteerEventJoinQueueJpaRepository
             .findByVolunteerIdAndVolunteerEventId(
@@ -292,7 +400,6 @@ class VolunteerEventRepository(
             )?.toDomainModel()
     }
 
-    @Transactional(readOnly = true)
     override fun findVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long): VolunteerEventWaitingQueue? {
         return volunteerEventWaitingQueueJpaRepository
             .findByVolunteerIdAndVolunteerEventId(
@@ -313,79 +420,5 @@ class VolunteerEventRepository(
             UserEventParticipationStatus.WAITING
         else
             UserEventParticipationStatus.NONE
-    }
-
-    @Transactional
-    override fun saveVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
-        val volunteerEventEntity = volunteerEvent.toEntityModel()
-        return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
-    }
-
-    @Transactional
-    override fun saveAllVolunteerEvents(volunteerEvents: Collection<VolunteerEvent>): List<VolunteerEvent> {
-        val volunteerEventEntities = volunteerEvents.map {
-            it.toEntityModel()
-        }.toList()
-
-        return volunteerEventJpaRepository.saveAll(volunteerEventEntities)
-            .map { it.toDomainModel() }.toList()
-    }
-
-    @Transactional
-    override fun deleteVolunteerEventByIdAndShelterId(id: Long, shelterId: Long) {
-        val volunteerEventEntity = volunteerEventJpaRepository.findByIdAndShelterIdAndDeletedIsFalse(
-            id = id,
-            shelterId = shelterId
-        ) ?: throw CustomException(
-            type = StorageExceptionType.ENTITY_NOT_FOUND,
-            message = "봉사 정보를 찾을 수 없습니다."
-        )
-        volunteerEventEntity.delete()
-
-        volunteerEventJpaRepository.save(volunteerEventEntity)
-    }
-
-    @Transactional
-    override fun saveVolunteerEventJoinQueue(volunteerEventJoinQueue: VolunteerEventJoinQueue): VolunteerEventJoinQueue {
-        return volunteerEventJoinQueueJpaRepository
-            .save(volunteerEventJoinQueue.toEntityModel()).toDomainModel()
-    }
-
-    @Transactional
-    override fun saveVolunteerEventJoinQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue {
-        return volunteerEventWaitingQueueJpaRepository
-            .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
-    }
-
-    @Transactional
-    override fun saveVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue {
-        return volunteerEventWaitingQueueJpaRepository
-            .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
-    }
-
-    @Transactional
-    override fun updateVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
-        val volunteerEventEntity = volunteerEventJpaRepository.findByIdOrNull(volunteerEvent.id)
-            ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "봉사 정보를 찾을 수 없습니다.")
-        volunteerEventEntity.update(volunteerEvent)
-
-        return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
-    }
-
-    @Transactional
-    override fun deleteVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
-        return volunteerEventJoinQueueJpaRepository
-            .deleteByVolunteerIdAndVolunteerEventId(
-                volunteerId = volunteerId,
-                volunteerEventId = volunteerEventId
-            )
-    }
-
-    @Transactional
-    override fun deleteVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
-        return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerIdAndVolunteerEventId(
-            volunteerId = volunteerId,
-            volunteerEventId = volunteerEventId
-        )
     }
 }

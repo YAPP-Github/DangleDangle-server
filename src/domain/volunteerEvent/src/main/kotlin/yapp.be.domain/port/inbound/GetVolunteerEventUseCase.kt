@@ -3,9 +3,12 @@ package yapp.be.domain.port.inbound
 import java.time.LocalDateTime
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
-import yapp.be.domain.model.dto.SimpleVolunteerEventDto
+import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.support.PagedResult
 
 interface GetVolunteerEventUseCase {
 
@@ -15,6 +18,12 @@ interface GetVolunteerEventUseCase {
     fun getShelterVolunteerEventStat(
         shelterId: Long
     ): ShelterUserVolunteerEventStatDto
+
+    fun getAllShelterVolunteerEvent(
+        page: Int,
+        shelterId: Long,
+        status: VolunteerEventStatus?
+    ): PagedResult<ShelterSimpleVolunteerEventDto>
 
     fun getVolunteerEvent(
         shelterId: Long,
@@ -41,16 +50,16 @@ interface GetVolunteerEventUseCase {
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto>
+    ): List<VolunteerSimpleVolunteerEventDto>
     fun getMemberVolunteerEventsByDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto>
+    ): List<VolunteerSimpleVolunteerEventDto>
     fun getNonMemberVolunteerEventsByDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
-    ): List<SimpleVolunteerEventDto>
+    ): List<VolunteerSimpleVolunteerEventDto>
 }
