@@ -2,6 +2,7 @@ package yapp.be.apiapplication.shelter.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import yapp.be.apiapplication.shelter.service.model.EditShelterAlarmEnabledResponseDto
 import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageRequestDto
 import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageResponseDto
 import yapp.be.apiapplication.shelter.service.model.EditShelterWithAdditionalInfoRequestDto
@@ -24,6 +25,19 @@ class ShelterManageApplicationService(
     private val getShelterUserUseCase: GetShelterUserUseCase,
     private val editShelterUseCase: EditShelterUseCase
 ) {
+
+    @Transactional
+    fun editShelterAlarmEnabled(shelterUserId: Long, alarmEnabled: Boolean): EditShelterAlarmEnabledResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
+        val shelter = editShelterUseCase.editAlarmEnabled(
+            shelterId = shelterUser.shelterId,
+            alarmEnabled = alarmEnabled
+        )
+
+        return EditShelterAlarmEnabledResponseDto(
+            shelterId = shelter.id
+        )
+    }
 
     @Transactional(readOnly = true)
     fun getShelter(shelterUserId: Long): GetShelterUserShelterResponseDto {

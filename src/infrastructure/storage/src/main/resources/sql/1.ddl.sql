@@ -51,6 +51,7 @@ CREATE TABLE `shelter`
     `longitude`                           double       not null,
     `created_at`                          datetime    not null,
     `modified_at`                         datetime,
+    `is_alarm_enabled`                    boolean      not null,
     index IDX_NAME (`name`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

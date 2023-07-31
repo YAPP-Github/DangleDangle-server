@@ -32,6 +32,8 @@ class ShelterEntity(
     var parkingNotice: String?,
     @Column(name = "profile_image_url")
     var profileImageUrl: String?,
+    @Column(name = "is_alarm_enabled", nullable = false)
+    var alarmEnabled: Boolean = true
 ) : BaseTimeEntity() {
     fun update(shelter: Shelter) {
         this.name = shelter.name
@@ -50,5 +52,6 @@ class ShelterEntity(
         this.parkingEnabled = shelter.parkingInfo?.parkingEnabled
         this.parkingNotice = shelter.parkingInfo?.parkingNotice
         this.notice = shelter.notice
+        this.alarmEnabled = shelter.alarmEnabled
     }
 }

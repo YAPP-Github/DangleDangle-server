@@ -33,7 +33,7 @@ class VolunteerEntity(
     @Column(name = "is_deleted", nullable = false)
     var deleted: Boolean = false,
     @Column(name = "is_alarm_enabled", nullable = false)
-    val alarmEnabled: Boolean = true,
+    var alarmEnabled: Boolean = true,
     @Column(name = "is_personal_information_terms_enabled", nullable = false)
     val personalInformationTermsEnabled: Boolean = true,
     @Column(name = "is_service_terms_enabled")
@@ -46,6 +46,7 @@ class VolunteerEntity(
         this.oAuthType = volunteer.oAuthType
         this.oAuthAccessToken = volunteer.oAuthAccessToken
         this.oAuthRefreshToken = volunteer.oAuthRefreshToken
+        this.alarmEnabled = volunteer.alarmEnabled
     }
     fun delete() {
         this.deleted = true

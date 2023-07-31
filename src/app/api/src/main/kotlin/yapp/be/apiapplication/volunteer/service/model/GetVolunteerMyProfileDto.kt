@@ -3,7 +3,7 @@ data class GetVolunteerMyProfileResponseDto(
     val nickName: String,
     val historyStat: VolunteerVolunteerEventHistoryStatInfo,
     val phoneNumber: String,
-    val alarm: Boolean
+    val alarmEnabled: Boolean
 )
 
 data class VolunteerVolunteerEventHistoryStatInfo(

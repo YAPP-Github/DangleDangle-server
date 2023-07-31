@@ -20,6 +20,24 @@ class EditShelterDomainService(
     private val shelterOutLinkQueryHandler: ShelterOutLinkQueryHandler,
     private val shelterOutLinkCommandHandler: ShelterOutLinkCommandHandler
 ) : EditShelterUseCase {
+    @Transactional
+    override fun editAlarmEnabled(shelterId: Long, alarmEnabled: Boolean): Shelter {
+        val shelter = shelterQueryHandler.findById(shelterId)
+        val updatedShelter = Shelter(
+            id = shelter.id,
+            name = shelter.name,
+            description = shelter.description,
+            phoneNumber = shelter.phoneNumber,
+            address = shelter.address,
+            notice = shelter.notice,
+            profileImageUrl = shelter.profileImageUrl,
+            bankAccount = shelter.bankAccount,
+            parkingInfo = shelter.parkingInfo,
+            alarmEnabled = alarmEnabled
+        )
+
+        return shelterCommandHandler.update(updatedShelter)
+    }
 
     @Transactional
     override fun editProfileImage(shelterId: Long, profileImageUrl: String): Shelter {
@@ -33,7 +51,8 @@ class EditShelterDomainService(
             notice = shelter.notice,
             profileImageUrl = profileImageUrl,
             bankAccount = shelter.bankAccount,
-            parkingInfo = shelter.parkingInfo
+            parkingInfo = shelter.parkingInfo,
+            alarmEnabled = shelter.alarmEnabled
         )
 
         return shelterCommandHandler.update(updatedShelter)
@@ -57,7 +76,8 @@ class EditShelterDomainService(
             notice = shelter.notice,
             profileImageUrl = shelter.profileImageUrl,
             bankAccount = shelter.bankAccount,
-            parkingInfo = shelter.parkingInfo
+            parkingInfo = shelter.parkingInfo,
+            alarmEnabled = shelter.alarmEnabled
         )
 
         return shelterCommandHandler.update(updatedShelter)
@@ -80,7 +100,8 @@ class EditShelterDomainService(
             notice = notice,
             profileImageUrl = shelter.profileImageUrl,
             bankAccount = bankAccount,
-            parkingInfo = parkingInfo
+            parkingInfo = parkingInfo,
+            alarmEnabled = shelter.alarmEnabled
         )
 
         return shelterCommandHandler.update(updatedShelter)

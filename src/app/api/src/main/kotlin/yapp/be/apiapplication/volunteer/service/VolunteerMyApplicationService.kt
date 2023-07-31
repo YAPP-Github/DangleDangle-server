@@ -27,7 +27,7 @@ class VolunteerMyApplicationService(
 
     @Transactional(readOnly = true)
     fun getVolunteerMyProfile(volunteerId: Long): GetVolunteerMyProfileResponseDto {
-        val volunteer = getVolunteerUseCase.getById(volunteerId = volunteerId)
+        val volunteer = getVolunteerUseCase.getById(volunteerId)
         val volunteerEventHistoryStat = getVolunteerEventUseCase
             .getVolunteerVolunteerEventStat(volunteerId)
 
@@ -38,7 +38,7 @@ class VolunteerMyApplicationService(
                 waiting = volunteerEventHistoryStat.waiting,
                 joining = volunteerEventHistoryStat.joining
             ),
-            alarm = volunteer.alarmEnabled,
+            alarmEnabled = volunteer.alarmEnabled,
             phoneNumber = volunteer.phone
         )
     }
@@ -105,7 +105,7 @@ class VolunteerMyApplicationService(
             volunteerId = volunteerId,
             nickName = reqDto.nickName,
             phoneNum = reqDto.phoneNumber,
-            alarmEnabled = reqDto.alarm
+            alarmEnabled = reqDto.alarmEnabled
         )
         val updatedVolunteer = editVolunteerUseCase.updateVolunteer(command)
 
