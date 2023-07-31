@@ -19,7 +19,7 @@ interface GetVolunteerEventUseCase {
     fun getShelterVolunteerEventStat(
         shelterId: Long
     ): ShelterUserVolunteerEventStatDto
-
+    fun getVolunteerEventDone(): List<VolunteerEvent>
     fun getAllShelterVolunteerEventHistory(
         page: Int,
         shelterId: Long,

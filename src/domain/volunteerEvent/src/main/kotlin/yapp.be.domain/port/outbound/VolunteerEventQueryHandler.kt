@@ -19,6 +19,8 @@ interface VolunteerEventQueryHandler {
         volunteerId: Long
     ): VolunteerVolunteerEventStatDto
 
+    fun findVolunteerEventDone(): List<VolunteerEvent>
+
     fun findShelterUserStatByShelterId(
         shelterId: Long
     ): ShelterUserVolunteerEventStatDto
@@ -26,7 +28,9 @@ interface VolunteerEventQueryHandler {
         id: Long,
         shelterId: Long
     ): VolunteerEvent
-
+    fun findById(
+        id: Long,
+    ): VolunteerEvent
     fun findAllShelterVolunteerEventByShelterId(page: Int, shelterId: Long): PagedResult<ShelterSimpleVolunteerEventDto>
     fun findAllShelterVolunteerEventByShelterIdAndStatus(page: Int, shelterId: Long, status: VolunteerEventStatus): PagedResult<ShelterSimpleVolunteerEventDto>
 
