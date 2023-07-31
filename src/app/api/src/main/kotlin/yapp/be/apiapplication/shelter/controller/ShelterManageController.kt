@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.controller.model.EditShelterAdditionalInfoRequest
+import yapp.be.apiapplication.shelter.controller.model.EditShelterAlarmEnabledRequest
 import yapp.be.apiapplication.shelter.controller.model.EditShelterEssentialInfoRequest
 import yapp.be.apiapplication.shelter.controller.model.EditShelterProfileImageRequest
 import yapp.be.apiapplication.shelter.service.ShelterManageApplicationService
+import yapp.be.apiapplication.shelter.service.model.EditShelterAlarmEnabledResponseDto
 import yapp.be.apiapplication.shelter.service.model.EditShelterProfileImageResponseDto
 import yapp.be.apiapplication.shelter.service.model.EditShelterWithAdditionalInfoResponseDto
 import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoResponseDto
@@ -35,6 +37,24 @@ class ShelterManageController(
     @GetMapping
     fun getShelter(@ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo): ResponseEntity<GetShelterUserShelterResponseDto> {
         val resDto = shelterManageApplicationService.getShelter(shelterUserInfo.shelterUserId)
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "보호소 알람 수정하기"
+    )
+    @PutMapping("/alarm")
+    fun editShelterAlarmEnabled(
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo,
+        @RequestBody @Valid req: EditShelterAlarmEnabledRequest
+    ): ResponseEntity<EditShelterAlarmEnabledResponseDto> {
+        val resDto = shelterManageApplicationService
+            .editShelterAlarmEnabled(
+                shelterUserId = shelterUserInfo.shelterUserId,
+                alarmEnabled = req.alarmEnabled
+            )
+
         return ResponseEntity.ok(resDto)
     }
 

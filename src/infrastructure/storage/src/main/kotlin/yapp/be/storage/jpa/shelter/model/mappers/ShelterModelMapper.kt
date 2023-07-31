@@ -25,7 +25,8 @@ fun Shelter.toEntityModel(): ShelterEntity {
         notice = this.notice,
         parkingEnabled = this.parkingInfo?.parkingEnabled,
         parkingNotice = this.parkingInfo?.parkingNotice,
-        profileImageUrl = this.profileImageUrl
+        profileImageUrl = this.profileImageUrl,
+        alarmEnabled = this.alarmEnabled
     )
 }
 
@@ -45,6 +46,7 @@ fun ShelterEntity.toDomainModel(): Shelter {
         parkingInfo = run {
             if (this.parkingEnabled != null && this.parkingNotice != null) ShelterParkingInfo(parkingEnabled = this.parkingEnabled!!, parkingNotice = this.parkingNotice!!)
             else null
-        }
+        },
+        alarmEnabled = this.alarmEnabled
     )
 }

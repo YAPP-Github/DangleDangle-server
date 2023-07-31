@@ -7,6 +7,11 @@ import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.ShelterParkingInfo
 
 interface EditShelterUseCase {
+
+    fun editAlarmEnabled(
+        shelterId: Long,
+        alarmEnabled: Boolean
+    ): Shelter
     fun editProfileImage(
         shelterId: Long,
         profileImageUrl: String

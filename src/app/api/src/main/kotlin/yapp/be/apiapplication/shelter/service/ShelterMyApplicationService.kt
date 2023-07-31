@@ -15,7 +15,6 @@ class ShelterMyApplicationService(
     private val getShelterUseCase: GetShelterUseCase,
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase
 ) {
-
     @Transactional(readOnly = true)
     fun getShelterMyProfile(shelterId: Long): GetShelterMyProfileResponseDto {
         val shelter = getShelterUseCase.getShelterById(shelterId)
@@ -26,7 +25,8 @@ class ShelterMyApplicationService(
             historyStat = ShelterVolunteerEventHistoryStatInfo(
                 done = volunteerEventHistoryStat.done,
                 inProgress = volunteerEventHistoryStat.inProgress
-            )
+            ),
+            alarmEnabled = shelter.alarmEnabled
         )
     }
 
