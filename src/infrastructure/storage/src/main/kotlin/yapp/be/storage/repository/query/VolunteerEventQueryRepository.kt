@@ -73,6 +73,13 @@ class VolunteerEventQueryRepository(
         )
     }
 
+    override fun findVolunteerEventDone(): List<VolunteerEvent> {
+        return volunteerEventJpaRepository.findByEndAtBeforeAndStatusNot(
+            LocalDateTime.now(),
+            VolunteerEventStatus.DONE
+        ).map { it.toDomainModel() }
+    }
+
     override fun findShelterUserStatByShelterId(shelterId: Long): ShelterUserVolunteerEventStatDto {
         val volunteerEventEntities =
             volunteerEventJpaRepository.findAllByShelterId(shelterId)
@@ -94,6 +101,11 @@ class VolunteerEventQueryRepository(
             type = StorageExceptionType.ENTITY_NOT_FOUND,
             message = "봉사 정보를 찾을 수 없습니다."
         )
+    }
+
+    override fun findById(id: Long): VolunteerEvent {
+        val volunteerEventEntity = volunteerEventJpaRepository.findById(id).orElseThrow { throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.") }
+        return volunteerEventEntity.toDomainModel()
     }
 
     override fun findAllShelterVolunteerEventByShelterId(
