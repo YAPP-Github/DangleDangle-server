@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.VolunteerEventJpaRepositoryCustom
+import java.time.LocalDateTime
 
 interface VolunteerEventJpaRepository : JpaRepository<VolunteerEventEntity, Long>, VolunteerEventJpaRepositoryCustom {
     fun findAllByShelterId(shelterId: Long): List<VolunteerEventEntity>
@@ -14,4 +15,5 @@ interface VolunteerEventJpaRepository : JpaRepository<VolunteerEventEntity, Long
 
     fun findAllByShelterId(shelterId: Long, pageable: Pageable): Page<VolunteerEventEntity>
     fun findByIdAndShelterIdAndDeletedIsFalse(id: Long, shelterId: Long): VolunteerEventEntity?
+    fun findByEndAtBeforeAndStatusNot(today: LocalDateTime, status: VolunteerEventStatus): List<VolunteerEventEntity>
 }

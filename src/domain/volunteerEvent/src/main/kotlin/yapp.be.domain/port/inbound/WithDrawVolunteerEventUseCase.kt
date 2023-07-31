@@ -11,4 +11,8 @@ interface WithDrawVolunteerEventUseCase {
         volunteerId: Long,
         volunteerEventId: Long
     )
+
+    fun withdrawWaitingQueue(
+        volunteerEventId: Long
+    )
 }
