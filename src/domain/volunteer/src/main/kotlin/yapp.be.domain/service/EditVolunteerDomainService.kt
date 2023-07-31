@@ -25,7 +25,8 @@ class EditVolunteerDomainService(
             oAuthAccessToken = volunteer.oAuthAccessToken,
             oAuthRefreshToken = volunteer.oAuthRefreshToken,
             nickname = command.nickName,
-            phone = command.phoneNum
+            phone = command.phoneNum,
+            alarmEnabled = command.alarmEnabled
         )
 
         return volunteerCommandHandler.update(updatedVolunteer)

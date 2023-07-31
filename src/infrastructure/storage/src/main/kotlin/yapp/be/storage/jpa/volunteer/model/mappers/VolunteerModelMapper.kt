@@ -16,6 +16,7 @@ fun Volunteer.toEntityModel(): VolunteerEntity {
         oAuthAccessToken = this.oAuthAccessToken,
         oAuthRefreshToken = this.oAuthRefreshToken,
         deleted = this.isDeleted,
+        alarmEnabled = this.alarmEnabled
     )
 }
 
@@ -30,6 +31,7 @@ fun VolunteerEntity.toDomainModel(): Volunteer {
         oAuthIdentifier = this.oAuthIdentifier,
         oAuthAccessToken = this.oAuthAccessToken,
         oAuthRefreshToken = this.oAuthRefreshToken,
-        isDeleted = this.deleted
+        isDeleted = this.deleted,
+        alarmEnabled = this.alarmEnabled
     )
 }

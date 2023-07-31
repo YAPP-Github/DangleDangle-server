@@ -19,7 +19,7 @@ data class EditVolunteerMyProfileRequest(
         return EditVolunteerMyProfileRequestDto(
             nickName = this.nickName,
             phoneNumber = this.phoneNumber,
-            alarm = this.alarmEnabled
+            alarmEnabled = this.alarmEnabled
         )
     }
 }

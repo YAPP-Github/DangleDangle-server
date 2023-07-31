@@ -28,6 +28,6 @@ class VolunteerCommandRepository(
         val volunteerEntity = volunteerJpaRepository.findByIdOrNull(volunteer.id) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.")
         volunteerEntity.update(volunteer)
 
-        return volunteerEntity.toDomainModel()
+        return volunteerJpaRepository.save(volunteerEntity).toDomainModel()
     }
 }
