@@ -9,6 +9,7 @@ import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
 import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 
@@ -28,6 +29,16 @@ interface VolunteerEventQueryHandler {
 
     fun findAllShelterVolunteerEventByShelterId(page: Int, shelterId: Long): PagedResult<ShelterSimpleVolunteerEventDto>
     fun findAllShelterVolunteerEventByShelterIdAndStatus(page: Int, shelterId: Long, status: VolunteerEventStatus): PagedResult<ShelterSimpleVolunteerEventDto>
+
+    fun findAllVolunteerVolunteerEventByVolunteerId(
+        page: Int,
+        volunteerId: Long
+    ): PagedResult<VolunteerSimpleVolunteerEventDto>
+    fun findAllVolunteerVolunteerEventByVolunteerIdAndStatus(
+        page: Int,
+        volunteerId: Long,
+        status: UserEventParticipationStatus
+    ): PagedResult<VolunteerSimpleVolunteerEventDto>
 
     fun findDetailVolunteerEventInfoByIdAndShelterId(
         id: Long,

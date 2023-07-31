@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.service.ShelterMyApplicationService
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyProfileResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterMyVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
-import yapp.be.domain.model.dto.ShelterSimpleVolunteerEventDto
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 
@@ -42,7 +42,7 @@ class ShelterMyController(
         @RequestParam page: Int,
         @RequestParam(required = false) status: VolunteerEventStatus?,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
-    ): ResponseEntity<PagedResult<ShelterSimpleVolunteerEventDto>> {
+    ): ResponseEntity<PagedResult<GetShelterMyVolunteerEventHistoryResponseDto>> {
         val resDto = shelterMyApplicationService
             .getShelterVolunteerEventHistories(
                 page = page,

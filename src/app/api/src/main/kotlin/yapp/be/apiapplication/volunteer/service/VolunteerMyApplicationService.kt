@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileRequestDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerBookMarkedShelterResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerMyProfileResponseDto
+import yapp.be.apiapplication.volunteer.service.model.GetVolunteerVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.volunteer.service.model.VolunteerVolunteerEventHistoryStatInfo
 import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResponseDto
 import yapp.be.apiapplication.volunteer.service.model.DeleteVolunteerResponseDto
@@ -15,6 +16,8 @@ import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.GetVolunteerUseCase
 import yapp.be.domain.port.inbound.model.EditVolunteerCommand
 import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.support.PagedResult
 
 @Service
 class VolunteerMyApplicationService(
@@ -40,6 +43,41 @@ class VolunteerMyApplicationService(
             ),
             alarm = volunteer.alarmEnabled,
             phoneNumber = volunteer.phone
+        )
+    }
+
+    @Transactional(readOnly = true)
+    fun getVolunteerVolunteerEventHistories(
+        page: Int,
+        volunteerId: Long,
+        status: UserEventParticipationStatus?
+    ): PagedResult<GetVolunteerVolunteerEventHistoryResponseDto> {
+        val volunteer = getVolunteerUseCase.getById(volunteerId = volunteerId)
+        val histories = getVolunteerEventUseCase
+            .getAllVolunteerVolunteerEventHistory(
+                page = page,
+                volunteerId = volunteer.id,
+                status = status
+            )
+
+        return PagedResult(
+            pageNumber = histories.pageNumber,
+            pageSize = histories.pageSize,
+            content = histories.content.map {
+                GetVolunteerVolunteerEventHistoryResponseDto(
+                    volunteerEventId = it.volunteerEventId,
+                    shelterName = it.shelterName,
+                    title = it.title,
+                    category = it.category,
+                    eventStatus = it.eventStatus,
+                    myParticipationStatus = it.myParticipationStatus,
+                    startAt = it.startAt,
+                    endAt = it.endAt,
+                    recruitNum = it.recruitNum,
+                    participantNum = it.participantNum,
+                    waitingNum = it.waitingNum
+                )
+            }
         )
     }
 

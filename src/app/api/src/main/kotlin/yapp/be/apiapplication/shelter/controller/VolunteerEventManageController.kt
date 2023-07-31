@@ -26,8 +26,8 @@ import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventsResponseDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListRequestDto
+import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListResponseDto
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 
@@ -68,8 +68,8 @@ class VolunteerEventManageController(
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         to: LocalDate,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
-    ): ResponseEntity<GetShelterUserVolunteerEventsResponseDto> {
-        val reqDto = GetShelterUserVolunteerEventsRequestDto(
+    ): ResponseEntity<GetShelterUserVolunteerEventListResponseDto> {
+        val reqDto = GetShelterUserVolunteerEventListRequestDto(
             shelterUserId = shelterUserInfo.shelterUserId,
             from = from.atStartOfDay(),
             to = to.atTime(23, 59, 59)
