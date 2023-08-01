@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 
 class VolunteerEventWithShelterInfoProjection @QueryProjection constructor(
     val id: Long,
+    val shelterId: Long,
     val shelterName: String,
     val shelterProfileImageUrl: String?,
     val title: String,

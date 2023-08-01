@@ -10,6 +10,7 @@ import yapp.be.apiapplication.volunteer.service.model.VolunteerVolunteerEventHis
 import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResponseDto
 import yapp.be.apiapplication.volunteer.service.model.DeleteVolunteerResponseDto
 import yapp.be.apiapplication.volunteer.service.model.BookMarkedShelterInfo
+import yapp.be.apiapplication.volunteer.service.model.GetVolunteerUpcomingVolunteerEventResponseDto
 import yapp.be.domain.port.inbound.DeleteVolunteerUseCase
 import yapp.be.domain.port.inbound.EditVolunteerUseCase
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
@@ -27,6 +28,29 @@ class VolunteerMyApplicationService(
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
     private val deleteVolunteerUseCase: DeleteVolunteerUseCase,
 ) {
+
+    @Transactional(readOnly = true)
+    fun getVolunteerUpComingVolunteerEvent(volunteerId: Long): GetVolunteerUpcomingVolunteerEventResponseDto? {
+        val volunteer = getVolunteerUseCase.getById(volunteerId)
+        val upcomingVolunteerEvent = getVolunteerEventUseCase.getVolunteerUpComingVolunteerEvent(
+            volunteerId = volunteer.id
+        )
+
+        return upcomingVolunteerEvent?.let {
+            GetVolunteerUpcomingVolunteerEventResponseDto(
+                shelterId = it.shelterId,
+                shelterName = it.shelterName,
+                shelterImageProfileUrl = it.shelterProfileImageUrl,
+                volunteerEventId = it.volunteerEventId,
+                title = it.title,
+                startAt = it.startAt,
+                endAt = it.endAt,
+                recruitNum = it.recruitNum,
+                participantNum = it.participantNum,
+                waitingNum = it.waitingNum
+            )
+        }
+    }
 
     @Transactional(readOnly = true)
     fun getVolunteerMyProfile(volunteerId: Long): GetVolunteerMyProfileResponseDto {
@@ -65,8 +89,10 @@ class VolunteerMyApplicationService(
             pageSize = histories.pageSize,
             content = histories.content.map {
                 GetVolunteerVolunteerEventHistoryResponseDto(
-                    volunteerEventId = it.volunteerEventId,
+                    shelterId = it.shelterId,
                     shelterName = it.shelterName,
+                    shelterImageProfileUrl = it.shelterProfileImageUrl,
+                    volunteerEventId = it.volunteerEventId,
                     title = it.title,
                     category = it.category,
                     eventStatus = it.eventStatus,
@@ -93,7 +119,8 @@ class VolunteerMyApplicationService(
             bookMarkedShelter.map {
                 BookMarkedShelterInfo(
                     shelterId = it.id,
-                    name = it.name
+                    shelterName = it.name,
+                    shelterProfileImageUrl = it.profileImageUrl
                 )
             }
         )

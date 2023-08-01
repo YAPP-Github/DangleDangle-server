@@ -9,6 +9,7 @@ import yapp.be.storage.jpa.common.model.Address
 
 class VolunteerEventWithShelterInfoAndMyParticipationStatusProjection@QueryProjection constructor(
     val id: Long,
+    val shelterId: Long,
     val shelterName: String,
     val shelterProfileImageUrl: String?,
     val title: String,
