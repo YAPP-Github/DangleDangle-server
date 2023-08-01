@@ -2,13 +2,15 @@ package yapp.be.apiapplication.volunteer.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.apiapplication.volunteer.service.model.BookMarkedShelterInfo
 import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileRequestDto
-import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerBookMarkedShelterResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerMyProfileResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.volunteer.service.model.VolunteerVolunteerEventHistoryStatInfo
+import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResponseDto
+import yapp.be.apiapplication.volunteer.service.model.DeleteVolunteerResponseDto
+import yapp.be.apiapplication.volunteer.service.model.BookMarkedShelterInfo
+import yapp.be.domain.port.inbound.DeleteVolunteerUseCase
 import yapp.be.domain.port.inbound.EditVolunteerUseCase
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.GetVolunteerUseCase
@@ -22,7 +24,8 @@ class VolunteerMyApplicationService(
     private val getVolunteerUseCase: GetVolunteerUseCase,
     private val getShelterUseCase: GetShelterUseCase,
     private val editVolunteerUseCase: EditVolunteerUseCase,
-    private val getVolunteerEventUseCase: GetVolunteerEventUseCase
+    private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
+    private val deleteVolunteerUseCase: DeleteVolunteerUseCase,
 ) {
 
     @Transactional(readOnly = true)
@@ -111,6 +114,17 @@ class VolunteerMyApplicationService(
 
         return EditVolunteerMyProfileResponseDto(
             updatedVolunteer.id
+        )
+    }
+
+    @Transactional
+    fun withdrawVolunteer(
+        volunteerId: Long,
+    ): DeleteVolunteerResponseDto {
+        val deletedVolunteer = deleteVolunteerUseCase.deleteVolunteer(volunteerId)
+
+        return DeleteVolunteerResponseDto(
+            deletedVolunteer.id
         )
     }
 }
