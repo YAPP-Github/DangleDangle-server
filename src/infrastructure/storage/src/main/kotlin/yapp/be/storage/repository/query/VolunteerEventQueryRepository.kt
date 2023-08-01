@@ -34,6 +34,29 @@ class VolunteerEventQueryRepository(
     private val volunteerEventWaitingQueueJpaRepository: VolunteerEventWaitingQueueJpaRepository,
     private val volunteerEventJoinQueueJpaRepository: VolunteerEventJoinQueueJpaRepository,
 ) : VolunteerEventQueryHandler {
+    override fun findUpcomingVolunteerEventByVolunteerId(volunteerId: Long): VolunteerSimpleVolunteerEventDto? {
+        val upComingVolunteerEvent = volunteerEventJpaRepository.findUpcomingVolunteerEventByVolunteerId(volunteerId)
+        return upComingVolunteerEvent?.let {
+            val joinParticipantsNum = volunteerEventJoinQueueJpaRepository.countByVolunteerEventId(it.id)
+            val waitingParticipantsNum = volunteerEventWaitingQueueJpaRepository.countByVolunteerEventId(it.id)
+
+            VolunteerSimpleVolunteerEventDto(
+                shelterId = it.shelterId,
+                shelterName = it.shelterName,
+                shelterProfileImageUrl = it.shelterProfileImageUrl,
+                volunteerEventId = it.id,
+                title = it.title,
+                category = it.category,
+                eventStatus = it.eventStatus,
+                myParticipationStatus = UserEventParticipationStatus.JOINING,
+                startAt = it.startAt,
+                endAt = it.endAt,
+                recruitNum = it.recruitNum,
+                participantNum = joinParticipantsNum,
+                waitingNum = waitingParticipantsNum
+            )
+        }
+    }
 
     override fun findVolunteerStatByVolunteerId(volunteerId: Long): VolunteerVolunteerEventStatDto {
         val volunteerEventEntities = volunteerEventJpaRepository.findAllByVolunteerId(volunteerId)
@@ -214,7 +237,9 @@ class VolunteerEventQueryRepository(
             content = histories.content.map {
                 VolunteerSimpleVolunteerEventDto(
                     volunteerEventId = it.id,
+                    shelterId = it.shelterId,
                     shelterName = it.shelterName,
+                    shelterProfileImageUrl = it.shelterProfileImageUrl,
                     title = it.title,
                     category = it.category,
                     eventStatus = it.eventStatus,
@@ -260,7 +285,9 @@ class VolunteerEventQueryRepository(
                     content = histories.content.map {
                         VolunteerSimpleVolunteerEventDto(
                             volunteerEventId = it.id,
+                            shelterId = it.shelterId,
                             shelterName = it.shelterName,
+                            shelterProfileImageUrl = it.shelterProfileImageUrl,
                             title = it.title,
                             category = it.category,
                             eventStatus = it.eventStatus,
@@ -299,7 +326,9 @@ class VolunteerEventQueryRepository(
                     content = histories.content.map {
                         VolunteerSimpleVolunteerEventDto(
                             volunteerEventId = it.id,
+                            shelterId = it.shelterId,
                             shelterName = it.shelterName,
+                            shelterProfileImageUrl = it.shelterProfileImageUrl,
                             title = it.title,
                             category = it.category,
                             eventStatus = it.eventStatus,
@@ -336,7 +365,9 @@ class VolunteerEventQueryRepository(
                     content = histories.content.map {
                         VolunteerSimpleVolunteerEventDto(
                             volunteerEventId = it.id,
+                            shelterId = it.shelterId,
                             shelterName = it.shelterName,
+                            shelterProfileImageUrl = it.shelterProfileImageUrl,
                             title = it.title,
                             category = it.category,
                             eventStatus = it.eventStatus,
@@ -502,7 +533,9 @@ class VolunteerEventQueryRepository(
 
                 VolunteerSimpleVolunteerEventDto(
                     volunteerEventId = it.id,
+                    shelterId = it.shelterId,
                     shelterName = it.shelterName,
+                    shelterProfileImageUrl = it.shelterProfileImageUrl,
                     title = it.title,
                     category = it.category,
                     startAt = it.startAt,
@@ -547,7 +580,9 @@ class VolunteerEventQueryRepository(
 
                 VolunteerSimpleVolunteerEventDto(
                     volunteerEventId = it.id,
+                    shelterId = it.shelterId,
                     shelterName = it.shelterName,
+                    shelterProfileImageUrl = it.shelterProfileImageUrl,
                     title = it.title,
                     category = it.category,
                     startAt = it.startAt,

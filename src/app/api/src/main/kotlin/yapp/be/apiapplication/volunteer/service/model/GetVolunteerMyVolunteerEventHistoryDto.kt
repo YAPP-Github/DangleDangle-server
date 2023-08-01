@@ -5,8 +5,10 @@ import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 data class GetVolunteerVolunteerEventHistoryResponseDto(
+    val shelterId: Long,
     val volunteerEventId: Long,
     val shelterName: String,
+    val shelterImageProfileUrl: String?,
     val title: String,
     val category: VolunteerEventCategory,
     val eventStatus: VolunteerEventStatus,

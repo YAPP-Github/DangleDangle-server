@@ -36,6 +36,7 @@ class VolunteerEventWaitingQueueJpaRepositoryImpl(
             .select(
                 QVolunteerEventWithShelterInfoProjection(
                     volunteerEventEntity.id,
+                    shelterEntity.id,
                     shelterEntity.name,
                     shelterEntity.profileImageUrl,
                     volunteerEventEntity.title,

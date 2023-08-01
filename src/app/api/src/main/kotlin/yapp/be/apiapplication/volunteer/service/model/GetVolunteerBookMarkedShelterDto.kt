@@ -6,5 +6,6 @@ data class GetVolunteerBookMarkedShelterResponseDto(
 
 data class BookMarkedShelterInfo(
     val shelterId: Long,
-    val name: String
+    val shelterName: String,
+    val shelterProfileImageUrl: String?
 )
