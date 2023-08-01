@@ -6,8 +6,10 @@ import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import java.time.LocalDateTime
 
 data class VolunteerSimpleVolunteerEventDto(
+    val shelterId: Long,
     val volunteerEventId: Long,
     val shelterName: String,
+    val shelterProfileImageUrl: String?,
     val title: String,
     val category: VolunteerEventCategory,
     val eventStatus: VolunteerEventStatus,

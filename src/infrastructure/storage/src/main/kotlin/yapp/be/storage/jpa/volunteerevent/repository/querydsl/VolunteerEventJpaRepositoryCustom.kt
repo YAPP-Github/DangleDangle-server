@@ -11,6 +11,8 @@ import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEve
 
 interface VolunteerEventJpaRepositoryCustom {
 
+    fun findUpcomingVolunteerEventByVolunteerId(volunteerId: Long): VolunteerEventWithShelterInfoProjection?
+
     fun findAllByVolunteerId(volunteerId: Long): List<VolunteerEventEntity>
     fun findWithParticipationStatusByIdAndShelterId(
         id: Long,

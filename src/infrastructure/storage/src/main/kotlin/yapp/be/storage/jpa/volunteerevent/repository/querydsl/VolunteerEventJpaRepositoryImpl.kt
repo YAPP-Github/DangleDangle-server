@@ -27,6 +27,38 @@ import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEve
 class VolunteerEventJpaRepositoryImpl(
     private val queryFactory: JPAQueryFactory
 ) : VolunteerEventJpaRepositoryCustom {
+    @Transactional(readOnly = true)
+    override fun findUpcomingVolunteerEventByVolunteerId(volunteerId: Long): VolunteerEventWithShelterInfoProjection? {
+        return queryFactory
+            .select(
+                QVolunteerEventWithShelterInfoProjection(
+                    volunteerEventEntity.id,
+                    shelterEntity.id,
+                    shelterEntity.name,
+                    shelterEntity.profileImageUrl,
+                    volunteerEventEntity.title,
+                    volunteerEventEntity.recruitNum,
+                    shelterEntity.address,
+                    volunteerEventEntity.description,
+                    volunteerEventEntity.ageLimit,
+                    volunteerEventEntity.category,
+                    volunteerEventEntity.status,
+                    volunteerEventEntity.startAt,
+                    volunteerEventEntity.endAt
+                )
+            )
+            .from(volunteerEventJoinQueueEntity)
+            .join(volunteerEventEntity)
+            .on(
+                volunteerEventJoinQueueEntity.volunteerId.eq(volunteerId)
+                    .and(volunteerEventEntity.id.eq(volunteerEventJoinQueueEntity.volunteerEventId))
+                    .and(volunteerEventEntity.status.stringValue().eq(VolunteerEventStatus.IN_PROGRESS.name))
+            )
+            .join(shelterEntity).on(volunteerEventEntity.shelterId.eq(shelterEntity.id))
+            .where(volunteerEventEntity.startAt.after(LocalDateTime.now()))
+            .orderBy(volunteerEventEntity.startAt.asc())
+            .fetchFirst()
+    }
 
     @Transactional(readOnly = true)
     override fun findAllByVolunteerId(volunteerId: Long): List<VolunteerEventEntity> {
@@ -44,6 +76,7 @@ class VolunteerEventJpaRepositoryImpl(
             .select(
                 QVolunteerEventWithShelterInfoProjection(
                     volunteerEventEntity.id,
+                    shelterEntity.id,
                     shelterEntity.name,
                     shelterEntity.profileImageUrl,
                     volunteerEventEntity.title,
@@ -110,6 +143,7 @@ class VolunteerEventJpaRepositoryImpl(
             .select(
                 QVolunteerEventWithShelterInfoProjection(
                     volunteerEventEntity.id,
+                    shelterEntity.id,
                     shelterEntity.name,
                     shelterEntity.profileImageUrl,
                     volunteerEventEntity.title,
@@ -144,6 +178,7 @@ class VolunteerEventJpaRepositoryImpl(
             .select(
                 QVolunteerEventWithShelterInfoAndMyParticipationStatusProjection(
                     volunteerEventEntity.id,
+                    shelterEntity.id,
                     shelterEntity.name,
                     shelterEntity.profileImageUrl,
                     volunteerEventEntity.title,

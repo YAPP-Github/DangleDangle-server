@@ -14,6 +14,9 @@ import yapp.be.model.support.PagedResult
 
 interface GetVolunteerEventUseCase {
 
+    fun getVolunteerUpComingVolunteerEvent(
+        volunteerId: Long
+    ): VolunteerSimpleVolunteerEventDto?
     fun getVolunteerVolunteerEventStat(
         volunteerId: Long
     ): VolunteerVolunteerEventStatDto
