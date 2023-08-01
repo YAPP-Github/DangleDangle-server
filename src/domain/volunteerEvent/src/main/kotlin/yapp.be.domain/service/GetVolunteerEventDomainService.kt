@@ -84,6 +84,11 @@ class GetVolunteerEventDomainService(
     }
 
     @Transactional(readOnly = true)
+    override fun getVolunteerEventDone(): List<VolunteerEvent> {
+        return volunteerEventQueryHandler.findVolunteerEventDone()
+    }
+
+    @Transactional(readOnly = true)
     override fun getMemberDetailVolunteerEventInfo(shelterId: Long, volunteerId: Long, volunteerEventId: Long): DetailVolunteerEventDto {
         return volunteerEventQueryHandler.findDetailVolunteerEventInfoByIdAndShelterIdAndVolunteerId(
             id = volunteerEventId,

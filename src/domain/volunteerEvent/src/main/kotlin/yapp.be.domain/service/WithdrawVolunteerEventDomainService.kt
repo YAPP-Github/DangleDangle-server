@@ -33,4 +33,14 @@ class WithdrawVolunteerEventDomainService(
                 volunteerEventId = volunteerEventId
             )
     }
+
+    @Transactional
+    override fun withdrawWaitingQueue(
+        volunteerEventId: Long
+    ) {
+        volunteerEventCommandHandler
+            .deleteVolunteerEventWaitingQueueByVolunteerEventId(
+                volunteerEventId = volunteerEventId
+            )
+    }
 }

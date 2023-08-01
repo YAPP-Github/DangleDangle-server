@@ -64,6 +64,11 @@ class VolunteerEventCommandRepository(
                 volunteerEventId = volunteerEventId
             )
     }
+
+    override fun deleteVolunteerEventWaitingQueueByVolunteerEventId(volunteerEventId: Long) {
+        return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerEventId(volunteerEventId)
+    }
+
     override fun deleteVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
         return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerIdAndVolunteerEventId(
             volunteerId = volunteerId,
