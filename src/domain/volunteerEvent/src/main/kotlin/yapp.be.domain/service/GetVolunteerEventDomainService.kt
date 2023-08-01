@@ -19,6 +19,10 @@ import yapp.be.model.support.PagedResult
 class GetVolunteerEventDomainService(
     private val volunteerEventQueryHandler: VolunteerEventQueryHandler
 ) : GetVolunteerEventUseCase {
+    @Transactional(readOnly = true)
+    override fun getVolunteerUpComingVolunteerEvent(volunteerId: Long): VolunteerSimpleVolunteerEventDto? {
+        return volunteerEventQueryHandler.findUpcomingVolunteerEventByVolunteerId(volunteerId)
+    }
 
     @Transactional(readOnly = true)
     override fun getVolunteerVolunteerEventStat(volunteerId: Long): VolunteerVolunteerEventStatDto {

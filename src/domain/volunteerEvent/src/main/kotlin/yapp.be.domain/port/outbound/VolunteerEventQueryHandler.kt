@@ -15,6 +15,9 @@ import yapp.be.model.support.PagedResult
 
 interface VolunteerEventQueryHandler {
 
+    fun findUpcomingVolunteerEventByVolunteerId(
+        volunteerId: Long
+    ): VolunteerSimpleVolunteerEventDto?
     fun findVolunteerStatByVolunteerId(
         volunteerId: Long
     ): VolunteerVolunteerEventStatDto

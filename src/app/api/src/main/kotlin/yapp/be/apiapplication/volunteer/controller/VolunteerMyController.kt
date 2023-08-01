@@ -12,6 +12,7 @@ import yapp.be.apiapplication.volunteer.service.model.DeleteVolunteerResponseDto
 import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerBookMarkedShelterResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerMyProfileResponseDto
+import yapp.be.apiapplication.volunteer.service.model.GetVolunteerUpcomingVolunteerEventResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerVolunteerEventHistoryResponseDto
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.model.support.PagedResult
@@ -78,9 +79,22 @@ class VolunteerMyController(
         return ResponseEntity.ok(resDto)
     }
 
+    @GetMapping("/volunteer-event/upcoming")
+    @Operation(
+        summary = "봉사자의 다가오는 봉사 이벤트"
+    )
+    fun getVolunteerUpComingVolunteerEvent(
+        @VolunteerAuthentication volunteerInfo: VolunteerAuthenticationInfo
+    ): ResponseEntity<GetVolunteerUpcomingVolunteerEventResponseDto?> {
+        val resDto = volunteerMyApplicationService
+            .getVolunteerUpComingVolunteerEvent(volunteerInfo.volunteerId)
+
+        return ResponseEntity.ok(resDto)
+    }
+
     @GetMapping("/volunteer-event")
     @Operation(
-        summary = "봉사자 봉사 History API"
+        summary = "봉사자 봉사 History"
     )
     fun getVolunteerVolunteerEventHistories(
         @RequestParam page: Int,
