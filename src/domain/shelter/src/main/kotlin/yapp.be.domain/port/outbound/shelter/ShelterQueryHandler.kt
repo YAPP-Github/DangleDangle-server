@@ -15,4 +15,6 @@ interface ShelterQueryHandler {
         id: Long
     ): ShelterDto
     fun existByName(name: String): Boolean
+    fun findByLocation(latitude: Double, longitude: Double, size: Int): List<Shelter>
+    fun findByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long, isFavorite: Boolean): List<Shelter>
 }

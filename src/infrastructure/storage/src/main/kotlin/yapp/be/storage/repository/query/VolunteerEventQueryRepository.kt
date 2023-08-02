@@ -17,6 +17,7 @@ import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 import yapp.be.model.vo.Address
@@ -513,6 +514,54 @@ class VolunteerEventQueryRepository(
             joiningVolunteers = joiningParticipants,
             waitingVolunteers = waitingParticipants
         )
+    }
+
+    override fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndStatusAndCategory(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime,
+        status: VolunteerEventStatus,
+        category: VolunteerEventCategory,
+    ): List<VolunteerSimpleVolunteerEventDto> {
+        val volunteerEventEntityMap =
+            volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonthAndStatusAndCategory(
+                shelterId = shelterId,
+                from = from,
+                to = to,
+                status = status,
+                category = category,
+            ).associateBy { it.id }
+
+        val joinQueueEntityMap =
+            volunteerEventJoinQueueJpaRepository
+                .findAllByVolunteerEventIdIn(volunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        val waitingQueueEntityMap =
+            volunteerEventWaitingQueueJpaRepository
+                .findAllByVolunteerEventIdIn(volunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        return volunteerEventEntityMap
+            .values
+            .map {
+                val joinQueue = joinQueueEntityMap[it.id]
+                val waitingQueue = waitingQueueEntityMap[it.id]
+
+                VolunteerSimpleVolunteerEventDto(
+                    volunteerEventId = it.id,
+                    shelterName = it.shelterName,
+                    title = it.title,
+                    category = it.category,
+                    startAt = it.startAt,
+                    endAt = it.endAt,
+                    eventStatus = it.eventStatus,
+                    recruitNum = it.recruitNum,
+                    participantNum = joinQueue?.size ?: 0,
+                    waitingNum = waitingQueue?.size ?: 0,
+                    myParticipationStatus = UserEventParticipationStatus.NONE,
+                )
+            }.toList()
     }
 
     override fun findAllVolunteerSimpleVolunteerEventInfosByShelterIdAndDateRange(
