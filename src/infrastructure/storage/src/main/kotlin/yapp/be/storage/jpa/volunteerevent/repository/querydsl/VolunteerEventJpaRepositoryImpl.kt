@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.storage.jpa.shelter.model.QShelterEntity.shelterEntity
 import yapp.be.storage.jpa.volunteerevent.model.QVolunteerEventEntity.volunteerEventEntity
@@ -64,6 +65,43 @@ class VolunteerEventJpaRepositoryImpl(
                     .and(volunteerEventEntity.deleted.isFalse)
             )
             .fetchOne()
+    }
+
+    override fun findAllByShelterIdAndYearAndMonthAndStatusAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, status: VolunteerEventStatus, category: VolunteerEventCategory): List<VolunteerEventWithShelterInfoProjection> {
+        return queryFactory
+            .select(
+                QVolunteerEventWithShelterInfoProjection(
+                    volunteerEventEntity.id,
+                    shelterEntity.name,
+                    shelterEntity.profileImageUrl,
+                    volunteerEventEntity.title,
+                    volunteerEventEntity.recruitNum,
+                    shelterEntity.address,
+                    volunteerEventEntity.description,
+                    volunteerEventEntity.ageLimit,
+                    volunteerEventEntity.category,
+                    volunteerEventEntity.status,
+                    volunteerEventEntity.startAt,
+                    volunteerEventEntity.endAt
+                )
+            )
+            .from(volunteerEventEntity)
+            .join(shelterEntity).on(volunteerEventEntity.shelterId.eq(shelterId))
+            .where(
+                volunteerEventEntity.shelterId.eq(shelterId)
+                    .and(
+                        isEventAtBetweenYearAndMonth(
+                            from = from,
+                            to = to,
+                        )
+                    ).and(
+                        volunteerEventEntity.deleted.isFalse
+                    ).and(
+                        volunteerEventEntity.status.eq(status)
+                    ).and(
+                        volunteerEventEntity.category.eq(category)
+                    )
+            ).fetch()
     }
 
     @Transactional(readOnly = true)

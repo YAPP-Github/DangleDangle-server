@@ -10,6 +10,7 @@ import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
 import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 
@@ -60,6 +61,14 @@ interface VolunteerEventQueryHandler {
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
+    ): List<VolunteerSimpleVolunteerEventDto>
+
+    fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndStatusAndCategory(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime,
+        status: VolunteerEventStatus,
+        category: VolunteerEventCategory,
     ): List<VolunteerSimpleVolunteerEventDto>
 
     fun findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(

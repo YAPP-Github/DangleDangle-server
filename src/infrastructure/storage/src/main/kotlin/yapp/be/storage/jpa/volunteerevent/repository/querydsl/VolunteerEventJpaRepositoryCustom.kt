@@ -3,6 +3,8 @@ package yapp.be.storage.jpa.volunteerevent.repository.querydsl
 import java.time.LocalDateTime
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
+import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.storage.jpa.volunteerevent.model.VolunteerEventEntity
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEventWithShelterInfoAndMyParticipationStatusProjection
 import yapp.be.storage.jpa.volunteerevent.repository.querydsl.model.VolunteerEventWithShelterInfoProjection
@@ -19,6 +21,14 @@ interface VolunteerEventJpaRepositoryCustom {
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
+    ): List<VolunteerEventWithShelterInfoProjection>
+
+    fun findAllByShelterIdAndYearAndMonthAndStatusAndCategory(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime,
+        status: VolunteerEventStatus,
+        category: VolunteerEventCategory,
     ): List<VolunteerEventWithShelterInfoProjection>
 
     fun findAllVolunteerEventByVolunteerId(volunteerId: Long, pageable: Pageable): Page<VolunteerEventWithShelterInfoAndMyParticipationStatusProjection>

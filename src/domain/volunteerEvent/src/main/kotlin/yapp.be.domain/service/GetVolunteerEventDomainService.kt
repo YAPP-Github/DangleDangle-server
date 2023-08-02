@@ -12,6 +12,7 @@ import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 
@@ -128,6 +129,17 @@ class GetVolunteerEventDomainService(
             volunteerId = volunteerId,
             from = from,
             to = to
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getVolunteerEventsByDateRangeAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: VolunteerEventCategory, status: VolunteerEventStatus): List<VolunteerSimpleVolunteerEventDto> {
+        return volunteerEventQueryHandler.findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndStatusAndCategory(
+            shelterId = shelterId,
+            from = from,
+            to = to,
+            status = status,
+            category = category,
         )
     }
 
