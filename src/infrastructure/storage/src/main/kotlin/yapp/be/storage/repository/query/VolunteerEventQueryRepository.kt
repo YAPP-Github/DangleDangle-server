@@ -549,8 +549,10 @@ class VolunteerEventQueryRepository(
                 val waitingQueue = waitingQueueEntityMap[it.id]
 
                 VolunteerSimpleVolunteerEventDto(
+                    shelterId = shelterId,
                     volunteerEventId = it.id,
                     shelterName = it.shelterName,
+                    shelterProfileImageUrl = it.shelterProfileImageUrl,
                     title = it.title,
                     category = it.category,
                     startAt = it.startAt,
