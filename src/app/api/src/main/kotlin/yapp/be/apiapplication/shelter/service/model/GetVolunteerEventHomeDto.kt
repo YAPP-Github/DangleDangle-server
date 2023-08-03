@@ -10,18 +10,8 @@ data class GetVolunteerEventHomeRequestDto(
     val status: VolunteerEventStatus,
     val from: LocalDateTime,
     val to: LocalDateTime,
-    val longitude: Double,
-    val latitude: Double,
-    val isFavorite: Boolean?,
-)
-
-data class GetVolunteerEventHomeResponseDto(
-    val volunteerId: Long?,
-    val category: VolunteerEventCategory,
-    val status: VolunteerEventStatus,
-    val from: LocalDateTime,
-    val to: LocalDateTime,
-    val longitude: Double,
-    val latitude: Double,
+    val longitude: Double?,
+    val latitude: Double?,
+    val address: String?,
     val isFavorite: Boolean?,
 )

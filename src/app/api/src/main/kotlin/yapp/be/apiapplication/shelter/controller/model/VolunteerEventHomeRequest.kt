@@ -14,7 +14,8 @@ data class VolunteerEventHomeRequest(
     val from: LocalDate,
     @field:NotNull(message = "종료날짜 값이 비어있습니다.")
     val to: LocalDate,
-    val longitude: Double,
-    val latitude: Double,
+    val longitude: Double?,
+    val latitude: Double?,
+    val address: String?,
     val isFavorite: Boolean?,
 )
