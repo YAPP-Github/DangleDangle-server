@@ -55,4 +55,20 @@ class ShelterJpaRepositoryImpl(
             .where(shelterBookMarkEntity.volunteerId.eq(volunteerId))
             .fetch()
     }
+
+    @Transactional(readOnly = true)
+    override fun findAllBookMarkedShelterByVolunteerIdAndAddress(address: String, volunteerId: Long): List<ShelterEntity> {
+        return queryFactory
+            .selectFrom(
+                shelterEntity
+            ).join(shelterBookMarkEntity)
+            .on(shelterEntity.id.eq(shelterBookMarkEntity.shelterId))
+            .where(
+                shelterBookMarkEntity.volunteerId.eq(volunteerId)
+                    .and(
+                        shelterEntity.address.address.like(address)
+                    )
+            )
+            .fetch()
+    }
 }

@@ -36,6 +36,7 @@ class VolunteerEventHomeController(
             to = req.to.atTime(23, 59, 59),
             longitude = req.longitude,
             latitude = req.latitude,
+            address = req.address,
             isFavorite = req.isFavorite,
         )
 

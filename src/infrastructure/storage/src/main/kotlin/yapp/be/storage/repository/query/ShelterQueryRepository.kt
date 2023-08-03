@@ -87,7 +87,7 @@ class ShelterQueryRepository(
         return shelterJpaRepository.findByName(name) != null
     }
 
-    override fun findByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long, isFavorite: Boolean): List<Shelter> {
+    override fun findByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long): List<Shelter> {
         val shelters = mutableListOf<Shelter>()
         shelterJpaRepository
             .findAllBookMarkedShelterByVolunteerId(
@@ -106,6 +106,18 @@ class ShelterQueryRepository(
                 shelters.add(it.toDomainModel())
         }
         return shelters
+    }
+
+    override fun findByAddressAndIsFavorite(address: String, volunteerId: Long): List<Shelter> {
+        return shelterJpaRepository
+            .findAllBookMarkedShelterByVolunteerIdAndAddress(
+                volunteerId = volunteerId,
+                address = address,
+            ).map { it.toDomainModel() }
+    }
+
+    override fun findByAddress(address: String): List<Shelter> {
+        return shelterJpaRepository.findAllByAddress(address).map { it.toDomainModel() }
     }
 
     private fun calculateLocation(shelterLat: Double, shelterLng: Double, userLat: Double, userLng: Double): Double {
