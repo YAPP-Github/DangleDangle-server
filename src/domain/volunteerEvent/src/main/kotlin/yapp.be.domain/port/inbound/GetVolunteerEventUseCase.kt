@@ -8,6 +8,7 @@ import yapp.be.domain.model.dto.ShelterUserVolunteerEventStatDto
 import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerVolunteerEventStatDto
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import yapp.be.model.support.PagedResult
 
@@ -40,6 +41,14 @@ interface GetVolunteerEventUseCase {
         volunteerEventId: Long
     ): VolunteerEvent
 
+    fun getVolunteerEventsByDateRangeAndCategoryAndStatus(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime,
+        category: VolunteerEventCategory?,
+        status: VolunteerEventStatus
+    ): List<VolunteerSimpleVolunteerEventDto>
+
     fun getMemberDetailVolunteerEventInfo(
         shelterId: Long,
         volunteerId: Long,
@@ -67,6 +76,7 @@ interface GetVolunteerEventUseCase {
         from: LocalDateTime,
         to: LocalDateTime
     ): List<VolunteerSimpleVolunteerEventDto>
+
     fun getNonMemberVolunteerEventsByDateRange(
         shelterId: Long,
         from: LocalDateTime,

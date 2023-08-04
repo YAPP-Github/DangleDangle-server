@@ -28,6 +28,24 @@ class GetShelterDomainService(
     }
 
     @Transactional(readOnly = true)
+    override fun getShelterByAddressAndIsFavorite(address: String, volunteerId: Long?, isFavorite: Boolean?): List<Shelter> {
+        return if (volunteerId == null || isFavorite == false) {
+            shelterQueryHandler.findByAddress(address)
+        } else {
+            shelterQueryHandler.findByAddressAndIsFavorite(address, volunteerId)
+        }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getShelterByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long?, isFavorite: Boolean?): List<Shelter> {
+        return if (volunteerId == null || isFavorite == false) {
+            shelterQueryHandler.findByLocation(latitude, longitude, size)
+        } else {
+            shelterQueryHandler.findByLocationAndIsFavorite(latitude, longitude, size, volunteerId)
+        }
+    }
+
+    @Transactional(readOnly = true)
     override fun getNonMemberShelterInfoById(shelterId: Long): ShelterDto {
         return shelterQueryHandler.findInfoById(id = shelterId)
     }

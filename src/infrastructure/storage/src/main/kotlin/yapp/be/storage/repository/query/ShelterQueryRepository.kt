@@ -87,6 +87,56 @@ class ShelterQueryRepository(
         return shelterJpaRepository.findByName(name) != null
     }
 
+    override fun findByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long): List<Shelter> {
+        val shelters = mutableListOf<Shelter>()
+        shelterJpaRepository
+            .findAllBookMarkedShelterByVolunteerId(
+                volunteerId = volunteerId
+            ).map {
+                if (calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size)
+                    shelters.add(it.toDomainModel())
+            }
+        return shelters
+    }
+
+    override fun findByLocation(latitude: Double, longitude: Double, size: Int): List<Shelter> {
+        val shelters = mutableListOf<Shelter>()
+        shelterJpaRepository.findAll().map {
+            if (calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size)
+                shelters.add(it.toDomainModel())
+        }
+        return shelters
+    }
+
+    override fun findByAddressAndIsFavorite(address: String, volunteerId: Long): List<Shelter> {
+        return shelterJpaRepository
+            .findAllBookMarkedShelterByVolunteerIdAndAddress(
+                volunteerId = volunteerId,
+                address = address,
+            ).map { it.toDomainModel() }
+    }
+
+    override fun findByAddress(address: String): List<Shelter> {
+        return shelterJpaRepository.findAllByAddress(address).map { it.toDomainModel() }
+    }
+
+    private fun calculateLocation(shelterLat: Double, shelterLng: Double, userLat: Double, userLng: Double): Double {
+        val theta: Double = shelterLng - userLng
+        var dist = Math.sin(deg2rad(shelterLat)) * Math.sin(deg2rad(userLat)) + Math.cos(deg2rad(shelterLat)) * Math.cos(deg2rad(userLat)) * Math.cos(deg2rad(theta))
+        dist = Math.acos(dist)
+        dist = rad2deg(dist)
+        dist *= 60 * 1.1515 * 1609.344
+        return dist
+    }
+
+    private fun deg2rad(deg: Double): Double {
+        return deg * Math.PI / 180.0
+    }
+
+    private fun rad2deg(rad: Double): Double {
+        return rad * 180 / Math.PI
+    }
+
     override fun getAllBookMarkedShelterByVolunteerId(volunteerId: Long): List<Shelter> {
         return shelterJpaRepository.findAllBookMarkedShelterByVolunteerId(volunteerId)
             .map { it.toDomainModel() }

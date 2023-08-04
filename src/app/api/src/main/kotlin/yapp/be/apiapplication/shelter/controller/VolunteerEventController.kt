@@ -36,7 +36,6 @@ class VolunteerEventController(
     @Operation(
         summary = "봉사이벤트 리스트 조회"
     )
-
     fun getVolunteerEvents(
         @PathVariable shelterId: Long,
         @VolunteerAuthentication volunteerInfo: VolunteerAuthenticationInfo?,
