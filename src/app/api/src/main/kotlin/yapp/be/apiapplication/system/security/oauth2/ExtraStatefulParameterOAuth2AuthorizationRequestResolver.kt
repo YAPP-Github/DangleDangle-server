@@ -43,10 +43,12 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
     }
 
     private fun getClientHost(request: HttpServletRequest): String {
-        val clientIP = request.getHeader("X-Forwarded-For")?.takeIf {
-            it.isNotEmpty() && !it.equals("unknown", ignoreCase = true)
-        } ?: request.remoteAddr ?: "localhost:8080/"
-
-        return clientIP
+        request.getHeader(REFERER) ?.let {
+            if (it == "localhost") {
+                return "$it:3000"
+            }
+            return it
+        }
+        return "localhost:8080"
     }
 }
