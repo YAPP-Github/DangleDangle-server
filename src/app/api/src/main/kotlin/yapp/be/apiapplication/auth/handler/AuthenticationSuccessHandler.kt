@@ -32,7 +32,7 @@ class AuthenticationSuccessHandler(
         val customOAuth2User = authentication.principal as CustomOAuth2User
         val userEmail = Email(customOAuth2User.customOAuthAttributes.email)
         val isMember = checkVolunteerUseCase.isExistByEmail(userEmail)
-        val REDIRECT_URI = request.getParameter("client_redirect_uri")
+        val REDIRECT_HOST = "https://dangledangle.vercel.app/volunteer/redirect" // request.getParameter("state")
 
         if (isMember) {
             val user = getVolunteerUseCase.getByEmail(userEmail)
@@ -64,7 +64,9 @@ class AuthenticationSuccessHandler(
             )
 
             val param = "authToken=" + URLEncoder.encode(authToken, StandardCharsets.UTF_8)
-            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
+            val redirectUri = "$REDIRECT_HOST?$param"
+            println(redirectUri)
+            redirectStrategy.sendRedirect(request, response, redirectUri)
         } else {
             saveOAuthNonMemberInfoUseCase.saveOAuthNonMemberInfo(
                 email = userEmail,
@@ -73,7 +75,7 @@ class AuthenticationSuccessHandler(
             )
             val param = "email=" + URLEncoder.encode(userEmail.value, StandardCharsets.UTF_8) +
                 "&isMember=" + false
-            redirectStrategy.sendRedirect(request, response, "$REDIRECT_URI?$param")
+            redirectStrategy.sendRedirect(request, response, "$REDIRECT_HOST?$param")
         }
     }
 }
