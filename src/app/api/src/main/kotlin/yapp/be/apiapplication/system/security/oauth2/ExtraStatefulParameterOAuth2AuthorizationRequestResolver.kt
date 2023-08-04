@@ -1,6 +1,7 @@
 package yapp.be.apiapplication.system.security.oauth2
 
 import jakarta.servlet.http.HttpServletRequest
+import java.net.URLEncoder
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter
@@ -12,7 +13,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
 ) : OAuth2AuthorizationRequestResolver {
 
     val REFERER = "Referer"
-    val CLIENT_REDIRECT_URI = "client_redirect_uri"
+    val CLIENT_REDIRECT_HOST = "state"
     var defaultOAuth2AuthorizationRequestResolver: OAuth2AuthorizationRequestResolver
 
     init {
@@ -27,13 +28,11 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
         if (authorizationRequest != null) {
 
             val extraStatefulParameters: MutableMap<String, Any> = HashMap(authorizationRequest.additionalParameters)
-            extraStatefulParameters[CLIENT_REDIRECT_URI] = "$clientRedirectHost/volunteer/redirect"
+            extraStatefulParameters[CLIENT_REDIRECT_HOST] = URLEncoder.encode("$clientRedirectHost/volunteer/redirect", "UTF-8")
 
-            val newRequest = OAuth2AuthorizationRequest.from(authorizationRequest)
-                .additionalParameters(extraStatefulParameters)
+            return OAuth2AuthorizationRequest.from(authorizationRequest)
+                // .additionalParameters(extraStatefulParameters)
                 .build()
-
-            return newRequest
         }
         return null
     }
@@ -43,6 +42,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
     }
 
     private fun getClientHost(request: HttpServletRequest): String {
-        return request.getHeader(REFERER) ?: "localhost:8080"
+        val redirect = request.getHeader(REFERER) ?: "http://localhost:8080"
+        return redirect
     }
 }
