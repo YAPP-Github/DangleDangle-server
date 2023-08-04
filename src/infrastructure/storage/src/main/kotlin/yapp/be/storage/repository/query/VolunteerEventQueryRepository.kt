@@ -521,7 +521,7 @@ class VolunteerEventQueryRepository(
         from: LocalDateTime,
         to: LocalDateTime,
         status: VolunteerEventStatus,
-        category: VolunteerEventCategory,
+        category: VolunteerEventCategory?,
     ): List<VolunteerSimpleVolunteerEventDto> {
         val volunteerEventEntityMap =
             volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonthAndStatusAndCategory(

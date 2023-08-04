@@ -71,4 +71,12 @@ class ShelterJpaRepositoryImpl(
             )
             .fetch()
     }
+
+    @Transactional(readOnly = true)
+    override fun findAllByAddress(address: String): List<ShelterEntity> {
+        return queryFactory
+            .selectFrom(shelterEntity)
+            .where(shelterEntity.address.address.like(address))
+            .fetch()
+    }
 }

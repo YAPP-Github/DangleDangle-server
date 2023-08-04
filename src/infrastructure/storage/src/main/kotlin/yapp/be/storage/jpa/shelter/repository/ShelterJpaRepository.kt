@@ -6,5 +6,4 @@ import yapp.be.storage.jpa.shelter.repository.querydsl.ShelterJpaRepositoryCusto
 
 interface ShelterJpaRepository : JpaRepository<ShelterEntity, Long>, ShelterJpaRepositoryCustom {
     fun findByName(name: String): ShelterEntity?
-    fun findAllByAddress(address: String): List<ShelterEntity>
 }
