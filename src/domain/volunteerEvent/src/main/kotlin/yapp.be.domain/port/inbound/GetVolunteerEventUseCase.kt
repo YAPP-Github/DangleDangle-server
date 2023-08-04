@@ -45,7 +45,7 @@ interface GetVolunteerEventUseCase {
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
-        category: VolunteerEventCategory,
+        category: VolunteerEventCategory?,
         status: VolunteerEventStatus
     ): List<VolunteerSimpleVolunteerEventDto>
 

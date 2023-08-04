@@ -30,9 +30,9 @@ class GetShelterDomainService(
     @Transactional(readOnly = true)
     override fun getShelterByAddressAndIsFavorite(address: String, volunteerId: Long?, isFavorite: Boolean?): List<Shelter> {
         return if (volunteerId == null || isFavorite == false) {
-            shelterQueryHandler.findByAddressAndIsFavorite(address, volunteerId!!)
-        } else {
             shelterQueryHandler.findByAddress(address)
+        } else {
+            shelterQueryHandler.findByAddressAndIsFavorite(address, volunteerId)
         }
     }
 

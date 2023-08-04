@@ -6,8 +6,7 @@ import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
 import java.time.LocalDate
 
 data class VolunteerEventHomeRequest(
-    @field:NotNull(message = "이벤트 카테고리 값이 비어있습니다.")
-    val category: VolunteerEventCategory,
+    val category: VolunteerEventCategory?,
     @field:NotNull(message = "이벤트 상태 값이 비어있습니다.")
     val status: VolunteerEventStatus,
     @field:NotNull(message = "시작날짜 값이 비어있습니다.")

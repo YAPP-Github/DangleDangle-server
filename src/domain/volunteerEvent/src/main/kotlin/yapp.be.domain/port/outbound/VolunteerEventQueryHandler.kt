@@ -75,7 +75,7 @@ interface VolunteerEventQueryHandler {
         from: LocalDateTime,
         to: LocalDateTime,
         status: VolunteerEventStatus,
-        category: VolunteerEventCategory,
+        category: VolunteerEventCategory?,
     ): List<VolunteerSimpleVolunteerEventDto>
 
     fun findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(
