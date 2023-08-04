@@ -11,7 +11,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
     clientRegistrationRepository: ClientRegistrationRepository
 ) : OAuth2AuthorizationRequestResolver {
 
-    val REFERER = "referer"
+    val REFERER = "Referer"
     val CLIENT_REDIRECT_URI = "client_redirect_uri"
     var defaultOAuth2AuthorizationRequestResolver: OAuth2AuthorizationRequestResolver
 
@@ -43,12 +43,6 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
     }
 
     private fun getClientHost(request: HttpServletRequest): String {
-        request.getHeader(REFERER) ?.let {
-            if (it == "localhost") {
-                return "$it:3000"
-            }
-            return it
-        }
-        return "localhost:8080"
+        return request.getHeader(REFERER) ?: "localhost:8080"
     }
 }
