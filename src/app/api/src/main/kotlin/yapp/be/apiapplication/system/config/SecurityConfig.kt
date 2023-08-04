@@ -22,6 +22,7 @@ import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
+import yapp.be.apiapplication.system.security.oauth2.ExtraStatefulParameterOAuth2AuthorizationRequestResolver
 import yapp.be.domain.port.inbound.CheckTokenUseCase
 import yapp.be.model.enums.volunteerevent.Role
 
@@ -29,6 +30,7 @@ import yapp.be.model.enums.volunteerevent.Role
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtTokenProvider: JwtTokenProvider,
+    private val oAuth2ClientProperties: OAuth2ClientProperties,
     private val filterExceptionHandler: FilterExceptionHandler,
     private val customAccessDeniedHandler: CustomAccessDeniedHandler,
     private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
@@ -50,10 +52,15 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
 
         http
-            .oauth2Login { it ->
-                it.successHandler(authenticationSuccessHandler)
-                it.userInfoEndpoint {
+            .oauth2Login { loginHandler ->
+                loginHandler.successHandler(authenticationSuccessHandler)
+                loginHandler.userInfoEndpoint {
                     it.userService(customOAuth2UserService)
+                }
+                loginHandler.authorizationEndpoint {
+                    it.authorizationRequestResolver(
+                        ExtraStatefulParameterOAuth2AuthorizationRequestResolver(clientRegistrationRepository())
+                    )
                 }
             }
 
@@ -100,9 +107,7 @@ class SecurityConfig(
     }
 
     @Bean
-    fun clientRegistrationRepository(
-        oAuth2ClientProperties: OAuth2ClientProperties,
-    ): ClientRegistrationRepository {
+    fun clientRegistrationRepository(): ClientRegistrationRepository {
         val mapper = OAuth2ClientPropertiesMapper(oAuth2ClientProperties)
         val clientRegistrations = mapper.asClientRegistrations()
         return InMemoryClientRegistrationRepository(clientRegistrations)
