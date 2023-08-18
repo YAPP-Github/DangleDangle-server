@@ -46,7 +46,7 @@ interface GetVolunteerEventUseCase {
         from: LocalDateTime,
         to: LocalDateTime,
         category: VolunteerEventCategory?,
-        status: VolunteerEventStatus
+        status: VolunteerEventStatus?
     ): List<VolunteerSimpleVolunteerEventDto>
 
     fun getMemberDetailVolunteerEventInfo(

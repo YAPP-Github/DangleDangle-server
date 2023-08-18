@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 data class GetVolunteerEventHomeRequestDto(
     val volunteerId: Long?,
     val category: VolunteerEventCategory?,
-    val status: VolunteerEventStatus,
+    val status: VolunteerEventStatus?,
     val from: LocalDateTime,
     val to: LocalDateTime,
     val longitude: Double?,

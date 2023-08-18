@@ -13,6 +13,7 @@ class GetOAuthNonMemberInfoDomainService(
 
     @Transactional(readOnly = true)
     override fun get(email: Email): String? {
-        return oAuthNonMemberInfoQueryHandler.get(email)
+        val nonMemberInfo = oAuthNonMemberInfoQueryHandler.get(email)
+        return nonMemberInfo
     }
 }

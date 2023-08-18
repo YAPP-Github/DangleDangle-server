@@ -16,12 +16,12 @@ class VolunteerEventHomeApplicationService(
     fun getVolunteerEventHome(
         reqDto: GetVolunteerEventHomeRequestDto
     ): List<VolunteerSimpleVolunteerEventDto> {
+        val dtos = mutableListOf<VolunteerSimpleVolunteerEventDto>()
         val shelters = if (reqDto.address != null) {
             getShelterUseCase.getShelterByAddressAndIsFavorite(reqDto.address, reqDto.volunteerId, reqDto.isFavorite)
         } else {
             getShelterUseCase.getShelterByLocationAndIsFavorite(reqDto.latitude!!, reqDto.longitude!!, 50000, reqDto.volunteerId, reqDto.isFavorite)
         }
-        val dtos = mutableListOf<VolunteerSimpleVolunteerEventDto>()
         shelters.map {
             dtos.addAll(getVolunteerEventUseCase.getVolunteerEventsByDateRangeAndCategoryAndStatus(it.id, reqDto.from, reqDto.to, reqDto.category, reqDto.status))
         }

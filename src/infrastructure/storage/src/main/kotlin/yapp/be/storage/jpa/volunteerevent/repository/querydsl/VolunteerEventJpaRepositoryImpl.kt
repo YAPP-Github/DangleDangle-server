@@ -100,7 +100,7 @@ class VolunteerEventJpaRepositoryImpl(
             .fetchOne()
     }
 
-    override fun findAllByShelterIdAndYearAndMonthAndStatusAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, status: VolunteerEventStatus, category: VolunteerEventCategory?): List<VolunteerEventWithShelterInfoProjection> {
+    override fun findAllByShelterIdAndYearAndMonthAndStatusAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, status: VolunteerEventStatus?, category: VolunteerEventCategory?): List<VolunteerEventWithShelterInfoProjection> {
         return queryFactory
             .select(
                 QVolunteerEventWithShelterInfoProjection(
@@ -130,9 +130,8 @@ class VolunteerEventJpaRepositoryImpl(
                         )
                     ).and(
                         volunteerEventEntity.deleted.isFalse
-                    ).and(
-                        volunteerEventEntity.status.eq(status)
-                    ).and(
+                    ).and(status?.let { volunteerEventEntity.status.eq(it) })
+                    .and(
                         volunteerEventEntity.category.eq(category)
                     )
             ).fetch()

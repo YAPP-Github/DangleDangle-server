@@ -520,7 +520,7 @@ class VolunteerEventQueryRepository(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
-        status: VolunteerEventStatus,
+        status: VolunteerEventStatus?,
         category: VolunteerEventCategory?,
     ): List<VolunteerSimpleVolunteerEventDto> {
         val volunteerEventEntityMap =

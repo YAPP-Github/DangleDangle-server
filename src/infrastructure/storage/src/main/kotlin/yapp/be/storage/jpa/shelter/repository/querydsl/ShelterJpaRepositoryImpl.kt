@@ -76,7 +76,7 @@ class ShelterJpaRepositoryImpl(
     override fun findAllByAddress(address: String): List<ShelterEntity> {
         return queryFactory
             .selectFrom(shelterEntity)
-            .where(shelterEntity.address.address.like(address))
+            .where(shelterEntity.address.address.contains(address))
             .fetch()
     }
 }
