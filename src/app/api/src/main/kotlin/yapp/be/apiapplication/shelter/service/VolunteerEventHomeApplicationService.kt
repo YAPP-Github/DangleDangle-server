@@ -23,7 +23,7 @@ class VolunteerEventHomeApplicationService(
         }
         val dtos = mutableListOf<VolunteerSimpleVolunteerEventDto>()
         shelters.map {
-            dtos.addAll(getVolunteerEventUseCase.getVolunteerEventsByDateRangeAndCategoryAndStatus(it.id, reqDto.from, reqDto.to, reqDto.category, reqDto.status))
+            dtos.addAll(getVolunteerEventUseCase.getVolunteerEventsByDateRangeAndCategory(it.id, reqDto.from, reqDto.to, reqDto.category))
         }
         return dtos
     }

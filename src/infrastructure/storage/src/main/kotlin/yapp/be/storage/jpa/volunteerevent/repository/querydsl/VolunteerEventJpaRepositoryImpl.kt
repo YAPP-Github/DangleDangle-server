@@ -1,5 +1,6 @@
 package yapp.be.storage.jpa.volunteerevent.repository.querydsl
 
+import com.querydsl.core.BooleanBuilder
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.CaseBuilder
 import com.querydsl.core.types.dsl.Expressions
@@ -100,7 +101,11 @@ class VolunteerEventJpaRepositoryImpl(
             .fetchOne()
     }
 
-    override fun findAllByShelterIdAndYearAndMonthAndStatusAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, status: VolunteerEventStatus, category: VolunteerEventCategory?): List<VolunteerEventWithShelterInfoProjection> {
+    @Transactional(readOnly = true)
+    override fun findAllByShelterIdAndYearAndMonthAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: VolunteerEventCategory?): List<VolunteerEventWithShelterInfoProjection> {
+        val builder = BooleanBuilder()
+        category?.let { builder.and(volunteerEventEntity.category.eq(it)) }
+
         return queryFactory
             .select(
                 QVolunteerEventWithShelterInfoProjection(
@@ -131,9 +136,48 @@ class VolunteerEventJpaRepositoryImpl(
                     ).and(
                         volunteerEventEntity.deleted.isFalse
                     ).and(
-                        volunteerEventEntity.status.eq(status)
+                        builder
+                    )
+            ).fetch()
+    }
+
+    @Transactional(readOnly = true)
+    override fun findAllByShelterIdAndYearAndMonthAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: List<VolunteerEventCategory>?, status: VolunteerEventStatus?): List<VolunteerEventWithShelterInfoProjection> {
+        val builder = BooleanBuilder()
+        category?.forEach { builder.or(volunteerEventEntity.category.eq(it)) }
+        status?.let { builder.and(volunteerEventEntity.status.eq(it)) }
+
+        return queryFactory
+            .select(
+                QVolunteerEventWithShelterInfoProjection(
+                    volunteerEventEntity.id,
+                    shelterEntity.id,
+                    shelterEntity.name,
+                    shelterEntity.profileImageUrl,
+                    volunteerEventEntity.title,
+                    volunteerEventEntity.recruitNum,
+                    shelterEntity.address,
+                    volunteerEventEntity.description,
+                    volunteerEventEntity.ageLimit,
+                    volunteerEventEntity.category,
+                    volunteerEventEntity.status,
+                    volunteerEventEntity.startAt,
+                    volunteerEventEntity.endAt
+                )
+            )
+            .from(volunteerEventEntity)
+            .join(shelterEntity).on(volunteerEventEntity.shelterId.eq(shelterId))
+            .where(
+                volunteerEventEntity.shelterId.eq(shelterId)
+                    .and(
+                        isEventAtBetweenYearAndMonth(
+                            from = from,
+                            to = to,
+                        )
                     ).and(
-                        volunteerEventEntity.category.eq(category)
+                        volunteerEventEntity.deleted.isFalse
+                    ).and(
+                        builder
                     )
             ).fetch()
     }

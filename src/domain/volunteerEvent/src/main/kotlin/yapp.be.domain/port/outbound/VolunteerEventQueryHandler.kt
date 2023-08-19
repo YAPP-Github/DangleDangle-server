@@ -70,12 +70,19 @@ interface VolunteerEventQueryHandler {
         to: LocalDateTime
     ): List<VolunteerSimpleVolunteerEventDto>
 
-    fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndStatusAndCategory(
+    fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndCategory(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
-        status: VolunteerEventStatus,
         category: VolunteerEventCategory?,
+    ): List<VolunteerSimpleVolunteerEventDto>
+
+    fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByDateRangeAndCategoryAndStatus(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime,
+        category: List<VolunteerEventCategory>?,
+        status: VolunteerEventStatus?,
     ): List<VolunteerSimpleVolunteerEventDto>
 
     fun findVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(

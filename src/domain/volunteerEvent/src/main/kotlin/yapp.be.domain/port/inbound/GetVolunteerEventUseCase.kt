@@ -41,12 +41,19 @@ interface GetVolunteerEventUseCase {
         volunteerEventId: Long
     ): VolunteerEvent
 
-    fun getVolunteerEventsByDateRangeAndCategoryAndStatus(
+    fun getVolunteerEventsByDateRangeAndCategory(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
         category: VolunteerEventCategory?,
-        status: VolunteerEventStatus
+    ): List<VolunteerSimpleVolunteerEventDto>
+
+    fun getVolunteerEventsByDateRangeAndCategoryAndStatus(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime,
+        category: List<VolunteerEventCategory>?,
+        status: VolunteerEventStatus?,
     ): List<VolunteerSimpleVolunteerEventDto>
 
     fun getMemberDetailVolunteerEventInfo(
