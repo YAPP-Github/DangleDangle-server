@@ -516,20 +516,62 @@ class VolunteerEventQueryRepository(
         )
     }
 
-    override fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndStatusAndCategory(
+    override fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndCategory(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
-        status: VolunteerEventStatus,
         category: VolunteerEventCategory?,
     ): List<VolunteerSimpleVolunteerEventDto> {
         val volunteerEventEntityMap =
-            volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonthAndStatusAndCategory(
+            volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonthAndCategory(
                 shelterId = shelterId,
                 from = from,
                 to = to,
-                status = status,
                 category = category,
+            ).associateBy { it.id }
+
+        val joinQueueEntityMap =
+            volunteerEventJoinQueueJpaRepository
+                .findAllByVolunteerEventIdIn(volunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        val waitingQueueEntityMap =
+            volunteerEventWaitingQueueJpaRepository
+                .findAllByVolunteerEventIdIn(volunteerEventEntityMap.keys)
+                .groupBy { it.volunteerEventId }
+
+        return volunteerEventEntityMap
+            .values
+            .map {
+                val joinQueue = joinQueueEntityMap[it.id]
+                val waitingQueue = waitingQueueEntityMap[it.id]
+
+                VolunteerSimpleVolunteerEventDto(
+                    shelterId = shelterId,
+                    volunteerEventId = it.id,
+                    shelterName = it.shelterName,
+                    shelterProfileImageUrl = it.shelterProfileImageUrl,
+                    title = it.title,
+                    category = it.category,
+                    startAt = it.startAt,
+                    endAt = it.endAt,
+                    eventStatus = it.eventStatus,
+                    recruitNum = it.recruitNum,
+                    participantNum = joinQueue?.size ?: 0,
+                    waitingNum = waitingQueue?.size ?: 0,
+                    myParticipationStatus = UserEventParticipationStatus.NONE,
+                )
+            }.toList()
+    }
+
+    override fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByDateRangeAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: List<VolunteerEventCategory>?, status: VolunteerEventStatus?): List<VolunteerSimpleVolunteerEventDto> {
+        val volunteerEventEntityMap =
+            volunteerEventJpaRepository.findAllByShelterIdAndYearAndMonthAndCategoryAndStatus(
+                shelterId = shelterId,
+                from = from,
+                to = to,
+                category = category,
+                status = status,
             ).associateBy { it.id }
 
         val joinQueueEntityMap =

@@ -142,13 +142,23 @@ class GetVolunteerEventDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getVolunteerEventsByDateRangeAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: VolunteerEventCategory?, status: VolunteerEventStatus): List<VolunteerSimpleVolunteerEventDto> {
-        return volunteerEventQueryHandler.findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndStatusAndCategory(
+    override fun getVolunteerEventsByDateRangeAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: VolunteerEventCategory?): List<VolunteerSimpleVolunteerEventDto> {
+        return volunteerEventQueryHandler.findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndDateRangeAndCategory(
             shelterId = shelterId,
             from = from,
             to = to,
-            status = status,
             category = category,
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getVolunteerEventsByDateRangeAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: List<VolunteerEventCategory>?, status: VolunteerEventStatus?): List<VolunteerSimpleVolunteerEventDto> {
+        return volunteerEventQueryHandler.findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByDateRangeAndCategoryAndStatus(
+            shelterId = shelterId,
+            from = from,
+            to = to,
+            category = category,
+            status = status,
         )
     }
 

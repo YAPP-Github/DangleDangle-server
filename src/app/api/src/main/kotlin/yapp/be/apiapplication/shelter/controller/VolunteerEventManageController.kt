@@ -18,24 +18,20 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import yapp.be.apiapplication.shelter.controller.model.AddVolunteerEventRequest
 import yapp.be.apiapplication.shelter.controller.model.EditVolunteerEventRequest
+import yapp.be.apiapplication.shelter.controller.model.ShelterHomeRequest
+import yapp.be.apiapplication.shelter.service.ShelterHomeApplicationService
 import yapp.be.apiapplication.shelter.service.VolunteerEventManageApplicationService
-import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListRequestDto
-import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListResponseDto
+import yapp.be.apiapplication.shelter.service.model.*
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
+import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
 
 @Tag(name = "봉사 이벤트 관리 api")
 @RestController
 @RequestMapping("/v1/shelter/admin/volunteer-event")
 class VolunteerEventManageController(
-    private val volunteerEventManageApplicationService: VolunteerEventManageApplicationService
+    private val volunteerEventManageApplicationService: VolunteerEventManageApplicationService,
+    private val shelterHomeApplicationService: ShelterHomeApplicationService,
 ) {
 
     @ResponseStatus(HttpStatus.OK)
@@ -143,6 +139,28 @@ class VolunteerEventManageController(
         )
         val resDto = volunteerEventManageApplicationService
             .deleteVolunteerEvent(reqDto)
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/home")
+    @Operation(
+        summary = "보호소 파트너 봉사이벤트 홈페이지 조회"
+    )
+    fun getHomeVolunteerEvents(
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo,
+        @RequestBody @Valid req: ShelterHomeRequest,
+    ): ResponseEntity<List<VolunteerSimpleVolunteerEventDto>> {
+        val reqDto = GetShelterHomeRequestDto(
+            category = req.category,
+            status = req.status,
+            from = req.from.atStartOfDay(),
+            to = req.to.atTime(23, 59, 59),
+            shelterUserId = shelterUserInfo.shelterUserId,
+        )
+
+        val resDto = shelterHomeApplicationService.getShelterEventHome(reqDto)
 
         return ResponseEntity.ok(resDto)
     }
