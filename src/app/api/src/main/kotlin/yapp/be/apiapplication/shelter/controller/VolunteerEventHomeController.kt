@@ -31,7 +31,6 @@ class VolunteerEventHomeController(
         val reqDto = GetVolunteerEventHomeRequestDto(
             volunteerId = volunteerInfo?.volunteerId,
             category = req.category,
-            status = req.status,
             from = req.from.atStartOfDay(),
             to = req.to.atTime(23, 59, 59),
             longitude = req.longitude,

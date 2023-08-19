@@ -25,12 +25,19 @@ interface VolunteerEventJpaRepositoryCustom {
         to: LocalDateTime
     ): List<VolunteerEventWithShelterInfoProjection>
 
-    fun findAllByShelterIdAndYearAndMonthAndStatusAndCategory(
+    fun findAllByShelterIdAndYearAndMonthAndCategory(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
-        status: VolunteerEventStatus,
         category: VolunteerEventCategory?,
+    ): List<VolunteerEventWithShelterInfoProjection>
+
+    fun findAllByShelterIdAndYearAndMonthAndCategoryAndStatus(
+        shelterId: Long,
+        from: LocalDateTime,
+        to: LocalDateTime,
+        category: List<VolunteerEventCategory>?,
+        status: VolunteerEventStatus?,
     ): List<VolunteerEventWithShelterInfoProjection>
 
     fun findAllVolunteerEventByVolunteerId(volunteerId: Long, pageable: Pageable): Page<VolunteerEventWithShelterInfoAndMyParticipationStatusProjection>
