@@ -56,8 +56,12 @@ class SecurityConfig(
                     it.userService(customOAuth2UserService)
                 }
                 loginHandler.authorizationEndpoint {
+
                     it.authorizationRequestResolver(
-                        ExtraStatefulParameterOAuth2AuthorizationRequestResolver(clientRegistrationRepository())
+                        ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
+                            authorizationRequestBaseUri = "/oauth2/authorization",
+                            clientRegistrationRepository = clientRegistrationRepository()
+                        )
                     )
                 }
             }

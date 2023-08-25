@@ -32,7 +32,7 @@ class AuthenticationSuccessHandler(
         val customOAuth2User = authentication.principal as CustomOAuth2User
         val userEmail = Email(customOAuth2User.customOAuthAttributes.email)
         val isMember = checkVolunteerUseCase.isExistByEmail(userEmail)
-        val REDIRECT_HOST = "https://dangledangle.vercel.app/volunteer/redirect" // request.getParameter("state")
+        val REDIRECT_HOST = request.getParameter("state")
 
         if (isMember) {
             val user = getVolunteerUseCase.getByEmail(userEmail)
