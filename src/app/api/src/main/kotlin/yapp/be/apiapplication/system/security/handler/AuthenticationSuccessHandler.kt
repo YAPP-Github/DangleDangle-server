@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.auth.handler
+package yapp.be.apiapplication.system.security.handler
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -32,7 +32,7 @@ class AuthenticationSuccessHandler(
         val customOAuth2User = authentication.principal as CustomOAuth2User
         val userEmail = Email(customOAuth2User.customOAuthAttributes.email)
         val isMember = checkVolunteerUseCase.isExistByEmail(userEmail)
-        val REDIRECT_HOST = request.getParameter("state")
+        val REDIRECT_HOST = "${request.getParameter("state").split(":")[0]}/volunteer/redirect"
 
         if (isMember) {
             val user = getVolunteerUseCase.getByEmail(userEmail)

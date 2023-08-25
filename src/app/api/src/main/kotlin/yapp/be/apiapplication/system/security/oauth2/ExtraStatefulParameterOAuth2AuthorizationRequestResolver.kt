@@ -37,7 +37,9 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
     companion object {
         private val REFERER = "Referer"
         private val REGISTRATION_ID_URI_VARIABLE_NAME = "registrationId"
-
+        private val DEFAULT_STATE_GENERATOR: StringKeyGenerator = Base64StringKeyGenerator(
+            Base64.getUrlEncoder()
+        )
         private val PATH_DELIMITER = '/'
         private val DEFAULT_PKCE_APPLIER = OAuth2AuthorizationRequestCustomizers.withPkce()
         private val authorizationRequestCustomizer = Consumer { customizer: OAuth2AuthorizationRequest.Builder? -> }
@@ -102,7 +104,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
         builder.clientId(clientRegistration.clientId)
             .authorizationUri(clientRegistration.providerDetails.authorizationUri)
             .redirectUri(redirectUriStr)
-            .state(host)
+            .state("$host:${DEFAULT_STATE_GENERATOR.generateKey()}")
             .scopes(clientRegistration.scopes)
 
         authorizationRequestCustomizer.accept(builder)
