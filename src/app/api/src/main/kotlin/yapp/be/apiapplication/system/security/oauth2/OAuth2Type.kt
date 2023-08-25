@@ -9,7 +9,7 @@ enum class OAuth2Type {
     companion object {
         fun of(registrationId: String): OAuth2Type {
             return when (registrationId) {
-                "kakao" -> OAuth2Type.KAKAO
+                "kakao" -> KAKAO
                 else -> throw CustomException(ApiExceptionType.UNAUTHORIZED_EXCEPTION, "지원하지 않는 OAuth2 로그인입니다.")
             }
         }
