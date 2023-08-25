@@ -104,7 +104,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
         builder.clientId(clientRegistration.clientId)
             .authorizationUri(clientRegistration.providerDetails.authorizationUri)
             .redirectUri(redirectUriStr)
-            .state("$host:${DEFAULT_STATE_GENERATOR.generateKey()}")
+            .state("$host-${DEFAULT_STATE_GENERATOR.generateKey()}")
             .scopes(clientRegistration.scopes)
 
         authorizationRequestCustomizer.accept(builder)
@@ -164,7 +164,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
         }
         uriVariables["basePath"] = path ?: ""
         uriVariables["baseUrl"] = uriComponents.toUriString()
-        uriVariables["action"] = action ?: ""
+        uriVariables["action"] = action
         return UriComponentsBuilder.fromUriString(clientRegistration.redirectUri).buildAndExpand(uriVariables)
             .toUriString()
     }
