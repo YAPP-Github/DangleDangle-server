@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
-import yapp.be.apiapplication.auth.handler.AuthenticationSuccessHandler
+import yapp.be.apiapplication.system.security.handler.AuthenticationSuccessHandler
 import yapp.be.apiapplication.auth.service.CustomOAuth2UserService
 import yapp.be.apiapplication.system.security.JwtAuthenticationFilter
 import yapp.be.apiapplication.system.security.JwtTokenProvider
