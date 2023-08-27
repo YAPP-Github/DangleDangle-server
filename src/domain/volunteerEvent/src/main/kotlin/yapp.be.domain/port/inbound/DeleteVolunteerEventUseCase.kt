@@ -5,4 +5,10 @@ interface DeleteVolunteerEventUseCase {
         id: Long,
         shelterId: Long
     )
+
+    fun deleteAllVolunteerRelatedVolunteerEvents(
+        volunteerId: Long
+    )
+
+    fun hardDeleteByVolunteerId(volunteerId: Long)
 }
