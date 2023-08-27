@@ -51,4 +51,13 @@ class ShelterCommandRepository(
         val shelterBookMarkEntity = shelterBookMark.toEntityModel()
         shelterBookMarkJpaRepository.delete(shelterBookMarkEntity)
     }
+
+    override fun deleteBookMarkByShelterId(shelterId: Long) {
+        val shelterBookMarks = shelterBookMarkJpaRepository.findAllByShelterId(shelterId)
+        shelterBookMarks.forEach { shelterBookMarkJpaRepository.delete(it) }
+    }
+
+    override fun deleteById(shelterId: Long) {
+        shelterJpaRepository.deleteById(shelterId)
+    }
 }

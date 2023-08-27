@@ -5,6 +5,7 @@ interface DeleteVolunteerEventUseCase {
         id: Long,
         shelterId: Long
     )
+    fun deleteByShelterId(shelterId: Long)
 
     fun deleteAllVolunteerRelatedVolunteerEvents(
         volunteerId: Long

@@ -10,7 +10,7 @@ interface AddObservationAnimalUseCase {
         name: String,
         age: String?,
         gender: Gender?,
-        breed: String??,
+        breed: String?,
         specialNote: String
     ): ObservationAnimal
 }

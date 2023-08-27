@@ -7,7 +7,7 @@ import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
 
 @Service
 class DeleteVolunteerEventDomainService(
-    private val volunteerEventCommandHandler: VolunteerEventCommandHandler
+    private val volunteerEventCommandHandler: VolunteerEventCommandHandler,
 ) : DeleteVolunteerEventUseCase {
     @Transactional
     override fun deleteByIdAndShelterId(id: Long, shelterId: Long) {
@@ -15,6 +15,15 @@ class DeleteVolunteerEventDomainService(
             id = id,
             shelterId = shelterId
         )
+    }
+
+    @Transactional
+    override fun deleteByShelterId(shelterId: Long) {
+        val volunteerEventIds = volunteerEventCommandHandler.deleteAllVolunteerEventByShelterId(shelterId)
+        volunteerEventIds.forEach {
+            volunteerEventCommandHandler.deleteVolunteerEventWaitingQueueByVolunteerEventId(it)
+            volunteerEventCommandHandler.deleteVolunteerEventJoinQueueByVolunteerEventId(it)
+        }
     }
 
     @Transactional
