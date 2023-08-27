@@ -31,4 +31,9 @@ class VolunteerQueryRepository(
     override fun isExistByNickname(nickname: String): Boolean {
         return jpaRepository.findByNickname(nickname) != null
     }
+
+    @Transactional(readOnly = true)
+    override fun findAllByDeleteIsTrue(): List<Volunteer> {
+        return jpaRepository.findAllByDeletedIsTrue().map { it.toDomainModel() }
+    }
 }

@@ -4,4 +4,6 @@ import yapp.be.domain.model.Volunteer
 
 interface DeleteVolunteerUseCase {
     fun deleteVolunteer(volunteerId: Long): Volunteer
+
+    fun hardDeleteVolunteer(volunteerId: Long)
 }

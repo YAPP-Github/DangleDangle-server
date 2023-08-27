@@ -16,6 +16,7 @@ class DeleteVolunteerEventDomainService(
             shelterId = shelterId
         )
     }
+
     @Transactional
     override fun deleteByShelterId(shelterId: Long) {
         val volunteerEventIds = volunteerEventCommandHandler.deleteAllVolunteerEventByShelterId(shelterId)
@@ -23,5 +24,14 @@ class DeleteVolunteerEventDomainService(
             volunteerEventCommandHandler.deleteVolunteerEventWaitingQueueByVolunteerEventId(it)
             volunteerEventCommandHandler.deleteVolunteerEventJoinQueueByVolunteerEventId(it)
         }
+
+    @Transactional
+    override fun deleteAllVolunteerRelatedVolunteerEvents(volunteerId: Long) {
+        volunteerEventCommandHandler.deleteVolunteerEventJoiningQueueByVolunteerId(volunteerId)
+        volunteerEventCommandHandler.deleteVolunteerEventWaitingQueueByVolunteerId(volunteerId)
+    }
+
+    @Transactional
+    override fun hardDeleteByVolunteerId(volunteerId: Long) {
     }
 }

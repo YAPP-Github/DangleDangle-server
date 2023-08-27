@@ -50,6 +50,15 @@ class VolunteerEventCommandRepository(
         return volunteerEventWaitingQueueJpaRepository
             .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
     }
+
+    override fun deleteVolunteerEventJoiningQueueByVolunteerId(volunteerId: Long) {
+        volunteerEventJoinQueueJpaRepository.deleteByVolunteerId(volunteerId)
+    }
+
+    override fun deleteVolunteerEventWaitingQueueByVolunteerId(volunteerId: Long) {
+        volunteerEventWaitingQueueJpaRepository.deleteByVolunteerId(volunteerId)
+    }
+
     override fun updateVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
         val volunteerEventEntity = volunteerEventJpaRepository.findByIdOrNull(volunteerEvent.id)
             ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "봉사 정보를 찾을 수 없습니다.")
