@@ -12,7 +12,6 @@ interface VolunteerEventWaitingQueueJpaRepository : JpaRepository<VolunteerEvent
     fun findAllByVolunteerEventIdIn(volunteerEventIds: Collection<Long>): List<VolunteerEventWaitingQueueEntity>
 
     fun countByVolunteerEventId(volunteerEventId: Long): Int
-    fun deleteAllByVolunteerEventId(volunteerEventId: Long)
+    fun deleteAllByVolunteerEventId(volunteerId: Long)
     fun deleteByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long)
-    fun deleteByVolunteerEventId(volunteerEventId: Long)
 }

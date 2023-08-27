@@ -14,7 +14,6 @@ interface VolunteerEventCommandHandler {
     fun deleteVolunteerEventWaitingQueueByVolunteerEventId(volunteerEventId: Long)
     fun deleteVolunteerEventJoinQueueByVolunteerEventId(volunteerEventId: Long)
     fun saveVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue
-    fun deleteVolunteerEventWaitingQueueByVolunteerEventId(volunteerEventId: Long)
     fun updateVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent
     fun deleteVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(
         volunteerId: Long,
