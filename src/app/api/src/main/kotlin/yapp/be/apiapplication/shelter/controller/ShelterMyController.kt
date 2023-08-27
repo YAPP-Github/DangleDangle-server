@@ -3,11 +3,9 @@ package yapp.be.apiapplication.shelter.controller
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import yapp.be.apiapplication.shelter.service.ShelterMyApplicationService
+import yapp.be.apiapplication.shelter.service.model.DeleteShelterUserResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyProfileResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
@@ -49,6 +47,20 @@ class ShelterMyController(
                 status = status,
                 shelterId = shelterUserInfo.shelterUserId
             )
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @DeleteMapping("/withdraw")
+    @Operation(
+        summary = "보호소 회원탈퇴"
+    )
+    fun withdrawVolunteer(
+        @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo,
+    ): ResponseEntity<DeleteShelterUserResponseDto> {
+        val resDto = shelterMyApplicationService.withdrawShelterUser(
+            shelterUserId = shelterUserInfo.shelterUserId,
+        )
 
         return ResponseEntity.ok(resDto)
     }

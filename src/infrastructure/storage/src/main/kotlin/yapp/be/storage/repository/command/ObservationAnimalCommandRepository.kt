@@ -44,4 +44,9 @@ class ObservationAnimalCommandRepository(
 
         return observationAnimalEntity.toDomainModel()
     }
+
+    override fun deleteAllByShelterId(shelterId: Long) {
+        val observationAnimals = observationAnimalJpaRepository.findAllByShelterId(shelterId)
+        observationAnimals.forEach { observationAnimalJpaRepository.delete(it) }
+    }
 }

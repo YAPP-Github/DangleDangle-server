@@ -41,4 +41,9 @@ class ShelterOutLinkCommandRepository(
         }
         return outLinks
     }
+
+    override fun deleteAllByShelterId(shelterId: Long) {
+        val shelterOutLinks = shelterOutLinkJpaRepository.findAllByShelterId(shelterId)
+        shelterOutLinks.forEach { shelterOutLinkJpaRepository.delete(it) }
+    }
 }

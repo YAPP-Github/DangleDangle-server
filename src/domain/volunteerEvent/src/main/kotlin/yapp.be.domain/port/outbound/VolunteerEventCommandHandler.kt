@@ -8,12 +8,12 @@ interface VolunteerEventCommandHandler {
     fun saveVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent
     fun saveAllVolunteerEvents(volunteerEvents: Collection<VolunteerEvent>): List<VolunteerEvent>
     fun deleteVolunteerEventByIdAndShelterId(id: Long, shelterId: Long)
-
+    fun deleteAllVolunteerEventByShelterId(shelterId: Long): List<Long>
     fun saveVolunteerEventJoinQueue(volunteerEventJoinQueue: VolunteerEventJoinQueue): VolunteerEventJoinQueue
     fun saveVolunteerEventJoinQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue
-
+    fun deleteVolunteerEventWaitingQueueByVolunteerEventId(volunteerEventId: Long)
+    fun deleteVolunteerEventJoinQueueByVolunteerEventId(volunteerEventId: Long)
     fun saveVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue
-
     fun updateVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent
     fun deleteVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(
         volunteerId: Long,

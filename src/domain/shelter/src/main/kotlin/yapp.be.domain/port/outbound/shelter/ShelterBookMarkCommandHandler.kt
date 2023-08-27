@@ -7,4 +7,5 @@ interface ShelterBookMarkCommandHandler {
     fun deleteBookMark(
         shelterBookMark: ShelterBookMark
     )
+    fun deleteBookMarkByShelterId(shelterId: Long)
 }

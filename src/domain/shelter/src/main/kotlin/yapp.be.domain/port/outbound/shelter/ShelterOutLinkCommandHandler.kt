@@ -7,4 +7,6 @@ interface ShelterOutLinkCommandHandler {
         shelterId: Long,
         outLinks: List<ShelterOutLink>
     ): List<ShelterOutLink>
+
+    fun deleteAllByShelterId(shelterId: Long)
 }
