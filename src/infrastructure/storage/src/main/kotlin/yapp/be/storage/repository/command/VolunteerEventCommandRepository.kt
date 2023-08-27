@@ -65,10 +65,6 @@ class VolunteerEventCommandRepository(
             )
     }
 
-    override fun deleteVolunteerEventWaitingQueueByVolunteerEventId(volunteerEventId: Long) {
-        return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerEventId(volunteerEventId)
-    }
-
     override fun deleteVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
         return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerIdAndVolunteerEventId(
             volunteerId = volunteerId,
@@ -86,5 +82,22 @@ class VolunteerEventCommandRepository(
         volunteerEventEntity.delete()
 
         volunteerEventJpaRepository.save(volunteerEventEntity)
+    }
+
+    override fun deleteVolunteerEventWaitingQueueByVolunteerEventId(volunteerEventId: Long) {
+        return volunteerEventWaitingQueueJpaRepository.deleteAllByVolunteerEventId(volunteerEventId)
+    }
+    override fun deleteVolunteerEventJoinQueueByVolunteerEventId(volunteerEventId: Long) {
+        return volunteerEventJoinQueueJpaRepository.deleteAllByVolunteerEventId(volunteerEventId)
+    }
+
+    override fun deleteAllVolunteerEventByShelterId(shelterId: Long): List<Long> {
+        val volunteerEventIds = mutableListOf<Long>()
+        val volunteerEvents = volunteerEventJpaRepository.findAllByShelterId(shelterId)
+        volunteerEvents.forEach {
+            volunteerEventJpaRepository.delete(it)
+            volunteerEventIds.add(it.id)
+        }
+        return volunteerEventIds
     }
 }

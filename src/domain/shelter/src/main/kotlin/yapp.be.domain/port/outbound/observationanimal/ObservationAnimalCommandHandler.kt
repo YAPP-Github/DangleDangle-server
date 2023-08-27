@@ -10,4 +10,5 @@ interface ObservationAnimalCommandHandler {
         observationAnimalId: Long,
         shelterId: Long
     ): ObservationAnimal
+    fun deleteAllByShelterId(shelterId: Long)
 }
