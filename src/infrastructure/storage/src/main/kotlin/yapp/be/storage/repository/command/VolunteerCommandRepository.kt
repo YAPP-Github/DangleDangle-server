@@ -31,6 +31,10 @@ class VolunteerCommandRepository(
         return volunteerJpaRepository.save(volunteerEntity).toDomainModel()
     }
 
+    override fun hardDelete(volunteerId: Long) {
+        return volunteerJpaRepository.deleteById(volunteerId)
+    }
+
     override fun delete(volunteerId: Long): Volunteer {
         val volunteerEntity = volunteerJpaRepository.findByIdOrNull(volunteerId) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.")
         volunteerJpaRepository.delete(volunteerEntity)

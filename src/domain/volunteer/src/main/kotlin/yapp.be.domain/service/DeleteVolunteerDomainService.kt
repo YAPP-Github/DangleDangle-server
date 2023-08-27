@@ -14,4 +14,9 @@ class DeleteVolunteerDomainService(
     override fun deleteVolunteer(volunteerId: Long): Volunteer {
         return volunteerCommandHandler.delete(volunteerId)
     }
+
+    @Transactional
+    override fun hardDeleteVolunteer(volunteerId: Long) {
+        volunteerCommandHandler.hardDelete(volunteerId)
+    }
 }

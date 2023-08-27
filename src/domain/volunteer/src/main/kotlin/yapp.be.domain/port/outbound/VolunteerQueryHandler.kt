@@ -7,4 +7,6 @@ interface VolunteerQueryHandler {
     fun findById(id: Long): Volunteer
     fun isExistByEmail(email: String): Boolean
     fun isExistByNickname(nickname: String): Boolean
+
+    fun findAllByDeleteIsTrue(): List<Volunteer>
 }

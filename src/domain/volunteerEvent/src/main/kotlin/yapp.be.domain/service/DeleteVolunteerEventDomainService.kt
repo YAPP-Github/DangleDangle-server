@@ -16,4 +16,14 @@ class DeleteVolunteerEventDomainService(
             shelterId = shelterId
         )
     }
+
+    @Transactional
+    override fun deleteAllVolunteerRelatedVolunteerEvents(volunteerId: Long) {
+        volunteerEventCommandHandler.deleteVolunteerEventJoiningQueueByVolunteerId(volunteerId)
+        volunteerEventCommandHandler.deleteVolunteerEventWaitingQueueByVolunteerId(volunteerId)
+    }
+
+    @Transactional
+    override fun hardDeleteByVolunteerId(volunteerId: Long) {
+    }
 }

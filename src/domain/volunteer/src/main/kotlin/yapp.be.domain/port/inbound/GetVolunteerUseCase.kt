@@ -7,4 +7,6 @@ interface GetVolunteerUseCase {
 
     fun getById(volunteerId: Long): Volunteer
     fun getByEmail(email: Email): Volunteer
+
+    fun getAllDeletedVolunteers(): List<Volunteer>
 }

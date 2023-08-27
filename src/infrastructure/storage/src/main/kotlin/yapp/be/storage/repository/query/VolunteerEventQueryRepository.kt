@@ -82,7 +82,7 @@ class VolunteerEventQueryRepository(
 
     override fun findShelterUserStatByShelterId(shelterId: Long): ShelterUserVolunteerEventStatDto {
         val volunteerEventEntities =
-            volunteerEventJpaRepository.findAllByShelterId(shelterId)
+            volunteerEventJpaRepository.findAllByShelterIdAndDeletedIsFalse(shelterId)
 
         val volunteerEntityStatusMap = volunteerEventEntities.groupBy { it.status }
 
@@ -118,7 +118,7 @@ class VolunteerEventQueryRepository(
             Sort.by("id").descending()
         )
 
-        val shelterVolunteerEvents = volunteerEventJpaRepository.findAllByShelterId(
+        val shelterVolunteerEvents = volunteerEventJpaRepository.findAllByShelterIdAndDeletedIsFalse(
             shelterId = shelterId,
             pageable = pageable,
         )
