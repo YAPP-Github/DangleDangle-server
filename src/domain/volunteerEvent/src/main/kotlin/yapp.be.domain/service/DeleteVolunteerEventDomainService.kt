@@ -24,6 +24,7 @@ class DeleteVolunteerEventDomainService(
             volunteerEventCommandHandler.deleteVolunteerEventWaitingQueueByVolunteerEventId(it)
             volunteerEventCommandHandler.deleteVolunteerEventJoinQueueByVolunteerEventId(it)
         }
+    }
 
     @Transactional
     override fun deleteAllVolunteerRelatedVolunteerEvents(volunteerId: Long) {

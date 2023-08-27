@@ -51,8 +51,8 @@ class VolunteerEventCommandRepository(
             .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
     }
 
-    override fun deleteVolunteerEventJoiningQueueByVolunteerId(volunteerId: Long) {
-        volunteerEventJoinQueueJpaRepository.deleteByVolunteerId(volunteerId)
+    override fun deleteVolunteerEventJoiningQueueByVolunteerId(volunteerEventId: Long) {
+        volunteerEventJoinQueueJpaRepository.deleteAllByVolunteerEventId(volunteerEventId)
     }
 
     override fun deleteVolunteerEventWaitingQueueByVolunteerId(volunteerId: Long) {
