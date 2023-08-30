@@ -28,6 +28,7 @@ import yapp.be.exceptions.CustomException
 import yapp.be.lock.DistributedLock
 import yapp.be.model.enums.event.EventType
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.vo.DeleteEventEntity
 import yapp.be.model.vo.UpdateEventEntity
 import yapp.be.model.vo.VolunteerEventInfo
 import yapp.be.model.vo.VolunteerEventVolunteerInfo
@@ -247,6 +248,21 @@ class VolunteerEventManageApplicationService(
                 id = reqDto.volunteerEventId,
                 shelterId = shelterUser.shelterId
             )
+
+        val detailVolunteerEventDto = getVolunteerEventUseCase.getShelterUserDetailVolunteerEventInfo(shelterUser.shelterId, reqDto.volunteerEventId)
+        val volunteers = mutableListOf<VolunteerEventVolunteerInfo>()
+        detailVolunteerEventDto.waitingVolunteers.forEach { VolunteerEventVolunteerInfo(id = it.id, nickName = it.nickName) }
+        detailVolunteerEventDto.joiningVolunteers.forEach { VolunteerEventVolunteerInfo(id = it.id, nickName = it.nickName) }
+        val event = addEventUseCase.create(
+            CreateEventCommand(
+                json = DeleteEventEntity(
+                    VolunteerEventInfo(id = detailVolunteerEventDto.id, name = detailVolunteerEventDto.title, startAt = detailVolunteerEventDto.startAt, endAt = detailVolunteerEventDto.endAt),
+                    volunteers
+                ).toString(),
+                eventType = EventType.DELETE
+            )
+        )
+        applicationEventPublisher.publishEvent(event)
 
         return DeleteVolunteerEventResponseDto(
             volunteerEventId = reqDto.volunteerEventId
