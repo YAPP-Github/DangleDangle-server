@@ -1,5 +1,6 @@
 package yapp.be.apiapplication.shelter.service
 
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerEventResponseDto
@@ -17,14 +18,22 @@ import yapp.be.domain.port.inbound.WithDrawVolunteerEventUseCase
 import yapp.be.domain.service.exceptions.VolunteerEventExceptionType
 import yapp.be.exceptions.CustomException
 import yapp.be.lock.DistributedLock
+import yapp.be.model.enums.event.EventType
 import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.vo.EnableJoinEventEntity
+import yapp.be.model.vo.VolunteerEventInfo
+import yapp.be.model.vo.VolunteerEventVolunteerInfo
+import yapp.be.port.inbound.AddEventUseCase
+import yapp.be.port.inbound.model.CreateEventCommand
 
 @Service
 class VolunteerEventApplicationService(
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
     private val withDrawVolunteerEventUseCase: WithDrawVolunteerEventUseCase,
     private val participationVolunteerEventUseCase: ParticipateVolunteerEventUseCase,
+    private val addEventUseCase: AddEventUseCase,
+    private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
 
     @Transactional(readOnly = true)
@@ -177,6 +186,20 @@ class VolunteerEventApplicationService(
                     volunteerId = reqDto.volunteerId,
                     volunteerEventId = reqDto.volunteerEventId
                 )
+
+            val detailVolunteerEventDto = getVolunteerEventUseCase.getShelterUserDetailVolunteerEventInfo(reqDto.shelterId, reqDto.volunteerEventId)
+            val volunteers = mutableListOf<VolunteerEventVolunteerInfo>()
+            detailVolunteerEventDto.waitingVolunteers.forEach { VolunteerEventVolunteerInfo(id = it.id, nickName = it.nickName) }
+            val event = addEventUseCase.create(
+                CreateEventCommand(
+                    json = EnableJoinEventEntity(
+                        VolunteerEventInfo(id = volunteerEvent.id, name = volunteerEvent.title, startAt = volunteerEvent.startAt, endAt = volunteerEvent.endAt),
+                        volunteers
+                    ).toString(),
+                    eventType = EventType.ENABLE_JOIN
+                )
+            )
+            applicationEventPublisher.publishEvent(event)
         } else if (waitingParticipants.contains(reqDto.volunteerId)) {
             withDrawVolunteerEventUseCase
                 .withdrawWaitingQueue(
