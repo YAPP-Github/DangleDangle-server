@@ -8,7 +8,7 @@ import yapp.be.port.outbound.SendEventCommandHandler
 import yapp.be.redis.handler.RedisHandler
 
 @Component
-class EventRepository(
+class SendEventRepository(
     private val redisHandler: RedisHandler,
 ) : SendEventCommandHandler {
     private val newStreamKey: String = "new-event-stream"

@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ReminderVolunteerEventDto
 import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 import yapp.be.domain.port.outbound.VolunteerEventQueryHandler
+import java.time.LocalDate
 
 @Service
 class GetVolunteerEventDomainService(
@@ -21,6 +23,11 @@ class GetVolunteerEventDomainService(
                 id = volunteerEventId,
                 shelterId = shelterId
             )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAllVolunteerEvent(date: LocalDate): List<ReminderVolunteerEventDto> {
+        return volunteerEventQueryHandler.findAllVolunteerEventByDayBefore(date)
     }
 
     @Transactional(readOnly = true)

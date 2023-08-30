@@ -8,6 +8,7 @@ data class SendEvent(
     val recordId: String,
     val eventType: EventType,
     val senderId: String,
+    val senderName: String,
     val notificationType: NotificationType,
     val json: String,
 ) : Serializable {
@@ -15,6 +16,7 @@ data class SendEvent(
         id,
         EventType.valueOf(map["eventType"]!!),
         map["senderId"]!!,
+        map["senderName"]!!,
         NotificationType.valueOf(map["notificationType"]!!),
         map["json"]!!,
     )
@@ -22,6 +24,7 @@ data class SendEvent(
         mapOf(
             "eventType".toByteArray() to this.eventType.toString().toByteArray(),
             "senderId".toByteArray() to this.senderId.toByteArray(),
+            "senderName".toByteArray() to this.senderName.toByteArray(),
             "notificationType".toByteArray() to this.notificationType.toString().toByteArray(),
             "json".toByteArray() to this.json.toByteArray(),
         )

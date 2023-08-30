@@ -17,9 +17,10 @@ class AddSendEventDomainService(
             SendEvent(
                 newStreamKey,
                 eventType = command.eventType,
-                senderId = it,
+                senderId = it.id.toString(),
+                senderName = it.name,
                 notificationType = NotificationType.KAKAOTALK,
-                json = command.json
+                json = command.eventInfo.toString()
             )
         }.toMutableList()
 

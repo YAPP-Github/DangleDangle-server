@@ -8,6 +8,7 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ReminderVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
 import yapp.be.domain.model.dto.VolunteerEventParticipantInfoDto
 import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
@@ -21,6 +22,7 @@ import yapp.be.storage.jpa.volunteerevent.model.mappers.toEntityModel
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJoinQueueJpaRepository
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJpaRepository
 import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventWaitingQueueJpaRepository
+import java.time.LocalDate
 
 @Component
 class VolunteerEventRepository(
@@ -39,6 +41,38 @@ class VolunteerEventRepository(
             type = StorageExceptionType.ENTITY_NOT_FOUND,
             message = "봉사 정보를 찾을 수 없습니다."
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun findAllVolunteerEventByDayBefore(date: LocalDate): List<ReminderVolunteerEventDto> {
+        val reminderVolunteerEvents = mutableListOf<ReminderVolunteerEventDto>()
+        val reminderEvents =
+            volunteerEventJpaRepository
+                .findWithDayBefore(
+                    date = date,
+                )
+        reminderEvents.forEach {
+            val joiningParticipants = volunteerEventJoinQueueJpaRepository.findAllJoinParticipantsByVolunteerEventId(volunteerEventId = it.volunteerEventId)
+                .map {
+                    it2 ->
+                    VolunteerEventParticipantInfoDto(
+                        id = it2.id,
+                        nickName = it2.nickname
+                    )
+                }.toList()
+            reminderVolunteerEvents.add(
+                ReminderVolunteerEventDto(
+                    volunteerEventId = it.volunteerEventId,
+                    shelterId = it.shelterId,
+                    shelterName = it.shelterName,
+                    title = it.title,
+                    startAt = it.startAt,
+                    endAt = it.endAt,
+                    joiningVolunteers = joiningParticipants,
+                )
+            )
+        }
+        return reminderVolunteerEvents
     }
 
     @Transactional(readOnly = true)

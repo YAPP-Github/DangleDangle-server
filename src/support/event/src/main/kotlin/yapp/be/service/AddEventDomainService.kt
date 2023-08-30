@@ -13,12 +13,13 @@ class AddEventDomainService(
     private val eventCommandHandler: EventCommandHandler,
 ) : AddEventUseCase {
     @Transactional
-    override fun create(command: CreateEventCommand) {
+    override fun create(command: CreateEventCommand): Event {
         val event = Event(
             json = command.json,
             eventType = command.eventType,
             eventStatus = EventStatus.ACTIVE,
         )
         eventCommandHandler.create(event)
+        return event
     }
 }

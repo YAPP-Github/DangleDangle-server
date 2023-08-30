@@ -1,26 +1,45 @@
 package yapp.be.model.vo
 
+import java.time.LocalDateTime
+
 data class UpdateEventEntity(
-    val volunteerEventId: String,
-    val volunteerIds: List<String>,
+    val volunteerEvent: VolunteerEventInfo,
+    val volunteer: List<VolunteerEventVolunteerInfo>,
 )
 
 data class VolunteerReminderEventEntity(
-    val volunteerEventId: String,
-    val volunteerIds: List<String>,
+    val volunteerEvent: VolunteerEventInfo,
+    val volunteer: List<VolunteerEventVolunteerInfo>,
 )
 
 data class ShelterReminderEventEntity(
-    val shelterId: String,
-    val volunteerEventId: String,
+    val shelter: VolunteerEventShelterInfo,
+    val volunteerEvent: VolunteerEventInfo,
 )
 
 data class DeleteEventEntity(
-    val volunteerEventId: String,
-    val volunteerIds: List<String>,
+    val volunteerEvent: VolunteerEventInfo,
+    val volunteer: List<VolunteerEventVolunteerInfo>,
 )
 
 data class EnableJoinEventEntity(
-    val volunteerEventId: String,
-    val waitingVolunteerIds: List<String>,
+    val volunteerEvent: VolunteerEventInfo,
+    val waitingVolunteers: List<VolunteerEventVolunteerInfo>,
+)
+
+data class VolunteerEventVolunteerInfo(
+    val id: Long,
+    val nickName: String
+)
+
+data class VolunteerEventShelterInfo(
+    val id: Long,
+    val name: String
+)
+
+data class VolunteerEventInfo(
+    val id: Long,
+    val name: String,
+    val startAt: LocalDateTime,
+    val endAt: LocalDateTime,
 )

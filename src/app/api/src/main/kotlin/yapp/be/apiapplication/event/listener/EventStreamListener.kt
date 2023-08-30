@@ -13,6 +13,8 @@ import yapp.be.model.vo.*
 import yapp.be.port.inbound.AddSendEventUseCase
 import yapp.be.port.inbound.EditEventUseCase
 import yapp.be.port.inbound.model.CreateSendEventCommand
+import yapp.be.port.inbound.model.EventInfo
+import yapp.be.port.inbound.model.SenderInfo
 
 @Component
 class EventStreamListener(
@@ -23,13 +25,17 @@ class EventStreamListener(
     @EventListener
     fun processMessage(event: Event) {
         val mapper = ObjectMapper().registerKotlinModule()
+        val senders = mutableListOf<SenderInfo>()
         when (event.eventType) {
             EventType.UPDATE -> {
                 val updateEventEntity = mapper.readValue(event.json, UpdateEventEntity::class.java)
+                updateEventEntity.volunteer.forEach {
+                    senders.add(SenderInfo(it.id, it.nickName))
+                }
                 addSendEventUseCase.create(
                     CreateSendEventCommand(
-                        updateEventEntity.volunteerIds,
-                        mapOf("volunteerEventId" to updateEventEntity.volunteerEventId).toString(),
+                        senders,
+                        EventInfo(updateEventEntity.volunteerEvent.name, updateEventEntity.volunteerEvent.startAt, updateEventEntity.volunteerEvent.endAt),
                         event.eventType,
                         NotificationType.KAKAOTALK
                     )
@@ -37,10 +43,13 @@ class EventStreamListener(
             }
             EventType.ENABLE_JOIN -> {
                 val enableJoinEventEntity = mapper.readValue(event.json, EnableJoinEventEntity::class.java)
+                enableJoinEventEntity.waitingVolunteers.forEach {
+                    senders.add(SenderInfo(it.id, it.nickName))
+                }
                 addSendEventUseCase.create(
                     CreateSendEventCommand(
-                        enableJoinEventEntity.waitingVolunteerIds,
-                        mapOf("volunteerEventId" to enableJoinEventEntity.volunteerEventId).toString(),
+                        senders,
+                        EventInfo(enableJoinEventEntity.volunteerEvent.name, enableJoinEventEntity.volunteerEvent.startAt, enableJoinEventEntity.volunteerEvent.endAt),
                         event.eventType,
                         NotificationType.KAKAOTALK
                     )
@@ -48,10 +57,13 @@ class EventStreamListener(
             }
             EventType.VOLUNTEER_REMINDER -> {
                 val volunteerReminderEventEntity = mapper.readValue(event.json, VolunteerReminderEventEntity::class.java)
+                volunteerReminderEventEntity.volunteer.forEach {
+                    senders.add(SenderInfo(it.id, it.nickName))
+                }
                 addSendEventUseCase.create(
                     CreateSendEventCommand(
-                        volunteerReminderEventEntity.volunteerIds,
-                        mapOf("volunteerEventId" to volunteerReminderEventEntity.volunteerEventId).toString(),
+                        senders,
+                        EventInfo(volunteerReminderEventEntity.volunteerEvent.name, volunteerReminderEventEntity.volunteerEvent.startAt, volunteerReminderEventEntity.volunteerEvent.endAt),
                         event.eventType,
                         NotificationType.KAKAOTALK
                     )
@@ -59,10 +71,11 @@ class EventStreamListener(
             }
             EventType.SHELTER_REMINDER -> {
                 val shelterReminderEventEntity = mapper.readValue(event.json, ShelterReminderEventEntity::class.java)
+                senders.add(SenderInfo(shelterReminderEventEntity.volunteerEvent.id, shelterReminderEventEntity.volunteerEvent.name))
                 addSendEventUseCase.create(
                     CreateSendEventCommand(
-                        listOf(shelterReminderEventEntity.shelterId),
-                        mapOf("volunteerEventId" to shelterReminderEventEntity.volunteerEventId).toString(),
+                        senders,
+                        EventInfo(shelterReminderEventEntity.volunteerEvent.name, shelterReminderEventEntity.volunteerEvent.startAt, shelterReminderEventEntity.volunteerEvent.endAt),
                         event.eventType,
                         NotificationType.KAKAOTALK
                     )
@@ -70,10 +83,13 @@ class EventStreamListener(
             }
             EventType.DELETE -> {
                 val deleteEventEntity = mapper.readValue(event.json, DeleteEventEntity::class.java)
+                deleteEventEntity.volunteer.forEach {
+                    senders.add(SenderInfo(it.id, it.nickName))
+                }
                 addSendEventUseCase.create(
                     CreateSendEventCommand(
-                        deleteEventEntity.volunteerIds,
-                        mapOf("volunteerEventId" to deleteEventEntity.volunteerEventId).toString(),
+                        senders,
+                        EventInfo(deleteEventEntity.volunteerEvent.name, deleteEventEntity.volunteerEvent.startAt, deleteEventEntity.volunteerEvent.endAt),
                         event.eventType,
                         NotificationType.KAKAOTALK
                     )

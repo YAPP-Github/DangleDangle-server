@@ -1,5 +1,6 @@
 package yapp.be.apiapplication.shelter.service
 
+import org.springframework.context.ApplicationEventPublisher
 import java.time.LocalDateTime
 import java.time.LocalTime
 import org.springframework.stereotype.Service
@@ -25,7 +26,13 @@ import yapp.be.domain.port.inbound.model.EditVolunteerEventCommand
 import yapp.be.domain.service.exceptions.VolunteerEventExceptionType
 import yapp.be.exceptions.CustomException
 import yapp.be.lock.DistributedLock
+import yapp.be.model.enums.event.EventType
 import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.vo.UpdateEventEntity
+import yapp.be.model.vo.VolunteerEventInfo
+import yapp.be.model.vo.VolunteerEventVolunteerInfo
+import yapp.be.port.inbound.AddEventUseCase
+import yapp.be.port.inbound.model.CreateEventCommand
 
 @Service
 class VolunteerEventManageApplicationService(
@@ -33,7 +40,9 @@ class VolunteerEventManageApplicationService(
     private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
     private val addVolunteerEventUseCase: AddVolunteerEventUseCase,
     private val editVolunteerEventUseCase: EditVolunteerEventUseCase,
-    private val deleteVolunteerEventUseCase: DeleteVolunteerEventUseCase
+    private val deleteVolunteerEventUseCase: DeleteVolunteerEventUseCase,
+    private val addEventUseCase: AddEventUseCase,
+    private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
 
     @Transactional(readOnly = true)
@@ -185,6 +194,23 @@ class VolunteerEventManageApplicationService(
                 type = VolunteerEventExceptionType.INVALID_DATE_RANGE_EDIT,
                 message = "잘못된 날짜 설정입니다."
             )
+        }
+
+        if (volunteerEvent.startAt != reqDto.startAt || volunteerEvent.endAt != reqDto.endAt) {
+            val detailVolunteerEventDto = getVolunteerEventUseCase.getShelterUserDetailVolunteerEventInfo(shelterUser.shelterId, volunteerEvent.id)
+            val volunteers = mutableListOf<VolunteerEventVolunteerInfo>()
+            detailVolunteerEventDto.waitingVolunteers.forEach { VolunteerEventVolunteerInfo(id = it.id, nickName = it.nickName) }
+            detailVolunteerEventDto.joiningVolunteers.forEach { VolunteerEventVolunteerInfo(id = it.id, nickName = it.nickName) }
+            val event = addEventUseCase.create(
+                CreateEventCommand(
+                    json = UpdateEventEntity(
+                        VolunteerEventInfo(id = volunteerEvent.id, name = volunteerEvent.title, startAt = volunteerEvent.startAt, endAt = volunteerEvent.endAt),
+                        volunteers
+                    ).toString(),
+                    eventType = EventType.UPDATE
+                )
+            )
+            applicationEventPublisher.publishEvent(event)
         }
 
         val command = EditVolunteerEventCommand(

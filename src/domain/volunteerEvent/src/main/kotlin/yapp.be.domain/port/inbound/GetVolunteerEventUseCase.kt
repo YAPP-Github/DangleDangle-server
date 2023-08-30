@@ -3,9 +3,15 @@ package yapp.be.domain.port.inbound
 import java.time.LocalDateTime
 import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ReminderVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
+import java.time.LocalDate
 
 interface GetVolunteerEventUseCase {
+
+    fun getAllVolunteerEvent(
+        date: LocalDate
+    ): List<ReminderVolunteerEventDto>
 
     fun getVolunteerEvent(
         shelterId: Long,
@@ -33,6 +39,7 @@ interface GetVolunteerEventUseCase {
         from: LocalDateTime,
         to: LocalDateTime
     ): List<SimpleVolunteerEventDto>
+
     fun getMemberVolunteerEventsByDateRange(
         shelterId: Long,
         volunteerId: Long,

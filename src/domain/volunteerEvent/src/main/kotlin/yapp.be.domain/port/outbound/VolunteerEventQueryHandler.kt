@@ -5,7 +5,9 @@ import yapp.be.domain.model.VolunteerEvent
 import yapp.be.domain.model.VolunteerEventJoinQueue
 import yapp.be.domain.model.VolunteerEventWaitingQueue
 import yapp.be.domain.model.dto.DetailVolunteerEventDto
+import yapp.be.domain.model.dto.ReminderVolunteerEventDto
 import yapp.be.domain.model.dto.SimpleVolunteerEventDto
+import java.time.LocalDate
 
 interface VolunteerEventQueryHandler {
 
@@ -18,6 +20,10 @@ interface VolunteerEventQueryHandler {
         id: Long,
         shelterId: Long
     ): DetailVolunteerEventDto
+
+    fun findAllVolunteerEventByDayBefore(
+        date: LocalDate
+    ): List<ReminderVolunteerEventDto>
 
     fun findDetailVolunteerEventInfoByIdAndShelterIdAndVolunteerId(
         id: Long,
