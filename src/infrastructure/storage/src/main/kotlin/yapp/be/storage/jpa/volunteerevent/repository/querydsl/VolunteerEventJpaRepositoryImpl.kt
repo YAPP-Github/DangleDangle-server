@@ -136,6 +136,8 @@ class VolunteerEventJpaRepositoryImpl(
                     ).and(
                         volunteerEventEntity.deleted.isFalse
                     ).and(
+                        volunteerEventEntity.status.eq(VolunteerEventStatus.IN_PROGRESS)
+                    ).and(
                         builder
                     )
             ).fetch()
