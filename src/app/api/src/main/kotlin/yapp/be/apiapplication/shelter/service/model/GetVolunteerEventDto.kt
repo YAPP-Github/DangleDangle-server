@@ -25,7 +25,7 @@ data class GetSimpleVolunteerEventResponseDto(
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
     val recruitNum: Int,
-    val joinNum: Int,
+    val joiningNum: Int,
     val waitingNum: Int,
 )
 

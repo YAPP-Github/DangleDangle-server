@@ -61,7 +61,7 @@ class ShelterMyApplicationService(
                     startAt = it.startAt,
                     endAt = it.endAt,
                     recruitNum = it.recruitNum,
-                    participantNum = it.participantNum,
+                    joiningNum = it.participantNum,
                     waitingNum = it.waitingNum
                 )
             }

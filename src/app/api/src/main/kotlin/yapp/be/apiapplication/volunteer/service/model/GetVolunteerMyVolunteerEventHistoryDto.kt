@@ -16,6 +16,6 @@ data class GetVolunteerVolunteerEventHistoryResponseDto(
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
     val recruitNum: Int,
-    val participantNum: Int,
+    val joiningNum: Int,
     val waitingNum: Int,
 )
