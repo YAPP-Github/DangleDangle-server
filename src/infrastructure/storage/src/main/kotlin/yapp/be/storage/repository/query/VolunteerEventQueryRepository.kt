@@ -77,7 +77,8 @@ class VolunteerEventQueryRepository(
         return volunteerEventJpaRepository.findByEndAtBeforeAndStatusNot(
             LocalDateTime.now(),
             VolunteerEventStatus.DONE
-        ).map { it.toDomainModel() }
+        ).sortedBy { it.startAt }
+            .map { it.toDomainModel() }
     }
 
     override fun findShelterUserStatByShelterId(shelterId: Long): ShelterUserVolunteerEventStatDto {
@@ -115,7 +116,7 @@ class VolunteerEventQueryRepository(
         val pageable = PageRequest.of(
             page,
             PAGE_SIZE,
-            Sort.by("id").descending()
+            Sort.by("startAt")
         )
 
         val shelterVolunteerEvents = volunteerEventJpaRepository.findAllByShelterIdAndDeletedIsFalse(
@@ -159,7 +160,7 @@ class VolunteerEventQueryRepository(
                         waitingNum = waitingQueue?.size ?: 0,
                     )
                 }
-                .sortedBy { it.volunteerEventId }
+                .sortedBy { it.startAt }
                 .toList()
         )
     }
@@ -172,10 +173,10 @@ class VolunteerEventQueryRepository(
         val pageable = PageRequest.of(
             page,
             PAGE_SIZE,
-            Sort.by("id").descending()
+            Sort.by("startAt")
         )
 
-        val shelterVolunteerEvents = volunteerEventJpaRepository.findAllByShelterIdAndStatus(
+        val shelterVolunteerEvents = volunteerEventJpaRepository.findAllByShelterIdAndStatusAndDeletedIsFalse(
             shelterId = shelterId,
             status = status,
             pageable = pageable,
@@ -217,7 +218,7 @@ class VolunteerEventQueryRepository(
                         waitingNum = waitingQueue?.size ?: 0,
                     )
                 }
-                .sortedBy { it.volunteerEventId }
+                .sortedBy { it.startAt }
                 .toList()
         )
     }
@@ -225,7 +226,8 @@ class VolunteerEventQueryRepository(
     override fun findAllVolunteerVolunteerEventByVolunteerId(page: Int, volunteerId: Long): PagedResult<VolunteerSimpleVolunteerEventDto> {
         val pageable = PageRequest.of(
             page,
-            PAGE_SIZE
+            PAGE_SIZE,
+            Sort.by("startAt")
         )
 
         val histories = volunteerEventJpaRepository
@@ -247,30 +249,33 @@ class VolunteerEventQueryRepository(
         return PagedResult(
             pageNumber = histories.number,
             pageSize = histories.size,
-            content = histories.content.map {
-                VolunteerSimpleVolunteerEventDto(
-                    volunteerEventId = it.id,
-                    shelterId = it.shelterId,
-                    shelterName = it.shelterName,
-                    shelterProfileImageUrl = it.shelterProfileImageUrl,
-                    title = it.title,
-                    category = it.category,
-                    eventStatus = it.eventStatus,
-                    myParticipationStatus = UserEventParticipationStatus.valueOf(it.myParticipationStatus),
-                    startAt = it.startAt,
-                    endAt = it.endAt,
-                    recruitNum = it.recruitNum,
-                    participantNum = joinParticipantMap[it.id]?.size ?: 0,
-                    waitingNum = waitingParticipantMap[it.id]?.size ?: 0
-                )
-            }
+            content = histories.content
+                .sortedBy { it.startAt }
+                .map {
+                    VolunteerSimpleVolunteerEventDto(
+                        volunteerEventId = it.id,
+                        shelterId = it.shelterId,
+                        shelterName = it.shelterName,
+                        shelterProfileImageUrl = it.shelterProfileImageUrl,
+                        title = it.title,
+                        category = it.category,
+                        eventStatus = it.eventStatus,
+                        myParticipationStatus = UserEventParticipationStatus.valueOf(it.myParticipationStatus),
+                        startAt = it.startAt,
+                        endAt = it.endAt,
+                        recruitNum = it.recruitNum,
+                        participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                        waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+                    )
+                }
         )
     }
 
     override fun findAllVolunteerVolunteerEventByVolunteerIdAndStatus(page: Int, volunteerId: Long, status: UserEventParticipationStatus): PagedResult<VolunteerSimpleVolunteerEventDto> {
         val pageable = PageRequest.of(
             page,
-            PAGE_SIZE
+            PAGE_SIZE,
+            Sort.by("startAt")
         )
 
         return when (status) {
@@ -295,24 +300,26 @@ class VolunteerEventQueryRepository(
                 PagedResult(
                     pageNumber = histories.number,
                     pageSize = histories.size,
-                    content = histories.content.map {
-                        VolunteerSimpleVolunteerEventDto(
-                            volunteerEventId = it.id,
-                            shelterId = it.shelterId,
-                            shelterName = it.shelterName,
-                            shelterProfileImageUrl = it.shelterProfileImageUrl,
-                            title = it.title,
-                            category = it.category,
-                            eventStatus = it.eventStatus,
-                            myParticipationStatus = UserEventParticipationStatus.DONE,
-                            startAt = it.startAt,
-                            endAt = it.endAt,
-                            recruitNum = it.recruitNum,
-                            participantNum = joinParticipantMap[it.id]?.size ?: 0,
-                            waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+                    content = histories.content
+                        .sortedBy { it.startAt }
+                        .map {
+                            VolunteerSimpleVolunteerEventDto(
+                                volunteerEventId = it.id,
+                                shelterId = it.shelterId,
+                                shelterName = it.shelterName,
+                                shelterProfileImageUrl = it.shelterProfileImageUrl,
+                                title = it.title,
+                                category = it.category,
+                                eventStatus = it.eventStatus,
+                                myParticipationStatus = UserEventParticipationStatus.DONE,
+                                startAt = it.startAt,
+                                endAt = it.endAt,
+                                recruitNum = it.recruitNum,
+                                participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                                waitingNum = waitingParticipantMap[it.id]?.size ?: 0
 
-                        )
-                    }
+                            )
+                        }
                 )
             }
 
@@ -336,23 +343,25 @@ class VolunteerEventQueryRepository(
                 PagedResult(
                     pageNumber = histories.number,
                     pageSize = histories.size,
-                    content = histories.content.map {
-                        VolunteerSimpleVolunteerEventDto(
-                            volunteerEventId = it.id,
-                            shelterId = it.shelterId,
-                            shelterName = it.shelterName,
-                            shelterProfileImageUrl = it.shelterProfileImageUrl,
-                            title = it.title,
-                            category = it.category,
-                            eventStatus = it.eventStatus,
-                            myParticipationStatus = UserEventParticipationStatus.JOINING,
-                            startAt = it.startAt,
-                            endAt = it.endAt,
-                            recruitNum = it.recruitNum,
-                            participantNum = joinParticipantMap[it.id]?.size ?: 0,
-                            waitingNum = waitingParticipantMap[it.id]?.size ?: 0
-                        )
-                    }
+                    content = histories.content
+                        .sortedBy { it.startAt }
+                        .map {
+                            VolunteerSimpleVolunteerEventDto(
+                                volunteerEventId = it.id,
+                                shelterId = it.shelterId,
+                                shelterName = it.shelterName,
+                                shelterProfileImageUrl = it.shelterProfileImageUrl,
+                                title = it.title,
+                                category = it.category,
+                                eventStatus = it.eventStatus,
+                                myParticipationStatus = UserEventParticipationStatus.JOINING,
+                                startAt = it.startAt,
+                                endAt = it.endAt,
+                                recruitNum = it.recruitNum,
+                                participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                                waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+                            )
+                        }
                 )
             }
             UserEventParticipationStatus.WAITING -> {
@@ -375,23 +384,25 @@ class VolunteerEventQueryRepository(
                 PagedResult(
                     pageNumber = histories.number,
                     pageSize = histories.size,
-                    content = histories.content.map {
-                        VolunteerSimpleVolunteerEventDto(
-                            volunteerEventId = it.id,
-                            shelterId = it.shelterId,
-                            shelterName = it.shelterName,
-                            shelterProfileImageUrl = it.shelterProfileImageUrl,
-                            title = it.title,
-                            category = it.category,
-                            eventStatus = it.eventStatus,
-                            myParticipationStatus = UserEventParticipationStatus.WAITING,
-                            startAt = it.startAt,
-                            endAt = it.endAt,
-                            recruitNum = it.recruitNum,
-                            participantNum = joinParticipantMap[it.id]?.size ?: 0,
-                            waitingNum = waitingParticipantMap[it.id]?.size ?: 0
-                        )
-                    }
+                    content = histories.content
+                        .sortedBy { it.startAt }
+                        .map {
+                            VolunteerSimpleVolunteerEventDto(
+                                volunteerEventId = it.id,
+                                shelterId = it.shelterId,
+                                shelterName = it.shelterName,
+                                shelterProfileImageUrl = it.shelterProfileImageUrl,
+                                title = it.title,
+                                category = it.category,
+                                eventStatus = it.eventStatus,
+                                myParticipationStatus = UserEventParticipationStatus.WAITING,
+                                startAt = it.startAt,
+                                endAt = it.endAt,
+                                recruitNum = it.recruitNum,
+                                participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                                waitingNum = waitingParticipantMap[it.id]?.size ?: 0
+                            )
+                        }
                 )
             }
             else -> PagedResult(
@@ -561,7 +572,9 @@ class VolunteerEventQueryRepository(
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
-            }.toList()
+            }
+            .sortedBy { it.startAt }
+            .toList()
     }
 
     override fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByDateRangeAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: List<VolunteerEventCategory>?, status: VolunteerEventStatus?): List<VolunteerSimpleVolunteerEventDto> {
@@ -605,7 +618,9 @@ class VolunteerEventQueryRepository(
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
-            }.toList()
+            }
+            .sortedBy { it.startAt }
+            .toList()
     }
 
     override fun findAllVolunteerSimpleVolunteerEventInfosByShelterIdAndDateRange(
@@ -651,7 +666,9 @@ class VolunteerEventQueryRepository(
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
-            }.toList()
+            }
+            .sortedBy { it.startAt }
+            .toList()
     }
 
     override fun findAllVolunteerSimpleVolunteerEventInfosWithMyParticipationStatusByShelterIdAndVolunteerIdAndDateRange(
@@ -704,7 +721,7 @@ class VolunteerEventQueryRepository(
                     ),
                 )
             }
-            .sortedBy { it.volunteerEventId }
+            .sortedBy { it.startAt }
             .toList()
     }
 

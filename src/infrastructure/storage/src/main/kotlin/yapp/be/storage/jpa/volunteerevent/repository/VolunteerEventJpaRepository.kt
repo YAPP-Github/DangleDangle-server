@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 interface VolunteerEventJpaRepository : JpaRepository<VolunteerEventEntity, Long>, VolunteerEventJpaRepositoryCustom {
     fun findAllByShelterIdAndDeletedIsFalse(shelterId: Long): List<VolunteerEventEntity>
 
-    fun findAllByShelterIdAndStatus(shelterId: Long, status: VolunteerEventStatus, pageable: Pageable): Page<VolunteerEventEntity>
+    fun findAllByShelterIdAndStatusAndDeletedIsFalse(shelterId: Long, status: VolunteerEventStatus, pageable: Pageable): Page<VolunteerEventEntity>
     fun findAllByShelterId(shelterId: Long): List<VolunteerEventEntity>
     fun findAllByShelterIdAndDeletedIsFalse(shelterId: Long, pageable: Pageable): Page<VolunteerEventEntity>
     fun findByIdAndShelterIdAndDeletedIsFalse(id: Long, shelterId: Long): VolunteerEventEntity?
