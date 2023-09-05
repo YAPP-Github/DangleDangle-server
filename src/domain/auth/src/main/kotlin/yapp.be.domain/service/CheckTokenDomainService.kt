@@ -13,11 +13,11 @@ class CheckTokenDomainService(
 
     @Transactional(readOnly = true)
     override fun isValidRefreshToken(accessToken: String, refreshToken: String): Boolean {
-        return tokenQueryHandler.getTokenByAccessToken(accessToken) == refreshToken
+        return tokenQueryHandler.getTokenByAccessToken(accessToken = accessToken) == refreshToken
     }
 
     @Transactional(readOnly = true)
     override fun isTokenBlackList(accessToken: String): Boolean {
-        return tokenQueryHandler.getTokenByAccessToken(accessToken) == BlackListTokenType.LOGOUT.value
+        return tokenQueryHandler.getTokenByAccessToken(BlackListTokenType.LOGOUT.value, accessToken) == BlackListTokenType.LOGOUT.value
     }
 }
