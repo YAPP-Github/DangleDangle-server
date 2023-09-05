@@ -17,8 +17,8 @@ class TokenRepository(
     }
 
     @Transactional(readOnly = true)
-    override fun getTokenByAccessToken(accessToken: String): String? {
-        return redisHandler.getData(accessToken)
+    override fun getTokenByAccessToken(prefix: String, accessToken: String): String? {
+        return redisHandler.getData(prefix + accessToken)
     }
 
     @Transactional

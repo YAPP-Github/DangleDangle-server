@@ -16,6 +16,6 @@ class GetTokenDomainService(
 
     @Transactional(readOnly = true)
     override fun getTokenByAccessToken(accessToken: String): String? {
-        return tokenQueryHandler.getTokenByAccessToken(accessToken)
+        return tokenQueryHandler.getTokenByAccessToken(accessToken = accessToken)
     }
 }
