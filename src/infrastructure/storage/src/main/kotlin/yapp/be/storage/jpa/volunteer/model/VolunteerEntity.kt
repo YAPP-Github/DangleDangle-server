@@ -1,8 +1,6 @@
 package yapp.be.storage.jpa.volunteer.model
 
 import jakarta.persistence.*
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 import yapp.be.domain.model.Volunteer
 import yapp.be.model.enums.volunteerevent.OAuthType
 import yapp.be.model.enums.volunteerevent.Role
@@ -10,8 +8,6 @@ import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity
 @Table(name = "volunteer")
-@Where(clause = "is_deleted = false")
-@SQLDelete(sql = "UPDATE volunteer SET is_deleted = true WHERE id = ?")
 class VolunteerEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
