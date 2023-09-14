@@ -10,7 +10,7 @@ class VolunteerScheduler(
     private val volunteerManageService: VolunteerManageService
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
-    @Scheduled(cron = "0 */30 * * * *")
+    @Scheduled(fixedDelay = 1000L * 60 * 10)
     fun deleteVolunteer() {
         val deletedVolunteers =
             volunteerManageService.getAllDeletedVolunteers()
