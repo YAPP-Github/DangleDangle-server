@@ -2,8 +2,8 @@ package yapp.be.redis.repository
 
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.port.outbound.TokenCommandHandler
-import yapp.be.domain.port.outbound.TokenQueryHandler
+import yapp.be.domain.auth.port.outbound.TokenCommandHandler
+import yapp.be.domain.auth.port.outbound.TokenQueryHandler
 import java.time.Duration
 
 @Component

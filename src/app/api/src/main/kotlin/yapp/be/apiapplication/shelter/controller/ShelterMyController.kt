@@ -10,7 +10,7 @@ import yapp.be.apiapplication.shelter.service.model.GetShelterMyProfileResponseD
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
-import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
 import yapp.be.model.support.PagedResult
 
 @RestController
@@ -38,7 +38,7 @@ class ShelterMyController(
     )
     fun getShelterVolunteerEventHistories(
         @RequestParam page: Int,
-        @RequestParam(required = false) status: VolunteerEventStatus?,
+        @RequestParam(required = false) status: VolunteerActivityStatus?,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
     ): ResponseEntity<PagedResult<GetShelterMyVolunteerEventHistoryResponseDto>> {
         val resDto = shelterMyApplicationService

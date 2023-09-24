@@ -3,85 +3,85 @@ package yapp.be.storage.repository.command
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.model.VolunteerEvent
-import yapp.be.domain.model.VolunteerEventJoinQueue
-import yapp.be.domain.model.VolunteerEventWaitingQueue
-import yapp.be.domain.port.outbound.VolunteerEventCommandHandler
+import yapp.be.domain.volunteerActivity.model.VolunteerActivity
+import yapp.be.domain.volunteerActivity.model.VolunteerActivityJoinQueue
+import yapp.be.domain.volunteerActivity.model.VolunteerActivityWaitingQueue
+import yapp.be.domain.volunteerActivity.port.outbound.VolunteerActivityCommandHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.storage.config.exceptions.StorageExceptionType
-import yapp.be.storage.jpa.volunteerevent.model.mappers.toDomainModel
-import yapp.be.storage.jpa.volunteerevent.model.mappers.toEntityModel
-import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJoinQueueJpaRepository
-import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventJpaRepository
-import yapp.be.storage.jpa.volunteerevent.repository.VolunteerEventWaitingQueueJpaRepository
+import yapp.be.storage.jpa.volunteerActivity.model.mappers.toDomainModel
+import yapp.be.storage.jpa.volunteerActivity.model.mappers.toEntityModel
+import yapp.be.storage.jpa.volunteerActivity.repository.VolunteerActivityJoiningQueueJpaRepository
+import yapp.be.storage.jpa.volunteerActivity.repository.VolunteerActivityJpaRepository
+import yapp.be.storage.jpa.volunteerActivity.repository.VolunteerActivityWaitingQueueJpaRepository
 
 @Component
 @Transactional
 class VolunteerEventCommandRepository(
-    private val volunteerEventJpaRepository: VolunteerEventJpaRepository,
-    private val volunteerEventWaitingQueueJpaRepository: VolunteerEventWaitingQueueJpaRepository,
-    private val volunteerEventJoinQueueJpaRepository: VolunteerEventJoinQueueJpaRepository,
-) : VolunteerEventCommandHandler {
+    private val volunteerActivityJpaRepository: VolunteerActivityJpaRepository,
+    private val volunteerActivityWaitingQueueJpaRepository: VolunteerActivityWaitingQueueJpaRepository,
+    private val volunteerActivityJoiningQueueJpaRepository: VolunteerActivityJoiningQueueJpaRepository,
+) : VolunteerActivityCommandHandler {
 
-    override fun saveVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
+    override fun saveVolunteerActivity(volunteerEvent: VolunteerActivity): VolunteerActivity {
         val volunteerEventEntity = volunteerEvent.toEntityModel()
-        return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
+        return volunteerActivityJpaRepository.save(volunteerEventEntity).toDomainModel()
     }
-    override fun saveAllVolunteerEvents(volunteerEvents: Collection<VolunteerEvent>): List<VolunteerEvent> {
-        val volunteerEventEntities = volunteerEvents.map {
+    override fun saveAllVolunteerActivities(volunteerActivities: Collection<VolunteerActivity>): List<VolunteerActivity> {
+        val volunteerEventEntities = volunteerActivities.map {
             it.toEntityModel()
         }.toList()
 
-        return volunteerEventJpaRepository.saveAll(volunteerEventEntities)
+        return volunteerActivityJpaRepository.saveAll(volunteerEventEntities)
             .map { it.toDomainModel() }.toList()
     }
 
-    override fun saveVolunteerEventJoinQueue(volunteerEventJoinQueue: VolunteerEventJoinQueue): VolunteerEventJoinQueue {
-        return volunteerEventJoinQueueJpaRepository
+    override fun saveVolunteerEventJoinQueue(volunteerEventJoinQueue: VolunteerActivityJoinQueue): VolunteerActivityJoinQueue {
+        return volunteerActivityJoiningQueueJpaRepository
             .save(volunteerEventJoinQueue.toEntityModel()).toDomainModel()
     }
 
-    override fun saveVolunteerEventJoinQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue {
-        return volunteerEventWaitingQueueJpaRepository
+    override fun saveVolunteerEventJoinQueue(volunteerEventWaitingQueue: VolunteerActivityWaitingQueue): VolunteerActivityWaitingQueue {
+        return volunteerActivityWaitingQueueJpaRepository
             .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
     }
 
-    override fun saveVolunteerEventWaitingQueue(volunteerEventWaitingQueue: VolunteerEventWaitingQueue): VolunteerEventWaitingQueue {
-        return volunteerEventWaitingQueueJpaRepository
+    override fun saveVolunteerActivityWaitingQueue(volunteerEventWaitingQueue: VolunteerActivityWaitingQueue): VolunteerActivityWaitingQueue {
+        return volunteerActivityWaitingQueueJpaRepository
             .save(volunteerEventWaitingQueue.toEntityModel()).toDomainModel()
     }
 
-    override fun deleteVolunteerEventJoiningQueueByVolunteerId(volunteerEventId: Long) {
-        volunteerEventJoinQueueJpaRepository.deleteAllByVolunteerEventId(volunteerEventId)
+    override fun deleteVolunteerActivityJoiningQueueByVolunteerId(volunteerEventId: Long) {
+        volunteerActivityJoiningQueueJpaRepository.deleteAllByVolunteerActivityId(volunteerEventId)
     }
 
-    override fun deleteVolunteerEventWaitingQueueByVolunteerId(volunteerId: Long) {
-        volunteerEventWaitingQueueJpaRepository.deleteByVolunteerId(volunteerId)
+    override fun deleteVolunteerActivityWaitingQueueByVolunteerId(volunteerId: Long) {
+        volunteerActivityWaitingQueueJpaRepository.deleteByVolunteerId(volunteerId)
     }
 
-    override fun updateVolunteerEvent(volunteerEvent: VolunteerEvent): VolunteerEvent {
-        val volunteerEventEntity = volunteerEventJpaRepository.findByIdOrNull(volunteerEvent.id)
+    override fun updateVolunteerActivity(volunteerEvent: VolunteerActivity): VolunteerActivity {
+        val volunteerEventEntity = volunteerActivityJpaRepository.findByIdOrNull(volunteerEvent.id)
             ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "봉사 정보를 찾을 수 없습니다.")
         volunteerEventEntity.update(volunteerEvent)
 
-        return volunteerEventJpaRepository.save(volunteerEventEntity).toDomainModel()
+        return volunteerActivityJpaRepository.save(volunteerEventEntity).toDomainModel()
     }
     override fun deleteVolunteerEventJoinQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
-        return volunteerEventJoinQueueJpaRepository
-            .deleteByVolunteerIdAndVolunteerEventId(
+        return volunteerActivityJoiningQueueJpaRepository
+            .deleteByVolunteerIdAndVolunteerActivityId(
                 volunteerId = volunteerId,
                 volunteerEventId = volunteerEventId
             )
     }
 
-    override fun deleteVolunteerEventWaitingQueueByVolunteerIdAndVolunteerEventId(volunteerId: Long, volunteerEventId: Long) {
-        return volunteerEventWaitingQueueJpaRepository.deleteByVolunteerIdAndVolunteerEventId(
+    override fun deleteVolunteerActivityWaitingQueueByVolunteerIdAndVolunteerActivityId(volunteerId: Long, volunteerEventId: Long) {
+        return volunteerActivityWaitingQueueJpaRepository.deleteByVolunteerIdAndVolunteerActivityId(
             volunteerId = volunteerId,
-            volunteerEventId = volunteerEventId
+            volunteerActivityId = volunteerEventId
         )
     }
-    override fun deleteVolunteerEventByIdAndShelterId(id: Long, shelterId: Long) {
-        val volunteerEventEntity = volunteerEventJpaRepository.findByIdAndShelterIdAndDeletedIsFalse(
+    override fun deleteVolunteerActivityByIdAndShelterId(id: Long, shelterId: Long) {
+        val volunteerEventEntity = volunteerActivityJpaRepository.findByIdAndShelterIdAndDeletedIsFalse(
             id = id,
             shelterId = shelterId
         ) ?: throw CustomException(
@@ -90,21 +90,21 @@ class VolunteerEventCommandRepository(
         )
         volunteerEventEntity.delete()
 
-        volunteerEventJpaRepository.save(volunteerEventEntity)
+        volunteerActivityJpaRepository.save(volunteerEventEntity)
     }
 
-    override fun deleteVolunteerEventWaitingQueueByVolunteerEventId(volunteerEventId: Long) {
-        return volunteerEventWaitingQueueJpaRepository.deleteAllByVolunteerEventId(volunteerEventId)
+    override fun deleteVolunteerActivityWaitingQueueByVolunteerActivityId(volunteerEventId: Long) {
+        return volunteerActivityWaitingQueueJpaRepository.deleteAllByVolunteerActivityId(volunteerEventId)
     }
-    override fun deleteVolunteerEventJoinQueueByVolunteerEventId(volunteerEventId: Long) {
-        return volunteerEventJoinQueueJpaRepository.deleteAllByVolunteerEventId(volunteerEventId)
+    override fun deleteVolunteerActivityJoiningQueueByVolunteerActivityId(volunteerEventId: Long) {
+        return volunteerActivityJoiningQueueJpaRepository.deleteAllByVolunteerActivityId(volunteerEventId)
     }
 
     override fun deleteAllVolunteerEventByShelterId(shelterId: Long): List<Long> {
         val volunteerEventIds = mutableListOf<Long>()
-        val volunteerEvents = volunteerEventJpaRepository.findAllByShelterId(shelterId)
+        val volunteerEvents = volunteerActivityJpaRepository.findAllByShelterId(shelterId)
         volunteerEvents.forEach {
-            volunteerEventJpaRepository.delete(it)
+            volunteerActivityJpaRepository.delete(it)
             volunteerEventIds.add(it.id)
         }
         return volunteerEventIds

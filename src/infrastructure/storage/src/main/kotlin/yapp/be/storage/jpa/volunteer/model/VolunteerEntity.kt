@@ -1,9 +1,9 @@
 package yapp.be.storage.jpa.volunteer.model
 
 import jakarta.persistence.*
-import yapp.be.domain.model.Volunteer
-import yapp.be.model.enums.volunteerevent.OAuthType
-import yapp.be.model.enums.volunteerevent.Role
+import yapp.be.domain.volunteer.model.Volunteer
+import yapp.be.model.enums.volunteerActivity.OAuthType
+import yapp.be.model.enums.volunteerActivity.Role
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity

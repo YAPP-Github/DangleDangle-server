@@ -1,26 +1,26 @@
 package yapp.be.apiapplication.shelter.service.model
 
 import java.time.LocalDateTime
-import yapp.be.model.enums.volunteerevent.AgeLimit
-import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
-import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
-import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.model.enums.volunteerActivity.AgeLimit
+import yapp.be.model.enums.volunteerActivity.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerActivity.VolunteerActivityCategory
+import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
 import yapp.be.model.vo.Address
 
-data class GetShelterUserVolunteerEventRequestDto(
+data class GetShelterUserVolunteerActivityRequestDto(
     val shelterUserId: Long,
     val volunteerEventId: Long
 )
-data class GetVolunteerEventRequestDto(
+data class GetVolunteerActivityRequestDto(
     val shelterId: Long,
     val volunteerId: Long?,
     val volunteerEventId: Long
 )
-data class GetSimpleVolunteerEventResponseDto(
+data class GetSimpleVolunteerActivityResponseDto(
     val volunteerEventId: Long,
-    val category: VolunteerEventCategory,
+    val category: VolunteerActivityCategory,
     val title: String,
-    val eventStatus: VolunteerEventStatus,
+    val eventStatus: VolunteerActivityStatus,
     val myParticipationStatus: UserEventParticipationStatus,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
@@ -29,7 +29,7 @@ data class GetSimpleVolunteerEventResponseDto(
     val waitingNum: Int,
 )
 
-data class GetDetailVolunteerEventResponseDto(
+data class GetDetailVolunteerActivityResponseDto(
     val shelterName: String,
     val shelterProfileImageUrl: String?,
     val title: String,
@@ -37,8 +37,8 @@ data class GetDetailVolunteerEventResponseDto(
     val address: Address,
     val description: String,
     val ageLimit: AgeLimit,
-    val category: VolunteerEventCategory,
-    val eventStatus: VolunteerEventStatus,
+    val category: VolunteerActivityCategory,
+    val eventStatus: VolunteerActivityStatus,
     val myParticipationStatus: UserEventParticipationStatus,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
@@ -50,8 +50,8 @@ data class GetVolunteerMyVolunteerEventHistoryResponseDto(
     val volunteerEventId: Long,
     val shelterName: String,
     val title: String,
-    val category: VolunteerEventCategory,
-    val eventStatus: VolunteerEventStatus,
+    val category: VolunteerActivityCategory,
+    val eventStatus: VolunteerActivityStatus,
     val myParticipationStatus: UserEventParticipationStatus,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,

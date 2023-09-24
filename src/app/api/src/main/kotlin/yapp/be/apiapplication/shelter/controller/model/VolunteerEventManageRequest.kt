@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 import java.time.LocalDate
-import yapp.be.model.enums.volunteerevent.AgeLimit
-import yapp.be.model.enums.volunteerevent.VolunteerEventCategory
+import yapp.be.model.enums.volunteerActivity.AgeLimit
+import yapp.be.model.enums.volunteerActivity.VolunteerActivityCategory
 import java.time.LocalDateTime
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventRequestDto
-import yapp.be.domain.model.Iteration
-import yapp.be.model.enums.volunteerevent.IterationCycle
-import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.domain.volunteerActivity.model.Iteration
+import yapp.be.model.enums.volunteerActivity.IterationCycle
+import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
 
 data class AddVolunteerEventRequest(
     @field:NotBlank(message = "일정 제목을 입력해주세요")
@@ -23,7 +23,7 @@ data class AddVolunteerEventRequest(
     @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
     var description: String?,
     @field:NotNull(message = "값이 비어있습니다.")
-    val category: VolunteerEventCategory,
+    val category: VolunteerActivityCategory,
     @field:NotNull(message = "값이 비어있습니다.")
     val ageLimit: AgeLimit,
     @field:NotNull(message = "값이 비어있습니다.")
@@ -67,9 +67,9 @@ data class EditVolunteerEventRequest(
     @field:Length(max = 300, message = "입력 가능 글자수를 초과했습니다.")
     var description: String?,
     @field:NotNull(message = "이벤트 카테고리 값이 비어있습니다.")
-    val category: VolunteerEventCategory,
+    val category: VolunteerActivityCategory,
     @field:NotNull(message = "이벤트 상태 값이 비어있습니다.")
-    val status: VolunteerEventStatus,
+    val status: VolunteerActivityStatus,
     @field:NotNull(message = "이벤트 나이제한 값이 비어있습니다.")
     val ageLimit: AgeLimit,
     @field:NotNull(message = "시작시간 값이 비어있습니다.")

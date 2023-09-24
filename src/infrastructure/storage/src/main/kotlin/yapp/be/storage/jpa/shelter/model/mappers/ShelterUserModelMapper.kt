@@ -9,7 +9,8 @@ fun ShelterUser.toEntityModel(): ShelterUserEntity {
         id = this.id,
         email = this.email.value,
         password = this.password,
-        shelterId = this.shelterId
+        shelterId = this.shelterId,
+        needToChangePassword = this.needToChangePassword
 
     )
 }
@@ -19,6 +20,7 @@ fun ShelterUserEntity.toDomainModel(): ShelterUser {
         id = this.id,
         email = Email(this.email),
         password = this.password,
-        shelterId = this.shelterId
+        shelterId = this.shelterId,
+        needToChangePassword = this.needToChangePassword
     )
 }

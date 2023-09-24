@@ -1,6 +1,6 @@
 package yapp.be.apiapplication.shelter.service.model
 
-import yapp.be.model.enums.volunteerevent.OutLinkType
+import yapp.be.model.enums.volunteerActivity.OutLinkType
 
 data class GetShelterRequestDto(
     val shelterId: Long,

@@ -9,7 +9,11 @@ import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.apiapplication.system.security.oauth2.CustomOAuth2User
 import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
+import yapp.be.domain.auth.port.inbound.SaveOAuthNonMemberInfoUseCase
+import yapp.be.domain.auth.port.inbound.SaveTokenUseCase
 import yapp.be.domain.port.inbound.*
+import yapp.be.domain.volunteer.port.inbound.CheckVolunteerUseCase
+import yapp.be.domain.volunteer.port.inbound.GetVolunteerUseCase
 import yapp.be.model.vo.Email
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

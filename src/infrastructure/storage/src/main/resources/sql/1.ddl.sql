@@ -27,6 +27,7 @@ CREATE TABLE `shelter_user`
     `email`                               varchar(100) not null,
     `password`                            varchar(255) not null,
     `shelter_id`                          bigint       not null,
+    `need_to_change_password`             boolean      not null    default false,
     `created_at`                          datetime    not null,
     `modified_at`                         datetime,
     unique index UDX_EMAIL (`email`)
@@ -79,7 +80,7 @@ CREATE TABLE `observation_animal`
     index IDX_SHELTER_ID (`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `volunteer_event`
+CREATE TABLE `volunteer_activity`
 (
     `id`                                  bigint           not null primary key auto_increment,
     `title`                               varchar(50)      not null,
@@ -97,23 +98,23 @@ CREATE TABLE `volunteer_event`
     index IDX_SHELTER_ID (`shelter_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `volunteer_event_join_queue`
+CREATE TABLE `volunteer_activity_joining_queue`
 (
     `id`                                      bigint           not null primary key auto_increment,
-    `volunteer_event_id`                      bigint           not null,
+    `volunteer_activity_id`                   bigint           not null,
     `volunteer_id`                            bigint           not null,
-    index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`),
+    index IDX_VOLUNTEER_ACTIVITY_ID(`volunteer_activity_id`),
     index IDX_VOLUNTEER_ID(`volunteer_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `volunteer_event_waiting_queue`
+CREATE TABLE `volunteer_activity_waiting_queue`
 (
     `id`                                       bigint            not null primary key auto_increment,
-    `volunteer_event_id`                       bigint            not null,
+    `volunteer_activity_id`                       bigint            not null,
     `volunteer_id`                             bigint            not null,
 
-    index IDX_VOLUNTEER_EVENT_ID(`volunteer_event_id`),
-    index IDX_VOLUNTEER_EVENT_ID_AND_VOLUNTEER_ID(`volunteer_event_id`,`volunteer_id`)
+    index IDX_VOLUNTEER_ACTIVITY_ID(`volunteer_activity_id`),
+    index IDX_VOLUNTEER_ACTIVITY_ID_AND_VOLUNTEER_ID(`volunteer_activity_id`,`volunteer_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `shelter_bookmark`

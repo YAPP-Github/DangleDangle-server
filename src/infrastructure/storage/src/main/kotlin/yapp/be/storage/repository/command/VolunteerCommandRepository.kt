@@ -3,8 +3,8 @@ package yapp.be.storage.repository.command
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.model.Volunteer
-import yapp.be.domain.port.outbound.VolunteerCommandHandler
+import yapp.be.domain.volunteer.model.Volunteer
+import yapp.be.domain.volunteer.port.outbound.VolunteerCommandHandler
 import yapp.be.exceptions.CustomException
 import yapp.be.storage.config.exceptions.StorageExceptionType
 import yapp.be.storage.jpa.volunteer.model.mappers.toDomainModel

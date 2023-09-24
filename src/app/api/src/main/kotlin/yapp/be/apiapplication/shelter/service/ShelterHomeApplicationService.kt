@@ -3,20 +3,20 @@ package yapp.be.apiapplication.shelter.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.GetShelterHomeRequestDto
-import yapp.be.domain.model.dto.VolunteerSimpleVolunteerEventDto
-import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
+import yapp.be.domain.volunteerActivity.model.dto.VolunteerSimpleVolunteerActivityDto
+import yapp.be.domain.volunteerActivity.port.inbound.GetVolunteerActivityUseCase
 
 @Service
 class ShelterHomeApplicationService(
     private val getShelterUserUseCase: GetShelterUserUseCase,
-    private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
+    private val getVolunteerActivityUseCase: GetVolunteerActivityUseCase,
 ) {
     @Transactional(readOnly = true)
     fun getShelterEventHome(
         reqDto: GetShelterHomeRequestDto
-    ): List<VolunteerSimpleVolunteerEventDto> {
+    ): List<VolunteerSimpleVolunteerActivityDto> {
         val shelterUser = getShelterUserUseCase.getShelterUserById(reqDto.shelterUserId)
-        return getVolunteerEventUseCase.getVolunteerEventsByDateRangeAndCategoryAndStatus(shelterUser.shelterId, reqDto.from, reqDto.to, reqDto.category, reqDto.status)
+        return getVolunteerActivityUseCase.getVolunteerEventsByDateRangeAndCategoryAndStatus(shelterUser.shelterId, reqDto.from, reqDto.to, reqDto.category, reqDto.status)
     }
 }

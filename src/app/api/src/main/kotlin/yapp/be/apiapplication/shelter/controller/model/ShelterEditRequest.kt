@@ -12,7 +12,7 @@ import yapp.be.apiapplication.shelter.service.model.EditWithEssentialInfoRequest
 import yapp.be.model.vo.Address
 import yapp.be.domain.model.BankAccount
 import yapp.be.domain.model.ShelterParkingInfo
-import yapp.be.model.enums.volunteerevent.OutLinkType
+import yapp.be.model.enums.volunteerActivity.OutLinkType
 
 data class EditShelterAlarmEnabledRequest(
     @field:NotNull(message = "값이 비어있습니다.")

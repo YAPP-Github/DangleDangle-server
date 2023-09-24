@@ -1,6 +1,6 @@
 package yapp.be.apiapplication.shelter.service.model
 
-import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerActivity.UserEventParticipationStatus
 
 data class ParticipateVolunteerEventRequestDto(
     val shelterId: Long,

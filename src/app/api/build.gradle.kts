@@ -24,10 +24,7 @@ dependencies {
 
     implementation(project(":lock"))
     implementation(project(":common"))
-    implementation(project(":auth"))
-    implementation(project(":volunteer"))
-    implementation(project(":volunteerEvent"))
-    implementation(project(":shelter"))
+    implementation(project(":domain"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -37,9 +34,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVersion")
     implementation("io.jsonwebtoken:jjwt-api:$jjwtApiVersion")
-
-    testImplementation(testFixtures(project(":storage")))
-    testImplementation(testFixtures(project(":redis")))
 
     if (Os.isFamily(Os.FAMILY_MAC)) {
         // for-mac
