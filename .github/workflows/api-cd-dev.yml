@@ -5,7 +5,7 @@ on:
         branches: [ dev ]
         paths:
             - 'src/app/api/**'
-            - 'src/domain/**
+            - 'src/domain/**'
             - 'src/infrastructure/client/**'
             - 'src/infrastructure/storage/**'
             - 'src/infrastructure/redis/**'
