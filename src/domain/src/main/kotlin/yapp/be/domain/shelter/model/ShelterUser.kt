@@ -7,5 +7,5 @@ data class ShelterUser(
     val email: Email,
     val password: String,
     val shelterId: Long,
-    val needToChangePassword:Boolean
+    val needToChangePassword: Boolean
 )
