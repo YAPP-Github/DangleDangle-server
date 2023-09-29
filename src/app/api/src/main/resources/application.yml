@@ -13,6 +13,7 @@ spring:
       - application-client-${spring.profiles.active}.yml
       - application-storage-${spring.profiles.active}.yml
       - application-redis-${spring.profiles.active}.yml
+      - application-mail-${spring.profiles.active}.yml
 springdoc:
   swagger-ui:
     path: /swagger

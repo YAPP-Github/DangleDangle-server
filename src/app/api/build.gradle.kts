@@ -23,6 +23,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jsonWebTokenVersion")
 
     implementation(project(":lock"))
+    implementation(project(":mail"))
     implementation(project(":common"))
     implementation(project(":domain"))
 

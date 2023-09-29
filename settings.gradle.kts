@@ -33,6 +33,7 @@ includeProject(":domain", "src/domain")
 includeProject(":logger", "src/support/logger")
 includeProject(":common", "src/support/common")
 includeProject(":lock", "src/support/lock")
+includeProject(":mail", "src/support/mail")
 
 // infrastructure
 includeProject(":storage", "src/infrastructure/storage")
