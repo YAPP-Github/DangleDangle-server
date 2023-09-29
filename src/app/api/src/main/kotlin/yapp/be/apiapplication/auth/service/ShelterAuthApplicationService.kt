@@ -15,17 +15,21 @@ import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
 import yapp.be.domain.auth.port.inbound.SaveTokenUseCase
+import yapp.be.domain.common.model.MailType
 import yapp.be.domain.port.inbound.shelter.AddShelterUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 import yapp.be.domain.shelter.port.inbound.shelteruser.EditShelterUserUseCase
 import yapp.be.domain.shelter.port.inbound.shelteruser.SignUpShelterUseCase
 import yapp.be.model.enums.volunteerActivity.Role
 import yapp.be.exceptions.CustomException
+import yapp.be.mail.MailSendCommand
+import yapp.be.mail.MailSendProcessor
 import yapp.be.model.vo.Email
 import java.time.Duration
 
 @Service
 class ShelterAuthApplicationService(
+    private val mailSender: MailSendProcessor,
     private val encoder: PasswordEncoder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val getShelterUserUseCase: GetShelterUserUseCase,
@@ -116,10 +120,20 @@ class ShelterAuthApplicationService(
             phoneNumber = phoneNumber
         )?.let {
             val newPassword = generateRandomPassword()
-            println(newPassword)
             it.password = encoder.encode(newPassword)
             it.needToChangePassword = true
 
+            mailSender.sendEmailMessage(
+                MailSendCommand(
+                    title = MailType.RESET_PASSWORD.title,
+                    to = it.email.value,
+                    template = MailType.RESET_PASSWORD.template,
+                    variables = buildMap {
+                        put("title", MailType.RESET_PASSWORD.title)
+                        put("password", newPassword)
+                    }
+                )
+            )
             editShelterUserUseCase.editShelterUser(it)
         } ?: throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "Reset Password Fail")
 
