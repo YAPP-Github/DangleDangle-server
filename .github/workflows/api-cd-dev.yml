@@ -5,10 +5,7 @@ on:
         branches: [ dev ]
         paths:
             - 'src/app/api/**'
-            - 'src/domain/auth/**'
-            - 'src/domain/volunteer/**'
-            - 'src/domain/volunteerEvent/**'
-            - 'src/domain/shelter/**'
+            - 'src/domain/**'
             - 'src/infrastructure/client/**'
             - 'src/infrastructure/storage/**'
             - 'src/infrastructure/redis/**'

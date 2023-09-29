@@ -10,7 +10,7 @@ data class GetVolunteerEventListRequestDto(
 )
 
 data class GetVolunteerEventListResponseDto(
-    val events: List<GetSimpleVolunteerEventResponseDto>
+    val events: List<GetSimpleVolunteerActivityResponseDto>
 )
 
 data class GetShelterUserVolunteerEventListRequestDto(
@@ -20,5 +20,5 @@ data class GetShelterUserVolunteerEventListRequestDto(
 )
 
 data class GetShelterUserVolunteerEventListResponseDto(
-    val events: List<GetSimpleVolunteerEventResponseDto>
+    val events: List<GetSimpleVolunteerActivityResponseDto>
 )

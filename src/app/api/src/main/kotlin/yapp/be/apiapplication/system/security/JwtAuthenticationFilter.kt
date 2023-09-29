@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
-import yapp.be.domain.port.inbound.CheckTokenUseCase
+import yapp.be.domain.auth.port.inbound.CheckTokenUseCase
 import yapp.be.exceptions.CustomException
 
 class JwtAuthenticationFilter(

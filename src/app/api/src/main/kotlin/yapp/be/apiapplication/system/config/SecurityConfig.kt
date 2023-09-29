@@ -22,8 +22,8 @@ import yapp.be.apiapplication.system.security.handler.CustomAccessDeniedHandler
 import yapp.be.apiapplication.system.security.handler.CustomAuthenticationEntryPoint
 import yapp.be.apiapplication.system.security.handler.FilterExceptionHandler
 import yapp.be.apiapplication.system.security.oauth2.ExtraStatefulParameterOAuth2AuthorizationRequestResolver
-import yapp.be.domain.port.inbound.CheckTokenUseCase
-import yapp.be.model.enums.volunteerevent.Role
+import yapp.be.domain.auth.port.inbound.CheckTokenUseCase
+import yapp.be.model.enums.volunteerActivity.Role
 
 @Configuration
 @EnableWebSecurity

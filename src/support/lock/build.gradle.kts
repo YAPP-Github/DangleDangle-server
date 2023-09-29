@@ -9,8 +9,6 @@ dependencies {
     implementation(project(":common"))
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.redisson:redisson-spring-boot-starter:$redissonVersion")
-
-    testImplementation(testFixtures(project(":redis")))
 }
 
 tasks.named<BootJar>("bootJar") {

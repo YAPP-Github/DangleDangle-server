@@ -11,13 +11,13 @@ import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResp
 import yapp.be.apiapplication.volunteer.service.model.DeleteVolunteerResponseDto
 import yapp.be.apiapplication.volunteer.service.model.BookMarkedShelterInfo
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerUpcomingVolunteerEventResponseDto
-import yapp.be.domain.port.inbound.DeleteVolunteerUseCase
-import yapp.be.domain.port.inbound.EditVolunteerUseCase
-import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
-import yapp.be.domain.port.inbound.GetVolunteerUseCase
-import yapp.be.domain.port.inbound.model.EditVolunteerCommand
 import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
-import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.domain.volunteer.port.inbound.DeleteVolunteerUseCase
+import yapp.be.domain.volunteer.port.inbound.EditVolunteerUseCase
+import yapp.be.domain.volunteer.port.inbound.GetVolunteerUseCase
+import yapp.be.domain.volunteer.port.inbound.model.EditVolunteerCommand
+import yapp.be.domain.volunteerActivity.port.inbound.GetVolunteerActivityUseCase
+import yapp.be.model.enums.volunteerActivity.UserEventParticipationStatus
 import yapp.be.model.support.PagedResult
 
 @Service
@@ -25,18 +25,18 @@ class VolunteerMyApplicationService(
     private val getVolunteerUseCase: GetVolunteerUseCase,
     private val getShelterUseCase: GetShelterUseCase,
     private val editVolunteerUseCase: EditVolunteerUseCase,
-    private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
+    private val getVolunteerActivityUseCase: GetVolunteerActivityUseCase,
     private val deleteVolunteerUseCase: DeleteVolunteerUseCase,
 ) {
 
     @Transactional(readOnly = true)
     fun getVolunteerUpComingVolunteerEvent(volunteerId: Long): GetVolunteerUpcomingVolunteerEventResponseDto? {
         val volunteer = getVolunteerUseCase.getById(volunteerId)
-        val upcomingVolunteerEvent = getVolunteerEventUseCase.getVolunteerUpComingVolunteerEvent(
+        val upcomingVolunteerActivity = getVolunteerActivityUseCase.getVolunteerUpComingVolunteerEvent(
             volunteerId = volunteer.id
         )
 
-        return upcomingVolunteerEvent?.let {
+        return upcomingVolunteerActivity?.let {
             GetVolunteerUpcomingVolunteerEventResponseDto(
                 shelterId = it.shelterId,
                 shelterName = it.shelterName,
@@ -55,7 +55,7 @@ class VolunteerMyApplicationService(
     @Transactional(readOnly = true)
     fun getVolunteerMyProfile(volunteerId: Long): GetVolunteerMyProfileResponseDto {
         val volunteer = getVolunteerUseCase.getById(volunteerId)
-        val volunteerEventHistoryStat = getVolunteerEventUseCase
+        val volunteerEventHistoryStat = getVolunteerActivityUseCase
             .getVolunteerVolunteerEventStat(volunteerId)
 
         return GetVolunteerMyProfileResponseDto(
@@ -77,7 +77,7 @@ class VolunteerMyApplicationService(
         status: UserEventParticipationStatus?
     ): PagedResult<GetVolunteerVolunteerEventHistoryResponseDto> {
         val volunteer = getVolunteerUseCase.getById(volunteerId = volunteerId)
-        val histories = getVolunteerEventUseCase
+        val histories = getVolunteerActivityUseCase
             .getAllVolunteerVolunteerEventHistory(
                 page = page,
                 volunteerId = volunteer.id,

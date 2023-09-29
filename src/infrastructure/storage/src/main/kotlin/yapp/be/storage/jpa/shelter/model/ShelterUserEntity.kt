@@ -24,4 +24,7 @@ class ShelterUserEntity(
 
     @Column(name = "shelter_id", nullable = false)
     val shelterId: Long,
+
+    @Column(name = "need_to_change_password", nullable = false)
+    val needToChangePassword: Boolean
 ) : BaseTimeEntity()

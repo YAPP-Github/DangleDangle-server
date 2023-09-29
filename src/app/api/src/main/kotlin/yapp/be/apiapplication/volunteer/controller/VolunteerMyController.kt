@@ -14,7 +14,7 @@ import yapp.be.apiapplication.volunteer.service.model.GetVolunteerBookMarkedShel
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerMyProfileResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerUpcomingVolunteerEventResponseDto
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerVolunteerEventHistoryResponseDto
-import yapp.be.model.enums.volunteerevent.UserEventParticipationStatus
+import yapp.be.model.enums.volunteerActivity.UserEventParticipationStatus
 import yapp.be.model.support.PagedResult
 
 @RestController

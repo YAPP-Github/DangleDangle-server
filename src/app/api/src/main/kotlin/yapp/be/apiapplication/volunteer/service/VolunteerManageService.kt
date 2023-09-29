@@ -2,16 +2,16 @@ package yapp.be.apiapplication.volunteer.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yapp.be.domain.model.Volunteer
-import yapp.be.domain.port.inbound.DeleteVolunteerEventUseCase
-import yapp.be.domain.port.inbound.DeleteVolunteerUseCase
-import yapp.be.domain.port.inbound.GetVolunteerUseCase
+import yapp.be.domain.volunteer.model.Volunteer
+import yapp.be.domain.volunteer.port.inbound.DeleteVolunteerUseCase
+import yapp.be.domain.volunteer.port.inbound.GetVolunteerUseCase
+import yapp.be.domain.volunteerActivity.port.inbound.DeleteVolunteerActivityUseCase
 
 @Service
 class VolunteerManageService(
     private val getVolunteerUseCase: GetVolunteerUseCase,
     private val deleteVolunteerUseCase: DeleteVolunteerUseCase,
-    private val deleteVolunteerEventUseCase: DeleteVolunteerEventUseCase,
+    private val deleteVolunteerActivityUseCase: DeleteVolunteerActivityUseCase,
 ) {
 
     @Transactional(readOnly = true)
@@ -23,7 +23,7 @@ class VolunteerManageService(
     fun deleteVolunteerAndAllRelatedContents(
         volunteerId: Long
     ) {
-        deleteVolunteerEventUseCase
+        deleteVolunteerActivityUseCase
             .deleteAllVolunteerRelatedVolunteerEvents(volunteerId)
 
         deleteVolunteerUseCase.hardDeleteVolunteer(volunteerId)

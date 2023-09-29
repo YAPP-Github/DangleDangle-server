@@ -9,12 +9,12 @@ import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.JwtTokenProvider
 import yapp.be.apiapplication.system.security.SecurityTokenType
 import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
-import yapp.be.domain.model.BlackListTokenType
-import yapp.be.domain.port.inbound.CheckTokenUseCase
-import yapp.be.domain.port.inbound.DeleteTokenUseCase
-import yapp.be.domain.port.inbound.SaveTokenUseCase
+import yapp.be.domain.auth.model.BlackListTokenType
+import yapp.be.domain.auth.port.inbound.CheckTokenUseCase
+import yapp.be.domain.auth.port.inbound.DeleteTokenUseCase
+import yapp.be.domain.auth.port.inbound.SaveTokenUseCase
 import yapp.be.exceptions.CustomException
-import yapp.be.model.enums.volunteerevent.Role
+import yapp.be.model.enums.volunteerActivity.Role
 import yapp.be.model.vo.Email
 import java.time.Duration
 

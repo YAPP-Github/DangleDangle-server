@@ -6,24 +6,24 @@ import yapp.be.apiapplication.shelter.service.model.DeleteShelterUserResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyProfileResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.shelter.service.model.ShelterVolunteerEventHistoryStatInfo
-import yapp.be.domain.port.inbound.DeleteVolunteerEventUseCase
-import yapp.be.domain.port.inbound.GetVolunteerEventUseCase
 import yapp.be.domain.port.inbound.shelter.DeleteShelterUserUseCase
 import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
-import yapp.be.model.enums.volunteerevent.VolunteerEventStatus
+import yapp.be.domain.volunteerActivity.port.inbound.DeleteVolunteerActivityUseCase
+import yapp.be.domain.volunteerActivity.port.inbound.GetVolunteerActivityUseCase
+import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
 import yapp.be.model.support.PagedResult
 
 @Service
 class ShelterMyApplicationService(
     private val getShelterUseCase: GetShelterUseCase,
-    private val getVolunteerEventUseCase: GetVolunteerEventUseCase,
+    private val getVolunteerActivityUseCase: GetVolunteerActivityUseCase,
     private val deleteShelterUserUseCase: DeleteShelterUserUseCase,
-    private val deleteVolunteerEventUseCase: DeleteVolunteerEventUseCase,
+    private val deleteVolunteerActivityUseCase: DeleteVolunteerActivityUseCase,
 ) {
     @Transactional(readOnly = true)
     fun getShelterMyProfile(shelterId: Long): GetShelterMyProfileResponseDto {
         val shelter = getShelterUseCase.getShelterById(shelterId)
-        val volunteerEventHistoryStat = getVolunteerEventUseCase.getShelterVolunteerEventStat(shelterId)
+        val volunteerEventHistoryStat = getVolunteerActivityUseCase.getShelterVolunteerEventStat(shelterId)
 
         return GetShelterMyProfileResponseDto(
             name = shelter.name,
@@ -39,10 +39,10 @@ class ShelterMyApplicationService(
     fun getShelterVolunteerEventHistories(
         page: Int,
         shelterId: Long,
-        status: VolunteerEventStatus?
+        status: VolunteerActivityStatus?
     ): PagedResult<GetShelterMyVolunteerEventHistoryResponseDto> {
         val shelter = getShelterUseCase.getShelterById(shelterId)
-        val histories = getVolunteerEventUseCase
+        val histories = getVolunteerActivityUseCase
             .getAllShelterVolunteerEventHistory(
                 page = page,
                 status = status,
@@ -73,7 +73,7 @@ class ShelterMyApplicationService(
         shelterUserId: Long,
     ): DeleteShelterUserResponseDto {
         val deletedShelterId = deleteShelterUserUseCase.deleteShelterUser(shelterUserId)
-        deleteVolunteerEventUseCase.deleteByShelterId(deletedShelterId)
+        deleteVolunteerActivityUseCase.deleteByShelterId(deletedShelterId)
         return DeleteShelterUserResponseDto(
             shelterId = deletedShelterId
         )
