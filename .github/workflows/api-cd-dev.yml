@@ -12,6 +12,7 @@ on:
             - 'src/support/logger/**'
             - 'src/support/lock/**'
             - 'src/support/common/**'
+            - 'src/support/mail/**'
         types: [ closed ]
 jobs:
     build:
