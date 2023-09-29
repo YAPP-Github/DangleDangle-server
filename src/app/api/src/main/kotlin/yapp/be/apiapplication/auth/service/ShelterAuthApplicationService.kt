@@ -1,9 +1,11 @@
 package yapp.be.apiapplication.auth.service
 
+import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.auth.service.model.CheckShelterUserSignUpDuplicationResponseDto
+import yapp.be.apiapplication.auth.service.model.EditShelterUsePasswordResponseDto
 import yapp.be.apiapplication.auth.service.model.LoginShelterUserRequestDto
 import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoRequestDto
@@ -15,7 +17,8 @@ import yapp.be.apiapplication.system.security.properties.JwtConfigProperties
 import yapp.be.domain.auth.port.inbound.SaveTokenUseCase
 import yapp.be.domain.port.inbound.shelter.AddShelterUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
-import yapp.be.domain.port.inbound.shelteruser.SignUpShelterUseCase
+import yapp.be.domain.shelter.port.inbound.shelteruser.EditShelterUserUseCase
+import yapp.be.domain.shelter.port.inbound.shelteruser.SignUpShelterUseCase
 import yapp.be.model.enums.volunteerActivity.Role
 import yapp.be.exceptions.CustomException
 import yapp.be.model.vo.Email
@@ -26,6 +29,7 @@ class ShelterAuthApplicationService(
     private val encoder: PasswordEncoder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val getShelterUserUseCase: GetShelterUserUseCase,
+    private val editShelterUserUseCase: EditShelterUserUseCase,
     private val addShelterUseCase: AddShelterUseCase,
     private val signUpShelterUseCase: SignUpShelterUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
@@ -62,7 +66,8 @@ class ShelterAuthApplicationService(
 
         return LoginShelterUserResponseDto(
             accessToken = accessToken,
-            refreshToken = refreshToken
+            refreshToken = refreshToken,
+            needToChangePassword = shelterUser.needToChangePassword
         )
     }
 
@@ -87,6 +92,43 @@ class ShelterAuthApplicationService(
         )
     }
 
+    @Transactional
+    fun changePassword(shelterUserId: Long, password: String): EditShelterUsePasswordResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserById(shelterUserId)
+            .let {
+                it.password = encoder.encode(password)
+                it.needToChangePassword = false
+                editShelterUserUseCase.editShelterUser(it)
+            }
+        return EditShelterUsePasswordResponseDto(
+            shelterUserId = shelterUser.id,
+            needToChangePassword = shelterUser.needToChangePassword
+        )
+    }
+
+    @Transactional
+    fun resetPassword(
+        email: Email,
+        phoneNumber: String
+    ): EditShelterUsePasswordResponseDto {
+        val shelterUser = getShelterUserUseCase.getShelterUserByEmailAndPhoneNumber(
+            email = email,
+            phoneNumber = phoneNumber
+        )?.let {
+            val newPassword = generateRandomPassword()
+            println(newPassword)
+            it.password = encoder.encode(newPassword)
+            it.needToChangePassword = true
+
+            editShelterUserUseCase.editShelterUser(it)
+        } ?: throw CustomException(ApiExceptionType.UNAUTHENTICATED_EXCEPTION, "Reset Password Fail")
+
+        return EditShelterUsePasswordResponseDto(
+            shelterUserId = shelterUser.id,
+            needToChangePassword = shelterUser.needToChangePassword
+        )
+    }
+
     @Transactional(readOnly = true)
     fun checkIsShelterUserNameExist(name: String): CheckShelterUserSignUpDuplicationResponseDto {
         val isExist = getShelterUserUseCase.checkNameExist(name)
@@ -97,5 +139,12 @@ class ShelterAuthApplicationService(
     fun checkIsShelterUserEmailExist(email: Email): CheckShelterUserSignUpDuplicationResponseDto {
         val isExist = getShelterUserUseCase.checkEmailExist(email)
         return CheckShelterUserSignUpDuplicationResponseDto(isExist)
+    }
+
+    private fun generateRandomPassword(): String {
+        val specialCharacters = listOf<Char>(
+            '~', '!', '@', '#', '$', '%', '^', '&', '*'
+        )
+        return "${RandomStringUtils.randomAlphanumeric(8,14)}${specialCharacters.random()}"
     }
 }

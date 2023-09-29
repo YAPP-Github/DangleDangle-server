@@ -17,6 +17,7 @@ interface ShelterQueryHandler {
         volunteerId: Long
     ): ShelterDto
 
+    fun findByIdAndPhoneNumber(id: Long, phoneNumber: String): Shelter
     fun findInfoById(
         id: Long
     ): ShelterDto

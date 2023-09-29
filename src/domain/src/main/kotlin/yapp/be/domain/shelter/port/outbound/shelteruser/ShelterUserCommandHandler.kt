@@ -5,4 +5,6 @@ import yapp.be.domain.model.ShelterUser
 interface ShelterUserCommandHandler {
     fun save(shelterUser: ShelterUser): ShelterUser
     fun delete(shelterUserId: Long): Long
+
+    fun update(shelterUser: ShelterUser): ShelterUser
 }

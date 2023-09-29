@@ -17,6 +17,7 @@ class ShelterUserCommandRepository(
     private val shelterUserJpaRepository: ShelterUserJpaRepository
 ) : ShelterUserCommandHandler {
 
+    @Transactional
     override fun save(shelterUser: ShelterUser): ShelterUser {
         val shelterUserEntity =
             shelterUserJpaRepository.save(
@@ -29,5 +30,16 @@ class ShelterUserCommandRepository(
         val shelterUserEntity = shelterUserJpaRepository.findByIdOrNull(shelterUserId) ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.")
         shelterUserJpaRepository.delete(shelterUserEntity)
         return shelterUserEntity.shelterId
+    }
+
+    @Transactional
+    override fun update(shelterUser: ShelterUser): ShelterUser {
+        val shelterUserEntity = shelterUserJpaRepository.findByIdOrNull(shelterUser.id)
+            ?: throw CustomException(StorageExceptionType.ENTITY_NOT_FOUND, "해당 사용자가 존재하지 않습니다.")
+
+        shelterUserEntity.update(shelterUser)
+        shelterUserJpaRepository.save(shelterUserEntity)
+
+        return shelterUserEntity.toDomainModel()
     }
 }

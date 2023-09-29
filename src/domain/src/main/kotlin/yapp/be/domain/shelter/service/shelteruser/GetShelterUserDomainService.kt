@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.ShelterUser
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 import yapp.be.domain.port.outbound.shelter.ShelterQueryHandler
-import yapp.be.domain.port.outbound.shelteruser.ShelterUserQueryHandler
+import yapp.be.domain.shelter.port.outbound.shelteruser.ShelterUserQueryHandler
 import yapp.be.model.vo.Email
 
 @Service
@@ -17,6 +17,13 @@ class GetShelterUserDomainService(
     @Transactional(readOnly = true)
     override fun getShelterUserById(shelterUserId: Long): ShelterUser {
         return shelterUserQueryHandler.findById(shelterUserId)
+    }
+
+    override fun getShelterUserByEmailAndPhoneNumber(email: Email, phoneNumber: String): ShelterUser? {
+        val shelterUser = shelterUserQueryHandler.findByEmail(email) ?: return null
+        val shelter = shelterQueryHandler.findByIdAndPhoneNumber(shelterUser.id, phoneNumber)
+
+        return shelterUser
     }
 
     @Transactional(readOnly = true)

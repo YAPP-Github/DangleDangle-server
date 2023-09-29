@@ -3,7 +3,7 @@ package yapp.be.domain.shelter.service.shelteruser
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.ShelterUser
-import yapp.be.domain.port.inbound.shelteruser.SignUpShelterUseCase
+import yapp.be.domain.shelter.port.inbound.shelteruser.SignUpShelterUseCase
 import yapp.be.domain.port.outbound.shelteruser.ShelterUserCommandHandler
 import yapp.be.model.vo.Email
 

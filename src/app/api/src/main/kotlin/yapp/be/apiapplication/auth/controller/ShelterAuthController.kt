@@ -12,19 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import yapp.be.apiapplication.auth.controller.model.ChangeShelterUserPasswordRequest
 import yapp.be.apiapplication.auth.controller.model.LoginShelterUserRequest
+import yapp.be.apiapplication.auth.controller.model.ResetShelterUserPasswordRequest
 import yapp.be.apiapplication.auth.controller.model.ShelterSignUpCheckDuplicationType
 import yapp.be.apiapplication.auth.controller.model.SignUpWithEssentialInfoRequest
 import yapp.be.apiapplication.auth.service.ShelterAuthApplicationService
-import yapp.be.apiapplication.auth.service.model.CheckShelterUserSignUpDuplicationResponseDto
-import yapp.be.apiapplication.auth.service.model.LoginShelterUserResponseDto
-import yapp.be.apiapplication.auth.service.model.SignUpShelterWithEssentialInfoResponseDto
+import yapp.be.apiapplication.auth.service.model.*
 import yapp.be.apiapplication.system.exception.ApiExceptionType
+import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
+import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 import yapp.be.exceptions.CustomException
 import yapp.be.model.vo.Email
 
 @RestController
-@Tag(name = "보호소 회원가입/로그인 api")
+@Tag(name = "보호소 인증관련 api")
 @RequestMapping("/v1/auth/shelter")
 class ShelterAuthController(
     val shelterAuthApplicationService: ShelterAuthApplicationService
@@ -78,6 +80,42 @@ class ShelterAuthController(
     ): ResponseEntity<SignUpShelterWithEssentialInfoResponseDto> {
         val reqDto = req.toDto()
         val resDto = shelterAuthApplicationService.signUpWithEssentialInfo(reqDto)
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/change-password")
+    @Operation(
+        summary = "보호소 사용자 비밀번호변경",
+    )
+    fun changePassword(
+        @RequestBody @Valid
+        req: ChangeShelterUserPasswordRequest,
+        @ShelterUserAuthentication
+        shelterUserInfo: ShelterUserAuthenticationInfo
+    ): ResponseEntity<EditShelterUsePasswordResponseDto> {
+        val resDto = shelterAuthApplicationService.changePassword(
+            shelterUserId = shelterUserInfo.shelterUserId,
+            password = req.password
+        )
+
+        return ResponseEntity.ok(resDto)
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/reset-password")
+    @Operation(
+        summary = "보호소 사용자 비밀번호초기화",
+    )
+    fun resetPassword(
+        @RequestBody @Valid
+        req: ResetShelterUserPasswordRequest
+    ): ResponseEntity<EditShelterUsePasswordResponseDto> {
+        val resDto = shelterAuthApplicationService.resetPassword(
+            email = Email(req.email),
+            phoneNumber = req.phoneNumber
+        )
 
         return ResponseEntity.ok(resDto)
     }

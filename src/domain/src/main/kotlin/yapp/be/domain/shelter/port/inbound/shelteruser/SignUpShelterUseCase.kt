@@ -1,4 +1,4 @@
-package yapp.be.domain.port.inbound.shelteruser
+package yapp.be.domain.shelter.port.inbound.shelteruser
 
 import yapp.be.domain.model.ShelterUser
 import yapp.be.model.vo.Email

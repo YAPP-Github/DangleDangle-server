@@ -5,7 +5,7 @@ import yapp.be.model.vo.Email
 data class ShelterUser(
     val id: Long = 0,
     val email: Email,
-    val password: String,
+    var password: String,
     val shelterId: Long,
-    val needToChangePassword: Boolean
+    var needToChangePassword: Boolean
 )
