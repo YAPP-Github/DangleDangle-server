@@ -9,5 +9,6 @@ class LoginShelterUserRequestDto(
 
 class LoginShelterUserResponseDto(
     val accessToken: String,
-    val refreshToken: String
+    val refreshToken: String,
+    val needToChangePassword: Boolean
 )

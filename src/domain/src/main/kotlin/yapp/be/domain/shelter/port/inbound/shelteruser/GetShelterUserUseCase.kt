@@ -6,6 +6,7 @@ import yapp.be.model.vo.Email
 interface GetShelterUserUseCase {
     fun getShelterUserById(shelterUserId: Long): ShelterUser
 
+    fun getShelterUserByEmailAndPhoneNumber(email: Email, phoneNumber: String): ShelterUser?
     fun getShelterUserByShelterId(shelterId: Long): ShelterUser
     fun getShelterUserByEmail(email: Email): ShelterUser?
     fun checkEmailExist(email: Email): Boolean

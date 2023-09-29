@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import yapp.be.domain.model.ShelterUser
 import yapp.be.storage.jpa.common.model.BaseTimeEntity
 
 @Entity
@@ -20,11 +21,17 @@ class ShelterUserEntity(
     val email: String,
 
     @Column(name = "password", nullable = false)
-    val password: String,
+    var password: String,
 
     @Column(name = "shelter_id", nullable = false)
     val shelterId: Long,
 
     @Column(name = "need_to_change_password", nullable = false)
-    val needToChangePassword: Boolean
-) : BaseTimeEntity()
+    var needToChangePassword: Boolean
+) : BaseTimeEntity() {
+
+    fun update(shelterUser: ShelterUser) {
+        this.password = shelterUser.password
+        this.needToChangePassword = shelterUser.needToChangePassword
+    }
+}

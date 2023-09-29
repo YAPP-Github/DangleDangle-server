@@ -63,6 +63,14 @@ class ShelterQueryRepository(
         )
     }
 
+    override fun findByIdAndPhoneNumber(id: Long, phoneNumber: String): Shelter {
+        val shelterEntity = shelterJpaRepository.findByIdAndPhoneNum(id, phoneNumber) ?: throw CustomException(
+            type = StorageExceptionType.ENTITY_NOT_FOUND,
+            message = "보호소를 찾을 수 없습니다."
+        )
+        return shelterEntity.toDomainModel()
+    }
+
     override fun findInfoById(id: Long): ShelterDto {
         val shelter = shelterJpaRepository.findByIdOrNull(id)?.toDomainModel()
             ?: throw CustomException(
