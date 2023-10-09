@@ -18,6 +18,7 @@ springdoc:
   swagger-ui:
     path: /swagger
 
+
 jwt:
     access:
         expire: ${ACCESS_TOKEN_EXPIRE:86400000} # 1 day
@@ -28,3 +29,12 @@ jwt:
     auth:
         expire: ${AUTH_TOKEN_EXPIRE:300000} # 5 min
         secret: ${AUTH_TOKEN_SECRET:5f95a5f5c5b5a5a5958f8f7f7e7e7d7d7c6b6a696867666564636261605f}
+
+logging:
+    config: classpath:logback/logback-${spring.profiles.active}.xml
+slack:
+    log:
+        channelId: ${SLACK_CHANNEL_ID}
+        webhookUrl: ${SLACK_WEBHOOK_URL}
+        botName: ${SLACK_BOT_NAME:ErrorNotiBot}
+        botIcon: ${SLACK_BOT_ICON::ok_twitch:}
