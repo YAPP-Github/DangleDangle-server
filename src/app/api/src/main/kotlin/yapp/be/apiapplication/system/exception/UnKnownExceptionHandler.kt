@@ -1,7 +1,7 @@
 package yapp.be.apiapplication.system.exception
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.LocalDateTime
-import org.slf4j.LoggerFactory
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-private val logger = LoggerFactory.getLogger(UnKnownExceptionHandler::class.java)
+private val logger = KotlinLogging.logger { }
 
 @RestControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1)
@@ -18,8 +18,7 @@ class UnKnownExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable::class)
     fun handleApiException(ex: Throwable): ErrorResponse {
-        ex.printStackTrace()
-        logger.error(ex.message)
+        logger.error { ex.message }
         return ErrorResponse(
             exceptionCode = ApiExceptionType.INTERNAL_SERVER_ERROR.code,
             message = "Internal Server Error",

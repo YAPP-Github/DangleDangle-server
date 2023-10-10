@@ -6,7 +6,7 @@ plugins {
 dependencies {
     val logbackVersion: String by project
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks.named<BootJar>("bootJar") {
