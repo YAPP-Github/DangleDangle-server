@@ -2,7 +2,6 @@ package yapp.be.appender
 
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.UnsynchronizedAppenderBase
-import io.github.oshai.kotlinlogging.KotlinLogging
 import yapp.be.client.SlackLogDeliveryClient
 
 class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
