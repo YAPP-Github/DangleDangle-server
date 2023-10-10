@@ -13,7 +13,6 @@ class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
     lateinit var channelId: String
 
     private val client = SlackLogDeliveryClient()
-    private val logger = KotlinLogging.logger { }
     override fun append(eventObject: ILoggingEvent) {
         client.send(
             token = token,
