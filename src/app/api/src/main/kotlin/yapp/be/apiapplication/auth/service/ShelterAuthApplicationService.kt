@@ -156,7 +156,7 @@ class ShelterAuthApplicationService(
     }
 
     private fun generateRandomPassword(): String {
-        val specialCharacters = listOf<Char>(
+        val specialCharacters = listOf(
             '~', '!', '@', '#', '$', '%', '^', '&', '*'
         )
         return "${RandomStringUtils.randomAlphanumeric(8,14)}${specialCharacters.random()}"

@@ -11,7 +11,7 @@ import yapp.be.apiapplication.volunteer.service.model.EditVolunteerMyProfileResp
 import yapp.be.apiapplication.volunteer.service.model.DeleteVolunteerResponseDto
 import yapp.be.apiapplication.volunteer.service.model.BookMarkedShelterInfo
 import yapp.be.apiapplication.volunteer.service.model.GetVolunteerUpcomingVolunteerEventResponseDto
-import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.shelter.port.inbound.shelter.GetShelterUseCase
 import yapp.be.domain.volunteer.port.inbound.DeleteVolunteerUseCase
 import yapp.be.domain.volunteer.port.inbound.EditVolunteerUseCase
 import yapp.be.domain.volunteer.port.inbound.GetVolunteerUseCase

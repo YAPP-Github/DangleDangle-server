@@ -3,7 +3,7 @@ package yapp.be.apiapplication.shelter.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventHomeRequestDto
-import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.shelter.port.inbound.shelter.GetShelterUseCase
 import yapp.be.domain.volunteerActivity.model.dto.VolunteerSimpleVolunteerActivityDto
 import yapp.be.domain.volunteerActivity.port.inbound.GetVolunteerActivityUseCase
 
@@ -21,10 +21,11 @@ class VolunteerActivityHomeApplicationService(
         } else {
             getShelterUseCase.getShelterByLocationAndIsFavorite(reqDto.latitude!!, reqDto.longitude!!, 50000, reqDto.volunteerId, reqDto.isFavorite)
         }
-        val dtos = mutableListOf<VolunteerSimpleVolunteerActivityDto>()
-        shelters.map {
-            dtos.addAll(getVolunteerEventUseCase.getVolunteerEventsByDateRangeAndCategory(it.id, reqDto.from, reqDto.to, reqDto.category))
+
+        return buildList {
+            shelters.forEach {
+                addAll(getVolunteerEventUseCase.getVolunteerEventsByDateRangeAndCategory(it.id, reqDto.from, reqDto.to, reqDto.category))
+            }
         }
-        return dtos
     }
 }

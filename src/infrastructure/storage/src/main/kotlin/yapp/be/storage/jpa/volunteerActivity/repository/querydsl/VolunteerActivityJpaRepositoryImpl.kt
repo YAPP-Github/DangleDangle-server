@@ -125,7 +125,7 @@ class VolunteerActivityJpaRepositoryImpl(
                 )
             )
             .from(volunteerActivityEntity)
-            .join(shelterEntity).on(volunteerActivityEntity.shelterId.eq(shelterId))
+            .join(shelterEntity).on(volunteerActivityEntity.shelterId.eq(shelterEntity.id))
             .where(
                 volunteerActivityEntity.shelterId.eq(shelterId)
                     .and(
@@ -205,7 +205,7 @@ class VolunteerActivityJpaRepositoryImpl(
                 )
             )
             .from(volunteerActivityEntity)
-            .join(shelterEntity).on(volunteerActivityEntity.shelterId.eq(shelterId))
+            .join(shelterEntity).on(volunteerActivityEntity.shelterId.eq(shelterEntity.id))
             .where(
                 volunteerActivityEntity.shelterId.eq(shelterId)
                     .and(

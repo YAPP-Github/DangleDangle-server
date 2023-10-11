@@ -7,7 +7,7 @@ import yapp.be.apiapplication.shelter.service.model.GetShelterMyProfileResponseD
 import yapp.be.apiapplication.shelter.service.model.GetShelterMyVolunteerEventHistoryResponseDto
 import yapp.be.apiapplication.shelter.service.model.ShelterVolunteerEventHistoryStatInfo
 import yapp.be.domain.port.inbound.shelter.DeleteShelterUserUseCase
-import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.shelter.port.inbound.shelter.GetShelterUseCase
 import yapp.be.domain.volunteerActivity.port.inbound.DeleteVolunteerActivityUseCase
 import yapp.be.domain.volunteerActivity.port.inbound.GetVolunteerActivityUseCase
 import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
