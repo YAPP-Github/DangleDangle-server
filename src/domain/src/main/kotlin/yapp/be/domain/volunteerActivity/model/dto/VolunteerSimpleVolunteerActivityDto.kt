@@ -17,7 +17,7 @@ data class VolunteerSimpleVolunteerActivityDto(
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
     val recruitNum: Int,
-    val participantNum: Int,
+    val joiningNum: Int,
     val waitingNum: Int,
 )
 
@@ -29,6 +29,6 @@ data class ShelterSimpleVolunteerActivityDto(
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
     val recruitNum: Int,
-    val participantNum: Int,
+    val joiningNum: Int,
     val waitingNum: Int,
 )
