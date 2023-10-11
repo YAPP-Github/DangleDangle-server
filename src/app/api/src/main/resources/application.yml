@@ -33,7 +33,7 @@ jwt:
 
 slack:
     log:
-        channelId: ${리SLACK_CHANNEL_ID}
-        token: ${SLACK_BOT_TOKEN}
+        channelId: ${SLACK_CHANNEL_ID}
+        token: ${SLACK_BOT_TOKEN]}
         botName: ${SLACK_BOT_NAME:DangleServer-ErrorNotiBot}
         botIcon: ${SLACK_BOT_ICON::ok_twitch:}
