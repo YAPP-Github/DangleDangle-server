@@ -1,6 +1,8 @@
 package yapp.be.client
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Mono
@@ -14,6 +16,8 @@ class SlackLogDeliveryClient {
             .baseUrl("https://slack.com/api/chat.postMessage")
             .build()
         private val objectMapper = ObjectMapper()
+            .registerModule(KotlinModule())
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
     fun send(
         token: String,
@@ -27,10 +31,18 @@ class SlackLogDeliveryClient {
             .header("Authorization", "Bearer $token")
             .bodyValue(
                 SlackLogDeliveryRequest(
-                    text = text,
                     channel = channel,
                     username = botName,
-                    icon_emoji = botIcon
+                    icon_emoji = botIcon,
+                    attachments = buildList {
+                        add(
+                            SlackAttachment(
+                                color = "#FF0000",
+                                title = ":red_circle:  ===[Error]===",
+                                text = text
+                            )
+                        )
+                    }
                 )
             )
             .retrieve()
@@ -40,31 +52,11 @@ class SlackLogDeliveryClient {
     }
 
     private fun parseSlackResponse(responseBody: String): SlackLogDeliveryResponse {
+        println(responseBody)
         return if (responseBody.contains("\"ok\":true")) {
             objectMapper.readValue(responseBody, SlackLogDeliveryResponse.Success::class.java)
         } else {
             objectMapper.readValue(responseBody, SlackLogDeliveryResponse.Fail::class.java)
         }
     }
-}
-
-data class SlackLogDeliveryRequest(
-    val text: String,
-    val channel: String,
-    val username: String,
-    val icon_emoji: String
-)
-
-sealed interface SlackLogDeliveryResponse {
-    data class Success(
-        val ok: Boolean,
-        val channel: String,
-        val ts: String,
-        val message: Map<String, String>
-
-    ) : SlackLogDeliveryResponse
-    data class Fail(
-        val ok: Boolean,
-        val error: String
-    ) : SlackLogDeliveryResponse
 }

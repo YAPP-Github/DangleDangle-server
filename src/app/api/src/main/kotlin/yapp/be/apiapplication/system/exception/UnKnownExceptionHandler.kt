@@ -17,8 +17,7 @@ class UnKnownExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable::class)
-    fun handleApiException(ex: Throwable): ErrorResponse {
-        logger.error { ex.message }
+    fun handleApiException(e: Throwable): ErrorResponse {
         return ErrorResponse(
             exceptionCode = ApiExceptionType.INTERNAL_SERVER_ERROR.code,
             message = "Internal Server Error",

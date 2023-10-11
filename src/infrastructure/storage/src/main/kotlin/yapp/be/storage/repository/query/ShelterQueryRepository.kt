@@ -100,18 +100,22 @@ class ShelterQueryRepository(
 
     override fun findByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long): List<Shelter> {
         return buildList {
-            shelterJpaRepository
-                .findAllBookMarkedShelterByVolunteerId(volunteerId = volunteerId)
-                .filter { calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size }
-                .map { it.toDomainModel() }
+            addAll(
+                shelterJpaRepository
+                    .findAllBookMarkedShelterByVolunteerId(volunteerId = volunteerId)
+                    .filter { calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size }
+                    .map { it.toDomainModel() }
+            )
         }
     }
 
     override fun findByLocation(latitude: Double, longitude: Double, size: Int): List<Shelter> {
         return buildList {
-            shelterJpaRepository.findAll()
-                .filter { calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size }
-                .map { it.toDomainModel() }
+            addAll(
+                shelterJpaRepository.findAll()
+                    .filter { calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size }
+                    .map { it.toDomainModel() }
+            )
         }
     }
 
