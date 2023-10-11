@@ -38,7 +38,7 @@ class SlackLogDeliveryClient {
                         add(
                             SlackAttachment(
                                 color = "#FF0000",
-                                title = ":red_circle:  ===[Error]===",
+                                title = ":rotating_light::rotating_light::rotating_light: [Error] :rotating_light::rotating_light::rotating_light:",
                                 text = text
                             )
                         )

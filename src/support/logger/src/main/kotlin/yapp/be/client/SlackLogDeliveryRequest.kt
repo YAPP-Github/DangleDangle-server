@@ -8,7 +8,6 @@ data class SlackLogDeliveryRequest(
 )
 
 data class SlackAttachment(
-    val author_name: String = "Dangle-Api-Exception_Noti",
     val color: String,
     val title: String,
     val text: String,
