@@ -10,7 +10,7 @@ spring:
     import:
       - logging.yml
       - application-actuator.yml
-      - application-oauth-${spring.profiles.active}.yml
+      - oauth/application-oauth-${spring.profiles.active}.yml
       - application-client-${spring.profiles.active}.yml
       - application-storage-${spring.profiles.active}.yml
       - application-redis-${spring.profiles.active}.yml
