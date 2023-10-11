@@ -37,17 +37,6 @@ class CustomExceptionHandler {
         )
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(RuntimeException::class)
-    fun handleApiException(e: RuntimeException): ErrorResponse {
-        logger.error { e.message }
-        return ErrorResponse(
-            exceptionCode = ApiExceptionType.RUNTIME_EXCEPTION.code,
-            message = "Internal Server Error",
-            timeStamp = LocalDateTime.now()
-        )
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleRequestValid(exception: MethodArgumentNotValidException): ErrorResponse {
@@ -62,6 +51,17 @@ class CustomExceptionHandler {
         return ErrorResponse(
             exceptionCode = ApiExceptionType.INVALID_PARAMETER.code,
             message = message.substring(0, message.lastIndexOf("|")),
+            timeStamp = LocalDateTime.now()
+        )
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RuntimeException::class)
+    fun handleApiException(e: RuntimeException): ErrorResponse {
+        logger.error { e.stackTraceToString() }
+        return ErrorResponse(
+            exceptionCode = ApiExceptionType.RUNTIME_EXCEPTION.code,
+            message = "Internal Server Error",
             timeStamp = LocalDateTime.now()
         )
     }
