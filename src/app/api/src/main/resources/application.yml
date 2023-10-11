@@ -8,6 +8,7 @@ spring:
     default-timeout: 4
   config:
     import:
+      - logging.yml
       - application-actuator.yml
       - application-oauth-${spring.profiles.active}.yml
       - application-client-${spring.profiles.active}.yml
@@ -17,6 +18,7 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger
+
 
 jwt:
     access:
@@ -28,3 +30,10 @@ jwt:
     auth:
         expire: ${AUTH_TOKEN_EXPIRE:300000} # 5 min
         secret: ${AUTH_TOKEN_SECRET:5f95a5f5c5b5a5a5958f8f7f7e7e7d7d7c6b6a696867666564636261605f}
+
+slack:
+    log:
+        channelId: ${SLACK_CHANNEL_ID}
+        token: ${SLACK_BOT_TOKEN]}
+        botName: ${SLACK_BOT_NAME:DangleServer-ErrorNotiBot}
+        botIcon: ${SLACK_BOT_ICON::ok_twitch:}

@@ -1,5 +1,6 @@
 package yapp.be.apiapplication.system.exception
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.LocalDateTime
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
@@ -11,6 +12,7 @@ import yapp.be.exceptions.CustomException
 import java.time.DateTimeException
 import org.springframework.web.bind.MethodArgumentNotValidException
 
+private val logger = KotlinLogging.logger { }
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class CustomExceptionHandler {
@@ -38,7 +40,7 @@ class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException::class)
     fun handleApiException(e: RuntimeException): ErrorResponse {
-        e.printStackTrace()
+        logger.error { e.message }
         return ErrorResponse(
             exceptionCode = ApiExceptionType.RUNTIME_EXCEPTION.code,
             message = "Internal Server Error",

@@ -1,0 +1,24 @@
+<included>
+    <springProperty scope="context" name="channelId" source="slack.log.channelId"/>
+    <springProperty scope="context" name="token" source="slack.log.token"/>
+    <springProperty scope="context" name="botName" source="slack.log.botName" defaultValue="ErrorNotiBot"/>
+    <springProperty scope="context" name="botIcon" source="slack.log.botIcon" defaultValue=":ok_twitch:"/>
+
+    <appender name="SLACK_LOG_APPENDER" class="yapp.be.appender.SlackAppender">
+        <channelId>${channelId}</channelId>
+        <botName>${botName}</botName>
+        <botIcon>${botIcon}</botIcon>
+        <token>${token}</token>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="ASYNC_SLACK_LOG_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SLACK_LOG_APPENDER"/>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+</included>
