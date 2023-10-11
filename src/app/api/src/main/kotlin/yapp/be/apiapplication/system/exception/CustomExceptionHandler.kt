@@ -41,7 +41,7 @@ class CustomExceptionHandler {
         e.printStackTrace()
         return ErrorResponse(
             exceptionCode = ApiExceptionType.RUNTIME_EXCEPTION.code,
-            message = e.message ?: "",
+            message = "Internal Server Error",
             timeStamp = LocalDateTime.now()
         )
     }

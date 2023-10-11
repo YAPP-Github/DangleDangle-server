@@ -42,7 +42,7 @@ CREATE TABLE `shelter`
     `phone_num`                           varchar(13)  not null,
     `is_parking_enabled`                  boolean,
     `parking_notice`                      varchar(200),
-    `profile_image_url`                   varchar(100),
+    `profile_image_url`                   varchar(255),
     `bank_name`                            varchar(50),
     `bank_account_num`                    varchar(50),
     `address`                             varchar(100) not null,
@@ -69,7 +69,7 @@ CREATE TABLE `observation_animal`
 (
     `id`                                  bigint          not null primary key auto_increment,
     `name`                                varchar(20)     not null,
-    `profile_image_url`                   varchar(100),
+    `profile_image_url`                   varchar(255),
     `special_note`                        varchar(255)    not null,
     `age`                                 varchar(10),
     `gender`                              varchar(20),
