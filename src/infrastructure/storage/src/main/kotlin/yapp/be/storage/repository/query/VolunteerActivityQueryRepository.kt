@@ -48,7 +48,7 @@ class VolunteerActivityQueryRepository(
                 startAt = it.startAt,
                 endAt = it.endAt,
                 recruitNum = it.recruitNum,
-                participantNum = joiningParticipantsNum,
+                joiningNum = joiningParticipantsNum,
                 waitingNum = waitingParticipantsNum
             )
         }
@@ -151,7 +151,7 @@ class VolunteerActivityQueryRepository(
                         endAt = it.endAt,
                         eventStatus = it.status,
                         recruitNum = it.recruitNum,
-                        participantNum = joinQueue?.size ?: 0,
+                        joiningNum = joinQueue?.size ?: 0,
                         waitingNum = waitingQueue?.size ?: 0,
                     )
                 }
@@ -209,7 +209,7 @@ class VolunteerActivityQueryRepository(
                         endAt = it.endAt,
                         eventStatus = it.status,
                         recruitNum = it.recruitNum,
-                        participantNum = joinQueue?.size ?: 0,
+                        joiningNum = joinQueue?.size ?: 0,
                         waitingNum = waitingQueue?.size ?: 0,
                     )
                 }
@@ -259,7 +259,7 @@ class VolunteerActivityQueryRepository(
                         startAt = it.startAt,
                         endAt = it.endAt,
                         recruitNum = it.recruitNum,
-                        participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                        joiningNum = joinParticipantMap[it.id]?.size ?: 0,
                         waitingNum = waitingParticipantMap[it.id]?.size ?: 0
                     )
                 }
@@ -310,7 +310,7 @@ class VolunteerActivityQueryRepository(
                                 startAt = it.startAt,
                                 endAt = it.endAt,
                                 recruitNum = it.recruitNum,
-                                participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                                joiningNum = joinParticipantMap[it.id]?.size ?: 0,
                                 waitingNum = waitingParticipantMap[it.id]?.size ?: 0
 
                             )
@@ -353,7 +353,7 @@ class VolunteerActivityQueryRepository(
                                 startAt = it.startAt,
                                 endAt = it.endAt,
                                 recruitNum = it.recruitNum,
-                                participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                                joiningNum = joinParticipantMap[it.id]?.size ?: 0,
                                 waitingNum = waitingParticipantMap[it.id]?.size ?: 0
                             )
                         }
@@ -394,7 +394,7 @@ class VolunteerActivityQueryRepository(
                                 startAt = it.startAt,
                                 endAt = it.endAt,
                                 recruitNum = it.recruitNum,
-                                participantNum = joinParticipantMap[it.id]?.size ?: 0,
+                                joiningNum = joinParticipantMap[it.id]?.size ?: 0,
                                 waitingNum = waitingParticipantMap[it.id]?.size ?: 0
                             )
                         }
@@ -563,7 +563,7 @@ class VolunteerActivityQueryRepository(
                     endAt = it.endAt,
                     eventStatus = it.eventStatus,
                     recruitNum = it.recruitNum,
-                    participantNum = joinQueue?.size ?: 0,
+                    joiningNum = joinQueue?.size ?: 0,
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
@@ -609,7 +609,7 @@ class VolunteerActivityQueryRepository(
                     endAt = it.endAt,
                     eventStatus = it.eventStatus,
                     recruitNum = it.recruitNum,
-                    participantNum = joinQueue?.size ?: 0,
+                    joiningNum = joinQueue?.size ?: 0,
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
@@ -657,7 +657,7 @@ class VolunteerActivityQueryRepository(
                     endAt = it.endAt,
                     eventStatus = it.eventStatus,
                     recruitNum = it.recruitNum,
-                    participantNum = joinQueue?.size ?: 0,
+                    joiningNum = joinQueue?.size ?: 0,
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = UserEventParticipationStatus.NONE,
                 )
@@ -706,7 +706,7 @@ class VolunteerActivityQueryRepository(
                     endAt = it.endAt,
                     eventStatus = it.eventStatus,
                     recruitNum = it.recruitNum,
-                    participantNum = joinQueue?.size ?: 0,
+                    joiningNum = joinQueue?.size ?: 0,
                     waitingNum = waitingQueue?.size ?: 0,
                     myParticipationStatus = getMyParticipationStatus(
                         volunteerId = volunteerId,

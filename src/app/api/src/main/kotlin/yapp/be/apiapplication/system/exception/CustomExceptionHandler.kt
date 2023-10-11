@@ -43,7 +43,7 @@ class CustomExceptionHandler {
         logger.error { e.message }
         return ErrorResponse(
             exceptionCode = ApiExceptionType.RUNTIME_EXCEPTION.code,
-            message = e.message ?: "",
+            message = "Internal Server Error",
             timeStamp = LocalDateTime.now()
         )
     }

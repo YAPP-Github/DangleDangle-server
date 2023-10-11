@@ -11,7 +11,7 @@ import yapp.be.apiapplication.shelter.service.model.GetShelterParkingInfoDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterResponseDto
 import yapp.be.domain.port.inbound.shelter.AddShelterBookMarkUseCase
-import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.shelter.port.inbound.shelter.GetShelterUseCase
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 
 @Service
