@@ -13,5 +13,5 @@ data class VolunteerEventHomeRequest(
     val longitude: Double?,
     val latitude: Double?,
     val address: String?,
-    val isFavorite: Boolean?,
+    val isFavorite: Boolean = false,
 )

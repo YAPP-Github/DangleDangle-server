@@ -86,7 +86,7 @@ class VolunteerActivityManageApplicationService(
                     startAt = it.startAt,
                     endAt = it.endAt,
                     recruitNum = it.recruitNum,
-                    joiningNum = it.participantNum,
+                    joiningNum = it.joiningNum,
                     waitingNum = it.waitingNum
                 )
             }

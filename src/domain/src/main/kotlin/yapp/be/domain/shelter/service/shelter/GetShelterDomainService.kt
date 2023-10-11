@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional
 import yapp.be.domain.model.Shelter
 import yapp.be.domain.model.ShelterOutLink
 import yapp.be.domain.model.dto.ShelterDto
-import yapp.be.domain.port.inbound.shelter.GetShelterUseCase
+import yapp.be.domain.shelter.port.inbound.shelter.GetShelterUseCase
 import yapp.be.domain.port.outbound.shelter.ShelterBookMarkQueryHandler
 import yapp.be.domain.port.outbound.shelter.ShelterOutLinkQueryHandler
 import yapp.be.domain.port.outbound.shelter.ShelterQueryHandler
@@ -28,8 +28,8 @@ class GetShelterDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getShelterByAddressAndIsFavorite(address: String, volunteerId: Long?, isFavorite: Boolean?): List<Shelter> {
-        return if (volunteerId == null || isFavorite == false) {
+    override fun getShelterByAddressAndIsFavorite(address: String, volunteerId: Long?, isFavorite: Boolean): List<Shelter> {
+        return if (volunteerId == null || !isFavorite) {
             shelterQueryHandler.findByAddress(address)
         } else {
             shelterQueryHandler.findByAddressAndIsFavorite(address, volunteerId)
@@ -37,7 +37,7 @@ class GetShelterDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getShelterByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long?, isFavorite: Boolean?): List<Shelter> {
+    override fun getShelterByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long?, isFavorite: Boolean): List<Shelter> {
         return if (volunteerId == null || isFavorite == false) {
             shelterQueryHandler.findByLocation(latitude, longitude, size)
         } else {

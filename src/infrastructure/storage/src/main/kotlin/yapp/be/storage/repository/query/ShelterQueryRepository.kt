@@ -16,6 +16,9 @@ import yapp.be.storage.jpa.common.model.toDomainModel
 import yapp.be.storage.jpa.shelter.model.mappers.toDomainModel
 import yapp.be.storage.jpa.shelter.repository.ShelterBookMarkJpaRepository
 import yapp.be.storage.jpa.shelter.repository.ShelterJpaRepository
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Component
 @Transactional(readOnly = true)
@@ -96,24 +99,20 @@ class ShelterQueryRepository(
     }
 
     override fun findByLocationAndIsFavorite(latitude: Double, longitude: Double, size: Int, volunteerId: Long): List<Shelter> {
-        val shelters = mutableListOf<Shelter>()
-        shelterJpaRepository
-            .findAllBookMarkedShelterByVolunteerId(
-                volunteerId = volunteerId
-            ).map {
-                if (calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size)
-                    shelters.add(it.toDomainModel())
-            }
-        return shelters
+        return buildList {
+            shelterJpaRepository
+                .findAllBookMarkedShelterByVolunteerId(volunteerId = volunteerId)
+                .filter { calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size }
+                .map { it.toDomainModel() }
+        }
     }
 
     override fun findByLocation(latitude: Double, longitude: Double, size: Int): List<Shelter> {
-        val shelters = mutableListOf<Shelter>()
-        shelterJpaRepository.findAll().map {
-            if (calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size)
-                shelters.add(it.toDomainModel())
+        return buildList {
+            shelterJpaRepository.findAll()
+                .filter { calculateLocation(it.address.latitude, it.address.longitude, latitude, longitude) <= size }
+                .map { it.toDomainModel() }
         }
-        return shelters
     }
 
     override fun findByAddressAndIsFavorite(address: String, volunteerId: Long): List<Shelter> {
@@ -128,23 +127,6 @@ class ShelterQueryRepository(
         return shelterJpaRepository.findAllByAddress(address).map { it.toDomainModel() }
     }
 
-    private fun calculateLocation(shelterLat: Double, shelterLng: Double, userLat: Double, userLng: Double): Double {
-        val theta: Double = shelterLng - userLng
-        var dist = Math.sin(deg2rad(shelterLat)) * Math.sin(deg2rad(userLat)) + Math.cos(deg2rad(shelterLat)) * Math.cos(deg2rad(userLat)) * Math.cos(deg2rad(theta))
-        dist = Math.acos(dist)
-        dist = rad2deg(dist)
-        dist *= 60 * 1.1515 * 1609.344
-        return dist
-    }
-
-    private fun deg2rad(deg: Double): Double {
-        return deg * Math.PI / 180.0
-    }
-
-    private fun rad2deg(rad: Double): Double {
-        return rad * 180 / Math.PI
-    }
-
     override fun getAllBookMarkedShelterByVolunteerId(volunteerId: Long): List<Shelter> {
         return shelterJpaRepository.findAllBookMarkedShelterByVolunteerId(volunteerId)
             .map { it.toDomainModel() }
@@ -157,5 +139,22 @@ class ShelterQueryRepository(
         )
 
         return shelterBookMarkEntity?.toDomainModel()
+    }
+
+    private fun calculateLocation(shelterLat: Double, shelterLng: Double, userLat: Double, userLng: Double): Double {
+        val theta: Double = shelterLng - userLng
+        var dist = sin(deg2rad(shelterLat)) * sin(deg2rad(userLat)) + cos(deg2rad(shelterLat)) * cos(deg2rad(userLat)) * cos(deg2rad(theta))
+        dist = acos(dist)
+        dist = rad2deg(dist)
+        dist *= 60 * 1.1515 * 1609.344
+        return dist
+    }
+
+    private fun deg2rad(deg: Double): Double {
+        return deg * Math.PI / 180.0
+    }
+
+    private fun rad2deg(rad: Double): Double {
+        return rad * 180 / Math.PI
     }
 }
