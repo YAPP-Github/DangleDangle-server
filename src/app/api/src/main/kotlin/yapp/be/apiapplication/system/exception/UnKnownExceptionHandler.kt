@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import yapp.be.exceptions.SystemExceptionType
 
 private val logger = KotlinLogging.logger { }
 
@@ -19,7 +20,7 @@ class UnKnownExceptionHandler {
     @ExceptionHandler(Throwable::class)
     fun handleApiException(e: Throwable): ErrorResponse {
         return ErrorResponse(
-            exceptionCode = ApiExceptionType.INTERNAL_SERVER_ERROR.code,
+            exceptionCode = SystemExceptionType.INTERNAL_SERVER_ERROR.code,
             message = "Internal Server Error",
             timeStamp = LocalDateTime.now()
         )
