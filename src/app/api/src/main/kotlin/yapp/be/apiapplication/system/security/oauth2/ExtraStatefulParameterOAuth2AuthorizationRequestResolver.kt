@@ -17,8 +17,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.util.CollectionUtils
 import org.springframework.util.StringUtils
 import org.springframework.web.util.UriComponentsBuilder
-import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.exceptions.CustomException
+import yapp.be.exceptions.SystemExceptionType
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -67,7 +67,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
 
     override fun resolve(request: HttpServletRequest): OAuth2AuthorizationRequest? {
         val clientRegistrationId = resolveRegistrationId(request) ?: return null
-        val action = getAction(request, "login") ?: throw CustomException(ApiExceptionType.INTERNAL_SERVER_ERROR, "Can't find Suitable oAuth Action [login]")
+        val action = getAction(request, "login") ?: throw CustomException(SystemExceptionType.INTERNAL_SERVER_ERROR, "Can't find Suitable oAuth Action [login]")
         return resolve(
             request = request,
             clientRegistrationId = clientRegistrationId,
@@ -80,7 +80,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
             return null
         }
         val action = getAction(request!!, "authorize")
-            ?: throw CustomException(ApiExceptionType.INTERNAL_SERVER_ERROR, "Can't find Suitable oAuth Action [authorize]")
+            ?: throw CustomException(SystemExceptionType.INTERNAL_SERVER_ERROR, "Can't find Suitable oAuth Action [authorize]")
         return resolve(
             request = request,
             clientRegistrationId = clientRegistrationId,
@@ -90,7 +90,7 @@ class ExtraStatefulParameterOAuth2AuthorizationRequestResolver(
 
     fun resolve(request: HttpServletRequest, clientRegistrationId: String, action: String): OAuth2AuthorizationRequest? {
         val clientRegistration: ClientRegistration = clientRegistrationRepository.findByRegistrationId(clientRegistrationId)
-            ?: throw CustomException(ApiExceptionType.INTERNAL_SERVER_ERROR, "Invalid Client Registration with Id: $clientRegistrationId")
+            ?: throw CustomException(SystemExceptionType.INTERNAL_SERVER_ERROR, "Invalid Client Registration with Id: $clientRegistrationId")
         val builder: OAuth2AuthorizationRequest.Builder = getBuilder(clientRegistration)
 
         val host = getClientHost(request)

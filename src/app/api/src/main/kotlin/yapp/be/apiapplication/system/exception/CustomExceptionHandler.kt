@@ -6,6 +6,7 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -40,8 +41,8 @@ class CustomExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun handleHttpMethodNotSupoorted(exception: HttpMessageNotReadableException): ErrorResponse {
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun handleHttpMethodNotSupportedException(exception: HttpRequestMethodNotSupportedException): ErrorResponse {
         return ErrorResponse(
             exceptionCode = ApiExceptionType.INVALID_PARAMETER.code,
             message = "지원하지 않는 Http Method 입니다.",
@@ -51,7 +52,7 @@ class CustomExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun handleHttpMethodNotReadable(exception: HttpMessageNotReadableException): ErrorResponse {
+    fun handleHttpMethodNotReadableException(exception: HttpMessageNotReadableException): ErrorResponse {
         return ErrorResponse(
             exceptionCode = ApiExceptionType.INVALID_PARAMETER.code,
             message = "잘못된 HttpBody 형식입니다.",
@@ -61,7 +62,7 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleRequestValid(exception: MethodArgumentNotValidException): ErrorResponse {
+    fun handleRequestValidException(exception: MethodArgumentNotValidException): ErrorResponse {
         val builder = StringBuilder()
         for (fieldError in exception.bindingResult.fieldErrors) {
             builder
