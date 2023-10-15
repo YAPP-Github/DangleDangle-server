@@ -19,10 +19,10 @@ import yapp.be.apiapplication.auth.controller.model.ShelterSignUpCheckDuplicatio
 import yapp.be.apiapplication.auth.controller.model.SignUpWithEssentialInfoRequest
 import yapp.be.apiapplication.auth.service.ShelterAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.*
-import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 import yapp.be.exceptions.CustomException
+import yapp.be.exceptions.SystemExceptionType
 import yapp.be.model.vo.Email
 
 @RestController
@@ -64,7 +64,7 @@ class ShelterAuthController(
                 )
             ShelterSignUpCheckDuplicationType.NAME ->
                 shelterAuthApplicationService.checkIsShelterUserNameExist(value)
-            else -> throw CustomException(ApiExceptionType.RUNTIME_EXCEPTION, "올바르지 않은 입력 입니다. type = $type")
+            else -> throw CustomException(SystemExceptionType.RUNTIME_EXCEPTION, "올바르지 않은 입력 입니다. type = $type")
         }
         return ResponseEntity.ok(resDto)
     }

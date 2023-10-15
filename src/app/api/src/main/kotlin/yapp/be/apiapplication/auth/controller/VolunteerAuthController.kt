@@ -13,8 +13,8 @@ import yapp.be.apiapplication.auth.service.VolunteerAuthApplicationService
 import yapp.be.apiapplication.auth.service.model.CheckUserNicknameExistResponseDto
 import yapp.be.apiapplication.auth.service.model.LoginVolunteerResponseDto
 import yapp.be.apiapplication.auth.service.model.SignUpUserWithEssentialInfoResponseDto
-import yapp.be.apiapplication.system.exception.ApiExceptionType
 import yapp.be.exceptions.CustomException
+import yapp.be.exceptions.SystemExceptionType
 
 @RestController
 @Tag(name = "개인 회원 회원가입 api")
@@ -47,7 +47,7 @@ class VolunteerAuthController(
         val resDto = when (type) {
             VolunteerSignUpCheckDuplicationType.NICKNAME ->
                 volunteerAuthApplicationService.checkIsUserNicknameExist(value)
-            else -> throw CustomException(ApiExceptionType.RUNTIME_EXCEPTION, "올바르지 않은 입력 입니다. type = $type")
+            else -> throw CustomException(SystemExceptionType.RUNTIME_EXCEPTION, "올바르지 않은 입력 입니다. type = $type")
         }
         return ResponseEntity.ok(resDto)
     }
