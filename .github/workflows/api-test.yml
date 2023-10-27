@@ -3,16 +3,6 @@ name: api-cd-test
 on:
     push:
         branches: [ test ]
-        paths:
-            - 'src/app/api/**'
-            - 'src/domain/**'
-            - 'src/infrastructure/client/**'
-            - 'src/infrastructure/storage/**'
-            - 'src/infrastructure/redis/**'
-            - 'src/support/logger/**'
-            - 'src/support/lock/**'
-            - 'src/support/common/**'
-            - 'src/support/mail/**'
 jobs:
     build:
         runs-on: ubuntu-latest
