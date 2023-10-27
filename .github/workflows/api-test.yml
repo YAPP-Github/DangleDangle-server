@@ -39,7 +39,7 @@ jobs:
               run: |
                     aws elasticbeanstalk create-application-version \
                     --application-name ${{ secrets.DEV_EB_APPLICATION }} \
-                    --source-bundle S3Bucket="dangle-legacy-api",S3Key="Legacy-Deploy.zip" \
+                    --source-bundle S3Bucket="dangle-legacy-api",S3Key="api/Legacy-Deploy.zip" \
                     --version-label "ver-${{ github.sha }}" \
                     --description "commit-sha-${{ github.sha }}"
             - name: Deploy new ElasticBeanstalk Application Version
