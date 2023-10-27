@@ -6,16 +6,7 @@ name: api-ci-dev
 on:
     pull_request:
         branches: [ dev ]
-        paths:
-            - 'src/app/api/**'
-            - 'src/domain/**'
-            - 'src/infrastructure/client/**'
-            - 'src/infrastructure/storage/**'
-            - 'src/infrastructure/redis/**'
-            - 'src/support/logger/**'
-            - 'src/support/lock/**'
-            - 'src/support/common/**'
-            - 'src/support/mail/**'
+
 jobs:
     build:
         runs-on: ubuntu-latest
