@@ -19,6 +19,11 @@ interface VolunteerActivityJpaRepositoryCustom {
         shelterId: Long
     ): VolunteerActivityWithShelterInfoProjection?
 
+    fun findWithParticipationStatusByIdAndShelterIdAndDeletedIsTrue(
+        id: Long,
+        shelterId: Long
+    ): VolunteerActivityWithShelterInfoProjection?
+
     fun findAllByShelterIdAndYearAndMonth(
         shelterId: Long,
         from: LocalDateTime,

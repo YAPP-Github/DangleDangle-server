@@ -1,9 +1,9 @@
 package yapp.be.apiapplication.shelter.service.model
 
-data class DeleteVolunteerEventRequestDto(
+data class DeleteVolunteerActivityRequestDto(
     val shelterUserId: Long,
-    val volunteerEventId: Long
+    val volunteerActivityId: Long
 )
-data class DeleteVolunteerEventResponseDto(
-    val volunteerEventId: Long
+data class DeleteVolunteerActivityResponseDto(
+    val volunteerActivityId: Long
 )

@@ -7,7 +7,7 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <logger name="yapp.be" level="ERROR">
+    <logger name="yapp.be.apiapplication.system.exception" level="ERROR">
         <appender-ref ref="ASYNC_SLACK_LOG_APPENDER"/>
     </logger>
 

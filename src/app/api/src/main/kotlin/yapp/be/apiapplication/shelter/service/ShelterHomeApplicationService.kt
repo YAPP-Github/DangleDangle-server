@@ -17,6 +17,6 @@ class ShelterHomeApplicationService(
         reqDto: GetShelterHomeRequestDto
     ): List<VolunteerSimpleVolunteerActivityDto> {
         val shelterUser = getShelterUserUseCase.getShelterUserById(reqDto.shelterUserId)
-        return getVolunteerActivityUseCase.getVolunteerEventsByDateRangeAndCategoryAndStatus(shelterUser.shelterId, reqDto.from, reqDto.to, reqDto.category, reqDto.status)
+        return getVolunteerActivityUseCase.getVolunteerActivitiesByDateRangeAndCategoryAndStatus(shelterUser.shelterId, reqDto.from, reqDto.to, reqDto.category, reqDto.status)
     }
 }

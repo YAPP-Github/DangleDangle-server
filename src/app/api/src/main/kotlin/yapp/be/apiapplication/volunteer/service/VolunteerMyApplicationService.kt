@@ -32,7 +32,7 @@ class VolunteerMyApplicationService(
     @Transactional(readOnly = true)
     fun getVolunteerUpComingVolunteerEvent(volunteerId: Long): GetVolunteerUpcomingVolunteerEventResponseDto? {
         val volunteer = getVolunteerUseCase.getById(volunteerId)
-        val upcomingVolunteerActivity = getVolunteerActivityUseCase.getVolunteerUpComingVolunteerEvent(
+        val upcomingVolunteerActivity = getVolunteerActivityUseCase.getVolunteerUpComingVolunteerActivity(
             volunteerId = volunteer.id
         )
 
@@ -56,7 +56,7 @@ class VolunteerMyApplicationService(
     fun getVolunteerMyProfile(volunteerId: Long): GetVolunteerMyProfileResponseDto {
         val volunteer = getVolunteerUseCase.getById(volunteerId)
         val volunteerEventHistoryStat = getVolunteerActivityUseCase
-            .getVolunteerVolunteerEventStat(volunteerId)
+            .getVolunteerVolunteerActivityStat(volunteerId)
 
         return GetVolunteerMyProfileResponseDto(
             nickName = volunteer.nickname,
@@ -78,7 +78,7 @@ class VolunteerMyApplicationService(
     ): PagedResult<GetVolunteerVolunteerEventHistoryResponseDto> {
         val volunteer = getVolunteerUseCase.getById(volunteerId = volunteerId)
         val histories = getVolunteerActivityUseCase
-            .getAllVolunteerVolunteerEventHistory(
+            .getAllVolunteerVolunteerActivityHistory(
                 page = page,
                 volunteerId = volunteer.id,
                 status = status

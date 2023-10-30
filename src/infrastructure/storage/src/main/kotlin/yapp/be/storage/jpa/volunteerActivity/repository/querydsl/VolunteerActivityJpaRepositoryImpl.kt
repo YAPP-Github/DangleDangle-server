@@ -101,6 +101,34 @@ class VolunteerActivityJpaRepositoryImpl(
             .fetchOne()
     }
 
+    override fun findWithParticipationStatusByIdAndShelterIdAndDeletedIsTrue(id: Long, shelterId: Long): VolunteerActivityWithShelterInfoProjection? {
+        return queryFactory
+            .select(
+                QVolunteerActivityWithShelterInfoProjection(
+                    volunteerActivityEntity.id,
+                    shelterEntity.id,
+                    shelterEntity.name,
+                    shelterEntity.profileImageUrl,
+                    volunteerActivityEntity.title,
+                    volunteerActivityEntity.recruitNum,
+                    shelterEntity.address,
+                    volunteerActivityEntity.description,
+                    volunteerActivityEntity.ageLimit,
+                    volunteerActivityEntity.category,
+                    volunteerActivityEntity.status,
+                    volunteerActivityEntity.startAt,
+                    volunteerActivityEntity.endAt
+                )
+            ).from(volunteerActivityEntity)
+            .join(shelterEntity)
+            .on(volunteerActivityEntity.shelterId.eq(shelterEntity.id))
+            .where(
+                volunteerActivityEntity.id.eq(id)
+                    .and(volunteerActivityEntity.shelterId.eq(shelterId))
+            )
+            .fetchOne()
+    }
+
     @Transactional(readOnly = true)
     override fun findAllByShelterIdAndYearAndMonthAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: VolunteerActivityCategory?): List<VolunteerActivityWithShelterInfoProjection> {
         val builder = BooleanBuilder()

@@ -22,6 +22,10 @@ class GetVolunteerDomainService(
         return volunteerQueryHandler.findByEmail(email.value)
     }
 
+    override fun getAllByIds(ids: List<Long>): List<Volunteer> {
+        return volunteerQueryHandler.findAllByIds(ids)
+    }
+
     @Transactional(readOnly = true)
     override fun getAllDeletedVolunteers(): List<Volunteer> {
         return volunteerQueryHandler.findAllByDeleteIsTrue()

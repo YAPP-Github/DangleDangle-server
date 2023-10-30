@@ -23,7 +23,7 @@ class ShelterMyApplicationService(
     @Transactional(readOnly = true)
     fun getShelterMyProfile(shelterId: Long): GetShelterMyProfileResponseDto {
         val shelter = getShelterUseCase.getShelterById(shelterId)
-        val volunteerEventHistoryStat = getVolunteerActivityUseCase.getShelterVolunteerEventStat(shelterId)
+        val volunteerEventHistoryStat = getVolunteerActivityUseCase.getShelterVolunteerActivityStat(shelterId)
 
         return GetShelterMyProfileResponseDto(
             name = shelter.name,
@@ -43,7 +43,7 @@ class ShelterMyApplicationService(
     ): PagedResult<GetShelterMyVolunteerEventHistoryResponseDto> {
         val shelter = getShelterUseCase.getShelterById(shelterId)
         val histories = getVolunteerActivityUseCase
-            .getAllShelterVolunteerEventHistory(
+            .getAllShelterVolunteerActivityHistory(
                 page = page,
                 status = status,
                 shelterId = shelter.id

@@ -49,6 +49,11 @@ interface VolunteerActivityQueryHandler {
         shelterId: Long
     ): DetailVolunteerActivityDto
 
+    fun findDetailDeletedVolunteerActivityInfoByIdAndShelterId(
+        id: Long,
+        shelterId: Long
+    ): DetailVolunteerActivityDto
+
     fun findDetailVolunteerActivityInfoByIdAndShelterIdAndVolunteerId(
         id: Long,
         volunteerId: Long,

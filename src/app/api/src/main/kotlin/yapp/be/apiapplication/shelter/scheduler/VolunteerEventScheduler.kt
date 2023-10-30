@@ -16,7 +16,7 @@ class VolunteerEventScheduler(
 
     @Scheduled(cron = "0 30 0 * * *")
     fun updateVolunteerEventDone() {
-        val volunteerEventIds = getVolunteerActivityDomainService.getVolunteerEventDone()
+        val volunteerEventIds = getVolunteerActivityDomainService.getVolunteerActivityDone()
         volunteerEventIds.map {
             editVolunteerActivityDomainService.editVolunteerEventStatus(
                 it.id,

@@ -25,6 +25,10 @@ class VolunteerQueryRepository(
         return volunteerEntity.toDomainModel()
     }
 
+    override fun findAllByIds(ids: List<Long>): List<Volunteer> {
+        return jpaRepository.findAllByIdIn(ids).map { it.toDomainModel() }
+    }
+
     override fun isExistByEmail(email: String): Boolean {
         return jpaRepository.findByEmail(email) != null
     }

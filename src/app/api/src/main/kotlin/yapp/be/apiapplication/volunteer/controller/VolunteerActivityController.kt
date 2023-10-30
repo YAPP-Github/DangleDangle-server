@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.controller
+package yapp.be.apiapplication.volunteer.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -22,8 +22,8 @@ import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListRequest
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListResponseDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerActivityRequestDto
+import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerActivityResponseDto
 
 @Tag(name = "봉사 이벤트 api")
 @RestController
@@ -104,8 +104,8 @@ class VolunteerActivityController(
         @PathVariable shelterId: Long,
         @PathVariable volunteerEventId: Long,
         @VolunteerAuthentication volunteerInfo: VolunteerAuthenticationInfo
-    ): ResponseEntity<WithdrawVolunteerEventResponseDto> {
-        val reqDto = WithdrawVolunteerEventRequestDto(
+    ): ResponseEntity<WithdrawVolunteerActivityResponseDto> {
+        val reqDto = WithdrawVolunteerActivityRequestDto(
             shelterId = shelterId,
             volunteerId = volunteerInfo.volunteerId,
             volunteerEventId = volunteerEventId

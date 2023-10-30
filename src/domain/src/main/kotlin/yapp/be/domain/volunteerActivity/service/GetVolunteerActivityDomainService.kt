@@ -17,22 +17,22 @@ class GetVolunteerActivityDomainService(
     private val volunteerActivityQueryHandler: VolunteerActivityQueryHandler
 ) : GetVolunteerActivityUseCase {
     @Transactional(readOnly = true)
-    override fun getVolunteerUpComingVolunteerEvent(volunteerId: Long): VolunteerSimpleVolunteerActivityDto? {
+    override fun getVolunteerUpComingVolunteerActivity(volunteerId: Long): VolunteerSimpleVolunteerActivityDto? {
         return volunteerActivityQueryHandler.findUpcomingVolunteerActivityByVolunteerId(volunteerId)
     }
 
     @Transactional(readOnly = true)
-    override fun getVolunteerVolunteerEventStat(volunteerId: Long): VolunteerVolunteerActivityStatDto {
+    override fun getVolunteerVolunteerActivityStat(volunteerId: Long): VolunteerVolunteerActivityStatDto {
         return volunteerActivityQueryHandler.findVolunteerStatByVolunteerId(volunteerId)
     }
 
     @Transactional(readOnly = true)
-    override fun getShelterVolunteerEventStat(shelterId: Long): ShelterUserVolunteerActivityStatDto {
+    override fun getShelterVolunteerActivityStat(shelterId: Long): ShelterUserVolunteerActivityStatDto {
         return volunteerActivityQueryHandler.findShelterUserStatByShelterId(shelterId)
     }
 
     @Transactional(readOnly = true)
-    override fun getAllShelterVolunteerEventHistory(
+    override fun getAllShelterVolunteerActivityHistory(
         page: Int,
         shelterId: Long,
         status: VolunteerActivityStatus?
@@ -54,7 +54,7 @@ class GetVolunteerActivityDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getAllVolunteerVolunteerEventHistory(page: Int, volunteerId: Long, status: UserEventParticipationStatus?): PagedResult<VolunteerSimpleVolunteerActivityDto> {
+    override fun getAllVolunteerVolunteerActivityHistory(page: Int, volunteerId: Long, status: UserEventParticipationStatus?): PagedResult<VolunteerSimpleVolunteerActivityDto> {
         return if (status == null) {
             volunteerActivityQueryHandler
                 .findAllVolunteerVolunteerActivityByVolunteerId(
@@ -72,48 +72,57 @@ class GetVolunteerActivityDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getVolunteerEvent(shelterId: Long, volunteerEventId: Long): VolunteerActivity {
+    override fun getVolunteerActivity(shelterId: Long, volunteerActivityId: Long): VolunteerActivity {
         return volunteerActivityQueryHandler
             .findByIdAndShelterId(
-                id = volunteerEventId,
+                id = volunteerActivityId,
                 shelterId = shelterId
             )
     }
 
     @Transactional(readOnly = true)
-    override fun getVolunteerEventDone(): List<VolunteerActivity> {
+    override fun getVolunteerActivityDone(): List<VolunteerActivity> {
         return volunteerActivityQueryHandler.findVolunteerActivityDone()
     }
 
     @Transactional(readOnly = true)
-    override fun getMemberDetailVolunteerEventInfo(shelterId: Long, volunteerId: Long, volunteerEventId: Long): DetailVolunteerActivityDto {
+    override fun getMemberDetailVolunteerActivityInfo(shelterId: Long, volunteerId: Long, volunteerActivityId: Long): DetailVolunteerActivityDto {
         return volunteerActivityQueryHandler.findDetailVolunteerActivityInfoByIdAndShelterIdAndVolunteerId(
-            id = volunteerEventId,
+            id = volunteerActivityId,
             volunteerId = volunteerId,
-            shelterId = shelterId
+            shelterId = shelterId,
+
         )
     }
 
     @Transactional(readOnly = true)
-    override fun getNonMemberDetailVolunteerEventInfo(shelterId: Long, volunteerEventId: Long): DetailVolunteerActivityDto {
+    override fun getNonMemberDetailVolunteerActivityInfo(shelterId: Long, volunteerActivityId: Long): DetailVolunteerActivityDto {
         return volunteerActivityQueryHandler
             .findDetailVolunteerActivityInfoByIdAndShelterId(
-                id = volunteerEventId,
-                shelterId = shelterId
+                id = volunteerActivityId,
+                shelterId = shelterId,
             )
     }
 
     @Transactional(readOnly = true)
-    override fun getShelterUserDetailVolunteerEventInfo(shelterId: Long, volunteerEventId: Long): DetailVolunteerActivityDto {
+    override fun getShelterUserDetailVolunteerActivityInfo(shelterId: Long, volunteerActivityId: Long): DetailVolunteerActivityDto {
         return volunteerActivityQueryHandler
             .findDetailVolunteerActivityInfoByIdAndShelterId(
-                id = volunteerEventId,
-                shelterId = shelterId
+                id = volunteerActivityId,
+                shelterId = shelterId,
             )
     }
 
     @Transactional(readOnly = true)
-    override fun getShelterUserVolunteerEventsByDateRange(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<VolunteerSimpleVolunteerActivityDto> {
+    override fun getShelterUserDetailDeletedVolunteerActivityInfo(shelterId: Long, volunteerActivityId: Long): DetailVolunteerActivityDto {
+        return volunteerActivityQueryHandler.findDetailDeletedVolunteerActivityInfoByIdAndShelterId(
+            id = volunteerActivityId,
+            shelterId = shelterId,
+        )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getShelterUserVolunteerActivitiesByDateRange(shelterId: Long, from: LocalDateTime, to: LocalDateTime): List<VolunteerSimpleVolunteerActivityDto> {
         return volunteerActivityQueryHandler
             .findAllVolunteerSimpleVolunteerActivityInfosByShelterIdAndDateRange(
                 shelterId = shelterId,
@@ -123,7 +132,7 @@ class GetVolunteerActivityDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getMemberVolunteerEventsByDateRange(
+    override fun getMemberVolunteerActivitiesByDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
@@ -138,7 +147,7 @@ class GetVolunteerActivityDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getVolunteerEventsByDateRangeAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: VolunteerActivityCategory?): List<VolunteerSimpleVolunteerActivityDto> {
+    override fun getVolunteerActivitiesByDateRangeAndCategory(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: VolunteerActivityCategory?): List<VolunteerSimpleVolunteerActivityDto> {
         return volunteerActivityQueryHandler.findAllVolunteerSimpleVolunteerActivityInfosWithMyParticipationStatusByShelterIdAndDateRangeAndCategory(
             shelterId = shelterId,
             from = from,
@@ -148,7 +157,7 @@ class GetVolunteerActivityDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getVolunteerEventsByDateRangeAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: List<VolunteerActivityCategory>?, status: VolunteerActivityStatus?): List<VolunteerSimpleVolunteerActivityDto> {
+    override fun getVolunteerActivitiesByDateRangeAndCategoryAndStatus(shelterId: Long, from: LocalDateTime, to: LocalDateTime, category: List<VolunteerActivityCategory>?, status: VolunteerActivityStatus?): List<VolunteerSimpleVolunteerActivityDto> {
         return volunteerActivityQueryHandler.findAllVolunteerSimpleVolunteerActivityInfosWithMyParticipationStatusByDateRangeAndCategoryAndStatus(
             shelterId = shelterId,
             from = from,
@@ -159,7 +168,7 @@ class GetVolunteerActivityDomainService(
     }
 
     @Transactional(readOnly = true)
-    override fun getNonMemberVolunteerEventsByDateRange(
+    override fun getNonMemberVolunteerActivitiesByDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime

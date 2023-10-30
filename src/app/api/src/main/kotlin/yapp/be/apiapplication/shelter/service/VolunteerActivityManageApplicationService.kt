@@ -1,13 +1,14 @@
 package yapp.be.apiapplication.shelter.service
 
+import org.springframework.context.ApplicationEventPublisher
 import java.time.LocalDateTime
 import java.time.LocalTime
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.AddVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerActivityRequestDto
+import yapp.be.apiapplication.shelter.service.model.DeleteVolunteerActivityResponseDto
 import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.EditVolunteerEventResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerActivityResponseDto
@@ -15,8 +16,10 @@ import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerActiv
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListRequestDto
 import yapp.be.apiapplication.shelter.service.model.GetShelterUserVolunteerEventListResponseDto
 import yapp.be.apiapplication.shelter.service.model.GetSimpleVolunteerActivityResponseDto
+import yapp.be.domain.volunteerActivity.model.event.VolunteerActivityUpdatedEvent
 import yapp.be.domain.port.inbound.shelteruser.GetShelterUserUseCase
 import yapp.be.domain.volunteerActivity.model.VolunteerActivity
+import yapp.be.domain.volunteerActivity.model.event.VolunteerActivityDeletedEvent
 import yapp.be.domain.volunteerActivity.port.inbound.AddVolunteerActivityUseCase
 import yapp.be.domain.volunteerActivity.port.inbound.DeleteVolunteerActivityUseCase
 import yapp.be.domain.volunteerActivity.port.inbound.EditVolunteerActivityUseCase
@@ -29,6 +32,7 @@ import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
 
 @Service
 class VolunteerActivityManageApplicationService(
+    private val eventPublisher: ApplicationEventPublisher,
     private val getShelterUserUseCase: GetShelterUserUseCase,
     private val getVolunteerActivityUseCase: GetVolunteerActivityUseCase,
     private val addVolunteerActivityUseCase: AddVolunteerActivityUseCase,
@@ -42,9 +46,9 @@ class VolunteerActivityManageApplicationService(
             .getShelterUserById(reqDto.shelterUserId)
 
         val volunteerEvent = getVolunteerActivityUseCase
-            .getShelterUserDetailVolunteerEventInfo(
+            .getShelterUserDetailVolunteerActivityInfo(
                 shelterId = shelterUser.shelterId,
-                volunteerEventId = reqDto.volunteerEventId
+                volunteerActivityId = reqDto.volunteerEventId
             )
 
         return GetDetailVolunteerActivityResponseDto(
@@ -69,7 +73,7 @@ class VolunteerActivityManageApplicationService(
     fun getVolunteerEvents(reqDto: GetShelterUserVolunteerEventListRequestDto): GetShelterUserVolunteerEventListResponseDto {
         val shelterUser = getShelterUserUseCase.getShelterUserById(reqDto.shelterUserId)
         val volunteerEvents = getVolunteerActivityUseCase
-            .getShelterUserVolunteerEventsByDateRange(
+            .getShelterUserVolunteerActivitiesByDateRange(
                 shelterId = shelterUser.shelterId,
                 from = reqDto.from,
                 to = reqDto.to
@@ -94,7 +98,7 @@ class VolunteerActivityManageApplicationService(
     }
 
     @Transactional
-    fun addVolunteerEvent(shelterUserId: Long, reqDto: AddVolunteerEventRequestDto): AddVolunteerEventResponseDto {
+    fun addVolunteerActivity(shelterUserId: Long, reqDto: AddVolunteerEventRequestDto): AddVolunteerEventResponseDto {
 
         if (LocalDateTime.now().isAfter(reqDto.startAt)) {
             throw CustomException(
@@ -130,7 +134,7 @@ class VolunteerActivityManageApplicationService(
             startAt = reqDto.startAt,
             endAt = reqDto.endAt
         )
-        val volunteerEventsId =
+        val volunteerActivityId =
             reqDto.iteration?.let {
                 addVolunteerActivityUseCase.addVolunteerEventsWithIteration(
                     iteration = it,
@@ -138,15 +142,15 @@ class VolunteerActivityManageApplicationService(
                 )
             } ?: addVolunteerActivityUseCase.addVolunteerEvent(volunteerActivity)
 
-        return AddVolunteerEventResponseDto(volunteerEventsId)
+        return AddVolunteerEventResponseDto(volunteerActivityId)
     }
 
     @Transactional
     @DistributedLock(
-        prefix = "volunteerEvent",
-        identifiers = ["reqDto.volunteerEventId"]
+        prefix = "volunteerActivity",
+        identifiers = ["reqDto.volunteerActivityId"]
     )
-    fun editVolunteerEvent(reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
+    fun editVolunteerActivity(reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
         if (LocalDateTime.now().isAfter(reqDto.startAt)) {
             throw CustomException(
                 type = VolunteerActivityExceptionType.INVALID_DATE_RANGE_EDIT,
@@ -166,14 +170,14 @@ class VolunteerActivityManageApplicationService(
         val shelterUser = getShelterUserUseCase
             .getShelterUserById(reqDto.shelterUserId)
 
-        val volunteerEvent =
+        val volunteerActivity =
             getVolunteerActivityUseCase
-                .getShelterUserDetailVolunteerEventInfo(
+                .getShelterUserDetailVolunteerActivityInfo(
                     shelterId = shelterUser.shelterId,
-                    volunteerEventId = reqDto.volunteerEventId
+                    volunteerActivityId = reqDto.volunteerEventId,
                 )
 
-        if (volunteerEvent.joiningVolunteers.size > reqDto.recruitNum || reqDto.recruitNum == 0) {
+        if (volunteerActivity.joiningVolunteers.size > reqDto.recruitNum || reqDto.recruitNum == 0) {
             throw CustomException(
                 type = VolunteerActivityExceptionType.INVALID_RECRUIT_NUM_EDIT,
                 message = "정원을 현재 참여 중 인원보다 적게 수정할 수 없습니다."
@@ -201,6 +205,14 @@ class VolunteerActivityManageApplicationService(
         )
         val updatedVolunteerEvent = editVolunteerActivityUseCase
             .editVolunteerEvent(command)
+            .also {
+                eventPublisher.publishEvent(
+                    VolunteerActivityUpdatedEvent(
+                        shelterId = it.shelterId,
+                        volunteerActivityId = it.id
+                    )
+                )
+            }
 
         return EditVolunteerEventResponseDto(
             volunteerEventId = updatedVolunteerEvent.id
@@ -209,21 +221,28 @@ class VolunteerActivityManageApplicationService(
 
     @Transactional
     @DistributedLock(
-        prefix = "volunteerEvent",
-        identifiers = ["reqDto.volunteerEventId"]
+        prefix = "volunteerActivity",
+        identifiers = ["reqDto.volunteerActivityId"]
     )
-    fun deleteVolunteerEvent(reqDto: DeleteVolunteerEventRequestDto): DeleteVolunteerEventResponseDto {
+    fun deleteVolunteerActivity(reqDto: DeleteVolunteerActivityRequestDto): DeleteVolunteerActivityResponseDto {
         val shelterUser = getShelterUserUseCase
             .getShelterUserById(reqDto.shelterUserId)
 
         deleteVolunteerActivityUseCase
             .deleteByIdAndShelterId(
-                id = reqDto.volunteerEventId,
+                id = reqDto.volunteerActivityId,
                 shelterId = shelterUser.shelterId
             )
 
-        return DeleteVolunteerEventResponseDto(
-            volunteerEventId = reqDto.volunteerEventId
+        eventPublisher.publishEvent(
+            VolunteerActivityDeletedEvent(
+                shelterId = shelterUser.shelterId,
+                volunteerActivityId = reqDto.volunteerActivityId
+            )
+        )
+
+        return DeleteVolunteerActivityResponseDto(
+            volunteerActivityId = reqDto.volunteerActivityId
         )
     }
 }
