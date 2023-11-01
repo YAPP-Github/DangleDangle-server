@@ -10,41 +10,43 @@ import yapp.be.model.support.PagedResult
 
 interface GetVolunteerActivityUseCase {
 
-    fun getVolunteerUpComingVolunteerEvent(
+    fun getTomorrowVolunteerActivities(): List<VolunteerActivity>
+
+    fun getVolunteerUpComingVolunteerActivity(
         volunteerId: Long
     ): VolunteerSimpleVolunteerActivityDto?
-    fun getVolunteerVolunteerEventStat(
+    fun getVolunteerVolunteerActivityStat(
         volunteerId: Long
     ): VolunteerVolunteerActivityStatDto
-    fun getShelterVolunteerEventStat(
+    fun getShelterVolunteerActivityStat(
         shelterId: Long
     ): ShelterUserVolunteerActivityStatDto
-    fun getVolunteerEventDone(): List<VolunteerActivity>
-    fun getAllShelterVolunteerEventHistory(
+    fun getVolunteerActivityDone(): List<VolunteerActivity>
+    fun getAllShelterVolunteerActivityHistory(
         page: Int,
         shelterId: Long,
         status: VolunteerActivityStatus?
     ): PagedResult<ShelterSimpleVolunteerActivityDto>
 
-    fun getAllVolunteerVolunteerEventHistory(
+    fun getAllVolunteerVolunteerActivityHistory(
         page: Int,
         volunteerId: Long,
         status: UserEventParticipationStatus?
     ): PagedResult<VolunteerSimpleVolunteerActivityDto>
 
-    fun getVolunteerEvent(
+    fun getVolunteerActivity(
         shelterId: Long,
-        volunteerEventId: Long
+        volunteerActivityId: Long
     ): VolunteerActivity
 
-    fun getVolunteerEventsByDateRangeAndCategory(
+    fun getVolunteerActivitiesByDateRangeAndCategory(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
         category: VolunteerActivityCategory?,
     ): List<VolunteerSimpleVolunteerActivityDto>
 
-    fun getVolunteerEventsByDateRangeAndCategoryAndStatus(
+    fun getVolunteerActivitiesByDateRangeAndCategoryAndStatus(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime,
@@ -52,35 +54,40 @@ interface GetVolunteerActivityUseCase {
         status: VolunteerActivityStatus?,
     ): List<VolunteerSimpleVolunteerActivityDto>
 
-    fun getMemberDetailVolunteerEventInfo(
+    fun getMemberDetailVolunteerActivityInfo(
         shelterId: Long,
         volunteerId: Long,
-        volunteerEventId: Long
+        volunteerActivityId: Long
     ): DetailVolunteerActivityDto
 
-    fun getNonMemberDetailVolunteerEventInfo(
+    fun getNonMemberDetailVolunteerActivityInfo(
         shelterId: Long,
-        volunteerEventId: Long
+        volunteerActivityId: Long
     ): DetailVolunteerActivityDto
 
-    fun getShelterUserDetailVolunteerEventInfo(
+    fun getShelterUserDetailVolunteerActivityInfo(
         shelterId: Long,
-        volunteerEventId: Long
+        volunteerActivityId: Long
     ): DetailVolunteerActivityDto
 
-    fun getShelterUserVolunteerEventsByDateRange(
+    fun getShelterUserDetailDeletedVolunteerActivityInfo(
+        shelterId: Long,
+        volunteerActivityId: Long
+    ): DetailVolunteerActivityDto
+
+    fun getShelterUserVolunteerActivitiesByDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime
     ): List<VolunteerSimpleVolunteerActivityDto>
-    fun getMemberVolunteerEventsByDateRange(
+    fun getMemberVolunteerActivitiesByDateRange(
         shelterId: Long,
         volunteerId: Long,
         from: LocalDateTime,
         to: LocalDateTime
     ): List<VolunteerSimpleVolunteerActivityDto>
 
-    fun getNonMemberVolunteerEventsByDateRange(
+    fun getNonMemberVolunteerActivitiesByDateRange(
         shelterId: Long,
         from: LocalDateTime,
         to: LocalDateTime

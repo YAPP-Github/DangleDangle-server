@@ -1,5 +1,6 @@
 package yapp.be.apiapplication.shelter.service
 
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yapp.be.apiapplication.shelter.service.model.GetDetailVolunteerActivityResponseDto
@@ -9,8 +10,9 @@ import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListRequest
 import yapp.be.apiapplication.shelter.service.model.GetVolunteerEventListResponseDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventRequestDto
 import yapp.be.apiapplication.shelter.service.model.ParticipateVolunteerEventResponseDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventRequestDto
-import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerEventResponseDto
+import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerActivityRequestDto
+import yapp.be.apiapplication.shelter.service.model.WithdrawVolunteerActivityResponseDto
+import yapp.be.domain.volunteerActivity.model.event.VolunteerActivityWithdrawalEvent
 import yapp.be.domain.volunteerActivity.port.inbound.GetVolunteerActivityUseCase
 import yapp.be.domain.volunteerActivity.port.inbound.ParticipateVolunteerActivityUseCase
 import yapp.be.domain.volunteerActivity.port.inbound.WithDrawVolunteerActivityUseCase
@@ -22,6 +24,7 @@ import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
 
 @Service
 class VolunteerActivityApplicationService(
+    private val eventPublisher: ApplicationEventPublisher,
     private val getVolunteerEventUseCase: GetVolunteerActivityUseCase,
     private val withDrawVolunteerEventUseCase: WithDrawVolunteerActivityUseCase,
     private val participationVolunteerEventUseCase: ParticipateVolunteerActivityUseCase,
@@ -34,16 +37,16 @@ class VolunteerActivityApplicationService(
         val volunteerEvent =
             if (reqDto.volunteerId != null) {
                 getVolunteerEventUseCase
-                    .getMemberDetailVolunteerEventInfo(
+                    .getMemberDetailVolunteerActivityInfo(
                         shelterId = reqDto.shelterId,
                         volunteerId = reqDto.volunteerId,
-                        volunteerEventId = reqDto.volunteerEventId
+                        volunteerActivityId = reqDto.volunteerEventId
                     )
             } else {
                 getVolunteerEventUseCase
-                    .getNonMemberDetailVolunteerEventInfo(
+                    .getNonMemberDetailVolunteerActivityInfo(
                         shelterId = reqDto.shelterId,
-                        volunteerEventId = reqDto.volunteerEventId
+                        volunteerActivityId = reqDto.volunteerEventId
                     )
             }
 
@@ -70,14 +73,14 @@ class VolunteerActivityApplicationService(
         reqDto: GetVolunteerEventListRequestDto
     ): GetVolunteerEventListResponseDto {
         val volunteerEvents = if (reqDto.volunteerId != null) {
-            getVolunteerEventUseCase.getMemberVolunteerEventsByDateRange(
+            getVolunteerEventUseCase.getMemberVolunteerActivitiesByDateRange(
                 shelterId = reqDto.shelterId,
                 volunteerId = reqDto.volunteerId,
                 from = reqDto.from,
                 to = reqDto.to
             )
         } else {
-            getVolunteerEventUseCase.getNonMemberVolunteerEventsByDateRange(
+            getVolunteerEventUseCase.getNonMemberVolunteerActivitiesByDateRange(
                 shelterId = reqDto.shelterId,
                 from = reqDto.from,
                 to = reqDto.to
@@ -110,10 +113,10 @@ class VolunteerActivityApplicationService(
     fun participateVolunteerEvent(
         reqDto: ParticipateVolunteerEventRequestDto
     ): ParticipateVolunteerEventResponseDto {
-        val volunteerEvent = getVolunteerEventUseCase.getMemberDetailVolunteerEventInfo(
+        val volunteerEvent = getVolunteerEventUseCase.getMemberDetailVolunteerActivityInfo(
             shelterId = reqDto.shelterId,
             volunteerId = reqDto.volunteerId,
-            volunteerEventId = reqDto.volunteerEventId
+            volunteerActivityId = reqDto.volunteerEventId
         )
 
         if (volunteerEvent.eventStatus != VolunteerActivityStatus.IN_PROGRESS) {
@@ -160,12 +163,12 @@ class VolunteerActivityApplicationService(
         identifiers = ["reqDto.volunteerEventId"]
     )
     fun withdrawVolunteerEvent(
-        reqDto: WithdrawVolunteerEventRequestDto
-    ): WithdrawVolunteerEventResponseDto {
-        val volunteerEvent = getVolunteerEventUseCase.getMemberDetailVolunteerEventInfo(
+        reqDto: WithdrawVolunteerActivityRequestDto
+    ): WithdrawVolunteerActivityResponseDto {
+        val volunteerEvent = getVolunteerEventUseCase.getMemberDetailVolunteerActivityInfo(
             shelterId = reqDto.shelterId,
             volunteerId = reqDto.volunteerId,
-            volunteerEventId = reqDto.volunteerEventId
+            volunteerActivityId = reqDto.volunteerEventId
         )
 
         val joinParticipants = volunteerEvent.joiningVolunteers.map { it.id }
@@ -190,7 +193,15 @@ class VolunteerActivityApplicationService(
             )
         }
 
-        return WithdrawVolunteerEventResponseDto(
+        eventPublisher.publishEvent(
+            VolunteerActivityWithdrawalEvent(
+                userId = reqDto.volunteerId,
+                shelterId = reqDto.shelterId,
+                volunteerActivityId = reqDto.volunteerEventId
+            )
+        )
+
+        return WithdrawVolunteerActivityResponseDto(
             volunteerId = reqDto.volunteerId,
             volunteerEventId = reqDto.volunteerEventId
         )

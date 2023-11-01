@@ -7,5 +7,6 @@ interface VolunteerJpaRepository : JpaRepository<VolunteerEntity, Long> {
     fun findByEmail(email: String): VolunteerEntity?
     fun findByNickname(nickname: String): VolunteerEntity?
 
+    fun findAllByIdIn(ids: List<Long>): List<VolunteerEntity>
     fun findAllByDeletedIsTrue(): List<VolunteerEntity>
 }

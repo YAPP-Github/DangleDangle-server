@@ -39,6 +39,7 @@ allprojects {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("org.springframework.boot:spring-boot-configuration-processor")
         implementation("io.github.oshai:kotlin-logging-jvm:${property("kotlinLoggingVersion")}")
         testImplementation("io.kotest:kotest-runner-junit5:${property("kotestVersion")}")
         testImplementation("io.kotest:kotest-assertions-core:${property("kotestVersion")}")

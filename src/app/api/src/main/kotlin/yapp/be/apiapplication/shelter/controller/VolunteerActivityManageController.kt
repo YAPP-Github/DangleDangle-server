@@ -26,7 +26,7 @@ import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthentication
 import yapp.be.apiapplication.system.security.resolver.ShelterUserAuthenticationInfo
 import yapp.be.domain.volunteerActivity.model.dto.VolunteerSimpleVolunteerActivityDto
 
-@Tag(name = "봉사 이벤트 관리 api")
+@Tag(name = "봉사 활동 관리 api")
 @RestController
 @RequestMapping("/v1/shelter/admin/volunteer-event")
 class VolunteerActivityManageController(
@@ -37,7 +37,7 @@ class VolunteerActivityManageController(
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerEventId}")
     @Operation(
-        summary = "봉사 이벤트 상세 조회"
+        summary = "봉사 활동 상세 조회"
     )
     fun getVolunteerEvent(
         @PathVariable volunteerEventId: Long,
@@ -56,7 +56,7 @@ class VolunteerActivityManageController(
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     @Operation(
-        summary = "봉사 이벤트 리스트 조회"
+        summary = "봉사 활동 리스트 조회"
     )
     fun getShelterUserVolunteerEvents(
         @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -79,7 +79,7 @@ class VolunteerActivityManageController(
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
     @Operation(
-        summary = "봉사 이벤트 추가"
+        summary = "봉사 활동 추가"
     )
     fun addVolunteerEvent(
         @RequestBody @Valid req: AddVolunteerEventRequest,
@@ -87,7 +87,7 @@ class VolunteerActivityManageController(
     ): ResponseEntity<AddVolunteerEventResponseDto> {
         val reqDto = req.toDto()
         val resDto = volunteerActivityManageApplicationService
-            .addVolunteerEvent(
+            .addVolunteerActivity(
                 shelterUserId = shelterUserInfo.shelterUserId,
                 reqDto = reqDto
             )
@@ -98,7 +98,7 @@ class VolunteerActivityManageController(
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{volunteerEventId}")
     @Operation(
-        summary = "봉사 이벤트 수정"
+        summary = "봉사 활동 수정"
     )
     fun editVolunteerEvent(
         @PathVariable volunteerEventId: Long,
@@ -118,7 +118,7 @@ class VolunteerActivityManageController(
             endAt = req.endAt
         )
         val resDto = volunteerActivityManageApplicationService
-            .editVolunteerEvent(reqDto)
+            .editVolunteerActivity(reqDto)
 
         return ResponseEntity.ok(resDto)
     }
@@ -126,19 +126,19 @@ class VolunteerActivityManageController(
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerEventId}")
     @Operation(
-        summary = "봉사 이벤트 삭제"
+        summary = "봉사 활동 삭제"
     )
     fun deleteVolunteerEvent(
         @PathVariable volunteerEventId: Long,
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo
-    ): ResponseEntity<DeleteVolunteerEventResponseDto> {
+    ): ResponseEntity<DeleteVolunteerActivityResponseDto> {
 
-        val reqDto = DeleteVolunteerEventRequestDto(
-            volunteerEventId = volunteerEventId,
+        val reqDto = DeleteVolunteerActivityRequestDto(
+            volunteerActivityId = volunteerEventId,
             shelterUserId = shelterUserInfo.shelterUserId
         )
         val resDto = volunteerActivityManageApplicationService
-            .deleteVolunteerEvent(reqDto)
+            .deleteVolunteerActivity(reqDto)
 
         return ResponseEntity.ok(resDto)
     }
@@ -146,7 +146,7 @@ class VolunteerActivityManageController(
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/home")
     @Operation(
-        summary = "보호소 파트너 봉사이벤트 홈페이지 조회"
+        summary = "보호소 파트너 봉사활동 홈페이지 조회"
     )
     fun getHomeVolunteerEvents(
         @ShelterUserAuthentication shelterUserInfo: ShelterUserAuthenticationInfo,

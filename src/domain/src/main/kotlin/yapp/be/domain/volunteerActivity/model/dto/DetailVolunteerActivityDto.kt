@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 
 data class DetailVolunteerActivityDto(
     val id: Long,
+    val shelterId: Long,
     val shelterName: String,
     val shelterProfileImageUrl: String?,
     val title: String,

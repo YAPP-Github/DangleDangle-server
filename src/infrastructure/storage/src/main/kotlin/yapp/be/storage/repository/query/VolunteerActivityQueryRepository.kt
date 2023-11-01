@@ -30,6 +30,11 @@ class VolunteerActivityQueryRepository(
     private val volunteerActivityWaitingQueueJpaRepository: VolunteerActivityWaitingQueueJpaRepository,
     private val volunteerActivityJoiningQueueJpaRepository: VolunteerActivityJoiningQueueJpaRepository,
 ) : VolunteerActivityQueryHandler {
+    override fun findAllVolunteerActivityByStartAtBetween(start: LocalDateTime, end: LocalDateTime): List<VolunteerActivity> {
+        return volunteerActivityJpaRepository.findAllByStartAtBetween(start, end)
+            .map { it.toDomainModel() }
+    }
+
     override fun findUpcomingVolunteerActivityByVolunteerId(volunteerId: Long): VolunteerSimpleVolunteerActivityDto? {
         val upComingVolunteerActivity = volunteerActivityJpaRepository.findUpcomingVolunteerEventByVolunteerId(volunteerId)
         return upComingVolunteerActivity?.let {
@@ -426,7 +431,7 @@ class VolunteerActivityQueryRepository(
                     nickName = it.nickname
                 )
             }.toList()
-        val waitingParticipants = if (volunteerActivityWithMyParticipationStatus.recruitNum <= joiningParticipants.size) {
+        val waitingParticipants =
             volunteerActivityWaitingQueueJpaRepository.findAllWaitParticipantsByVolunteerActivityId(volunteerActivityId = id)
                 .map {
                     VolunteerActivityParticipantInfoDto(
@@ -434,12 +439,63 @@ class VolunteerActivityQueryRepository(
                         nickName = it.nickname
                     )
                 }.toList()
-        } else {
-            listOf()
-        }
 
         return DetailVolunteerActivityDto(
             id = volunteerActivityWithMyParticipationStatus.id,
+            shelterId = volunteerActivityWithMyParticipationStatus.shelterId,
+            shelterName = volunteerActivityWithMyParticipationStatus.shelterName,
+            shelterProfileImageUrl = volunteerActivityWithMyParticipationStatus.shelterProfileImageUrl,
+            title = volunteerActivityWithMyParticipationStatus.title,
+            recruitNum = volunteerActivityWithMyParticipationStatus.recruitNum,
+            address = Address(
+                address = volunteerActivityWithMyParticipationStatus.address.address,
+                addressDetail = volunteerActivityWithMyParticipationStatus.address.addressDetail,
+                postalCode = volunteerActivityWithMyParticipationStatus.address.postalCode,
+                latitude = volunteerActivityWithMyParticipationStatus.address.latitude,
+                longitude = volunteerActivityWithMyParticipationStatus.address.longitude
+            ),
+            description = volunteerActivityWithMyParticipationStatus.description,
+            ageLimit = volunteerActivityWithMyParticipationStatus.ageLimit,
+            category = volunteerActivityWithMyParticipationStatus.category,
+            eventStatus = volunteerActivityWithMyParticipationStatus.eventStatus,
+            myParticipationStatus = UserEventParticipationStatus.NONE,
+            startAt = volunteerActivityWithMyParticipationStatus.startAt,
+            endAt = volunteerActivityWithMyParticipationStatus.endAt,
+            joiningVolunteers = joiningParticipants,
+            waitingVolunteers = waitingParticipants
+        )
+    }
+
+    override fun findDetailDeletedVolunteerActivityInfoByIdAndShelterId(id: Long, shelterId: Long): DetailVolunteerActivityDto {
+        val volunteerActivityWithMyParticipationStatus =
+            volunteerActivityJpaRepository
+                .findWithParticipationStatusByIdAndShelterIdAndDeletedIsTrue(
+                    id = id,
+                    shelterId = shelterId
+                ) ?: throw CustomException(
+                type = StorageExceptionType.ENTITY_NOT_FOUND,
+                message = "봉사 정보를 찾을 수 없습니다."
+            )
+
+        val joiningParticipants = volunteerActivityJoiningQueueJpaRepository.findAllJoinParticipantsByVolunteerActivityId(volunteerActivityId = id)
+            .map {
+                VolunteerActivityParticipantInfoDto(
+                    id = it.id,
+                    nickName = it.nickname
+                )
+            }.toList()
+        val waitingParticipants =
+            volunteerActivityWaitingQueueJpaRepository.findAllWaitParticipantsByVolunteerActivityId(id)
+                .map {
+                    VolunteerActivityParticipantInfoDto(
+                        id = it.id,
+                        nickName = it.nickname
+                    )
+                }.toList()
+
+        return DetailVolunteerActivityDto(
+            id = volunteerActivityWithMyParticipationStatus.id,
+            shelterId = volunteerActivityWithMyParticipationStatus.shelterId,
             shelterName = volunteerActivityWithMyParticipationStatus.shelterName,
             shelterProfileImageUrl = volunteerActivityWithMyParticipationStatus.shelterProfileImageUrl,
             title = volunteerActivityWithMyParticipationStatus.title,
@@ -465,7 +521,7 @@ class VolunteerActivityQueryRepository(
     override fun findDetailVolunteerActivityInfoByIdAndShelterIdAndVolunteerId(id: Long, volunteerId: Long, shelterId: Long): DetailVolunteerActivityDto {
         val volunteerActivityWithShelterInfo =
             volunteerActivityJpaRepository
-                .findWithParticipationStatusByIdAndShelterId(
+                .findWithParticipationStatusByIdAndShelterIdAndDeletedIsTrue(
                     id = id,
                     shelterId = shelterId
                 ) ?: throw CustomException(
@@ -480,7 +536,7 @@ class VolunteerActivityQueryRepository(
                     nickName = it.nickname
                 )
             }.toList()
-        val waitingParticipants = if (volunteerActivityWithShelterInfo.recruitNum <= joiningParticipants.size) {
+        val waitingParticipants =
             volunteerActivityWaitingQueueJpaRepository.findAllWaitParticipantsByVolunteerActivityId(volunteerActivityId = id)
                 .map {
                     VolunteerActivityParticipantInfoDto(
@@ -488,12 +544,10 @@ class VolunteerActivityQueryRepository(
                         nickName = it.nickname
                     )
                 }.toList()
-        } else {
-            listOf()
-        }
 
         return DetailVolunteerActivityDto(
             id = volunteerActivityWithShelterInfo.id,
+            shelterId = volunteerActivityWithShelterInfo.shelterId,
             shelterName = volunteerActivityWithShelterInfo.shelterName,
             shelterProfileImageUrl = volunteerActivityWithShelterInfo.shelterProfileImageUrl,
             title = volunteerActivityWithShelterInfo.title,

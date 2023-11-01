@@ -28,7 +28,7 @@ class VolunteerActivityHomeApplicationService(
 
         return buildList {
             shelters.forEach {
-                addAll(getVolunteerEventUseCase.getVolunteerEventsByDateRangeAndCategory(it.id, reqDto.from, reqDto.to, reqDto.category))
+                addAll(getVolunteerEventUseCase.getVolunteerActivitiesByDateRangeAndCategory(it.id, reqDto.from, reqDto.to, reqDto.category))
             }
         }
     }

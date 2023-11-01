@@ -1,4 +1,4 @@
-package yapp.be.apiapplication.shelter.controller
+package yapp.be.apiapplication.volunteer.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
