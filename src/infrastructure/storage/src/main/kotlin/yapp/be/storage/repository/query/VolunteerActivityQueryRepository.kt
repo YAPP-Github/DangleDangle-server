@@ -30,6 +30,11 @@ class VolunteerActivityQueryRepository(
     private val volunteerActivityWaitingQueueJpaRepository: VolunteerActivityWaitingQueueJpaRepository,
     private val volunteerActivityJoiningQueueJpaRepository: VolunteerActivityJoiningQueueJpaRepository,
 ) : VolunteerActivityQueryHandler {
+    override fun findAllVolunteerActivityByStartAtBetween(start: LocalDateTime, end: LocalDateTime): List<VolunteerActivity> {
+        return volunteerActivityJpaRepository.findAllByStartAtBetween(start, end)
+            .map { it.toDomainModel() }
+    }
+
     override fun findUpcomingVolunteerActivityByVolunteerId(volunteerId: Long): VolunteerSimpleVolunteerActivityDto? {
         val upComingVolunteerActivity = volunteerActivityJpaRepository.findUpcomingVolunteerEventByVolunteerId(volunteerId)
         return upComingVolunteerActivity?.let {
@@ -437,6 +442,7 @@ class VolunteerActivityQueryRepository(
 
         return DetailVolunteerActivityDto(
             id = volunteerActivityWithMyParticipationStatus.id,
+            shelterId = volunteerActivityWithMyParticipationStatus.shelterId,
             shelterName = volunteerActivityWithMyParticipationStatus.shelterName,
             shelterProfileImageUrl = volunteerActivityWithMyParticipationStatus.shelterProfileImageUrl,
             title = volunteerActivityWithMyParticipationStatus.title,
@@ -489,6 +495,7 @@ class VolunteerActivityQueryRepository(
 
         return DetailVolunteerActivityDto(
             id = volunteerActivityWithMyParticipationStatus.id,
+            shelterId = volunteerActivityWithMyParticipationStatus.shelterId,
             shelterName = volunteerActivityWithMyParticipationStatus.shelterName,
             shelterProfileImageUrl = volunteerActivityWithMyParticipationStatus.shelterProfileImageUrl,
             title = volunteerActivityWithMyParticipationStatus.title,
@@ -540,6 +547,7 @@ class VolunteerActivityQueryRepository(
 
         return DetailVolunteerActivityDto(
             id = volunteerActivityWithShelterInfo.id,
+            shelterId = volunteerActivityWithShelterInfo.shelterId,
             shelterName = volunteerActivityWithShelterInfo.shelterName,
             shelterProfileImageUrl = volunteerActivityWithShelterInfo.shelterProfileImageUrl,
             title = volunteerActivityWithShelterInfo.title,

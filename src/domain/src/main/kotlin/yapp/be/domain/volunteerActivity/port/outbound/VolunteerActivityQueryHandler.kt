@@ -12,6 +12,8 @@ import yapp.be.model.support.PagedResult
 
 interface VolunteerActivityQueryHandler {
 
+    fun findAllVolunteerActivityByStartAtBetween(start: LocalDateTime, end: LocalDateTime): List<VolunteerActivity>
+
     fun findUpcomingVolunteerActivityByVolunteerId(
         volunteerId: Long
     ): VolunteerSimpleVolunteerActivityDto?

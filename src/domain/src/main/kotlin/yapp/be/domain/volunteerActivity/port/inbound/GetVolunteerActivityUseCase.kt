@@ -10,6 +10,8 @@ import yapp.be.model.support.PagedResult
 
 interface GetVolunteerActivityUseCase {
 
+    fun getTomorrowVolunteerActivities(): List<VolunteerActivity>
+
     fun getVolunteerUpComingVolunteerActivity(
         volunteerId: Long
     ): VolunteerSimpleVolunteerActivityDto?

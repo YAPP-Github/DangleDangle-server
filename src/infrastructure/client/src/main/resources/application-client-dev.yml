@@ -1,4 +1,4 @@
 ncp-kakao-notification-client:
-    accessKey: ${NCP_ACCESS_KEY:lSXK1ChY9NKEXj5WuVl1}
-    secretKey: ${NCP_SECRET_KEY:z1W3Iis7eBfjtv2uzGMKpSgRmlHxcRqaFsXMLlu3}
-    serviceId: ${NCP_SERVICE_ID:ncp:kkobizmsg:kr:3176400:noti}
+    accessKey: ${NCP_ACCESS_KEY}
+    secretKey: ${NCP_SECRET_KEY}
+    serviceId: ${NCP_SERVICE_ID}

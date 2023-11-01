@@ -16,4 +16,6 @@ interface VolunteerActivityJpaRepository : JpaRepository<VolunteerActivityEntity
     fun findAllByShelterIdAndDeletedIsFalse(shelterId: Long, pageable: Pageable): Page<VolunteerActivityEntity>
     fun findByIdAndShelterIdAndDeletedIsFalse(id: Long, shelterId: Long): VolunteerActivityEntity?
     fun findByEndAtBeforeAndStatusNot(today: LocalDateTime, status: VolunteerActivityStatus): List<VolunteerActivityEntity>
+
+    fun findAllByStartAtBetween(start: LocalDateTime, end: LocalDateTime): List<VolunteerActivityEntity>
 }

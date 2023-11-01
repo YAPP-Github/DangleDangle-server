@@ -11,11 +11,24 @@ import yapp.be.model.enums.volunteerActivity.UserEventParticipationStatus
 import yapp.be.model.enums.volunteerActivity.VolunteerActivityCategory
 import yapp.be.model.enums.volunteerActivity.VolunteerActivityStatus
 import yapp.be.model.support.PagedResult
+import java.time.LocalDate
+import java.time.LocalTime
 
 @Service
 class GetVolunteerActivityDomainService(
     private val volunteerActivityQueryHandler: VolunteerActivityQueryHandler
 ) : GetVolunteerActivityUseCase {
+
+    @Transactional(readOnly = true)
+    override fun getTomorrowVolunteerActivities(): List<VolunteerActivity> {
+        val tomorrow = LocalDate.now().plusDays(1)
+
+        return volunteerActivityQueryHandler.findAllVolunteerActivityByStartAtBetween(
+            start = LocalDateTime.of(tomorrow, LocalTime.MIN),
+            end = LocalDateTime.of(tomorrow, LocalTime.MAX)
+        )
+    }
+
     @Transactional(readOnly = true)
     override fun getVolunteerUpComingVolunteerActivity(volunteerId: Long): VolunteerSimpleVolunteerActivityDto? {
         return volunteerActivityQueryHandler.findUpcomingVolunteerActivityByVolunteerId(volunteerId)
