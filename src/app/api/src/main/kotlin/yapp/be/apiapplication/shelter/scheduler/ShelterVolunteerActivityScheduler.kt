@@ -29,8 +29,7 @@ class ShelterVolunteerActivityScheduler(
         }
     }
 
-    @Scheduled(fixedDelay = 60000L)
-    // @Scheduled(cron = "0 0 20 * * *")
+    @Scheduled(cron = "0 0 20 * * *")
     fun remindUpcomingVolunteerEvent() {
         val tomorrowVolunteerActivities = getVolunteerActivityUseCase.getTomorrowVolunteerActivities()
         tomorrowVolunteerActivities.forEach { volunteerActivity ->
