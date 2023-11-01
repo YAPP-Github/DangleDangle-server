@@ -1,8 +1,4 @@
-ncpKakaoNotificationFeignClient:
-     connectTimeout: 10000
-     readTimeout: 10000
-     url: https://sens.apigw.ntruss.com/alimtalk/v2
-     accessKey: ${NCP_ACCESS_KEY}
-     secretKey: ${NCP_SECRET_KEY}
-     serviceId: ${NCP_SERVICE_ID}
-     plusFriendId: @dangledangle
+ncp-kakao-notification-client:
+    accessKey: ${NCP_ACCESS_KEY}
+    secretKey: ${NCP_SECRET_KEY}
+    serviceId: ${NCP_SERVICE_ID}
