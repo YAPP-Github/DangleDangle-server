@@ -4,6 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
+import org.springframework.transaction.event.TransactionalEventListener
 import yapp.be.domain.common.model.AlimtalkMessageTemplate
 import yapp.be.domain.common.port.KakaoNotificationHandler
 import yapp.be.domain.volunteer.port.inbound.GetVolunteerUseCase
@@ -19,7 +20,7 @@ class VolunteerActivityDeletedEventConsumer(
 
     private val logger = KotlinLogging.logger { }
     @Async
-    @EventListener
+    @TransactionalEventListener
     fun sendAlimtalkToVolunteer(event: VolunteerActivityDeletedEvent) {
         logger.info { "[봉사삭제이벤트][알림톡 발신][시작]" }
         val volunteerActivityDetail = getVolunteerActivityUseCase.getShelterUserDetailDeletedVolunteerActivityInfo(
