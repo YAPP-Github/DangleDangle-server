@@ -147,8 +147,8 @@ class VolunteerActivityManageApplicationService(
 
     @Transactional
     @DistributedLock(
-        prefix = "volunteerActivity",
-        identifiers = ["reqDto.volunteerActivityId"]
+        prefix = "volunteerEvent",
+        identifiers = ["reqDto.volunteerEventId"]
     )
     fun editVolunteerActivity(reqDto: EditVolunteerEventRequestDto): EditVolunteerEventResponseDto {
         if (LocalDateTime.now().isAfter(reqDto.startAt)) {
@@ -221,8 +221,8 @@ class VolunteerActivityManageApplicationService(
 
     @Transactional
     @DistributedLock(
-        prefix = "volunteerActivity",
-        identifiers = ["reqDto.volunteerActivityId"]
+        prefix = "volunteerEvent",
+        identifiers = ["reqDto.volunteerEventId"]
     )
     fun deleteVolunteerActivity(reqDto: DeleteVolunteerActivityRequestDto): DeleteVolunteerActivityResponseDto {
         val shelterUser = getShelterUserUseCase
@@ -230,19 +230,19 @@ class VolunteerActivityManageApplicationService(
 
         deleteVolunteerActivityUseCase
             .deleteByIdAndShelterId(
-                id = reqDto.volunteerActivityId,
+                id = reqDto.volunteerEventId,
                 shelterId = shelterUser.shelterId
             )
 
         eventPublisher.publishEvent(
             VolunteerActivityDeletedEvent(
                 shelterId = shelterUser.shelterId,
-                volunteerActivityId = reqDto.volunteerActivityId
+                volunteerActivityId = reqDto.volunteerEventId
             )
         )
 
         return DeleteVolunteerActivityResponseDto(
-            volunteerActivityId = reqDto.volunteerActivityId
+            volunteerEventId = reqDto.volunteerEventId
         )
     }
 }
