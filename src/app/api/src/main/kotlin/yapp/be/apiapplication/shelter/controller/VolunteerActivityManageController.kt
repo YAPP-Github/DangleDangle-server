@@ -134,7 +134,7 @@ class VolunteerActivityManageController(
     ): ResponseEntity<DeleteVolunteerActivityResponseDto> {
 
         val reqDto = DeleteVolunteerActivityRequestDto(
-            volunteerActivityId = volunteerEventId,
+            volunteerEventId = volunteerEventId,
             shelterUserId = shelterUserInfo.shelterUserId
         )
         val resDto = volunteerActivityManageApplicationService
