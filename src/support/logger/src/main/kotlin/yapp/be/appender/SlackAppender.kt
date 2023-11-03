@@ -4,6 +4,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.LayoutBase
 import ch.qos.logback.core.UnsynchronizedAppenderBase
 import yapp.be.client.SlackLogDeliveryClient
+import yapp.be.client.SlackLogDeliveryResponse
 
 class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
 
@@ -22,12 +23,45 @@ class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
         }
     }
     override fun append(eventObject: ILoggingEvent) {
-        client.send(
+
+        client.sendAsMessage(
+            title = ":rotating_light::rotating_light::rotating_light: [Error] :rotating_light::rotating_light::rotating_light:",
             token = token,
             botIcon = botIcon,
             botName = botName,
             channel = channelId,
             text = layout.doLayout(eventObject)
-        ).subscribe()
+        ).subscribe { it ->
+            when (it) {
+                is SlackLogDeliveryResponse.Success -> {
+                    val requestUrl = buildString {
+                        append(eventObject.mdcPropertyMap["requestMethod"].orEmpty())
+                        append("${eventObject.mdcPropertyMap["requestUrl"]}${eventObject.mdcPropertyMap["requestParameter"]?.let { parameters -> "?$parameters" }.orEmpty()}")
+                    }
+                    val requestHeader = eventObject.mdcPropertyMap["requestHeader"].orEmpty()
+                    val requestBody = eventObject.mdcPropertyMap["requestBody"].orEmpty()
+
+                    val accessLogs = buildMap {
+                        put("REQUEST_URL", requestUrl)
+                        put("REQUEST_HEADER", requestHeader)
+                        put("REQUEST_BODY", requestBody)
+                    }
+                    client.sendAsThread(
+                        ts = it.ts,
+                        token = token,
+                        botIcon = botIcon,
+                        botName = botName,
+                        channel = channelId,
+                        titleAndText = accessLogs
+                    )
+                }
+
+                else -> {
+                    /**
+                     * Fail
+                     */
+                }
+            }
+        }
     }
 }

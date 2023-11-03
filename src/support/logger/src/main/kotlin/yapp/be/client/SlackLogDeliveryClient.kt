@@ -3,13 +3,13 @@ package yapp.be.client
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toMono
 
 class SlackLogDeliveryClient {
-
     companion object {
         private val instance = WebClient
             .builder()
@@ -19,8 +19,30 @@ class SlackLogDeliveryClient {
             .registerModule(KotlinModule())
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
-    fun send(
+    fun sendAsMessage(
+        title: String,
         token: String,
+        channel: String,
+        botName: String,
+        botIcon: String,
+        text: String
+    ) = send(title, token, null, channel, botName, botIcon, text)
+
+    fun sendAsThread(
+        token: String,
+        channel: String,
+        botName: String,
+        botIcon: String,
+        ts: String?,
+        titleAndText: Map<String, String>,
+    ) {
+        titleAndText.forEach { (title, text) -> send(title, token, ts, channel, botName, botIcon, text).subscribe() }
+    }
+
+    private fun send(
+        title: String,
+        token: String,
+        ts: String?,
         channel: String,
         botName: String,
         botIcon: String,
@@ -28,18 +50,20 @@ class SlackLogDeliveryClient {
     ): Mono<SlackLogDeliveryResponse> {
         return instance
             .post()
+            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .header("Authorization", "Bearer $token")
             .bodyValue(
                 SlackLogDeliveryRequest(
                     channel = channel,
+                    thread_ts = ts,
                     username = botName,
                     icon_emoji = botIcon,
                     attachments = buildList {
                         add(
                             SlackAttachment(
                                 color = "#FF0000",
-                                title = ":rotating_light::rotating_light::rotating_light: [Error] :rotating_light::rotating_light::rotating_light:",
-                                text = text
+                                title = title,
+                                text = text.orEmpty()
                             )
                         )
                     }
@@ -50,7 +74,6 @@ class SlackLogDeliveryClient {
             .map { parseSlackResponse(it) }
             .toMono()
     }
-
     private fun parseSlackResponse(responseBody: String): SlackLogDeliveryResponse {
         println(responseBody)
         return if (responseBody.contains("\"ok\":true")) {
