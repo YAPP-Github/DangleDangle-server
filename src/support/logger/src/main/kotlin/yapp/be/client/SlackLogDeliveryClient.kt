@@ -25,8 +25,9 @@ class SlackLogDeliveryClient {
         channel: String,
         botName: String,
         botIcon: String,
-        text: String
-    ) = send(title, token, null, channel, botName, botIcon, text)
+        text: String,
+        traceId: String
+    ) = send(title, token, null, channel, botName, botIcon, text, traceId)
 
     fun sendAsThread(
         token: String,
@@ -34,9 +35,10 @@ class SlackLogDeliveryClient {
         botName: String,
         botIcon: String,
         ts: String?,
+        traceId: String,
         titleAndText: Map<String, String>,
     ) {
-        titleAndText.forEach { (title, text) -> send(title, token, ts, channel, botName, botIcon, text).subscribe() }
+        titleAndText.forEach { (title, text) -> send(title, token, ts, channel, botName, botIcon, text, traceId).subscribe() }
     }
 
     private fun send(
@@ -46,7 +48,8 @@ class SlackLogDeliveryClient {
         channel: String,
         botName: String,
         botIcon: String,
-        text: String
+        text: String,
+        traceId: String
     ): Mono<SlackLogDeliveryResponse> {
         return instance
             .post()
@@ -63,7 +66,8 @@ class SlackLogDeliveryClient {
                             SlackAttachment(
                                 color = "#FF0000",
                                 title = title,
-                                text = text.orEmpty()
+                                pretext = "[$traceId]",
+                                text = text
                             )
                         )
                     }
@@ -75,7 +79,6 @@ class SlackLogDeliveryClient {
             .toMono()
     }
     private fun parseSlackResponse(responseBody: String): SlackLogDeliveryResponse {
-        println(responseBody)
         return if (responseBody.contains("\"ok\":true")) {
             objectMapper.readValue(responseBody, SlackLogDeliveryResponse.Success::class.java)
         } else {

@@ -1,10 +1,11 @@
 <configuration>
-    <include resource="logback/slack-appender.xml"/>
+    <include resource="logback/appenders/slack-appender.xml"/>
+    <include resource="logback/appenders/console-appender.xml"/>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
     <root level ="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 
     <logger name="yapp.be.apiapplication.system.exception" level="ERROR">

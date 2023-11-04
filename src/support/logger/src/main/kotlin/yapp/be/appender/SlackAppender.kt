@@ -23,15 +23,16 @@ class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
         }
     }
     override fun append(eventObject: ILoggingEvent) {
-
+        val traceId = eventObject.mdcPropertyMap["traceId"] ?: "TraceId Not Found"
         client.sendAsMessage(
             title = ":rotating_light::rotating_light::rotating_light: [Error] :rotating_light::rotating_light::rotating_light:",
             token = token,
             botIcon = botIcon,
             botName = botName,
             channel = channelId,
-            text = layout.doLayout(eventObject)
-        ).subscribe { it ->
+            text = layout.doLayout(eventObject),
+            traceId = traceId
+        ).subscribe {
             when (it) {
                 is SlackLogDeliveryResponse.Success -> {
                     val requestUrl = buildString {
@@ -52,7 +53,8 @@ class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
                         botIcon = botIcon,
                         botName = botName,
                         channel = channelId,
-                        titleAndText = accessLogs
+                        titleAndText = accessLogs,
+                        traceId = traceId
                     )
                 }
 

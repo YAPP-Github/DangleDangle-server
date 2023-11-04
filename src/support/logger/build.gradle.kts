@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     val logbackVersion: String by project
+    implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 }
