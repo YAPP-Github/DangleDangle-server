@@ -35,7 +35,6 @@ class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
             traceId = traceId,
             footer = dashboardUrl
         ).subscribe {
-            println(it)
             when (it) {
                 is SlackLogDeliveryResponse.Success -> {
                     val requestUrl = buildString {

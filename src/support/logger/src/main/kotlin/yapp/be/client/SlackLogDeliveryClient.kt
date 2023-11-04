@@ -82,7 +82,6 @@ class SlackLogDeliveryClient {
             .toMono()
     }
     private fun parseSlackResponse(responseBody: String): SlackLogDeliveryResponse {
-        println(responseBody)
         return if (responseBody.contains("\"ok\":true")) {
             objectMapper.readValue(responseBody, SlackLogDeliveryResponse.Success::class.java)
         } else {
