@@ -2,7 +2,6 @@ package yapp.be.apiapplication.system.exception
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
-import org.slf4j.MDC
 import java.time.LocalDateTime
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
@@ -17,11 +16,11 @@ import java.time.DateTimeException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import yapp.be.exceptions.SystemExceptionType
 
-private val logger = KotlinLogging.logger { }
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class CustomExceptionHandler {
 
+    private val logger = KotlinLogging.logger { }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomException::class)
     fun handleApiException(e: CustomException): ErrorResponse {
@@ -55,7 +54,6 @@ class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun handleHttpMethodNotReadableException(exception: HttpMessageNotReadableException): ErrorResponse {
-        exception.printStackTrace()
         return ErrorResponse(
             exceptionCode = ApiExceptionType.INVALID_PARAMETER.code,
             message = "잘못된 HttpBody 형식입니다.",
@@ -85,7 +83,6 @@ class CustomExceptionHandler {
     @ExceptionHandler(RuntimeException::class)
     fun handleApiException(e: RuntimeException, request: HttpServletRequest): ErrorResponse {
         logger.error { e.stackTraceToString() }
-        println(MDC.get("requestHeader"))
         return ErrorResponse(
             exceptionCode = SystemExceptionType.RUNTIME_EXCEPTION.code,
             message = "Internal Server Error",
