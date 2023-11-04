@@ -11,15 +11,21 @@ spring:
       - logging.yml
       - application-actuator.yml
       - oauth/application-oauth-${spring.profiles.active}.yml
+      - application-log-${spring.profiles.active}.yml
       - application-client-${spring.profiles.active}.yml
       - application-storage-${spring.profiles.active}.yml
       - application-redis-${spring.profiles.active}.yml
       - application-mail-${spring.profiles.active}.yml
-      - application-log-${spring.profiles.active}.yml
+      - 'aws-parameterstore:'
+cloud:
+    aws:
+        credentials:
+            accessKey: ${AWS_ACCESS_KEY_ID}
+            secretKey: ${AWS_SECRET_ACCESS_KEY}
+        region.static: ap-northeast-2
 springdoc:
   swagger-ui:
     path: /swagger
-
 
 jwt:
     access:
@@ -31,3 +37,11 @@ jwt:
     auth:
         expire: ${AUTH_TOKEN_EXPIRE:300000} # 5 min
         secret: ${AUTH_TOKEN_SECRET:5f95a5f5c5b5a5a5958f8f7f7e7e7d7d7c6b6a696867666564636261605f}
+
+aws:
+    paramstore:
+        enabled: true
+        prefix: /dangle-parameter-store
+        name: legacy-api
+        profile-separator: _
+        fail-fast: true
