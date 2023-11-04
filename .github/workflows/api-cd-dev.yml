@@ -38,12 +38,11 @@ jobs:
               run: |
                   ./gradlew :api:jib \
                     -Djib.from.image=openjdk:17-jdk-slim \
-                    -Duser.timezone=Asia/Seoul \
                     -Djib.to.image=${{secrets.DEV_ECR_IMAGE}} \
                     -Djib.to.auth.username=AWS \
                     -Djib.to.auth.password=${{ steps.ecr-login.outputs.ecr-password }} \
                     -Djib.to.tags=dev \
-                    -Djib.container.jvmFlags="-Dspring.profiles.active=dev,-Dfile.encoding=UTF-8" \
+                    -Djib.container.jvmFlags="-Dspring.profiles.active=dev,-Dfile.encoding=UTF-8,-Duser.timezone=Asia/Seoul" \
                     -Djib.container.environment="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }},AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
             - name: Create new ElasticBeanstalk Application Version
               run: |
