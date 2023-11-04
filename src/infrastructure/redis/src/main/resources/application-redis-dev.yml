@@ -1,9 +1,9 @@
 spring:
     data:
         redis:
-            host: ${DEV_REDIS_HOST}
-            port: ${DEV_REDIS_PORT}
-            password: ${DEV_REDIS_PASSWORD}
+            host: ${REDIS_HOST}
+            port: ${REDIS_PORT}
+            password: ${REDIS_PASSWORD}
             ssl:
                 enabled: true
 
