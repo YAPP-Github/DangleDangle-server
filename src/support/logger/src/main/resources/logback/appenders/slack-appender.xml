@@ -1,14 +1,16 @@
 <included>
-    <springProperty scope="context" name="channelId" source="slack.log.channelId"/>
-    <springProperty scope="context" name="token" source="slack.log.token"/>
-    <springProperty scope="context" name="botName" source="slack.log.botName" defaultValue="ErrorNotiBot"/>
-    <springProperty scope="context" name="botIcon" source="slack.log.botIcon" defaultValue=":ok_twitch:"/>
+    <springProperty scope="context" name="channelId" source="log.slack.channelId"/>
+    <springProperty scope="context" name="token" source="log.slack.token"/>
+    <springProperty scope="context" name="botName" source="log.slack.botName" defaultValue="ErrorNotiBot"/>
+    <springProperty scope="context" name="botIcon" source="log.slack.botIcon" defaultValue=":ok_twitch:"/>
+    <springProperty scope="context" name="dashboardUrl" source="log.dashboard.url"/>
 
     <appender name="SLACK_LOG_APPENDER" class="yapp.be.appender.SlackAppender">
         <channelId>${channelId}</channelId>
         <botName>${botName}</botName>
         <botIcon>${botIcon}</botIcon>
         <token>${token}</token>
+        <dashboardUrl>${dashboardUrl}</dashboardUrl>
 
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>

@@ -12,6 +12,7 @@ class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
     lateinit var botName: String
     lateinit var botIcon: String
     lateinit var channelId: String
+    lateinit var dashboardUrl: String
 
     private val client = SlackLogDeliveryClient()
     private val layout = object : LayoutBase<ILoggingEvent>() {
@@ -31,8 +32,10 @@ class SlackAppender : UnsynchronizedAppenderBase<ILoggingEvent>() {
             botName = botName,
             channel = channelId,
             text = layout.doLayout(eventObject),
-            traceId = traceId
+            traceId = traceId,
+            footer = dashboardUrl
         ).subscribe {
+            println(it)
             when (it) {
                 is SlackLogDeliveryResponse.Success -> {
                     val requestUrl = buildString {
