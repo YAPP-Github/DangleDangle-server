@@ -1,0 +1,8 @@
+log:
+    slack:
+        channelId: ${DEV_SLACK_CHANNEL_ID}
+        token: ${SLACK_BOT_TOKEN}
+        botName: ${SLACK_BOT_NAME:DangleServer-ErrorNotiBot}
+        botIcon: ${SLACK_BOT_ICON::ok_twitch:}
+    dashboard:
+        url: ${DEV_LOG_DASHBOARD_URL}

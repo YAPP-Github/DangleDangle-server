@@ -13,4 +13,5 @@ data class SlackAttachment(
     val title: String,
     val pretext: String,
     val text: String,
+    val footer: String?,
 )
