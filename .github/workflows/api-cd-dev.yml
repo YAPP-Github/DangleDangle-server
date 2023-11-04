@@ -1,13 +1,12 @@
 name: api-cd-dev
 
 on:
-    pull_request:
-        branches: [ dev ]
-        types: [ closed ]
+  push:
+    branches:
+      - dev
 jobs:
     build:
         runs-on: ubuntu-latest
-        if: github.event.pull_request.merged
         steps:
             - uses: actions/checkout@v2
             - name: Set up JDK 17
@@ -57,5 +56,4 @@ jobs:
               run: |
                     aws elasticbeanstalk update-environment \
                     --environment-name ${{ secrets.DEV_EB_ENVIRONMENT }} \
-                    --version-label "ver-${{ github.sha }}"
                     --version-label "ver-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
