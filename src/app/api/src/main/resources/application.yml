@@ -14,15 +14,9 @@ spring:
       - application-log-${spring.profiles.active}.yml
       - application-client-${spring.profiles.active}.yml
       - application-storage-${spring.profiles.active}.yml
-      - application-redis-${spring.profiles.active}.yml
+      - application-redis-${spring.profile`s.active}.yml
       - application-mail-${spring.profiles.active}.yml
       - 'aws-parameterstore:'
-cloud:
-    aws:
-        credentials:
-            accessKey: ${AWS_ACCESS_KEY_ID}
-            secretKey: ${AWS_SECRET_ACCESS_KEY}
-        region.static: ap-northeast-2
 springdoc:
   swagger-ui:
     path: /swagger
