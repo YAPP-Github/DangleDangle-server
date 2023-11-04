@@ -11,5 +11,6 @@ data class SlackLogDeliveryRequest(
 data class SlackAttachment(
     val color: String,
     val title: String,
+    val pretext: String,
     val text: String,
 )

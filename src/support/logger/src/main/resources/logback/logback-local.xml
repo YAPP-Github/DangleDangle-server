@@ -1,8 +1,10 @@
 <configuration>
+    <include resource="logback/appenders/console-appender.xml"/>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
+
     <root level ="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
