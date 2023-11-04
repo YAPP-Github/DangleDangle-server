@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import yapp.be.exceptions.SystemExceptionType
 
-private val logger = KotlinLogging.logger { }
-
 @RestControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE + 1)
 class UnKnownExceptionHandler {
