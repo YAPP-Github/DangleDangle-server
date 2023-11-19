@@ -31,7 +31,7 @@ class VolunteerActivityQueryRepository(
     private val volunteerActivityJoiningQueueJpaRepository: VolunteerActivityJoiningQueueJpaRepository,
 ) : VolunteerActivityQueryHandler {
     override fun findAllVolunteerActivityByStartAtBetween(start: LocalDateTime, end: LocalDateTime): List<VolunteerActivity> {
-        return volunteerActivityJpaRepository.findAllByStartAtBetween(start, end)
+        return volunteerActivityJpaRepository.findAllByStartAtBetweenAndDeletedIsFalse(start, end)
             .map { it.toDomainModel() }
     }
 
